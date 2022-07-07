@@ -245,7 +245,50 @@
                                     <label for="resultados" class="col-md-12 col-form-label">{{ __('Resultados de Laboratorio y Gabinete') }}:</label>
     
                                     <div class="col-md-12 text-center">
-                                        <textarea name="resultados" id="resultados" cols="30" rows="4" 
+                                        @if ($consulta->resultadosArchivos != null)
+                                            <div class="border" id="filescontainer">
+                                                @php
+                                                    $files = json_decode($consulta->resultadosArchivos);
+                                                @endphp
+                                                @for ($i = 0; $i < count($files); $i++)
+                                                    @switch($files[$i][1])
+                                                        @case('png')
+                                                            <a href="{{ route('resultfile', $files[$i][0]) }}" download>
+                                                                <img class="resultfile imglink" src="{{ URL::asset("/img/icons/png.png") }}"
+                                                                data-toggle="tooltip" data-placement="top" title="{{ $files[$i][0] }}">
+                                                            </a>
+                                                            @break
+                                                        @case('jpg')
+                                                            <a href="{{ route('resultfile', $files[$i][0]) }}" download>
+                                                                <img class="resultfile imglink" src="{{ URL::asset("/img/icons/jpg.png") }}"
+                                                                data-toggle="tooltip" data-placement="top" title="{{ $files[$i][0] }}">
+                                                            </a>
+                                                            @break
+                                                        @case('docx')
+                                                            <a href="{{ route('resultfile', $files[$i][0]) }}" download>
+                                                                <img class="resultfile imglink" src="{{ URL::asset("/img/icons/docx.png") }}"
+                                                                data-toggle="tooltip" data-placement="top" title="{{ $files[$i][0] }}">
+                                                            </a>
+                                                            @break
+                                                        @case('doc')
+                                                            <a href="{{ route('resultfile', $files[$i][0]) }}" download>
+                                                                <img class="resultfile imglink" src="{{ URL::asset("/img/icons/doc.png") }}"
+                                                                data-toggle="tooltip" data-placement="top" title="{{ $files[$i][0] }}">
+                                                            </a>
+                                                            @break
+                                                        @case('pdf')
+                                                            <a href="{{ route('resultfile', $files[$i][0]) }}" download>
+                                                                <img class="resultfile imglink" src="{{ URL::asset("/img/icons/pdf.png") }}"
+                                                                data-toggle="tooltip" data-placement="top" title="{{ $files[$i][0] }}">
+                                                            </a>
+                                                            @break
+                                                    @endswitch
+                                                @endfor
+                                            </div>
+                                        @else
+                                            <div class="border hiddenli" id="filescontainer" style="margin-top: 10px"></div>
+                                        @endif
+                                        <textarea name="resultados" id="resultados" cols="30" rows="4" style="margin-top: 10px" 
                                         class="form-control @error('resultados') is-invalid @enderror"
                                         value="" autocomplete="resultados" maxlength="255"
                                         onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 

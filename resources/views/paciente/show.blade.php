@@ -35,12 +35,18 @@
                                 </div>
                                 <div class="col-sm">
                                     <div class="form-group">
-                                        <strong>Sexo:</strong>
-                                        {{ $paciente->sexo->descripcion }}
+                                        <strong>Edad:</strong>
+                                        {{\Carbon\Carbon::parse($paciente->fechaNacimiento)->age }} años
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="col-sm">
+                                    <div class="form-group">
+                                        <strong>Sexo:</strong>
+                                        {{ $paciente->sexo->descripcion }}
+                                    </div>
+                                </div>
                                 <div class="col-sm">                                    
                                     <div class="form-group">
                                         <strong>Municipio de nacimiento:</strong>
@@ -53,17 +59,11 @@
                                         {{ $paciente->entidadesfederativanac->entidad }}
                                     </div>
                                 </div>
-                                <div class="col-sm">
-                                    <div class="form-group">
-                                        <strong>¿Necesita de un tutor?:</strong>
-                                        {{ $paciente->responsable==0?'No':'Si' }}
-                                    </div>
-                                </div>
                             </div>
 
                             <div class="card">
                                 <div class="card-header">
-                                    <span class="card-subtitle">Domicilio actual</span>
+                                    <span class="card-subtitle"><strong>Domicilio actual</strong></span>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">

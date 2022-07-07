@@ -13,7 +13,12 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <span class="card-title"><strong>Registrar paciente</strong></span>
+                        <div class="float-left">
+                            <span class="card-title"><strong>Registrar paciente</strong></span>
+                        </div>
+                        <div class="float-right">
+                            <a class="btn btn-primary btn-sm" href="{{ route('pacientes.index') }}"> Regresar</a>
+                        </div>
                     </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('pacientes.store') }}"  role="form" enctype="multipart/form-data">

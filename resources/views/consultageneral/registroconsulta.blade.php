@@ -17,6 +17,13 @@
                     </a>
                 </li>
                 <hr class="menuhr">
+                <li class="catli nav-item" data-toggle="tooltip" data-placement="right" title="Interrogatorio">
+                    <a class="nav-link {{ session('consulta_id') !== null ? '' : 'disabled' }}" id="interrogatorio-tab" data-bs-toggle="tab" data-bs-target="#interrogatorio" type="button" role="tab" aria-controls="interrogatorio" aria-selected="false">
+                        <span class="icon my-auto"><i class="fa fa-file-text" aria-hidden="true"></i></span>
+                        <span class="title my-auto">Interrogatorio</span>
+                    </a>
+                </li>
+                <hr class="menuhr">
                 <li class="catli nav-item" data-toggle="tooltip" data-placement="right" title="Exploración Física">
                     <a class="nav-link {{ session('consulta_id') !== null ? '' : 'disabled' }}" id="exploracion-tab" data-bs-toggle="tab" data-bs-target="#exploracion" type="button" role="tab" aria-controls="exploracion" aria-selected="false">
                         <span class="icon my-auto"><i class="fa fa-sticky-note" aria-hidden="true"></i></span>
@@ -24,10 +31,10 @@
                     </a>
                 </li>
                 <hr class="menuhr">
-                <li class="catli nav-item" data-toggle="tooltip" data-placement="right" title="Interrogatorio">
-                    <a class="nav-link {{ session('consulta_id') !== null ? '' : 'disabled' }}" id="interrogatorio-tab" data-bs-toggle="tab" data-bs-target="#interrogatorio" type="button" role="tab" aria-controls="interrogatorio" aria-selected="false">
-                        <span class="icon my-auto"><i class="fa fa-file-text" aria-hidden="true"></i></span>
-                        <span class="title my-auto">Interrogatorio</span>
+                <li class="catli nav-item" data-toggle="tooltip" data-placement="right" title="MISECE">
+                    <a class="nav-link" id="misece-tab" data-bs-toggle="tab" data-bs-target="#misece" type="button" role="tab" aria-controls="misece" aria-selected="false">
+                        <span class="icon my-auto"><i class="fa fa-external-link" aria-hidden="true"></i></span>
+                        <span class="title my-auto">MISECE</span>
                     </a>
                 </li>
                 <hr class="specialhr">
@@ -251,7 +258,7 @@
             <!-- TAB de Nota de Consulta -->
             <!------ ------->
 
-            <div class="tab-pane fade show active" id="consulta" role="tabpanel" aria-labelledby="home-tab">
+            <div class="tab-pane fade show active" id="consulta" role="tabpanel" aria-labelledby="consulta-tab">
                 <div class="card">
                     <div class="card-header">
                         Nota de la consulta
@@ -263,7 +270,9 @@
                             <div class="form-group row text-center">
                                 <div class="col-md-4">
                                     <label for="motivo" class="col-md-12 col-form-label">{{ __('Motivo de la Consulta') }}:</label>
-    
+                                    <button class="btn btn-success btn-sm" type="button" value="motivo" id="startrecmotivo">&nbsp;&nbsp;<i class="fa fa-microphone" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                    <button class="btn btn-danger btn-sm hiddenli" type="button" id="stoprecmotivo">&nbsp;&nbsp;<i class="fa fa-microphone-slash" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                    <p></p>
                                     <div class="col-md-12">
                                         <textarea name="motivo" id="motivo" cols="30" rows="4" 
                                         class="form-control @error('motivo') is-invalid @enderror"
@@ -279,7 +288,9 @@
 
                                 <div class="col-md-4">
                                     <label for="cuadro" class="col-md-12 col-form-label">{{ __('Cuadro Clínico') }}:</label>
-    
+                                    <button class="btn btn-success btn-sm" type="button" value="motivo" id="startreccuadro">&nbsp;&nbsp;<i class="fa fa-microphone" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                    <button class="btn btn-danger btn-sm hiddenli" type="button" id="stopreccuadro">&nbsp;&nbsp;<i class="fa fa-microphone-slash" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                    <p></p>
                                     <div class="col-md-12">
                                         <textarea name="cuadro" id="cuadro" cols="30" rows="4" 
                                         class="form-control @error('cuadro') is-invalid @enderror"
@@ -295,8 +306,33 @@
 
                                 <div class="col-md-4">
                                     <label for="resultados" class="col-md-12 col-form-label">{{ __('Resultados de Laboratorio y Gabinete') }}:</label>
-    
+                                    <button class="btn btn-success btn-sm" type="button" value="motivo" id="startrecres">&nbsp;&nbsp;<i class="fa fa-microphone" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                    <button class="btn btn-danger btn-sm hiddenli" type="button" id="stoprecres">&nbsp;&nbsp;<i class="fa fa-microphone-slash" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                    <p></p>
                                     <div class="col-md-12 text-center">
+
+                                        <!--   Prueba para mostrar multiples input files Pospuesto por el momento 
+
+                                        <div class="input-group hdtuto control-group lst increment" >
+                                            <input type="file" name="filenames[]" class="myfrm form-control">
+                                            <div class="input-group-btn"> 
+                                              <button class="btn btn-success btn-mysuccess" type="button"><i class="fldemo glyphicon glyphicon-plus"></i>Add</button>
+                                            </div>
+                                        </div>
+                                      
+                                        <div class="clone hide">
+                                            <div class="hdtuto control-group lst input-group" style="margin-top:10px">
+                                              <input type="file" name="filenames[]" class="myfrm form-control">
+                                              <div class="input-group-btn"> 
+                                                <button class="btn btn-danger btn-mydanger" type="button"><i class="fldemo glyphicon glyphicon-remove"></i> Remove</button>
+                                              </div>
+                                            </div>
+                                        </div>
+
+                                        -->
+
+                                        <input type="file" name="filename[]" id="filename" class="form-control" multiple accept=".doc,.docx,.pdf,.png,.jpg">
+                                        <br>
                                         <textarea name="resultados" id="resultados" cols="30" rows="4" 
                                         class="form-control @error('resultados') is-invalid @enderror"
                                         value="" autocomplete="resultados" maxlength="255"
@@ -313,8 +349,12 @@
                             <div class="form-group row text-center">
                                 <div class="col-md-4">
                                     <label for="diagnostico" class="col-md-12 col-form-label">{{ __('Diagnósticos o Problemas Clínicos') }}:</label>
-    
+                                    <button class="btn btn-success btn-sm" type="button" value="motivo" id="startrecdiag">&nbsp;&nbsp;<i class="fa fa-microphone" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                    <button class="btn btn-danger btn-sm hiddenli" type="button" id="stoprecdiag">&nbsp;&nbsp;<i class="fa fa-microphone-slash" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                    <p></p>
                                     <div class="col-md-12">
+                                        <input class="form-control selectize" id="select-diag" name="select-diag">
+                                        <p></p>
                                         <textarea name="diagnostico" id="diagnostico" cols="30" rows="4" 
                                         class="form-control @error('diagnostico') is-invalid @enderror"
                                         value="" autocomplete="diagnostico" maxlength="255"
@@ -329,7 +369,9 @@
 
                                 <div class="col-md-4">
                                     <label for="pronostico" class="col-md-12 col-form-label">{{ __('Pronóstico') }}:</label>
-    
+                                    <button class="btn btn-success btn-sm" type="button" value="motivo" id="startrecpron">&nbsp;&nbsp;<i class="fa fa-microphone" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                    <button class="btn btn-danger btn-sm hiddenli" type="button" id="stoprecpron">&nbsp;&nbsp;<i class="fa fa-microphone-slash" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                    <p></p>
                                     <div class="col-md-12">
                                         <textarea name="pronostico" id="pronostico" cols="30" rows="4" 
                                         class="form-control @error('pronostico') is-invalid @enderror"
@@ -345,7 +387,9 @@
 
                                 <div class="col-md-4">
                                     <label for="indicacion" class="col-md-12 col-form-label">{{ __('Indicación Terapéutica') }}:</label>
-    
+                                    <button class="btn btn-success btn-sm" type="button" value="motivo" id="startrecindica">&nbsp;&nbsp;<i class="fa fa-microphone" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                    <button class="btn btn-danger btn-sm hiddenli" type="button" id="stoprecindica">&nbsp;&nbsp;<i class="fa fa-microphone-slash" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                    <p></p>
                                     <div class="col-md-12">
                                         <textarea name="indicacion" id="indicacion" cols="30" rows="4" 
                                         class="form-control @error('indicacion') is-invalid @enderror"
@@ -439,7 +483,7 @@
             <!-- TAB de Interrogatorios -->
             <!------ ------->
 
-            <div class="tab-pane fade" id="interrogatorio" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="tab-pane fade" id="interrogatorio" role="tabpanel" aria-labelledby="interrogatorio-tab">
                 <div class="card">
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs" id="mySecTab" role="tablist">
@@ -812,11 +856,20 @@
                                             <label for="toxicomanias" class="col-md-12 col-form-label">{{ __('Toxicomanías') }}:</label>
             
                                             <div class="col-md-12">
+                                                <select class="form-control" name="multiselecttoxic" id="multiselecttoxic">
+                                                    <option value="1">Depresoras</option>
+                                                    <option value="2">Estimulantes</option>
+                                                    <option value="3">Alucinógenos/Psicodélicos</option>
+                                                    <option value="4">Cannabis</option>
+                                                    <option value="5">Inhalantes</option>
+                                                </select>
+                                                <!--
                                                 <textarea name="toxicomanias" id="toxicomanias" cols="30" rows="3" 
                                                 class="form-control @error('toxicomanias') is-invalid @enderror"
                                                 value="" autocomplete="toxicomanias" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
                                                 autofocus>{{ $antePP->toxicomaniasAlcoholismo }}</textarea>
+                                                -->
                                             </div>
                                         </div>
 
@@ -839,6 +892,16 @@
                                         <div class="col-md-4">
                                         </div>
                                         <div class="col-md-4">
+                                            <div class="form-group row mb-0">
+                                                <div class="col-md-12">
+                                                    <a onclick="testconsulta()" class="btn btn-primary" role="button">
+                                                        {{ __('Test toxicomanias') }}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-4">
                                             <div id="antePPsubmit" class="form-group row mb-0 {{ session('antePP_id') !== null ? 'hiddenli' : '' }}">
                                                 <div class="col-md-12">
                                                     <a onclick="storeantecedentespp()" class="btn btn-primary" role="button">
@@ -846,7 +909,7 @@
                                                     </a>
                                                 </div>
                                             </div>
-        
+
                                             <div id="antePPupdate" class="form-group row mb-0 {{ session('antePP_id') !== null ? '' : 'hiddenli' }}">
                                                 <div class="col-md-12">
                                                     <a onclick="updateantecedentespp()" class="btn btn-success" role="button">
@@ -1154,7 +1217,7 @@
             <!-- TAB de Exploracion Fisica -->
             <!------ ------->
             
-            <div class="tab-pane fade" id="exploracion" role="tabpanel" aria-labelledby="contact-tab">
+            <div class="tab-pane fade" id="exploracion" role="tabpanel" aria-labelledby="exploracion-tab">
                 <div class="card">
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs" id="myTerTab" role="tablist">
@@ -1522,8 +1585,79 @@
                     </div>
                 </div>
             </div>
+
+            <!------ ------->
+            <!-- TAB de MISECE -->
+            <!------ ------->
+
+            <div class="tab-pane fade" id="misece" role="tabpanel" aria-labelledby="misece-tab">
+                <div class="card text-center">
+                    <div class="card-header">
+                        Consulta del Expediente clínico Electrónico del paciente <strong>{{ $paciente->nombre }} {{ $paciente->primerApellido }} {{ $paciente->segundoApellido }}</strong>
+                    </div>
+                    <div class="card-body text-center">
+                        <button class="btn btn-sm btn-primary" type="button" onclick="misececurp('{{ $paciente->curp }}')">Solicitar Código al paciente</button>
+                        <br><br>
+                        <label for="">Introduce el código del paciente</label>
+                        <br>
+                        <div class="col-md-3 mx-auto">
+                            <input class="form-control form-control-sm" type="text" id="patientcode" name="patientcode" value="">
+                        </div>
+                        <br>
+                        <button class="btn btn-sm btn-success" type="button" onclick="patientece({{ $paciente->curp }})">Consultar ECE</button>
+                        <br><br>
+                        <div id="ece-content"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
+<script type="text/javascript">
+    $(function(){
+        $(".selectize").selectize({
+            maxItems: 1,
+            valueField: 'id',
+            labelField: ['term'],
+            searchField: ['term'],
+            create: false,
+
+            load: (query, callback) => {
+                if(!query.length) return callback();
+                let textvalue = $("#select-diag-selectized").val();
+                $.ajax({
+                    url: url + "/getdiags",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        term: textvalue
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    error: () => callback(),
+                    success:(res) => callback(res)
+                });
+            },
+
+            render: {
+                option: (item, escape) => {
+                    return '<p>'+item.term+'</p>'
+                }
+            }
+        });
+
+        var $multitoxic = $("#multiselecttoxic").selectize({
+            plugins: ["remove_button"],
+            delimiter: ",",
+            placeholder: "Selecciona una opción",
+            persist: false,
+            maxItems: 5,
+        });
+
+        var selectizetoxic = $multitoxic[0].selectize;
+        selectizetoxic.clear()
+    });
+</script>
 @endsection

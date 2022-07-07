@@ -19,40 +19,32 @@
                             </a>
                         </div>                        
                         <div class="col">
-                            <a class="btn btn-success" type="button" href="{{ route('tamizajes.index') }}" id="tamizaje">
+                            <a class="btn btn-success" type="button" href="{{ route('tamizajes.index') }}" id="geriatria">
                                 <span class="icon my-auto"><i class="fa fa-file-text-o"></i></span>
                                 <span class="title my-auto cutbutton">Tamizaje</span>
                             </a>
                         </div> 
                         <div class="col">
-                            <a class="btn btn-secondary" type="button" href="{{ route('egis.index') }}" id="geriatrica">
+                            <a class="btn btn-secondary" type="button" href="{{ route('egis.index') }}" id="consultas">
                                 <span class="icon my-auto"><i class="bi bi-journals"></i></span>
                                 <span class="title my-auto cutbutton">Evaluación Geriátrica Integral</span>
                             </a>
                         </div>
+                        <!--div class="col">
+                            <a class="btn btn-success" type="button" href="{{ route('tamizajes.index') }}" id="geriatria">
+                                <span class="icon my-auto"><i class="bi bi-eyeglasses"></i></span>
+                                <span class="title my-auto cutbutton">Geriatría</span>
+                            </a>
+                        </div--> 
+                        <br><br>
                     </div>
-                    <br>
-                    <div class="row">
-                        <div class="col">                            
-                            <a class="btn btn-primary" type="button" href="{{ route('geriatriaproyectos.index') }}" id="geriatriaproyectos">
-                                <span class="icon my-auto"><i class="bi bi-folder"></i></span>
-                                <span class="title my-auto cutbutton">Proyectos</span>
-                            </a>
-                        </div>                        
-                        <div class="col">
-                            <a class="btn btn-success" type="button" href="{{ route('sexos.index') }}" id="sexos">
-                                <span class="icon my-auto"><i class="bi bi-gender-female"></i><i class="bi bi-gender-male"></i></span>
-                                <span class="title my-auto cutbutton">Sexos</span>
-                            </a>
-                        </div> 
-                        <div class="col">
-                           
-                        </div>
+                    <div class="text-center">
+                        <br>
+                        <img class="error-img" src="{{ asset('img/404-img.jpg')}}" alt="">
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 @endsection

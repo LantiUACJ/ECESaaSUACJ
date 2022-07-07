@@ -38,7 +38,7 @@
                 @endif
                 <div class="card text-center">
                     <div class="card-header">
-                        <h5>Consulta del Doctor - {{ auth()->user()->name }}</h5>
+                        <h5>Consultas del Doctor - {{ auth()->user()->name }}</h5>
                     </div>
                     <div class="card-body">
                         @if ($consultas->count() > 0)

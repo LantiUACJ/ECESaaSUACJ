@@ -25,7 +25,10 @@
                     </div>
                     @if ($message = Session::get('success'))
                         <div class="alert alert-success">
-                            <p>{{ $message }}</p>
+                            {{ $message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                     @endif
                     @if ($message = Session::get('error'))
@@ -64,21 +67,42 @@
 											<td label="E.F.">{{ $paciente->entidadesfederativanac->entidad }}</td>                                            
 											<td label="Sexo">{{ $paciente->sexo->descripcion }}</td>
                                             <td>
-                                                <form action="{{ route('pacientes.destroy',$paciente->id) }}" method="POST">
-                                                    <a class="btn" href="{{ route('pacientes.show',$paciente->id) }}" data-toggle="tooltip" data-placement="right" title="Consultar">
-                                                        <span class="icon my-auto"><i class="fa fa-fw fa-eye"></i></span> 
-                                                    </a>
-                                                    <a class="btn" href="{{ route('pacientes.edit',$paciente->id) }}" data-toggle="tooltip" data-placement="right" title="Actualizar">
-                                                        <span class="icon my-auto"><i class="fa fa-fw fa-pencil"></i> </span>
-                                                    </a>                                                    
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                                                        <span class="icon my-auto"><i class="fa fa-fw fa-trash"></i> </span>
-                                                    </button>
-                                                </form>
+                                                <a class="btn" href="{{ route('pacientes.show',$paciente->id) }}" data-toggle="tooltip" data-placement="right" title="Consultar">
+                                                    <span class="icon my-auto"><i class="fa fa-fw fa-eye"></i></span> 
+                                                </a>
+                                                <a class="btn" href="{{ route('pacientes.edit',$paciente->id) }}" data-toggle="tooltip" data-placement="right" title="Actualizar">
+                                                    <span class="icon my-auto"><i class="fa fa-fw fa-pencil"></i> </span>
+                                                </a>   
+                                                <a data-toggle="modal" class="btn" data-target="#deleteModal_{{$paciente->id}}" data-bs-toggle="tooltip" 
+                                                    data-action="{{ route('pacientes.destroy', $paciente->id) }}"  title="Eliminar"><i class="bi bi-trash"></i>
+                                                </a>
                                             </td>
                                         </tr>
+                                        <!-- Delete Docente Modal -->
+                                        <div class="modal fade" id="deleteModal_{{$paciente->id}}" data-backdrop="static" tabindex="-1" role="dialog"
+                                            aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h6 class="modal-title text-danger" id="deleteModalLabel"><strong>Esta acción es irreversible.</strong></h6>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <form action="{{ route('pacientes.destroy',$paciente->id) }}" method="POST">
+                                                        <div class="modal-body">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <h6 class="text-center">¿Está seguro de que quiere eliminar la información del paciente: {{ $paciente->nombre }} {{ $paciente->primerApellido }} {{ $paciente->segundoApellido }} ?</h6>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                        <button type="submit" class="btn btn-danger">Si, eliminar información</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @endforeach
                                 </tbody>
                             </table>

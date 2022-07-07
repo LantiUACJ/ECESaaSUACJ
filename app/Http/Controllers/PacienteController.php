@@ -8,6 +8,8 @@ use App\Models\Paciente;
 use App\Models\Sexo;
 use Illuminate\Http\Request;
 
+use Illuminate\Validation\Rule;
+
 use Carbon\Carbon;
 
 /**
@@ -39,11 +41,11 @@ class PacienteController extends Controller
         $paciente = new Paciente();
         $paciente->createdUser_id = auth()->user()->id;
         $paciente->updateUser_id = null;
-        $sexos = Sexo::all();
+        $sexos = Sexo::all()->sortBy(['descripcion', 'asc']);
         $entidades = Entidadesfederativa::all();
         $municipios = Municipio::all();
         $municipiosnac = Municipio::all();
-        return view('paciente.create', compact('paciente','sexos','entidades','municipios','municipiosnac'));
+        return view('paciente.create', compact('paciente','sexos','entidades','municipios', 'municipiosnac'));
     }
 
     /**
@@ -53,8 +55,32 @@ class PacienteController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        request()->validate(Paciente::$rules);
+    {        
+        request()->validate(
+            [
+                'curp' => 'required',
+                'nombre' => 'required',
+                'primerApellido' => 'required',
+                'fechaNacimiento' => 'required | before:now',
+                'entidadNac_id' => 'required',
+                'municipioNac_id' => Rule::requiredIf($request->entidadNac_id != ""),
+                'entidadFederativa_id' => 'required',
+                'municipio_id' => Rule::requiredIf($request->entidadFederativa_id != ""),
+                'sexo_id' => 'required',
+            ],
+            [
+                'curp.required' => 'La CURP es obligatoria.',
+                'nombre.required' => 'El nombre es obligatorio.',
+                'primerApellido.required' => 'El primer apellido es obligatorio.',
+                'fechaNacimiento.required' => 'La fecha de nacimiento es obligatoria.',
+                'fechaNacimiento.before' => 'La fecha de nacimiento no puede ser mayor a la fecha actual.',
+                'sexo_id.required' => 'El sexo es obligatorio.',
+                'entidadNac_id.required' => 'La entidad de nacimiento es obligatoria.',
+                'municipioNac_id.required' => 'El municipio de nacimiento es obligatorio.',
+                'entidadFederativa_id.required' => 'La entidad del domicilio actual es obligatoria.',
+                'municipio_id.required' => 'El municipio del domicilio actual es obligatorio.'
+            ]
+        );
 
         $paciente = Paciente::create($request->all());
 
@@ -127,8 +153,6 @@ class PacienteController extends Controller
             return redirect()->route('pacientes.index')
             ->with('error', 'La información del paciente: '.$paciente->nombre.' '.$paciente->primerApellido.' '.$paciente->segundoApellido.', no se puede eliminar.');
         }
-        
-        
     }
 
     public function buscaMunicipio($entidad_id)

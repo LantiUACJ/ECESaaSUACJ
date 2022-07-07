@@ -35,7 +35,7 @@
                         @if ($pacientes->count() > 0)
                             <div class="row">
                                 <div class="col-md-4 col-sm-4 t-left">
-                                    <a class="btn btn-primary my-sm-0 mybtn" href="{{ route('seleccionarpaciente') }}" role="button">Nuevo Paciente</a>
+                                    <a class="btn btn-primary my-sm-0 mybtn" href="{{ route('createpacfromcons') }}" role="button">Nuevo Paciente</a>
                                 </div>
                                 <form method="GET" class="form-inline my-2 my-lg-0 mysearchbar col-md-8 col-sm-8 t-right" action="{{ route('searchpacientemedico') }}">
                                     <input class="form-control mr-sm-2 mysearchst" type="search" placeholder="Buscar Paciente"

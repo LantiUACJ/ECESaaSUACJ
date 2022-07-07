@@ -18,7 +18,7 @@ class SexoController extends Controller
      */
     public function index()
     {
-        $sexos = Sexo::paginate();
+        $sexos = Sexo::orderby('descripcion','asc')->paginate(10);
 
         return view('sexo.index', compact('sexos'))
             ->with('i', (request()->input('page', 1) - 1) * $sexos->perPage());
@@ -32,6 +32,7 @@ class SexoController extends Controller
     public function create()
     {
         $sexo = new Sexo();
+        $sexo->numero = Sexo::latest('id')->first()->id+1;
         return view('sexo.create', compact('sexo'));
     }
 
@@ -43,12 +44,20 @@ class SexoController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate(Sexo::$rules);
-
+        request()->validate(
+            [
+                'descripcion' => 'required|unique:sexos'
+            ],
+            [
+                'descripcion.required' => 'La descripción del sexo es obligatoria.',
+                'descripcion.unique' => 'La descripción del sexo ya esta registrada.'
+            ]
+        );
+    
         $sexo = Sexo::create($request->all());
 
         return redirect()->route('sexos.index')
-            ->with('success', 'Sexo created successfully.');
+            ->with('success', 'Sexo registrado satisfactoriamente.');
     }
 
     /**
@@ -86,12 +95,20 @@ class SexoController extends Controller
      */
     public function update(Request $request, Sexo $sexo)
     {
-        request()->validate(Sexo::$rules);
+        request()->validate(
+            [
+                'descripcion' => 'required|unique:sexos,descripcion,'.$sexo->id
+            ],
+            [
+                'descripcion.required' => 'La descripción del sexo es obligatoria.',
+                'descripcion.unique' => 'La descripción del sexo ya esta registrada.'
+            ]
+        );
 
         $sexo->update($request->all());
 
         return redirect()->route('sexos.index')
-            ->with('success', 'Sexo updated successfully');
+            ->with('success', 'Sexo actualizado satisfactoriamente.');
     }
 
     /**
@@ -104,6 +121,6 @@ class SexoController extends Controller
         $sexo = Sexo::find($id)->delete();
 
         return redirect()->route('sexos.index')
-            ->with('success', 'Sexo deleted successfully');
+            ->with('success', 'Sexo eliminado satisfactoriamente.');
     }
 }

@@ -43,7 +43,7 @@ class Paciente extends Model
 {
     
     static $rules = [
-        'nombre' => 'required|max:255',
+       // 'nombre' => 'required|max:255',
         
     ];
 

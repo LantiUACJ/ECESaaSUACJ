@@ -1,3 +1,17 @@
+const { each, forEach } = require("lodash");
+
+var url = $('meta[name="base_url"]').attr('content');
+
+var urlasset = $('meta[name="asset_url"]').attr('content');
+
+window.addEventListener("load", init(), false);
+
+//Funcion que se ejecuta al inicio
+function init(){
+    //Crear funcion para mostrar las imagenes de los archivos guardados de la consulta
+    //fillFilesConsulta();
+}
+
 $('#price').on('input', function() {
     this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
 });
@@ -6,8 +20,87 @@ $('#price2').on('input', function() {
     this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
 });
 
-var url = $('meta[name="base_url"]').attr('content');
- 
+function fillFilesConsulta(){
+    var jsonfiles = $('#jsonfiles').val();
+    if(jsonfiles != ""){
+        console.log(urlasset);
+        var arrayfiles = JSON.parse(jsonfiles);
+        var contenedor = $("#filescontainer");
+        contenedor.removeClass('hiddenli');
+        contenedor.empty();
+        
+        arrayfiles.forEach(element => {
+            switch (element[1]) {
+                case 'png':
+                    var content = 
+                        '<img class="resultfile" src="'+urlasset+'/png.png")" title="'+element[0]+'" alt="'+element[0]+'">';
+                    contenedor.append(content);
+                    break;
+                case 'jpg':
+                    var content = 
+                        '<img class="resultfile" src="'+urlasset+'/jpg.png")" title="'+element[0]+'" alt="'+element[0]+'">';
+                    contenedor.append(content);
+                    break;
+                case 'docx':
+                    var content = 
+                        '<img class="resultfile" src="'+urlasset+'/docx.png")" title="'+element[0]+'" alt="'+element[0]+'">';
+                    contenedor.append(content);
+                    break;
+                case 'doc':
+                    var content = 
+                        '<img class="resultfile" src="'+urlasset+'/doc.png")" title="'+element[0]+'" alt="'+element[0]+'">';
+                    contenedor.append(content);
+                    break;
+                case 'pdf':
+                    var content = 
+                        '<img class="resultfile" src="'+urlasset+'/pdf.png")" title="'+element[0]+'" alt="'+element[0]+'">';
+                    contenedor.append(content);
+                    break;
+                default:
+                    break;
+            }
+        });
+        
+    }else{
+        console.log("No files, nothing to do!");
+    }
+
+    /*
+    let something = "something";
+
+    $.ajax({
+        url: url + "/gerente/recordCheck/",
+        type: "POST",
+        data: {
+            something: something
+        },
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(data){
+            window.scrollTo(0, 0);
+            //Existen records
+            console.log(data);
+            $("#sheetrecordcontainer").empty();
+            let counter = $('#recordscount');
+            let last = data.pop();
+            data.forEach(element => {
+                addrecord(element);   
+                addrecordsecond(element);             
+            });
+            counter.val(last.id + 1);
+            console.log("There are Records");
+        },
+        error: function(response){
+            window.scrollTo(0, 0);
+            //No Existen records
+            console.log(response.responseJSON.errormsg);
+            console.log("No Records");
+        },
+    });
+    */
+}
+
 function subformbutton(){ //store consulta
     let pacId = $("input[name=pac_id]").val();
     let motivo = $("textarea[name=motivo]").val();
@@ -16,18 +109,30 @@ function subformbutton(){ //store consulta
     let diagnostico = $("textarea[name=diagnostico]").val();
     let pronostico = $("textarea[name=pronostico]").val();
     let indicacion = $("textarea[name=indicacion]").val();
+    let select = $("input[name=select-diag]").val();
+    let filename = $('#filename').get(0).files;
+
+    console.log(select);
+
+    var fd = new FormData();
+    fd.append('motivo', motivo);
+    fd.append('cuadro', cuadro);
+    fd.append('resultados', resultados);
+    fd.append('diagnostico', diagnostico);
+    fd.append('pronostico', pronostico);
+    fd.append('indicacion', indicacion);
+    fd.append('select', select);
+
+    for (let i = 0; i < filename.length; i++) {
+        fd.append('filename[]', filename[i]);
+    }
 
     $.ajax({
         url: url + "/storeconsulta/" + pacId,
         type: "POST",
-        data: {
-            motivo: motivo,
-            cuadro: cuadro,
-            resultados: resultados,
-            diagnostico: diagnostico,
-            pronostico: pronostico,
-            indicacion: indicacion
-        },
+        processData: false,
+        contentType: false,
+        data: fd,
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
@@ -45,9 +150,10 @@ function subformbutton(){ //store consulta
             $('#consultaupdate').css("display", "block"); 
         },
         error: function(response){
-            console.log(response.responseJSON.errormsg);
+            console.log(response);
             if(response.responseJSON.errormsg == null){
-                if(response){
+                console.log(response);
+                if(response.responseJSON.errors != null){
                     //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
                     errorValidationConsulta(response);
                 }
@@ -61,6 +167,18 @@ function subformbutton(){ //store consulta
 }
 
 function updateformbutton(){ //update consulta
+    let realselect = $('.item').attr("data-value");
+    let isnum = /^\d+$/.test(realselect);
+    console.log(isnum);
+
+    if(isnum){
+        var select = realselect;
+    }else{
+        var select = $("input[name=real-select-diag]").val();
+    }
+
+    console.log(select);
+    
     let pacId = $("input[name=pac_id]").val();
     let motivo = $("textarea[name=motivo]").val();
     let cuadro = $("textarea[name=cuadro]").val();
@@ -68,18 +186,30 @@ function updateformbutton(){ //update consulta
     let diagnostico = $("textarea[name=diagnostico]").val();
     let pronostico = $("textarea[name=pronostico]").val();
     let indicacion = $("textarea[name=indicacion]").val();
+    //let select = $("input[name=select-diag]").val();
+    let filename = $('#filename').get(0).files;
+
+    console.log(select);
+
+    var fd = new FormData();
+    fd.append('motivo', motivo);
+    fd.append('cuadro', cuadro);
+    fd.append('resultados', resultados);
+    fd.append('diagnostico', diagnostico);
+    fd.append('pronostico', pronostico);
+    fd.append('indicacion', indicacion);
+    fd.append('select', select);
+
+    for (let i = 0; i < filename.length; i++) {
+        fd.append('filename[]', filename[i]);
+    }
 
     $.ajax({
         url: url + "/updateconsulta/" + pacId,
         type: "POST",
-        data: {
-            motivo: motivo,
-            cuadro: cuadro,
-            resultados: resultados,
-            diagnostico: diagnostico,
-            pronostico: pronostico,
-            indicacion: indicacion
-        },
+        processData: false,
+        contentType: false,
+        data: fd,
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
@@ -119,6 +249,26 @@ function testbutton(){
 
     $('#interrogatorio-tab').removeClass("disabled");
     $('#exploracion-tab').removeClass("disabled");
+}
+
+
+function testconsulta(){
+    var items = document.getElementsByClassName("item");
+    let array = [];
+    let count = 0;
+    if(items.length > 0){
+        [].forEach.call(items, function(element) {
+            console.log("item: " + element.getAttribute("data-value"));
+            array[count] = element.getAttribute("data-value");
+            count++;
+        });
+    }else{
+        console.log("Arreglo Vacio");
+    }
+    console.log("Array: "+array.length);
+    
+    //var select =  $( "#multiselecttoxic option:selected" ).text();
+    //console.log("Select: "+select);
 }
 
 function errorValidationConsulta(response){
@@ -203,4 +353,60 @@ function explodisabled(){
 
 function modaltest(){
     $('#noConsultamodal').modal('show');
+}
+
+//Manda al curp del paciente para solicitar codigo
+function misececurp(curp){
+    var fd = new FormData();
+    fd.append('curp', curp);
+
+    $.ajax({
+        url: url + "/patientmisece/",
+        type: "POST",
+        processData: false,
+        contentType: false,
+        data: fd,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response){
+            alert("Peticion completado con exito!");
+            console.log(response);
+        },
+        error: function(response){
+            alert("Ocurrio un error!");
+            console.log(response);
+        },
+    });
+}
+
+//Envia el codigo del paciente para solicitar el ece
+function patientece(curp){
+    let code = $("input[name=patientcode]").val();
+    if(code != ""){
+        var fd = new FormData();
+        fd.append('curp', curp);
+        fd.append('code', code);
+
+        $.ajax({
+            url: url + "/patientece/",
+            type: "POST",
+            processData: false,
+            contentType: false,
+            data: fd,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response){
+                alert("Peticion completado con exito!");
+                console.log(response);
+            },
+            error: function(response){
+                alert("Ocurrio un error!");
+                console.log(response);
+            },
+        });
+    }else{
+        alert("Introduce el código del paciente");
+    }
 }

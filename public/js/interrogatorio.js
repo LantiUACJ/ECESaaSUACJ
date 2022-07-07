@@ -237,6 +237,12 @@ function updateantecedenteshf(){
     });
 }
 
+function isNumeric(str) {
+    if (typeof str != "string") return false // we only process strings!  
+    return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+        !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+}
+
 //Store y update de antecedesntes personales patologicos
 function storeantecedentespp(){
 
@@ -247,9 +253,23 @@ function storeantecedentespp(){
     let quirurgicos = $('textarea[name=quirurgicos]').val();
     let hospitalizaciones = $('textarea[name=hospitalizaciones]').val();
     let transfusiones = $('textarea[name=transfusiones]').val();
-    let toxicomanias = $('textarea[name=toxicomanias]').val();
+    //let toxicomanias = $('textarea[name=toxicomanias]').val();
     let otrospp = $('textarea[name=otrospp]').val();
+    let toxico = []; //arreglo de toxicomanias
 
+    let toxicomanias = document.getElementsByClassName("item");
+    let count = 0;
+
+    if(toxicomanias.length > 0){
+        [].forEach.call(toxicomanias, function(element) {
+            if(isNumeric(element.getAttribute("data-value"))){
+                toxico[count] = element.getAttribute("data-value");
+                count++;
+            }
+        });
+    }
+
+    
     $.ajax({
         url: url + "/storeantecedentespp",
         type: "POST",
@@ -261,7 +281,7 @@ function storeantecedentespp(){
             quirurgicos : quirurgicos,
             hospitalizaciones : hospitalizaciones,
             transfusiones : transfusiones,
-            toxicomanias : toxicomanias,
+            toxicomanias : toxico,
             otros : otrospp
         },
         headers: {
@@ -304,9 +324,24 @@ function updateantecedentespp(){
     let quirurgicos = $('textarea[name=quirurgicos]').val();
     let hospitalizaciones = $('textarea[name=hospitalizaciones]').val();
     let transfusiones = $('textarea[name=transfusiones]').val();
-    let toxicomanias = $('textarea[name=toxicomanias]').val();
+    //let toxicomanias = $('textarea[name=toxicomanias]').val();
     let otrospp = $('textarea[name=otrospp]').val();
 
+    let toxico = []; //arreglo de toxicomanias
+
+    let toxicomanias = document.getElementsByClassName("item");
+    let count = 0;
+
+    if(toxicomanias.length > 0){
+        [].forEach.call(toxicomanias, function(element) {
+            if(isNumeric(element.getAttribute("data-value"))){
+                toxico[count] = element.getAttribute("data-value");
+                count++;
+            }
+        });
+    }
+
+    
     $.ajax({
         url: url + "/updateantecedentespp",
         type: "POST",
@@ -318,7 +353,7 @@ function updateantecedentespp(){
             quirurgicos : quirurgicos,
             hospitalizaciones : hospitalizaciones,
             transfusiones : transfusiones,
-            toxicomanias : toxicomanias,
+            toxicomanias : toxico,
             otros : otrospp
         },
         headers: {

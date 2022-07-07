@@ -39,7 +39,7 @@
             @endif
 
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-                <h1>Expediente Electrónico Clínico</h1>
+                <h1>Expediente Clínico Electrónico</h1>
             </div>
         </div>
     </body>

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Auth;
 use Illuminate\Http\Request;
 use App\Models\Paciente;
+use App\Models\Entidadesfederativa;
+use App\Models\Municipio;
+
 use App\Models\Consulta;
 use App\Models\grupoetnico;
 use App\Models\User;
@@ -22,7 +25,15 @@ use App\Models\Signovital;
 
 use App\Notifications\UserConsultation;
 
+use App\Models\Snomeddescripcion;
+
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+
+use Google\Cloud\Speech\V1\SpeechClient;
+use Google\Cloud\Speech\V1\RecognitionAudio;
+use Google\Cloud\Speech\V1\RecognitionConfig;
+use Google\Cloud\Speech\V1\RecognitionConfig\AudioEncoding;
 
 class ConsultaController extends Controller
 {
@@ -62,6 +73,54 @@ class ConsultaController extends Controller
         self::deletesession();
         $pacientes = Paciente::orderBy('nombre', 'asc')->paginate(25);
         return view('consultageneral.seleccionpaciente', ['pacientes' => $pacientes]);
+    }
+
+    public function createpacienteConsulta(){
+        $paciente = new Paciente();
+        $paciente->createdUser_id = auth()->user()->id;
+        $paciente->updateUser_id = null;
+        $sexos = Sexo::all();
+        $entidades = Entidadesfederativa::all();
+        $municipios = Municipio::all();
+        $municipiosnac = Municipio::all();
+        return view('consultageneral.createpaciente', compact('paciente','sexos','entidades','municipios','municipiosnac'));
+    }
+
+    public function storepaciente(Request $request){
+        $this->validate($request, [
+            'nombre' => 'required|max:255',
+            'primerApellido' => 'required|max:255',
+            'segundoApellido' => 'required|max:255',
+            'curp' => 'required|max:18',
+            'fechaNacimiento' => 'required',
+            'sexo_id' => 'required',
+            'entidadNac_id' => 'required',
+            'municipioNac_id' => 'required',
+            'calle' => 'required',
+            'numero' => 'required',
+            'colonia' => 'required',
+            'entidadFederativa_id' => 'required',
+            'municipio_id' => 'required',
+        ],
+        [
+            'nombre.required' => 'El nombre es requerido',
+            'primerApellido.required' => 'El primer apellido es requerido',
+            'segundoApellido.required' => 'El segundo apellido es requerido',
+            'curp.required' => 'La curp es requerida',
+            'fechaNacimiento.required' => 'La fecha de nacimiento es requerido',
+            'sexo_id.required' => 'El sexo es requerido',
+            'entidadNac_id.required' => 'La entidad federativa de nacimiento es requerida',
+            'municipioNac_id.required' => 'El municipio de nacimiento es requerido',
+            'calle.required' => 'La calle es requerida',
+            'numero.required' => 'El número es requerido',
+            'colonia.required' => 'La colonia es requerida',
+            'entidadFederativa_id.required' => 'La entidad federativa es requerida',
+            'municipio_id.required' => 'El municipio es requerido',
+        ]);
+
+        $paciente = Paciente::create($request->all());
+
+        return redirect()->route('registrarconsulta', $paciente->id);
     }
 
     //Página para registro de consulta
@@ -107,6 +166,7 @@ class ConsultaController extends Controller
         session(['consulta_id' => $consulta_id]);
         //dd($consulta);
         $pac = Paciente::find($consulta->paciente_id);
+        session(['pac_id' => $pac->id]);
         $age = self::ageCalc($pac);
         $grupos = grupoetnico::all();
         $sexos = Sexo::all();
@@ -141,9 +201,11 @@ class ConsultaController extends Controller
             $signos = null;
         }
 
+        $diagnostico = Snomeddescripcion::where('id', '845139016')->first();
+
         return view('consultageneral.continuarconsulta', ['paciente' => $pac, 'age' => $age, 'consulta' => $consulta, 
         'grupos' => $grupos, 'inter' => $inter, 'exploracion' => $explo, 'anteHF' => $anteHF, 'antePP' => $antePP, 
-        'antePNP' => $antePNP, 'interAS' => $interAS, 'signos' => $signos, 'sexos' => $sexos]);
+        'antePNP' => $antePNP, 'interAS' => $interAS, 'signos' => $signos, 'sexos' => $sexos, 'diagnostico' => $diagnostico]);
     }
 
     //Almacena solo los datos de la consulta (no interrogatorios, ni exploración) llamada a traves de ajax.
@@ -151,9 +213,12 @@ class ConsultaController extends Controller
         //por el momento uniamente se requerira el motivo de la consulta para continuar. 
         $rules = array(
             'motivo' => 'required|max:255',
+            'filename.*' => 'mimes:doc,pdf,docx,png,jpg'
         );
 
         $validated = $request->validate($rules);
+
+        $diagname = ($request->select != null && $request->select) != ""? Snomeddescripcion::where('id', $request->select)->first(): null;
 
         $consulta = new Consulta;
         $consulta->motivoConsulta = $request->motivo;
@@ -164,22 +229,59 @@ class ConsultaController extends Controller
         $consulta->indicacionTerapeutica = $request->indicacion;
         $consulta->Paciente_id = $pacid;
         $consulta->medico_id = $request->user()->id;
+        $consulta->diag_id = $request->select;
+        $consulta->diag_name = $diagname != null? $diagname->term: null;
         $result = $consulta->save();
+
+        //El proceso de guardado de los archivos debe hacerse despues de guardar la consulta ya que se necesita el id para 
+        //crear el directorio donde se guardaran los archivos.
+        $mainpath = public_path().'/consultaResultados';
+        //Creamos el directorio para guardar los resultados si es que no existe
+        if(!File::exists($mainpath)) {
+            // crear path
+            File::makeDirectory($mainpath, 0777, true, true);
+        }
+
+        $consultapath = public_path().'/consultaResultados/'.$consulta->id;
+        //Creamos el directorio de la consulta para guardar los resultados si es que no existe
+        if(!File::exists($consultapath)) {
+            // crear path
+            File::makeDirectory($consultapath, 0777, true, true);
+        }
+        
+        if($request->hasfile('filename'))
+        {
+            foreach($request->file('filename') as $file)
+            {
+                $name = $file->getClientOriginalName();
+                $file->move(public_path().'/consultaResultados/'.$consulta->id, $name);
+                $data[] = $name;
+            }
+            $filenames = json_encode($data);
+            $consulta->resultadosArchivos = $filenames;
+            $result = $consulta->save();
+        }else{
+            //Something unexpected has happend
+        }
         
         // Generacion de la notificacion. Se marca como leida si se termina la consutla.
         if(Auth::user()){ //usuario autenticado
             $user = User::find(Auth::user()->id);
             Auth::user()->notify(new UserConsultation($user, $consulta));
         }
-        //
         
-        if($result !== false){
+        if($result != false){
             session(['consulta_id' => $consulta->id]); //se guarda el id de la consulta para ser usado cuando se guarden los Interrogatorio y exploracion. 
             session(['pac_id' => $pacid]);
             return response()->json(['msg' => 'Nota de consulta guardada exitosamente!'], 200);
         }else{
             return response()->json(['errormsg' => 'Ocurrio un error al guardar los datos. Intentalo más tarde.'], 401);
         }
+    }
+
+    public function downloadfiles($filename){
+        $path = public_path().'/consultaResultados/'.session('consulta_id').'/'.$filename;
+        return response()->download($path);
     }
 
     public function notifications(){
@@ -202,9 +304,12 @@ class ConsultaController extends Controller
     public function update(Request $request, $pacid){
         $rules = array(
             'motivo' => 'required|max:255',
+            'filename.*' => 'mimes:doc,pdf,docx,png,jpg'
         );
 
         $validated = $request->validate($rules);
+
+        $diagname = ($request->select != null && $request->select) != ""? Snomeddescripcion::where('id', $request->select)->first(): null;
 
         $consulta_id = session('consulta_id');
 
@@ -216,7 +321,42 @@ class ConsultaController extends Controller
             $consulta->diagnosticoProblemasClinicos = $request->diagnostico;
             $consulta->pronostico = $request->pronostico;
             $consulta->indicacionTerapeutica = $request->indicacion;
+            $consulta->diag_id = $request->select;
+            $consulta->diag_name = $diagname != null? $diagname->term: null;
             $result = $consulta->save();
+
+            //El proceso de guardado de los archivos debe hacerse despues de guardar la consulta ya que se necesita el id para 
+            //crear el directorio donde se guardaran los archivos.
+            $mainpath = public_path().'/consultaResultados';
+            //Creamos el directorio para guardar los resultados si es que no existe
+            if(!File::exists($mainpath)) {
+                File::makeDirectory($mainpath, 0777, true, true);
+            }
+
+            $consultapath = public_path().'/consultaResultados/'.$consulta->id;
+            //Creamos el directorio de la consulta para guardar los resultados si es que no existe
+            if(!File::exists($consultapath)) {
+                File::makeDirectory($consultapath, 0777, true, true);
+            }else{
+                File::deleteDirectory($consultapath);
+                File::makeDirectory($consultapath, 0777, true, true);
+            }
+            
+            if($request->hasfile('filename'))
+            {
+                foreach($request->file('filename') as $file)
+                {
+                    $name = $file->getClientOriginalName();
+                    $extension = $file->getClientOriginalExtension();
+                    $file->move(public_path().'/consultaResultados/'.$consulta->id, $name);
+                    $data[] = [$name, $extension];
+                }
+                
+                $filenames = json_encode($data);
+                $new = json_decode($filenames);
+                $consulta->resultadosArchivos = $filenames;
+                $result = $consulta->save();
+            }
         }else{
             return response()->json(['errormsg' => 'Ocurrio un error al actualizar los datos.'], 401);
         }
@@ -249,8 +389,10 @@ class ConsultaController extends Controller
 
     public function view($consulta_id){
         $consulta = Consulta::find($consulta_id);
+        session(['consulta_id' => $consulta_id]);
         //dd($consulta);
         $pac = Paciente::find($consulta->paciente_id);
+        session(['pac_id' => $pac->id]);
         $age = self::ageCalc($pac);
         $grupos = grupoetnico::all();
         $sexos = Sexo::all();
@@ -379,6 +521,51 @@ class ConsultaController extends Controller
             $consultas = Consulta::where('medico_id', $medico_id)->orderBy('created_at', 'desc')->paginate(15);
             return view('consultageneral.consultasmedico', ['consultas' => $consultas]);
         }
+    }
+
+    public function transcript(Request $request){
+        //Credentiasl path
+        $credentials = public_path().'/googlecloudcredentials/gold-hold-352719-6bc6f1989dad.json';
+
+        // change these variables if necessary
+        $encoding = AudioEncoding::WEBM_OPUS;
+        $sampleRateHertz = 48000;
+        $languageCode = 'es-MX';
+
+        // get contents of a file into a string
+        $content = file_get_contents($request->audio);
+
+        // set string as audio content
+        $audio = (new RecognitionAudio())
+            ->setContent($content);
+
+        // set config
+        $config = (new RecognitionConfig())
+            ->setEncoding($encoding)
+            ->setSampleRateHertz($sampleRateHertz)
+            ->setLanguageCode($languageCode)
+            ->setAudioChannelCount(2);
+
+        // create the speech client
+        $client = new SpeechClient(['credentials'=>json_decode(file_get_contents($credentials), true)]);
+        $fulltext = "";
+        try {
+            $response = $client->recognize($config, $audio);
+            //$text = $response->getResults()[0]->getAlternatives()[0]->getTranscript();
+            
+            foreach ($response->getResults() as $result) {
+                $alternatives = $result->getAlternatives();
+                $mostLikely = $alternatives[0];
+                $transcript = $mostLikely->getTranscript();
+                $confidence = $mostLikely->getConfidence();
+                $fulltext .= $transcript;
+            }
+            
+        } finally {
+            $client->close();
+        }
+
+        return $fulltext;
     }
 
     public function page404(){

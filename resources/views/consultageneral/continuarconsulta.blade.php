@@ -6,8 +6,8 @@
         <div class="navigation">
             <ul class="nav nav-tabs navul" id="myTab" role="tablist">
                 <li class="brandli">
-                    <img class="appimg" src="{{ asset('img/leonardo.jpg') }}" alt="">
-                    <span class="maintitle"><h5 class="brandtitle">{{ $paciente->nombre }} {{ $paciente->primerApellido }} {{ $paciente->segundoApellido }}</h5></span>
+                    <img class="appimg" src="{{ asset('img/person.jpeg') }}" alt="">
+                    <span class="maintitle"><h6 class="brandtitle">{{ $paciente->nombre }} {{ $paciente->primerApellido }} {{ $paciente->segundoApellido }}</h6></span>
                 </li>
                 <hr class="menuhr">
                 <li class="catli nav-item" data-toggle="tooltip" data-placement="right" title="Nota de Consulta">
@@ -28,6 +28,13 @@
                     <a class="nav-link {{ session('consulta_id') !== null ? '' : 'disabled' }}" id="exploracion-tab" data-bs-toggle="tab" data-bs-target="#exploracion" type="button" role="tab" aria-controls="exploracion" aria-selected="false">
                         <span class="icon my-auto"><i class="fa fa-sticky-note" aria-hidden="true"></i></span>
                         <span class="title my-auto">Exploración Física</span>
+                    </a>
+                </li>
+                <hr class="menuhr">
+                <li class="catli nav-item" data-toggle="tooltip" data-placement="right" title="MISECE">
+                    <a class="nav-link" id="misece-tab" data-bs-toggle="tab" data-bs-target="#misece" type="button" role="tab" aria-controls="misece" aria-selected="false">
+                        <span class="icon my-auto"><i class="fa fa-external-link" aria-hidden="true"></i></span>
+                        <span class="title my-auto">MISECE</span>
                     </a>
                 </li>
                 <hr class="specialhr">
@@ -230,7 +237,9 @@
                             <div class="form-group row text-center">
                                 <div class="col-md-4">
                                     <label for="motivo" class="col-md-12 col-form-label">{{ __('Motivo de la Consulta') }}:</label>
-    
+                                    <button class="btn btn-success btn-sm" type="button" value="motivo" id="startrecmotivo">&nbsp;&nbsp;<i class="fa fa-microphone" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                    <button class="btn btn-danger btn-sm hiddenli" type="button" id="stoprecmotivo">&nbsp;&nbsp;<i class="fa fa-microphone-slash" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                    <p></p>
                                     <div class="col-md-12">
                                         <textarea name="motivo" id="motivo" cols="30" rows="4" 
                                         class="form-control @error('motivo') is-invalid @enderror"
@@ -246,7 +255,9 @@
 
                                 <div class="col-md-4">
                                     <label for="cuadro" class="col-md-12 col-form-label">{{ __('Cuadro Clínico') }}:</label>
-    
+                                    <button class="btn btn-success btn-sm" type="button" value="motivo" id="startreccuadro">&nbsp;&nbsp;<i class="fa fa-microphone" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                    <button class="btn btn-danger btn-sm hiddenli" type="button" id="stopreccuadro">&nbsp;&nbsp;<i class="fa fa-microphone-slash" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                    <p></p>
                                     <div class="col-md-12">
                                         <textarea name="cuadro" id="cuadro" cols="30" rows="4" 
                                         class="form-control @error('cuadro') is-invalid @enderror"
@@ -262,9 +273,56 @@
 
                                 <div class="col-md-4">
                                     <label for="resultados" class="col-md-12 col-form-label">{{ __('Resultados de Laboratorio y Gabinete') }}:</label>
-    
+                                    <button class="btn btn-success btn-sm" type="button" value="motivo" id="startrecres">&nbsp;&nbsp;<i class="fa fa-microphone" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                    <button class="btn btn-danger btn-sm hiddenli" type="button" id="stoprecres">&nbsp;&nbsp;<i class="fa fa-microphone-slash" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                    <p></p>
                                     <div class="col-md-12 text-center">
-                                        <textarea name="resultados" id="resultados" cols="30" rows="4" 
+                                        <input type="file" name="filename[]" id="filename" class="form-control" multiple accept=".doc,.docx,.pdf,.png,.jpg">
+                                        <input type="hidden" id="jsonfiles" value="{{ $consulta->resultadosArchivos != null? $consulta->resultadosArchivos: "" }}">
+                                        @if ($consulta->resultadosArchivos != null)
+                                            <div class="border" id="filescontainer" style="margin-top: 10px">
+                                                @php
+                                                    $files = json_decode($consulta->resultadosArchivos);
+                                                @endphp
+                                                @for ($i = 0; $i < count($files); $i++)
+                                                    @switch($files[$i][1])
+                                                        @case('png')
+                                                            <a href="{{ route('resultfile', $files[$i][0]) }}" download>
+                                                                <img class="resultfile imglink" src="{{ URL::asset("/img/icons/png.png") }}"
+                                                                data-toggle="tooltip" data-placement="top" title="{{ $files[$i][0] }}">
+                                                            </a>
+                                                            @break
+                                                        @case('jpg')
+                                                            <a href="{{ route('resultfile', $files[$i][0]) }}" download>
+                                                                <img class="resultfile imglink" src="{{ URL::asset("/img/icons/jpg.png") }}"
+                                                                data-toggle="tooltip" data-placement="top" title="{{ $files[$i][0] }}">
+                                                            </a>
+                                                            @break
+                                                        @case('docx')
+                                                            <a href="{{ route('resultfile', $files[$i][0]) }}" download>
+                                                                <img class="resultfile imglink" src="{{ URL::asset("/img/icons/docx.png") }}"
+                                                                data-toggle="tooltip" data-placement="top" title="{{ $files[$i][0] }}">
+                                                            </a>
+                                                            @break
+                                                        @case('doc')
+                                                            <a href="{{ route('resultfile', $files[$i][0]) }}" download>
+                                                                <img class="resultfile imglink" src="{{ URL::asset("/img/icons/doc.png") }}"
+                                                                data-toggle="tooltip" data-placement="top" title="{{ $files[$i][0] }}">
+                                                            </a>
+                                                            @break
+                                                        @case('pdf')
+                                                            <a href="{{ route('resultfile', $files[$i][0]) }}" download>
+                                                                <img class="resultfile imglink" src="{{ URL::asset("/img/icons/pdf.png") }}"
+                                                                data-toggle="tooltip" data-placement="top" title="{{ $files[$i][0] }}">
+                                                            </a>
+                                                            @break
+                                                    @endswitch
+                                                @endfor
+                                            </div>
+                                        @else
+                                            <div class="border hiddenli" id="filescontainer" style="margin-top: 10px"></div>
+                                        @endif
+                                        <textarea name="resultados" id="resultados" cols="30" rows="4" style="margin-top: 10px" 
                                         class="form-control @error('resultados') is-invalid @enderror"
                                         value="" autocomplete="resultados" maxlength="255"
                                         onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -280,8 +338,13 @@
                             <div class="form-group row text-center">
                                 <div class="col-md-4">
                                     <label for="diagnostico" class="col-md-12 col-form-label">{{ __('Diagnósticos o Problemas Clínicos') }}:</label>
-    
+                                    <button class="btn btn-success btn-sm" type="button" value="motivo" id="startrecdiag">&nbsp;&nbsp;<i class="fa fa-microphone" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                    <button class="btn btn-danger btn-sm hiddenli" type="button" id="stoprecdiag">&nbsp;&nbsp;<i class="fa fa-microphone-slash" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                    <p></p>
                                     <div class="col-md-12">
+                                        <input class="form-control selectize" id="select-diag" name="select-diag" value="{{ $consulta->diag_id != null? $consulta->diag_name : "" }}">
+                                        <input type="hidden" id="real-select-diag" name="real-select-diag" value="{{ $consulta->diag_id != null? $consulta->diag_id : "" }}">
+                                        <p></p>
                                         <textarea name="diagnostico" id="diagnostico" cols="30" rows="4" 
                                         class="form-control @error('diagnostico') is-invalid @enderror"
                                         value="" autocomplete="diagnostico" maxlength="255"
@@ -296,7 +359,9 @@
 
                                 <div class="col-md-4">
                                     <label for="pronostico" class="col-md-12 col-form-label">{{ __('Pronóstico') }}:</label>
-    
+                                    <button class="btn btn-success btn-sm" type="button" value="motivo" id="startrecpron">&nbsp;&nbsp;<i class="fa fa-microphone" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                    <button class="btn btn-danger btn-sm hiddenli" type="button" id="stoprecpron">&nbsp;&nbsp;<i class="fa fa-microphone-slash" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                    <p></p>
                                     <div class="col-md-12">
                                         <textarea name="pronostico" id="pronostico" cols="30" rows="4" 
                                         class="form-control @error('pronostico') is-invalid @enderror"
@@ -312,7 +377,9 @@
 
                                 <div class="col-md-4">
                                     <label for="indicacion" class="col-md-12 col-form-label">{{ __('Indicación Terapéutica') }}:</label>
-    
+                                    <button class="btn btn-success btn-sm" type="button" value="motivo" id="startrecindica">&nbsp;&nbsp;<i class="fa fa-microphone" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                    <button class="btn btn-danger btn-sm hiddenli" type="button" id="stoprecindica">&nbsp;&nbsp;<i class="fa fa-microphone-slash" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                    <p></p>
                                     <div class="col-md-12">
                                         <textarea name="indicacion" id="indicacion" cols="30" rows="4" 
                                         class="form-control @error('indicacion') is-invalid @enderror"
@@ -781,11 +848,29 @@
                                             <label for="toxicomanias" class="col-md-12 col-form-label">{{ __('Toxicomanías') }}:</label>
             
                                             <div class="col-md-12">
+                                                <select class="form-control" name="multiselecttoxic" id="multiselecttoxic">
+                                                    <option value="1">Depresoras</option>
+                                                    <option value="2">Estimulantes</option>
+                                                    <option value="3">Alucinógenos/Psicodélicos</option>
+                                                    <option value="4">Cannabis</option>
+                                                    <option value="5">Inhalantes</option>
+                                                </select>
+                                                @if ($antePP->toxicomaniasAlcoholismo != null)
+                                                    @foreach (json_decode($antePP->toxicomaniasAlcoholismo) as $toxico)
+                                                        <input type="hidden" id="toxicoinput[]" name="toxicoinput[]" value="{{ $toxico }}">
+                                                    @endforeach
+                                                @else
+                                                    <input type="hidden" id="toxicoinput[]" name="toxicoinput[]" value="">
+                                                @endif
+                                                
+                                                
+                                                <!-- Aterior textarea
                                                 <textarea name="toxicomanias" id="toxicomanias" cols="30" rows="3" 
                                                 class="form-control @error('toxicomanias') is-invalid @enderror"
                                                 value="" autocomplete="toxicomanias" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
                                                 autofocus>{{ $antePP->toxicomaniasAlcoholismo }}</textarea>
+                                                -->
                                             </div>
                                         </div>
 
@@ -1487,8 +1572,111 @@
                     </div>
                 </div>
             </div>
+
+            <!------ ------->
+            <!-- TAB de MISECE -->
+            <!------ ------->
+
+            <div class="tab-pane fade" id="misece" role="tabpanel" aria-labelledby="misece-tab">
+                <div class="card text-center">
+                    <div class="card-header">
+                        Consulta del Expediente clínico Electrónico del paciente <strong>{{ $paciente->nombre }} {{ $paciente->primerApellido }} {{ $paciente->segundoApellido }}</strong>
+                    </div>
+                    <div class="card-body text-center">
+                        <button class="btn btn-sm btn-primary" type="button" onclick="misececurp('{{ $paciente->curp }}')">Solicitar Código al paciente</button>
+                        <br><br>
+                        <label for="">Introduce el código del paciente</label>
+                        <br>
+                        <div class="col-md-3 mx-auto">
+                            <input class="form-control form-control-sm" type="text" id="patientcode" name="patientcode" value="">
+                        </div>
+                        <br>
+                        <button class="btn btn-sm btn-success" type="button" onclick="patientece({{ $paciente->curp }})">Consultar ECE</button>
+                        <br><br>
+                        <div id="ece-content"></div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
+
+<script>
+    
+    jQuery(function ($) {
+
+        $("#showfiles").click(function(){ 
+            console.log("inside showfiles");
+            var files = $('#filename');
+            console.log(files);
+        });
+    });
+
+    $(function(){
+        $(".selectize").selectize({
+            maxItems: 1,
+            valueField: 'id',
+            labelField: ['term'],
+            searchField: ['term'],
+            create: false,
+
+            load: (query, callback) => {
+                if(!query.length) return callback();
+                let textvalue = $("#select-diag-selectized").val();
+                $.ajax({
+                    url: url + "/getdiags",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        term: textvalue
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    error: () => callback(),
+                    success:(res) => callback(res)
+                });
+            },
+
+            render: {
+                option: (item, escape) => {
+                    return '<p>'+item.term+'</p>'
+                }
+            }
+        });
+        
+        var option = "{{ @$consulta->diag_id }}";
+        var name = "{{ @$consulta->diag_name }}";
+
+        if(option != null){
+            
+            var selectize = $('.selectize')[0].selectize; // This stores the selectize object to a variable (with name 'selectize')
+
+            // 2. Access the selectize object with methods later, for ex:
+            selectize.addOption({value: option, text: name});
+            //selectize.addItem(option);
+        }
+
+        var $multitoxic = $("#multiselecttoxic").selectize({
+            plugins: ["remove_button"],
+            delimiter: ",",
+            placeholder: "Selecciona una opción",
+            persist: false,
+            maxItems: 5,
+        });
+
+        var selectizetoxic = $multitoxic[0].selectize;
+        selectizetoxic.clear();
+
+        var toxicarray = document.getElementsByName('toxicoinput[]');
+
+        toxicarray.forEach(element =>{
+            selectizetoxic.addItem(element.value, true);
+            console.log("item: "+element.value);
+        });
+
+    });
+</script>
 
 @endsection

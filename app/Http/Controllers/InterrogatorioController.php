@@ -183,6 +183,14 @@ class InterrogatorioController extends Controller
     function storeantepp(Request $request){
         $inter_id = session('inter_id');
         if($inter_id){ //si existe inter_id continuar normalmente
+            $data = array();
+            if($request->toxicomanias != null){
+                foreach ($request->toxicomanias as $toxico) {
+                    $data[] = $toxico;
+                }
+            }
+            $toxicojson = json_encode($data);
+            
             //guardamos los antecedentes pp
             $antecedentespp = new Antecedentespp;
             $antecedentespp->enfermedadInfectaContagiosa = $request->infectacontagiosa;
@@ -192,7 +200,7 @@ class InterrogatorioController extends Controller
             $antecedentespp->quirurgicos = $request->quirurgicos;
             $antecedentespp->hospitalizacionesPrevias = $request->hospitalizaciones;
             $antecedentespp->transfusiones = $request->transfusiones;
-            $antecedentespp->toxicomaniasAlcoholismo = $request->toxicomanias;
+            $antecedentespp->toxicomaniasAlcoholismo = count(json_decode($toxicojson)) > 0? $toxicojson: null;
             $antecedentespp->otros = $request->otros;
 
             $result = $antecedentespp->save();
@@ -210,6 +218,7 @@ class InterrogatorioController extends Controller
             }
         }else{ //si no existe inter_id, primero crear interrogatorio, y luego crear antecedentes hf
             //guardamos el interrogtorio
+            
             $interrogatorio = new Interrogatorio;
             $interrogatorio->paciente_id = session('pac_id');
             $interrogatorio->padecimientoActual = null;
@@ -217,6 +226,14 @@ class InterrogatorioController extends Controller
 
             session(['inter_id' => $interrogatorio->id]);
             $inter_id = $interrogatorio->id;
+
+            $data = array();
+            if($request->toxicomanias != null){
+                foreach ($request->toxicomanias as $toxico) {
+                    $data[] = $toxico;
+                }
+            }
+            $toxicojson = json_encode($data);
 
             //guardamos los antecedenteshf
             $antecedentespp = new Antecedentespp;
@@ -227,7 +244,7 @@ class InterrogatorioController extends Controller
             $antecedentespp->quirurgicos = $request->quirurgicos;
             $antecedentespp->hospitalizacionesPrevias = $request->hospitalizaciones;
             $antecedentespp->transfusiones = $request->transfusiones;
-            $antecedentespp->toxicomaniasAlcoholismo = $request->toxicomanias;
+            $antecedentespp->toxicomaniasAlcoholismo = count(json_decode($toxicojson)) > 0? $toxicojson: null;
             $antecedentespp->otros = $request->otros;
 
             $result = $antecedentespp->save();
@@ -249,6 +266,14 @@ class InterrogatorioController extends Controller
     function updateantepp(Request $request){
         $antePP_id = session('antePP_id');
         //guardamos los antecedentes pp
+        $data = array();
+        if($request->toxicomanias != null){
+            foreach ($request->toxicomanias as $toxico) {
+                $data[] = $toxico;
+            }
+        }
+        $toxicojson = json_encode($data);
+
         $antecedentespp = Antecedentespp::find($antePP_id);
         $antecedentespp->enfermedadInfectaContagiosa = $request->infectacontagiosa;
         $antecedentespp->enfermedadCronicaDegenerativa = $request->cronicodegenerativa;
@@ -257,7 +282,7 @@ class InterrogatorioController extends Controller
         $antecedentespp->quirurgicos = $request->quirurgicos;
         $antecedentespp->hospitalizacionesPrevias = $request->hospitalizaciones;
         $antecedentespp->transfusiones = $request->transfusiones;
-        $antecedentespp->toxicomaniasAlcoholismo = $request->toxicomanias;
+        $antecedentespp->toxicomaniasAlcoholismo = count(json_decode($toxicojson)) > 0? $toxicojson: null;
         $antecedentespp->otros = $request->otros;
 
         $result = $antecedentespp->save();
