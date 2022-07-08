@@ -1,21 +1,30 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Paciente;
 
 use Illuminate\Http\Request;
 
 class MISECEController extends Controller
 {
+    //////
     //Metodos del MISECE al ECE
+    //////
     function sendexpediente($curp){
-        return "Hello ".$curp;
+        return "sendexpediente curp: ".$curp;
     }
 
     function sendexpedientebasico($curp){
-        return "Hello ".$curp;
+        return "sendexpedientebasico curp: ".$curp;
     }
 
+    function sendindice($fecha){
+        return "sendindice fecha: ". $fecha;
+    }
+
+    //////
     //Metodos del ECE al MISECE
+    //////
     function consultaece($curp){
         //EndPoint: http://DOMINIO/consulta/{curp}
         return "patient code";
@@ -27,6 +36,7 @@ class MISECEController extends Controller
     }
 
     function expedientebasicoece($curp){
+        //EndPoint: http://DOMINIO/expediente/basico/{curp}
         return "patient ece basico";
     }
 }
