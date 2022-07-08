@@ -130,8 +130,8 @@ class ConsultaController extends Controller
         session(['pac_id' => $pac->id]);
 
         //interrogarotio del paciente, null si no existe.
-        $inter = Interrogatorio::where('paciente_id', $pacid)->first();
-        
+        //$inter = Interrogatorio::where('paciente_id', $pacid)->first();
+        $inter = Interrogatorio::where('paciente_id', $pacid)->first() != null? Interrogatorio::where('paciente_id', $pacid)->first(): new Interrogatorio(); //interrogatorio
 
         //Dado que es posiblre registrar consultas con interrogatorios ya contestados es necesarios checar cada uno de los antecedentes para 
         //enviarlos a la pagina y que puedan cargarse los datos. 

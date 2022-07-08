@@ -509,27 +509,26 @@
                                 <form method="POST" id="storeantehf">
 
                                     <div class="form-group row">
-                                        <div class="form-check col-md-4 row">
-                                            <div class="col-md-12">
-                                                <label for="grupo" class="col-form-label text-md-right offset-md-1">{{ __('Grupo Étnico') }}:</label>
-                                                <div class="col-md-3 col-sm-6">
+                                        <div class="form-check col-md-6">
+                                            <div class="col-md-12 row">
+                                                <label for="grupo" class="col-md-4 col-sm-6 col-form-label text-md-left">{{ __('Grupo Étnico') }}:</label>
+                                                <div class="col-md-6">
                                                     <select class="browser-default custom-select" id="grupo"
                                                     class="form-control @error('grupo') is-invalid @enderror browser-default custom-select" 
                                                     name="grupo" required>
                                                         @if ($grupos->count() == 0)
                                                             <option value="0" selected>--- No se encontraron Grupos Étnicos ---</option>
-                                                        @endif
-                                                        @if ($inter !== null)
+                                                        @else
+                                                            <option value="0" selected>--- Selecciona una Opción ---</option>
                                                             @foreach ($grupos as $grupo)
                                                                 @if ($inter->grupo_id == $grupo->catalogKey)
-                                                                    <option value="{{ $grupo->CATALOG_KEY }}" selected>{{ $grupo->lenguaIndigena }}</option>
+                                                                    <option value="{{ $grupo->catalogKey }}" selected>{{ $grupo->lenguaIndigena }}</option>
                                                                 @else
-                                                                    <option value="{{ $grupo->CATALOG_KEY }}" {{ old('grupo') == $grupo->CATALOG_KEY ? 'selected': '' }}>{{ $grupo->lenguaIndigena }}</option>
+                                                                    <option value="{{ $grupo->catalogKey }}" {{ old('grupo') == $grupo->catalogKey ? 'selected': '' }}>{{ $grupo->lenguaIndigena }}</option>
                                                                 @endif
                                                             @endforeach
-                                                        @else
-                                                            <option value="0" selected>--- No se encontraron Grupos Étnicos ---</option>
                                                         @endif
+                                                        
                                                     </select>
                                                     <span class="invalid-feedback error-msg" id="error-grupo" role="alert">
                                                         <strong>El campo Grupo Étnico es Obligatorio</strong>

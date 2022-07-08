@@ -17,9 +17,7 @@ class Estados extends Seeder
         //Entidadesfederativa::truncate();
 
         $csvFile = fopen(base_path("database/data/entidad_federativa.csv"), "r");
-
         $firstline = true;
-
         while (($data = fgetcsv($csvFile, 2000, ",")) !== FALSE) {
             if (!$firstline) {
                 Entidadesfederativa::create([
@@ -30,7 +28,6 @@ class Estados extends Seeder
             }
             $firstline = false;
         }
-
         fclose($csvFile);
     }
 }

@@ -6,7 +6,7 @@
         <div class="navigation">
             <ul class="nav nav-tabs navul" id="myTab" role="tablist">
                 <li class="brandli">
-                    <img class="appimg" src="{{ asset('img/leonardo.jpg') }}" alt="">
+                    <img class="appimg" src="{{ $paciente->sexo_id == 1? asset('img/person1.jpeg'): asset('img/person2.jpg') }}" alt="">
                     <span class="maintitle"><h5 class="brandtitle">{{ $paciente->nombre }} {{ $paciente->primerApellido }} {{ $paciente->segundoApellido }}</h5></span>
                 </li>
                 <hr class="menuhr">
@@ -529,8 +529,8 @@
                                                     name="grupo" required>
                                                         @if ($grupos->count() == 0)
                                                             <option value="0" selected>--- No se encontraron Grupos Étnicos ---</option>
-                                                        @endif
-                                                        @if ($inter !== null)
+                                                        @else
+                                                            <option value="0" selected>--- Selecciona una Opción ---</option>
                                                             @foreach ($grupos as $grupo)
                                                                 @if ($inter->grupo_id == $grupo->catalogKey)
                                                                     <option value="{{ $grupo->CATALOG_KEY }}" selected>{{ $grupo->lenguaIndigena }}</option>
@@ -538,8 +538,6 @@
                                                                     <option value="{{ $grupo->CATALOG_KEY }}" {{ old('grupo') == $grupo->CATALOG_KEY ? 'selected': '' }}>{{ $grupo->lenguaIndigena }}</option>
                                                                 @endif
                                                             @endforeach
-                                                        @else
-                                                            <option value="0" selected>--- No se encontraron Grupos Étnicos ---</option>
                                                         @endif
                                                     </select>
                                                 </div>

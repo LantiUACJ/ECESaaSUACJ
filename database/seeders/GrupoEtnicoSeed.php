@@ -3,11 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Entidadesfederativa;
-use App\Models\Municipio;
+use App\Models\grupoetnico;
 
-
-class Municipios extends Seeder
+class GrupoEtnicoSeed extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,15 +14,13 @@ class Municipios extends Seeder
      */
     public function run()
     {
-        $csvFile = fopen(base_path("database/data/municipios.csv"), "r");
+        $csvFile = fopen(base_path("database/data/gruposetnicos.csv"), "r");
         $firstline = true;
         while (($data = fgetcsv($csvFile, 2000, ",")) !== FALSE) {
             if (!$firstline) {
-                $entidadf = Entidadesfederativa::where("catalogKey", $data['2'])->first();
-                Municipio::create([
+                grupoetnico::create([
                     "catalogKey" => $data['0'],
-                    "municipio" => $data['1'],
-                    "entidadFederativa_id" => $entidadf != null? $entidadf->id: "99"  
+                    "lenguaIndigena" => $data['1']
                 ]);
             }
             $firstline = false;
