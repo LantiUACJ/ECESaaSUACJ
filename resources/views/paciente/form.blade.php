@@ -50,11 +50,29 @@
                     <select class="browser-default custom-select  @error('sexo_id') is-invalid @enderror" id="sexo_id" class="form-control" name="sexo_id">
                         <option value="">Seleccionar...</option>
                         @foreach ($sexos as $sexo)                       
-                            <option value="{{ $sexo->id }}" {{ old('sexo_id') == $sexo->id ? 'selected' : ($sexo->id == $paciente->sexo ? 'selected' : '') }} >{{ $sexo->descripcion }}</option>                        
+                            <option value="{{ $sexo->id }}" {{ old('sexo_id') == $sexo->id ? 'selected' : ($sexo->id == $paciente->sexo_id ? 'selected' : '') }} >{{ $sexo->descripcion }}</option>                        
                         @endforeach                
                     </select>
                     {!! $errors->first('sexo_id', '<div class="invalid-feedback">:message</div>') !!}
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <div class="form-group">
+                    {{ Form::label('Correo Electrónico') }}
+                    {{ Form::text('email', $paciente->email, ['class' => 'form-control' . ($errors->has('email') ? ' is-invalid' : ''), 'placeholder' => 'Correo Electrónico','maxlength' => 255, 'type' => 'email' ]) }}
+                    {!! $errors->first('email', '<div class="invalid-feedback">:message</div>') !!}
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="form-group">
+                    {{ Form::label('Número de Telefóno') }}
+                    {{ Form::text('phone', $paciente->phone, ['class' => 'form-control' . ($errors->has('phone') ? ' is-invalid' : ''), 'placeholder' => 'Telefóno','maxlength' => 10]) }}
+                    {!! $errors->first('phone', '<div class="invalid-feedback">:message</div>') !!}
+                </div>
+            </div>
+            <div class="col-sm">
             </div>
         </div>
         <div class="row">            

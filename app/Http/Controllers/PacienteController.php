@@ -67,6 +67,10 @@ class PacienteController extends Controller
                 'entidadFederativa_id' => 'required',
                 'municipio_id' => Rule::requiredIf($request->entidadFederativa_id != ""),
                 'sexo_id' => 'required',
+                //'email' => 'required|unique:pacientes,email|email|max:255',
+                //'phone' => 'required|unique:pacientes,phone|max:10',
+                'email' => 'required|email|max:255',
+                'phone' => 'required|max:10',
             ],
             [
                 'curp.required' => 'La CURP es obligatoria.',
@@ -78,7 +82,12 @@ class PacienteController extends Controller
                 'entidadNac_id.required' => 'La entidad de nacimiento es obligatoria.',
                 'municipioNac_id.required' => 'El municipio de nacimiento es obligatorio.',
                 'entidadFederativa_id.required' => 'La entidad del domicilio actual es obligatoria.',
-                'municipio_id.required' => 'El municipio del domicilio actual es obligatorio.'
+                'municipio_id.required' => 'El municipio del domicilio actual es obligatorio.',
+                'email.required' => 'El correo electronico es obligatorio.',
+                'email.email' => 'Debe estar en formato correo "ejemplo@ejemplo".',
+                'phone.required' => 'El número telefonico es obligatorio.',
+                'email.unique' => 'El correo electrónico ya esta registrado.',
+                'phone.unique' => 'El número telefónico ya esta registrado.'
             ]
         );
 

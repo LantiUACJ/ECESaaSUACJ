@@ -26,6 +26,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property $entidadFederativa_id
  * @property $municipio_id
  * @property $sexo_id
+ * @property $email
+ * @property $phone
  *
  * @property Consulta[] $consultas
  * @property Entidadesfederativa $entidadesfederativanac
@@ -54,7 +56,7 @@ class Paciente extends Model
      *
      * @var array
      */
-    protected $fillable = ['curp','nombre','primerApellido','segundoApellido','fechaNacimiento','calle','colonia','numero','responsable','createdUser_id','updateUser_id','entidadNac_id','municipioNac_id','entidadFederativa_id','municipio_id','sexo_id'];
+    protected $fillable = ['curp','nombre','primerApellido','segundoApellido','fechaNacimiento','calle','colonia','numero','responsable','createdUser_id','updateUser_id','entidadNac_id','municipioNac_id','entidadFederativa_id','municipio_id','sexo_id','email','phone'];
 
 
     /**
