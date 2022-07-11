@@ -356,12 +356,20 @@ function modaltest(){
 }
 
 //Manda al curp del paciente para solicitar codigo
-function misececurp(curp){
+function patienteceone(curp){
+    //requestcodeget
+
+    var iframe = "<iframe src=\"_url_\" type=\"text/html\" frameborder=\"0\" height=\"900px\" width=\"100%\"></iframe>";
+    var thisurl = url + "/requestcodeget/" + curp;
+    var c_iframe = iframe.replace("_url_", thisurl);
+    $("#ece-content").html(c_iframe);
+
+    /*
     var fd = new FormData();
     fd.append('curp', curp);
 
     $.ajax({
-        url: url + "/patientmisece/",
+        url: url + "/requestcode/",
         type: "POST",
         processData: false,
         contentType: false,
@@ -371,17 +379,22 @@ function misececurp(curp){
         },
         success: function(response){
             alert("Peticion completado con exito!");
+            var div = document.getElementById('patientcodediv');
+            div.classList.remove('hiddenli');
+
+            div.innerHTML = response;
             console.log(response);
         },
         error: function(response){
-            alert("Ocurrio un error!");
+            alert("Ocurrio un error! Intentalo mas tarde.");
             console.log(response);
         },
     });
+    */
 }
 
 //Envia el codigo del paciente para solicitar el ece
-function patientece(curp){
+function patientecetwo(curp){
     let code = $("input[name=patientcode]").val();
     if(code != ""){
         var fd = new FormData();
@@ -389,7 +402,7 @@ function patientece(curp){
         fd.append('code', code);
 
         $.ajax({
-            url: url + "/patientece/",
+            url: url + "/expedienteconsulta/"+curp,
             type: "POST",
             processData: false,
             contentType: false,

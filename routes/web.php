@@ -36,6 +36,7 @@ Route::post('/getdiags', function(Request $request){
     return $diags;
 });
 
+
 //Peticion del MISECE al ECE
 //Consulta de expediente por parte del misece
 Route::post('/expediente/{curp}', [App\Http\Controllers\MISECEController::class, 'sendexpediente'])->name('expediente');
@@ -47,11 +48,21 @@ Route::get('/indice/{fecha}', [App\Http\Controllers\MISECEController::class, 'se
 //Peticion del ECE al MISECE
 //Peticion de codigo para consulta (paciente msg?)
 Route::post('/pacienteconsulta/{curp}', [App\Http\Controllers\MISECEController::class, 'consultaece'])->name('pacienteconsulta')->middleware('auth');
+
+
+//Consulta de ece al misece sin codigo, pide codigo
+Route::post('/requestcode', [App\Http\Controllers\MISECEController::class, 'requestcodepat'])->name('requestcode')->middleware('auth');
+
+
+//Consulta de ece al misece sin codigo, pide codigo (For EMBED tag)
+Route::get('/requestcodeget/{curp}', [App\Http\Controllers\MISECEController::class, 'requestcodepatget'])->name('requestcodeget')->middleware('auth');
+
+
+
 //Consulta de ece al misece
 Route::post('/expedienteconsulta/{curp}', [App\Http\Controllers\MISECEController::class, 'expedienteece'])->name('expedienteconsulta')->middleware('auth');
 //Consulta basico de ece al misece
 Route::post('/expedientebasicoconsulta/{curp}', [App\Http\Controllers\MISECEController::class, 'expedientebasicoece'])->name('expedientebasicoconsulta')->middleware('auth');
-
 
 
 //Consultas del paciente
