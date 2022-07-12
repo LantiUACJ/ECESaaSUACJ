@@ -19,8 +19,22 @@ class MISECEController extends Controller
         return "sendexpedientebasico curp: ".$curp;
     }
 
-    function sendindice($fecha){
-        return "sendindice fecha: ". $fecha;
+    function sendindice(Request $request){
+        if($request->fecha != null){
+            $pacientes = Paciente::where('created_at', '>', $request->fecha)->get();}
+        else{
+            $pacientes = Paciente::all();
+        }
+        $data = array();
+        foreach ($pacientes as $pac) {
+            $data[] = [
+                'curp'      => $pac->curp,
+                'nombre'    => $pac->nombre." ".$pac->primerApellido." ".$pac->segundoApellido,
+                'correo'    => $pac->email,
+                'telefono'  => $pac->phone
+            ];
+        }
+        return json_encode($data);
     }
 
     //////
@@ -35,49 +49,38 @@ class MISECEController extends Controller
     //Funcion descontinuada
 
     //Hace consulta sin codigo, para que sea enviado al paciente
-    function requestcodepat(Request $request){
+    function expece(Request $request){
         $data = array();
+        $paciente = Paciente::where('curp', $request->curp)->first();
         $data['consultor'] = auth()->user()->name;
-        $data['codigo'] = 142445;
-        $data['numero'] = '+526563741849';
-        $jsondata = json_encode($data);
+        $data['codigo'] = $request->code != null? $request->code: null;
+        $data['numero'] = $paciente != null? "+52".$paciente->phone: $request->phone;
+        
+        //$jsondata = json_encode($data);
 
         $response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/test/expediente/'.$request->curp, $data);
-        /*
-        'consultor' => auth()->user()->name,
-        'codigo' => 142445,
-        'numero' => '+526563741849'
-        */
-        //dd($response);
 
-
-        return $response->body();//$response->body();
-    }
-
-    function requestcodepatget($curp){
-        $data = array();
-        $data['consultor'] = auth()->user()->name;
-        $data['codigo'] = 142445;
-        $data['numero'] = '+526563741849';
-        $response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/test/expediente/'.$curp, $data);
-        return $response->body();
-    }
-
-    function expedienteece(Request $request, $curp){
-        //EndPoint: http://DOMINIO/expediente/{curp}
-        
-        $data = array();
-        $data['consultor'] = auth()->user()->name;
-        if($request->code != null){
-            $data["codigo"] = $request->code;
+        if(str_contains($response->body(),"Error") ){
+            return response()->json(['errormsg' => 'Código invalido.'], 401);
+        }else{
+            return base64_encode($response->body());//$response->body();
         }
-        $jsondata = json_encode($data);
-        dd($jsondata);
-        return "patient ece";
     }
 
-    function expedientebasicoece($curp){
-        //EndPoint: http://DOMINIO/expediente/basico/{curp}
-        return "patient ece basico";
+    function expecebasico(Request $request){
+        $data = array();
+        $data['consultor'] = auth()->user()->name;
+
+        $response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/test/expediente/basico/'.$request->curp, $data);
+
+        if(str_contains($response->body(),"Error") ){
+            return response()->json(['errormsg' => 'Código invalido.'], 401);
+        }else{
+            return base64_encode($response->body());//$response->body();
+        }
+    }
+
+    function consultarmisece(){
+        return view('misece.consultamisece');
     }
 }

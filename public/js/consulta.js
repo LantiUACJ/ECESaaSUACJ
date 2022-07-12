@@ -355,21 +355,23 @@ function modaltest(){
     $('#noConsultamodal').modal('show');
 }
 
-//Manda al curp del paciente para solicitar codigo
-function patienteceone(curp){
+//registro y continuar consulta funcion
+function patientece(curp){
     //requestcodeget
 
+    /*
     var iframe = "<iframe src=\"_url_\" type=\"text/html\" frameborder=\"0\" height=\"900px\" width=\"100%\"></iframe>";
     var thisurl = url + "/requestcodeget/" + curp;
     var c_iframe = iframe.replace("_url_", thisurl);
     $("#ece-content").html(c_iframe);
-
-    /*
+    */
+    var code = document.getElementById('patientcode').value;
     var fd = new FormData();
     fd.append('curp', curp);
+    fd.append('code', code);
 
     $.ajax({
-        url: url + "/requestcode/",
+        url: url + "/expedienteece/",
         type: "POST",
         processData: false,
         contentType: false,
@@ -379,30 +381,35 @@ function patienteceone(curp){
         },
         success: function(response){
             alert("Peticion completado con exito!");
-            var div = document.getElementById('patientcodediv');
-            div.classList.remove('hiddenli');
-
-            div.innerHTML = response;
-            console.log(response);
+            var iframe = document.getElementById('iframecontent');
+            iframe.height="900px"
+            iframe.width="100%"
+            iframe.src = "data:text/html;base64," + response;
         },
         error: function(response){
-            alert("Ocurrio un error! Intentalo mas tarde.");
+            if(response.responseJSON.errormsg)
+                alert("Código Invalido");
+            else
+                alert("Ocurrio un error! Intentalo mas tarde.");
             console.log(response);
         },
     });
-    */
 }
 
-//Envia el codigo del paciente para solicitar el ece
-function patientecetwo(curp){
+//consulta completa pagina misece consulta
+function patientconsult(){
     let code = $("input[name=patientcode]").val();
-    if(code != ""){
+    let curp = $("input[name=patientcurp]").val();
+    let phone = $("input[name=patientphone]").val();
+
+    if(curp != "" && phone != ""){
         var fd = new FormData();
         fd.append('curp', curp);
         fd.append('code', code);
+        fd.append('phone', "+52"+phone);
 
         $.ajax({
-            url: url + "/expedienteconsulta/"+curp,
+            url: url + "/expedienteece/",
             type: "POST",
             processData: false,
             contentType: false,
@@ -412,14 +419,56 @@ function patientecetwo(curp){
             },
             success: function(response){
                 alert("Peticion completado con exito!");
+                var iframe = document.getElementById('iframecontent');
+                iframe.height="900px"
+                iframe.width="100%"
+                iframe.src = "data:text/html;base64," + response;
                 console.log(response);
             },
             error: function(response){
-                alert("Ocurrio un error!");
+                if(response.responseJSON.errormsg)
+                    alert("Se ha enviado un Código al paciente!");
+                else
+                    alert("Ocurrio un error! Intentalo mas tarde.");
                 console.log(response);
             },
         });
     }else{
-        alert("Introduce el código del paciente");
+        alert("La curp y número teléfonico del paciente debe ser introducidos!");
+    }
+}
+
+//consulta basica pagina misece consulta
+function patientconsultbasic(){
+    let curp = $("input[name=patientcurpbasico]").val();
+
+    if(curp != ""){
+        var fd = new FormData();
+        fd.append('curp', curp);
+
+        $.ajax({
+            url: url + "/expedienteecebasico/",
+            type: "POST",
+            processData: false,
+            contentType: false,
+            data: fd,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response){
+                alert("Peticion completado con exito!");
+                var iframe = document.getElementById('iframecontentbasico');
+                iframe.height="900px"
+                iframe.width="100%"
+                iframe.src = "data:text/html;base64," + response;
+                console.log(response);
+            },
+            error: function(response){
+                alert("Ocurrio un error! Intentalo mas tarde.");
+                console.log(response);
+            },
+        });
+    }else{
+        alert("La curp del paciente debe ser introducida!");
     }
 }

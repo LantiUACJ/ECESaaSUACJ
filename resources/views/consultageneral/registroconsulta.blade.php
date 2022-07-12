@@ -1594,17 +1594,19 @@
                         Consulta del Expediente clínico Electrónico del paciente <strong>{{ $paciente->nombre }} {{ $paciente->primerApellido }} {{ $paciente->segundoApellido }}</strong>
                     </div>
                     <div class="card-body text-center">
-                        <button class="btn btn-sm btn-primary" type="button" onclick="misececurp('{{ $paciente->curp }}')">Solicitar Código al paciente</button>
-                        <br><br>
                         <label for="">Introduce el código del paciente</label>
                         <br>
-                        <div class="col-md-3 mx-auto">
-                            <input class="form-control form-control-sm" type="text" id="patientcode" name="patientcode" value="">
+                        <div>
+                            <div class="col-md-3 mx-auto">
+                                <input class="form-control form-control-sm" type="text" id="patientcode" name="patientcode" value="">
+                            </div>
+                            <br>
+                            <button class="btn btn-sm btn-success" type="button" onclick="patientece('{{ $paciente->curp }}')">Consultar ECE</button>
                         </div>
-                        <br>
-                        <button class="btn btn-sm btn-success" type="button" onclick="patientece({{ $paciente->curp }})">Consultar ECE</button>
                         <br><br>
-                        <div id="ece-content"></div>
+                        <div id="ece-content">
+                            <iframe id="iframecontent" src="" type="text/html" frameborder="0"></iframe>
+                        </div>
                     </div>
                 </div>
             </div>

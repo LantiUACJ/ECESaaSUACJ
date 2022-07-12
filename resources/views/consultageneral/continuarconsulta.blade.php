@@ -6,7 +6,7 @@
         <div class="navigation">
             <ul class="nav nav-tabs navul" id="myTab" role="tablist">
                 <li class="brandli">
-                    <img class="appimg" src="{{ asset('img/person.jpeg') }}" alt="">
+                    <img class="appimg" src="{{ $paciente->sexo_id == 1? asset('img/person1.jpeg'): asset('img/person2.jpg') }}" alt="">
                     <span class="maintitle"><h6 class="brandtitle">{{ $paciente->nombre }} {{ $paciente->primerApellido }} {{ $paciente->segundoApellido }}</h6></span>
                 </li>
                 <hr class="menuhr">
@@ -1582,19 +1582,18 @@
                         Consulta del Expediente clínico Electrónico del paciente <strong>{{ $paciente->nombre }} {{ $paciente->primerApellido }} {{ $paciente->segundoApellido }}</strong>
                     </div>
                     <div class="card-body text-center">
-                        <button class="btn btn-sm btn-primary" type="button" onclick="patienteceone('{{ $paciente->curp }}')">Solicitar Código al paciente</button>
-                        <br><br>
                         <label for="">Introduce el código del paciente</label>
                         <br>
-                        <div class="hiddenli" id="patientcodediv">
+                        <div>
                             <div class="col-md-3 mx-auto">
                                 <input class="form-control form-control-sm" type="text" id="patientcode" name="patientcode" value="">
                             </div>
                             <br>
-                            <button class="btn btn-sm btn-success" type="button" onclick="patientecetwo('{{ $paciente->curp }}')">Consultar ECE</button>
+                            <button class="btn btn-sm btn-success" type="button" onclick="patientece('{{ $paciente->curp }}')">Consultar ECE</button>
                         </div>
                         <br><br>
                         <div id="ece-content">
+                            <iframe id="iframecontent" src="" type="text/html" frameborder="0"></iframe>
                         </div>
                     </div>
                 </div>

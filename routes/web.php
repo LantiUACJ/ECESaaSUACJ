@@ -43,7 +43,7 @@ Route::post('/expediente/{curp}', [App\Http\Controllers\MISECEController::class,
 //Consulta de expediente (resumido) por parte del misece
 Route::post('/expediente/basico/{curp}', [App\Http\Controllers\MISECEController::class, 'sendexpedientebasico'])->name('expediente/basico');
 //Consulta de expediente (resumido) por parte del misece
-Route::get('/indice/{fecha}', [App\Http\Controllers\MISECEController::class, 'sendindice'])->name('indice');
+Route::get('/indice', [App\Http\Controllers\MISECEController::class, 'sendindice'])->name('indice');
 
 //Peticion del ECE al MISECE
 //Peticion de codigo para consulta (paciente msg?)
@@ -51,18 +51,13 @@ Route::post('/pacienteconsulta/{curp}', [App\Http\Controllers\MISECEController::
 
 
 //Consulta de ece al misece sin codigo, pide codigo
-Route::post('/requestcode', [App\Http\Controllers\MISECEController::class, 'requestcodepat'])->name('requestcode')->middleware('auth');
-
-
-//Consulta de ece al misece sin codigo, pide codigo (For EMBED tag)
-Route::get('/requestcodeget/{curp}', [App\Http\Controllers\MISECEController::class, 'requestcodepatget'])->name('requestcodeget')->middleware('auth');
-
-
-
-//Consulta de ece al misece
-Route::post('/expedienteconsulta/{curp}', [App\Http\Controllers\MISECEController::class, 'expedienteece'])->name('expedienteconsulta')->middleware('auth');
+Route::post('/expedienteece', [App\Http\Controllers\MISECEController::class, 'expece'])->name('expedienteece')->middleware('auth');
 //Consulta basico de ece al misece
-Route::post('/expedientebasicoconsulta/{curp}', [App\Http\Controllers\MISECEController::class, 'expedientebasicoece'])->name('expedientebasicoconsulta')->middleware('auth');
+Route::post('/expedienteecebasico', [App\Http\Controllers\MISECEController::class, 'expecebasico'])->name('expedienteecebasico')->middleware('auth');
+
+
+//Pagina para Consulta MISECE ece-misece (con curp)
+Route::get('/misece', [App\Http\Controllers\MISECEController::class, 'consultarmisece'])->name('misece')->middleware('auth');
 
 
 //Consultas del paciente
