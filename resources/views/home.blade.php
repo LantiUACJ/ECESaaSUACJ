@@ -35,7 +35,7 @@
                                 <span class="icon my-auto"><i class="fa fa-external-link"></i></span>
                                 <span class="title my-auto cutbutton">MISECE Consulta</span>
                             </a>
-                        </div> 
+                        </div>
                     </div>
                     <br>
                 </div>

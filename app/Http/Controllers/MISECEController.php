@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 use App\Models\Paciente;
+use App\Models\Sexo;
+use App\Models\Entidadesfederativa;
+use App\Models\Municipio;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -12,7 +15,21 @@ class MISECEController extends Controller
     //Metodos del MISECE al ECE
     //////
     function sendexpediente($curp){
-        return "sendexpediente curp: ".$curp;
+        $paciente = Paciente::where('curp', $curp)->first();
+        if($paciente != null){
+            $expediente = array();
+            $expediente["resourceType"] = "Bundle";
+            $expediente["type"] = "transaction";
+            $entries = array();
+
+            $entries[] = $this->PatientToJson($paciente);
+
+            $expediente["entry"] = $entries;
+
+            return $expediente;
+        }else{
+            return response()->json(['Error' => 'Paciente Desconocido.'], 500);
+        }
     }
 
     function sendexpedientebasico($curp){
@@ -82,5 +99,84 @@ class MISECEController extends Controller
 
     function consultarmisece(){
         return view('misece.consultamisece');
+    }
+
+    // Functions to create json bundle
+    private function PatientToJson(Paciente $paciente){
+
+        $arraypac = array();
+        $arraypac["resource"] = [
+            "resourceType" => "Patient",
+            "identifier" => [
+                "use" => "official",
+                "type" => [
+                    "text" => "CURP"
+                ],
+                "value" => $paciente->curp
+            ],
+            "name" => [
+                "text" => $paciente->nombre." ".$paciente->primerApellido." ".$paciente->segundoApellido
+            ],
+            "language" => "es",
+            "active" => "true",
+            "gender" => Sexo::where("id", $paciente->sexo_id)->first()->descripcion,
+            "birthDate" => $paciente->fechaNacimiento->format("Y-m-d"),
+            "address" => [
+                "state" => Entidadesfederativa::where("id", $paciente->entidadFederativa_id)->first()->entidad,
+                "city" => Municipio::where("id", $paciente->municipio_id)->first()->municipio,
+                "district" => "Col. ".$paciente->colonia.", Calle. ".$paciente->calle.", #".$paciente->numero
+            ],
+            "communication" => [
+                "language" => [
+                    "text" => "es"
+                ],
+                "preferred" => "true"
+            ]
+        ];
+        $arraypac["request"] = [
+            "method" => "POST",
+            "url" => "Patient"
+        ];
+
+        /*
+        
+        "{"+
+            "\"fullUrl\":" + "\"urn:uuid:" + hash + "\"" + "," +
+            "\"resource\":{" +
+                "\"resourceType\": \"Patient\"," +
+                "\"identifier\": [{" +
+                    "\"use\": \"official\"," +
+                    "\"type\": {" +
+                        "\"text\": \"CURP\"" +
+                    "}," +
+                    "\"value\": " + "\"" + pac.CURP + "\"" +
+                "}]," +
+                "\"name\": [{" +
+                    "\"text\": " + "\"" + name + "\"" +
+                "}]," +
+                "\"language\": \"es\"," +
+                "\"active\":" + tru + "," +
+                "\"gender\":" + "\"" + sexo + "\"" + "," +
+                "\"birthDate\":" + "\"" + pac.Fecha_Nacimiento.ToString("yyyy-MM-dd") + "\"" + "," +
+                "\"address\": [{" +
+                    "\"state\":" + "\"" + estado.ENTIDAD_FEDERATIVA + "\"" + "," +
+                    "\"city\":" + "\"" + municipio.MUNICIPIO + "\"" + "," +
+                    "\"district\":" + "\"" + localidad.LOCALIDAD + "\"" +
+                "}]," +
+                "\"communication\": [{" +
+                    "\"language\": {" +
+                        "\"text\": \"es\"" +
+                    "}," +
+                    "\"preferred\":" + tru +
+                "}]" +
+            "}," +
+            "\"request\": {" +
+                "\"method\": \"POST\"," +
+                "\"url\": \"Patient\"" +
+            "}" +
+        "}";
+        
+        */
+        return $arraypac;
     }
 }
