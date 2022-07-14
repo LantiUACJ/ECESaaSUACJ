@@ -8,6 +8,7 @@ use App\Models\Municipio;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Carbon\Carbon;
 
 class MISECEController extends Controller
 {
@@ -102,8 +103,9 @@ class MISECEController extends Controller
     }
 
     // Functions to create json bundle
-    private function PatientToJson(Paciente $paciente){
 
+    //Patient json
+    private function PatientToJson(Paciente $paciente){
         $arraypac = array();
         $arraypac["resource"] = [
             "resourceType" => "Patient",
@@ -120,7 +122,7 @@ class MISECEController extends Controller
             "language" => "es",
             "active" => "true",
             "gender" => Sexo::where("id", $paciente->sexo_id)->first()->descripcion,
-            "birthDate" => $paciente->fechaNacimiento->format("Y-m-d"),
+            "birthDate" => Carbon::createFromFormat('Y-m-d H:i:s', $paciente->fechaNacimiento)->format('d-m-Y'),
             "address" => [
                 "state" => Entidadesfederativa::where("id", $paciente->entidadFederativa_id)->first()->entidad,
                 "city" => Municipio::where("id", $paciente->municipio_id)->first()->municipio,
@@ -137,46 +139,10 @@ class MISECEController extends Controller
             "method" => "POST",
             "url" => "Patient"
         ];
-
-        /*
-        
-        "{"+
-            "\"fullUrl\":" + "\"urn:uuid:" + hash + "\"" + "," +
-            "\"resource\":{" +
-                "\"resourceType\": \"Patient\"," +
-                "\"identifier\": [{" +
-                    "\"use\": \"official\"," +
-                    "\"type\": {" +
-                        "\"text\": \"CURP\"" +
-                    "}," +
-                    "\"value\": " + "\"" + pac.CURP + "\"" +
-                "}]," +
-                "\"name\": [{" +
-                    "\"text\": " + "\"" + name + "\"" +
-                "}]," +
-                "\"language\": \"es\"," +
-                "\"active\":" + tru + "," +
-                "\"gender\":" + "\"" + sexo + "\"" + "," +
-                "\"birthDate\":" + "\"" + pac.Fecha_Nacimiento.ToString("yyyy-MM-dd") + "\"" + "," +
-                "\"address\": [{" +
-                    "\"state\":" + "\"" + estado.ENTIDAD_FEDERATIVA + "\"" + "," +
-                    "\"city\":" + "\"" + municipio.MUNICIPIO + "\"" + "," +
-                    "\"district\":" + "\"" + localidad.LOCALIDAD + "\"" +
-                "}]," +
-                "\"communication\": [{" +
-                    "\"language\": {" +
-                        "\"text\": \"es\"" +
-                    "}," +
-                    "\"preferred\":" + tru +
-                "}]" +
-            "}," +
-            "\"request\": {" +
-                "\"method\": \"POST\"," +
-                "\"url\": \"Patient\"" +
-            "}" +
-        "}";
-        
-        */
         return $arraypac;
+    }
+
+    private function GetObservation(){
+
     }
 }

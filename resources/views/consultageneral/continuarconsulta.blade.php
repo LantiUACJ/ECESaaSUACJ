@@ -513,20 +513,22 @@
                                             <div class="col-md-12 row">
                                                 <label for="grupo" class="col-md-4 col-sm-6 col-form-label text-md-left">{{ __('Grupo Étnico') }}:</label>
                                                 <div class="col-md-6">
-                                                    <select class="browser-default custom-select" id="grupo"
-                                                    class="form-control @error('grupo') is-invalid @enderror browser-default custom-select" 
-                                                    name="grupo" required>
+                                                    <select class="browser-default custom-select form-control @error('grupo') is-invalid @enderror" 
+                                                    autocomplete="off" id="grupo" name="grupo">
                                                         @if ($grupos->count() == 0)
                                                             <option value="0" selected>--- No se encontraron Grupos Étnicos ---</option>
                                                         @else
-                                                            <option value="0" selected>--- Selecciona una Opción ---</option>
-                                                            @foreach ($grupos as $grupo)
-                                                                @if ($inter->grupo_id == $grupo->catalogKey)
-                                                                    <option value="{{ $grupo->catalogKey }}" selected>{{ $grupo->lenguaIndigena }}</option>
-                                                                @else
-                                                                    <option value="{{ $grupo->catalogKey }}" {{ old('grupo') == $grupo->catalogKey ? 'selected': '' }}>{{ $grupo->lenguaIndigena }}</option>
-                                                                @endif
-                                                            @endforeach
+                                                            @if ($anteHF->grupo_id == 0)
+                                                                <option selected>--- Selecciona una Opción ---</option>
+                                                                @foreach ($grupos as $grupo)
+                                                                    <option value="{{ $grupo->id }}">{{ $grupo->lenguaIndigena }}</option>
+                                                                @endforeach
+                                                            @else
+                                                                <option>--- Selecciona una Opción ---</option>
+                                                                @foreach ($grupos as $grupo)
+                                                                    <option value="{{ $grupo->id }}" {{ $grupo->id == $anteHF->grupo_id? "selected": "" }}>{{ $grupo->lenguaIndigena }}</option>
+                                                                @endforeach
+                                                            @endif
                                                         @endif
                                                         
                                                     </select>

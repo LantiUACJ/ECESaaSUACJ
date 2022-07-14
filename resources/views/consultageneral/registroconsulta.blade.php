@@ -524,19 +524,19 @@
                                             <div class="col-md-12 row">
                                                 <label for="grupo" class="col-form-label text-md-right offset-md-1">{{ __('Grupo Étnico') }}:</label>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <select class="browser-default custom-select" id="grupo"
-                                                    class="form-control @error('grupo') is-invalid @enderror browser-default custom-select" 
-                                                    name="grupo" required>
+                                                    <select class="browser-default custom-select form-control @error('grupo') is-invalid @enderror" 
+                                                    autocomplete="off" id="grupo" name="grupo">
                                                         @if ($grupos->count() == 0)
                                                             <option value="0" selected>--- No se encontraron Grupos Étnicos ---</option>
-                                                        @else
-                                                            <option value="0" selected>--- Selecciona una Opción ---</option>
+                                                        @elseif ($anteHF->grupo_id == null)
+                                                            <option selected>--- Selecciona una Opción ---</option>
                                                             @foreach ($grupos as $grupo)
-                                                                @if ($inter->grupo_id == $grupo->catalogKey)
-                                                                    <option value="{{ $grupo->CATALOG_KEY }}" selected>{{ $grupo->lenguaIndigena }}</option>
-                                                                @else
-                                                                    <option value="{{ $grupo->CATALOG_KEY }}" {{ old('grupo') == $grupo->CATALOG_KEY ? 'selected': '' }}>{{ $grupo->lenguaIndigena }}</option>
-                                                                @endif
+                                                                <option value="{{ $grupo->id }}">{{ $grupo->lenguaIndigena }}</option>
+                                                            @endforeach
+                                                        @else
+                                                            <option>--- Selecciona una Opción ---</option>
+                                                            @foreach ($grupos as $grupo)
+                                                                <option value="{{ $grupo->id }}" {{ $grupo->id == $anteHF->grupo_id? "selected": "" }}>{{ $grupo->lenguaIndigena }}</option>
                                                             @endforeach
                                                         @endif
                                                     </select>

@@ -83,6 +83,7 @@ function updatedatosinter(){
 
 //Store y update de antecedesntes heredo familiares
 function storeantecedenteshf(){
+    let grupo = $('select[name=grupo] option').filter(':selected').val();
 
     let diabetes = $("input[name=diabetes]").is(':checked') ? 1: 0;
     let hipertension = $("input[name=hipertension]").is(':checked') ? 1: 0;
@@ -110,6 +111,7 @@ function storeantecedenteshf(){
         url: url + "/storeantecedenteshf",
         type: "POST",
         data: {
+            grupo: grupo,
             diabetes : diabetes,
             hipertension : hipertension,
             dislipidemias : dislipidemias,
@@ -164,6 +166,8 @@ function storeantecedenteshf(){
 }
 
 function updateantecedenteshf(){
+    let grupo = $('select[name=grupo] option').filter(':selected').val();
+
     let diabetes = $("input[name=diabetes]").is(':checked') ? 1: 0;
     let hipertension = $("input[name=hipertension]").is(':checked') ? 1: 0;
     let dislipidemias = $('input[name=dislipidemias]').is(':checked') ? 1: 0;
@@ -190,6 +194,7 @@ function updateantecedenteshf(){
         url: url + "/updateantecedenteshf",
         type: "POST",
         data: {
+            grupo: grupo,
             diabetes : diabetes,
             hipertension : hipertension,
             dislipidemias : dislipidemias,
@@ -268,7 +273,6 @@ function storeantecedentespp(){
             }
         });
     }
-
     
     $.ajax({
         url: url + "/storeantecedentespp",
