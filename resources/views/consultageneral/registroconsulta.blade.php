@@ -1436,21 +1436,18 @@
                                         <div class="col-md-5">
                                             <label for="temperatura" class="col-md-12 col-form-label">{{ __('Temperatura') }}:</label>
             
-                                            <div class="col-md-12 row">
-                                                <div class="col-md-8">
+                                            <div class="col-md-12">
+                                                <div class="col-md-12 input-group">
                                                     <input id="price" type="text" class="form-control"
                                                     name="temperatura" value="{{ old('temperatura') }}" autocomplete="temperatura" maxlength="4"
                                                     title="La temperatura es una cantidad númerica." autofocus>
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">&nbsp;&nbsp;°C&nbsp;&nbsp;</span>
+                                                    </div>
                 
                                                     <span class="invalid-feedback error-msg" id="error-peso" role="alert">
                                                         <strong>El campo Temperatura es Obligatorio</strong>
                                                     </span>
-                                                </div>
-    
-                                                <div class="col-md-4 text-md-center" >
-                                                    <div class="col-form-label littlediv">
-                                                        °C
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1458,40 +1455,34 @@
                                         <div class="col-md-5">
                                             <label for="presion" class="col-md-12 col-form-label">{{ __('Presión Arterial') }}:</label>
         
-                                            <div class="col-md-12 row">
-                                                <div class="col-md-8">
+                                            <div class="col-md-12">
+                                                <div class="col-md-12 input-group">
                                                     <input id="sistolica" type="text" class="form-control"
                                                     name="sistolica" placeholder="sistolica" value="{{ old('sistolica') }}" autocomplete="sistolica" maxlength="3"
                                                     onkeypress="return /[0-9]/i.test(event.key)"
                                                     title="La Tensión Sistolica es una cantidad númerica." autofocus>
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">&nbsp;&nbsp;mmHg&nbsp;&nbsp;</span>
+                                                    </div>
                 
                                                     <span class="invalid-feedback error-msg" id="error-peso" role="alert">
                                                         <strong>El campo Presión Sistólica es Obligatorio</strong>
                                                     </span>
                                                     
                                                 </div>
-
-                                                <div class="col-md-4 text-md-center" >
-                                                    <div class="col-form-label littlediv">
-                                                        mmHg
-                                                    </div>
-                                                </div>
     
-                                                <div class="col-md-8">
+                                                <div class="col-md-12 input-group">
                                                     <input id="diastolica" type="text" class="form-control"
                                                     name="diastolica" placeholder="diastolica" value="{{ old('diastolica') }}" autocomplete="diastolica" maxlength="3"
                                                     onkeypress="return /[0-9]/i.test(event.key)"
                                                     title="La Tensión diastolica es una cantidad númerica." autofocus>
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">&nbsp;&nbsp;mmHg&nbsp;&nbsp;</span>
+                                                    </div>
     
                                                     <span class="invalid-feedback error-msg" id="error-peso" role="alert">
                                                         <strong>El campo Presión Diastólico es Obligatorio</strong>
                                                     </span>
-                                                </div>
-
-                                                <div class="col-md-4 text-md-center" >
-                                                    <div class="col-form-label littlediv">
-                                                        mmHg
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1506,22 +1497,19 @@
                                         <div class="col-md-5">
                                             <label for="frecuenciacardiaca" class="col-md-12 col-form-label">{{ __('Frecuencia Cardiaca') }}:</label>
             
-                                            <div class="col-md-12 row">
-                                                <div class="col-md-8">
+                                            <div class="col-md-12">
+                                                <div class="col-md-12 input-group">
                                                     <input id="frecuenciacardiaca" type="text" class="form-control"
                                                     name="frecuenciacardiaca" value="{{ old('frecuenciacardiaca') }}" autocomplete="frecuenciacardiaca" maxlength="3"
                                                     onkeypress="return /[0-9]/i.test(event.key)"
                                                     title="La Frecuencia Cardiaca es una cantidad númerica." autofocus>
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">&nbsp;&nbsp;lmp&nbsp;&nbsp;</span>
+                                                    </div>
                 
                                                     <span class="invalid-feedback error-msg" id="error-peso" role="alert">
                                                         <strong>El campo Frecuencia Cardiaca es Obligatorio</strong>
                                                     </span>
-                                                </div>
-
-                                                <div class="col-md-4 text-md-center" >
-                                                    <div class="col-form-label littlediv">
-                                                        lmp
-                                                    </div>
                                                 </div>
                                             </div>
                                             
@@ -1529,21 +1517,65 @@
                                         <div class="col-md-5">
                                             <label for="frecuenciarespiratoria" class="col-md-12 col-form-label">{{ __('Frecuencia Respiratoria') }}:</label>
             
-                                            <div class="col-md-12 row">
-                                                <div class="col-md-8">
+                                            <div class="col-md-12">
+                                                <div class="col-md-12 input-group">
                                                     <input id="frecuenciarespiratoria" type="text" class="form-control"
                                                     name="frecuenciarespiratoria" value="{{ old('frecuenciarespiratoria') }}" autocomplete="frecuenciarespiratoria" maxlength="3"
                                                     onkeypress="return /[0-9]/i.test(event.key)"
                                                     title="La Frecuencia Respiratoria es una cantidad númerica." autofocus>
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">&nbsp;&nbsp;rpm&nbsp;&nbsp;</span>
+                                                    </div>
                 
                                                     <span class="invalid-feedback error-msg" id="error-peso" role="alert">
                                                         <strong>El campo Frecuencia Respiratoria es Obligatorio</strong>
                                                     </span>
                                                 </div>
-                                                <div class="col-md-4 text-md-center" >
-                                                    <div class="col-form-label littlediv">
-                                                        rpm
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-1"></div>
+                                    </div>
+
+                                    <div class="form-group row text-center">
+                                        <div class="col-md-1"></div>
+
+                                        <div class="col-md-5">
+                                            <label for="saturacionoxigeno" class="col-md-12 col-form-label">{{ __('Saturación de oxígeno') }}:</label>
+            
+                                            <div class="col-md-12">
+                                                <div class="col-md-12 input-group">
+                                                    <input id="saturacionoxigeno" type="text" class="form-control"
+                                                    name="saturacionoxigeno" value="{{ old('saturacionoxigeno') }}" autocomplete="saturacionoxigeno" maxlength="3"
+                                                    onkeypress="return /[0-9]/i.test(event.key)"
+                                                    title="La Saturación de Oxígeno es una cantidad númerica." autofocus>
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">&nbsp;&nbsp;%&nbsp;&nbsp;</span>
                                                     </div>
+                
+                                                    <span class="invalid-feedback error-msg" id="error-peso" role="alert">
+                                                        <strong>El campo Saturación de oxígeno es Obligatorio</strong>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="col-md-5">
+                                            <label for="glucosa" class="col-md-12 col-form-label">{{ __('Glucosa') }}:</label>
+            
+                                            <div class="col-md-12">
+                                                <div class="col-md-12 input-group">
+                                                    <input id="glucosa" type="text" class="form-control"
+                                                    name="glucosa" value="{{ old('glucosa') }}" autocomplete="glucosa" maxlength="3"
+                                                    onkeypress="return /[0-9]/i.test(event.key)"
+                                                    title="La Frecuencia Respiratoria es una cantidad númerica." autofocus>
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">&nbsp;&nbsp;mg/dL&nbsp;&nbsp;</span>
+                                                    </div>
+                
+                                                    <span class="invalid-feedback error-msg" id="error-peso" role="alert">
+                                                        <strong>El campo Glucosa es Obligatorio</strong>
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -1551,6 +1583,7 @@
                                         <div class="col-md-1"></div>
                                         
                                     </div>
+        
         
                                     <br>
 
