@@ -262,17 +262,10 @@ function storeantecedentespp(){
     let otrospp = $('textarea[name=otrospp]').val();
     let toxico = []; //arreglo de toxicomanias
 
-    let toxicomanias = document.getElementsByClassName("item");
-    let count = 0;
-
-    if(toxicomanias.length > 0){
-        [].forEach.call(toxicomanias, function(element) {
-            if(isNumeric(element.getAttribute("data-value"))){
-                toxico[count] = element.getAttribute("data-value");
-                count++;
-            }
-        });
-    }
+    let multiselect = $('select[name="multiselecttoxic[]"] option:selected').each(function() {
+        toxico.push($(this).val());
+    });
+     
     
     $.ajax({
         url: url + "/storeantecedentespp",
@@ -333,19 +326,10 @@ function updateantecedentespp(){
 
     let toxico = []; //arreglo de toxicomanias
 
-    let toxicomanias = document.getElementsByClassName("item");
-    let count = 0;
+    let multiselect = $('select[name="multiselecttoxic[]"] option:selected').each(function() {
+        toxico.push($(this).val());
+    });
 
-    if(toxicomanias.length > 0){
-        [].forEach.call(toxicomanias, function(element) {
-            if(isNumeric(element.getAttribute("data-value"))){
-                toxico[count] = element.getAttribute("data-value");
-                count++;
-            }
-        });
-    }
-
-    
     $.ajax({
         url: url + "/updateantecedentespp",
         type: "POST",

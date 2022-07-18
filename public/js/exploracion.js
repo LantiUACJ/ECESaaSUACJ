@@ -109,6 +109,8 @@ function storesignos(){
     let diastolica = $("input[name=diastolica]").val();
     let frecuenciacardiaca = $("input[name=frecuenciacardiaca]").val();
     let frecuenciarespiratoria = $("input[name=frecuenciarespiratoria]").val();
+    let saturacion = $("input[name=saturacionoxigeno]").val();
+    let glucosa = $("input[name=glucosa]").val();
 
     $.ajax({
         url: url + "/storesignos",
@@ -118,7 +120,9 @@ function storesignos(){
             sistolica : sistolica,
             diastolica : diastolica,
             frecuenciacardiaca : frecuenciacardiaca,
-            frecuenciarespiratoria : frecuenciarespiratoria
+            frecuenciarespiratoria : frecuenciarespiratoria,
+            saturacion : saturacion,
+            glucosa : glucosa
         },
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -156,6 +160,8 @@ function updatesignos(){
     let diastolica = $("input[name=diastolica]").val();
     let frecuenciacardiaca = $("input[name=frecuenciacardiaca]").val();
     let frecuenciarespiratoria = $("input[name=frecuenciarespiratoria]").val();
+    let saturacion = $("input[name=saturacionoxigeno]").val();
+    let glucosa = $("input[name=glucosa]").val();
 
     $.ajax({
         url: url + "/updatesignos",
@@ -165,7 +171,9 @@ function updatesignos(){
             sistolica : sistolica,
             diastolica : diastolica,
             frecuenciacardiaca : frecuenciacardiaca,
-            frecuenciarespiratoria : frecuenciarespiratoria
+            frecuenciarespiratoria : frecuenciarespiratoria,
+            saturacion : saturacion,
+            glucosa : glucosa
         },
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

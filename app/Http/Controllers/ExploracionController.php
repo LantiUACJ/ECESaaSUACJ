@@ -68,6 +68,8 @@ class ExploracionController extends Controller
             $signos->tensionDiastolica = $request->diastolica;
             $signos->frecuenciaCardiaca = $request->frecuenciacardiaca;
             $signos->frecuenciaRespiratoria = $request->frecuenciarespiratoria;
+            $signos->saturacionOxigeno = $request->saturacion;
+            $signos->glucosa = $request->glucosa;
 
             $result = $signos->save();
 
@@ -102,6 +104,8 @@ class ExploracionController extends Controller
             $signos->tensionDiastolica = $request->diastolica;
             $signos->frecuenciaCardiaca = $request->frecuenciacardiaca;
             $signos->frecuenciaRespiratoria = $request->frecuenciarespiratoria;
+            $signos->saturacionOxigeno = $request->saturacion;
+            $signos->glucosa = $request->glucosa;
 
             $result = $signos->save();
 
@@ -128,6 +132,8 @@ class ExploracionController extends Controller
         $signos->tensionDiastolica = $request->diastolica;
         $signos->frecuenciaCardiaca = $request->frecuenciacardiaca;
         $signos->frecuenciaRespiratoria = $request->frecuenciarespiratoria;
+        $signos->saturacionOxigeno = $request->saturacion;
+        $signos->glucosa = $request->glucosa;
 
         $result = $signos->save();
 

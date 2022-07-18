@@ -854,12 +854,14 @@
                                             <label for="toxicomanias" class="col-md-12 col-form-label">{{ __('Toxicomanías') }}:</label>
             
                                             <div class="col-md-12">
-                                                <select class="form-control" name="multiselecttoxic" id="multiselecttoxic">
+                                                <select class="form-control" name="multiselecttoxic[]" id="multiselecttoxic" >
                                                     <option value="1">Depresoras</option>
                                                     <option value="2">Estimulantes</option>
                                                     <option value="3">Alucinógenos/Psicodélicos</option>
                                                     <option value="4">Cannabis</option>
                                                     <option value="5">Inhalantes</option>
+                                                    <option value="6">Alcoholismo</option>
+                                                    <option value="7">Tabaquismo</option>
                                                 </select>
                                                 <!--
                                                 <textarea name="toxicomanias" id="toxicomanias" cols="30" rows="3" 
@@ -889,6 +891,7 @@
                                     <div class="form-group row text-center">
                                         <div class="col-md-4">
                                         </div>
+                                        <!-- 
                                         <div class="col-md-4">
                                             <div class="form-group row mb-0">
                                                 <div class="col-md-12">
@@ -898,7 +901,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+                                        -->
+
                                         <div class="col-md-4">
                                             <div id="antePPsubmit" class="form-group row mb-0 {{ session('antePP_id') !== null ? 'hiddenli' : '' }}">
                                                 <div class="col-md-12">
@@ -1566,7 +1570,7 @@
                                             <div class="col-md-12">
                                                 <div class="col-md-12 input-group">
                                                     <input id="glucosa" type="text" class="form-control"
-                                                    name="glucosa" value="{{ old('glucosa') }}" autocomplete="glucosa" maxlength="3"
+                                                    name="glucosa" value="{{ old('glucosa') }}" autocomplete="glucosa" maxlength="5"
                                                     onkeypress="return /[0-9]/i.test(event.key)"
                                                     title="La Frecuencia Respiratoria es una cantidad númerica." autofocus>
                                                     <div class="input-group-append">
@@ -1583,7 +1587,6 @@
                                         <div class="col-md-1"></div>
                                         
                                     </div>
-        
         
                                     <br>
 

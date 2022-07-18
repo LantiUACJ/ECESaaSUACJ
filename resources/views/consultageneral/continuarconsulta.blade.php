@@ -855,6 +855,8 @@
                                                     <option value="3">Alucinógenos/Psicodélicos</option>
                                                     <option value="4">Cannabis</option>
                                                     <option value="5">Inhalantes</option>
+                                                    <option value="6">Alcoholismo</option>
+                                                    <option value="7">Tabaquismo</option>
                                                 </select>
                                                 @if ($antePP->toxicomaniasAlcoholismo != null)
                                                     @foreach (json_decode($antePP->toxicomaniasAlcoholismo) as $toxico)
@@ -1536,7 +1538,7 @@
                                             <div class="col-md-12">
                                                 <div class="col-md-12 input-group">
                                                     <input id="saturacionoxigeno" type="text" class="form-control"
-                                                    name="saturacionoxigeno" value="{{ $signos->saturacionoxigeno }}" autocomplete="saturacionoxigeno" maxlength="3"
+                                                    name="saturacionoxigeno" value="{{ $signos->saturacionOxigeno }}" autocomplete="saturacionoxigeno" maxlength="3"
                                                     onkeypress="return /[0-9]/i.test(event.key)"
                                                     title="La Saturación de Oxígeno es una cantidad númerica." autofocus>
                                                     <div class="input-group-append">
@@ -1556,7 +1558,7 @@
                                             <div class="col-md-12">
                                                 <div class="col-md-12 input-group">
                                                     <input id="glucosa" type="text" class="form-control"
-                                                    name="glucosa" value="{{ $signos->glucosa }}" autocomplete="glucosa" maxlength="3"
+                                                    name="glucosa" value="{{ $signos->glucosa }}" autocomplete="glucosa" maxlength="5"
                                                     onkeypress="return /[0-9]/i.test(event.key)"
                                                     title="La Frecuencia Respiratoria es una cantidad númerica." autofocus>
                                                     <div class="input-group-append">
