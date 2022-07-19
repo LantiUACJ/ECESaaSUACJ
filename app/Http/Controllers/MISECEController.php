@@ -1,7 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
+
+//Resources
+use App\Fhir\Resource\Bundle;
+use App\Fhir\Resource\Patient;
+//Elements
+use App\Fhir\Element\HumanName;
+use App\Fhir\Element\Address;
+
 use App\Models\Paciente;
+use App\Models\Consulta;
+
 use App\Models\Sexo;
 use App\Models\Entidadesfederativa;
 use App\Models\Municipio;
@@ -18,16 +28,19 @@ class MISECEController extends Controller
     function sendexpediente($curp){
         $paciente = Paciente::where('curp', $curp)->first();
         if($paciente != null){
-            $expediente = array();
-            $expediente["resourceType"] = "Bundle";
-            $expediente["type"] = "transaction";
-            $entries = array();
+            $bundle = new Bundle;
+            $bundle->setType("transaction");
+            $patient = $this->PatientRss($paciente);
+            $bundle->addEntry($patient);
 
-            $entries[] = $this->PatientToJson($paciente);
+            $consults = Consulta::where("paciente_id", $paciente->id)->get();
 
-            $expediente["entry"] = $entries;
+            foreach($consults as $consult){
+                
+            }
 
-            return $expediente;
+
+            return $bundle->toArray();
         }else{
             return response()->json(['Error' => 'Paciente Desconocido.'], 500);
         }
@@ -109,40 +122,54 @@ class MISECEController extends Controller
         $arraypac = array();
         $arraypac["resource"] = [
             "resourceType" => "Patient",
-            "identifier" => [
+            "identifier" => [[
                 "use" => "official",
-                "type" => [
-                    "text" => "CURP"
-                ],
                 "value" => $paciente->curp
-            ],
-            "name" => [
+            ]],
+            "name" => [[
+                "use" => "oficial",
                 "text" => $paciente->nombre." ".$paciente->primerApellido." ".$paciente->segundoApellido
-            ],
+            ]],
             "language" => "es",
             "active" => "true",
             "gender" => Sexo::where("id", $paciente->sexo_id)->first()->descripcion,
             "birthDate" => Carbon::createFromFormat('Y-m-d H:i:s', $paciente->fechaNacimiento)->format('d-m-Y'),
-            "address" => [
+            "address" => [[
+                "text" => "Col. ".$paciente->colonia.", Calle. ".$paciente->calle.", #".$paciente->numero,
                 "state" => Entidadesfederativa::where("id", $paciente->entidadFederativa_id)->first()->entidad,
-                "city" => Municipio::where("id", $paciente->municipio_id)->first()->municipio,
-                "district" => "Col. ".$paciente->colonia.", Calle. ".$paciente->calle.", #".$paciente->numero
-            ],
-            "communication" => [
-                "language" => [
-                    "text" => "es"
-                ],
-                "preferred" => "true"
-            ]
-        ];
-        $arraypac["request"] = [
-            "method" => "POST",
-            "url" => "Patient"
+                "district" => Municipio::where("id", $paciente->municipio_id)->first()->municipio
+            ]],
+            "id" => $paciente->curp
         ];
         return $arraypac;
     }
 
     private function GetObservation(){
 
+    }
+
+    //Methods for Marcos Library
+    private function PatientRss(Paciente $paciente){
+        $patient = new Patient;    
+
+        $humanname = new HumanName;
+        $humanname->setText($paciente->nombre." ".$paciente->primerApellido." ".$paciente->segundoApellido);
+        $humanname->setUse("official");
+        $patient->setName($humanname);
+
+        $sexo = Sexo::where('id', $paciente->sexo_id)->first()->descripcion;
+        $patient->setGender($sexo == "Masculino" || $sexo == "Femenino"? $sexo: "other");
+
+        $patient->setBirthDate(Carbon::createFromFormat('Y-m-d H:i:s', $paciente->fechaNacimiento)->format('d-m-Y'));
+
+        $address = new Address;
+        $address->setUse("home");
+        $address->setType("physical");
+        $address->setText("Col. ".$paciente->colonia.", Calle. ".$paciente->calle.", #".$paciente->numero);
+        $address->setDistrict(Municipio::where("id", $paciente->municipio_id)->first()->municipio);
+        $address->setState(Entidadesfederativa::where("id", $paciente->entidadFederativa_id)->first()->entidad);
+        $patient->addAddress($address);
+
+        return $patient;
     }
 }
