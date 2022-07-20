@@ -194,8 +194,8 @@ class Observation extends DomainResource{
     public function setCode(CodeableConcept $code){
         $this->code = $code;
     }
-    public function setSubject(Reference $subject){
-        $this->subject = $subject;
+    public function setSubject(Resource $subject){
+        $this->subject = $subject->toReference();
     }
     public function addFocus(Reference $focus){
         $this->focus[] = $focus;

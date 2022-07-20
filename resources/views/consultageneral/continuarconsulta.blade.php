@@ -849,7 +849,7 @@
                                             <label for="toxicomanias" class="col-md-12 col-form-label">{{ __('Toxicomanías') }}:</label>
             
                                             <div class="col-md-12">
-                                                <select class="form-control" name="multiselecttoxic" id="multiselecttoxic">
+                                                <select class="form-control" name="multiselecttoxic[]" id="multiselecttoxic">
                                                     <option value="1">Depresoras</option>
                                                     <option value="2">Estimulantes</option>
                                                     <option value="3">Alucinógenos/Psicodélicos</option>
@@ -1700,7 +1700,7 @@
             delimiter: ",",
             placeholder: "Selecciona una opción",
             persist: false,
-            maxItems: 5,
+            maxItems: 7,
         });
 
         var selectizetoxic = $multitoxic[0].selectize;

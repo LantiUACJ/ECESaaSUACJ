@@ -1689,7 +1689,7 @@
             delimiter: ",",
             placeholder: "Selecciona una opción",
             persist: false,
-            maxItems: 5,
+            maxItems: 7,
         });
 
         var selectizetoxic = $multitoxic[0].selectize;
