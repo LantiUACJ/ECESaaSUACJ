@@ -6,12 +6,15 @@ namespace App\Http\Controllers;
 use App\Fhir\Resource\Bundle;
 use App\Fhir\Resource\Patient;
 use App\Fhir\Resource\Observation;
+use App\Fhir\Resource\Encounter;
 //Elements
 use App\Fhir\Element\HumanName;
 use App\Fhir\Element\Address;
 use App\Fhir\Element\CodeableConcept;
 use App\Fhir\Element\Coding;
 use App\Fhir\Element\Reference;
+use App\Fhir\Element\Period;
+use App\Fhir\Element\Quantity;
 
 use App\Models\Paciente;
 use App\Models\Consulta;
@@ -26,6 +29,9 @@ use App\Models\Antecedentespnp;
 use App\Models\Antecedentespp;
 use App\Models\Interrogatorioaparato;
 use App\Models\grupoetnico;
+
+use App\Models\Exploracionfisica;
+use App\Models\Signovital;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -49,13 +55,13 @@ class MISECEController extends Controller
             //Primero Historia clinica, ya que solo es una (interrogatorios)
             $inter = Interrogatorio::where('paciente_id', $paciente->id)->first();
             $this->HistoriaRss($inter);
-            /*
+            
             //Segundo consultas, nota de consultas, exploracion fisica y signos vitales (por cada consulta (enconter))
             $consults = Consulta::where("paciente_id", $paciente->id)->get();
             foreach($consults as $consult){
-                
+                $this->ConsultaRss($consult);
             }
-            */
+            
             $data = array();
             $data["json"] = json_encode($this->bundle->toArray());
             $response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/test/json', $data);
@@ -477,4 +483,121 @@ class MISECEController extends Controller
         }
     }
 
+    private function ConsultaRss(Consulta $consult){
+        $consulta = new Encounter;
+        $consulta->setSubject($this->patient);
+        $consult->terminada == 1? $consulta->setStatus("finished"): $consulta->setStatus("in-progress");
+        $consulta->setPeriod(new Period($consult->created_at, $consult->updated_at));
+        
+        $this->bundle->addEntry($consulta);
+
+        //Datos de la consulta
+        $category[0] = "Consulta General";
+        $category[1] = "Datos de la Consulta";
+        $reference = $consulta->toReference();
+
+        if($consult->motivoConsulta != null){
+            $obs = $this->GetObservation($reference, "final", $category, "Motivo de Consulta", [$consult->motivoConsulta], false);
+            $this->bundle->addEntry($obs);
+        }
+        if($consult->cuadroClinico != null){
+            $obs = $this->GetObservation($reference, "final", $category, "Cuadro Clínico", [$consult->cuadroClinico], false);
+            $this->bundle->addEntry($obs);
+        }
+        if($consult->resultadosLaboratorioGabinete != null){
+            $obs = $this->GetObservation($reference, "final", $category, "Resultados de Laboratorio y Gabinete", [$consult->resultadosLaboratorioGabinete], false);
+            $this->bundle->addEntry($obs);
+        }
+        if($consult->diagnosticoProblemasClinicos != null){
+            $obs = $this->GetObservation($reference, "final", $category, "Diagnosticos o Problemas Clínicos", [$consult->diagnosticoProblemasClinicos], false);
+            $this->bundle->addEntry($obs);
+        }
+        if($consult->pronostico != null){
+            $obs = $this->GetObservation($reference, "final", $category, "Pronóstico", [$consult->pronostico], false);
+            $this->bundle->addEntry($obs);
+        }
+        if($consult->indicacionTerapeutica != null){
+            $obs = $this->GetObservation($reference, "final", $category, "Indicación Terapéutica", [$consult->indicacionTerapeutica], false);
+            $this->bundle->addEntry($obs);
+        }
+
+        //Exploracion Fisica - 
+        if($consult->exploracion_id != null){
+            //Datos de la exploracion
+            $exploracion = Exploracionfisica::where("id", $consult->exploracion_id)->first();
+            $category[0] = "Exploracion Física";
+            $category[1] = "Datos de Exploración Física";
+            if($exploracion->habitusExterior != null){
+                $obs = $this->GetObservation($reference, "final", $category, "Habitus Exterior", [$exploracion->habitusExterior], false);
+                $this->bundle->addEntry($obs);
+            }
+            if($exploracion->peso != null){
+                $obs = $this->GetObservation($reference, "final", $category, "Peso", [$exploracion->peso, "kg"], false);
+                $this->bundle->addEntry($obs);
+            }
+            if($exploracion->talla != null){
+                $obs = $this->GetObservation($reference, "final", $category, "Talla", [$exploracion->talla, "cm"], false);
+                $this->bundle->addEntry($obs);
+            }
+            if($exploracion->cabeza != null){
+                $obs = $this->GetObservation($reference, "final", $category, "Cabeza", [$exploracion->cabeza], false);
+                $this->bundle->addEntry($obs);
+            }
+            if($exploracion->cuello != null){
+                $obs = $this->GetObservation($reference, "final", $category, "Cuello", [$exploracion->cuello], false);
+                $this->bundle->addEntry($obs);
+            }
+            if($exploracion->torax != null){
+                $obs = $this->GetObservation($reference, "final", $category, "Torax", [$exploracion->torax], false);
+                $this->bundle->addEntry($obs);
+            }
+            if($exploracion->abdomen != null){
+                $obs = $this->GetObservation($reference, "final", $category, "Abdomen", [$exploracion->abdomen], false);
+                $this->bundle->addEntry($obs);
+            }
+            if($exploracion->miembros != null){
+                $obs = $this->GetObservation($reference, "final", $category, "Miembros", [$exploracion->miembros], false);
+                $this->bundle->addEntry($obs);
+            }
+            if($exploracion->genitales != null){
+                $obs = $this->GetObservation($reference, "final", $category, "Genitales", [$exploracion->genitales], false);
+                $this->bundle->addEntry($obs);
+            }
+
+            //Signos vitales
+            if($exploracion->signos_id != null){
+                $signos = Signovital::where("id", $exploracion->signos_id)->first();
+                $category[0] = "Exploracion Física";
+                $category[1] = "Signos Vitales";
+                if($signos->temperatura != null){
+                    $obs = $this->GetObservation($reference, "final", $category, "Temperatura", [$signos->temperatura, "°C"], false);
+                    $this->bundle->addEntry($obs);
+                }
+                if($signos->tensionSistolica != null){
+                    $obs = $this->GetObservation($reference, "final", $category, "Tensión Sistolica", [$signos->tensionSistolica, "mmHg"], false);
+                    $this->bundle->addEntry($obs);
+                }
+                if($signos->tensionDiastolica != null){
+                    $obs = $this->GetObservation($reference, "final", $category, "Tensión Diastolica", [$signos->tensionDiastolica, "mmHg"], false);
+                    $this->bundle->addEntry($obs);
+                }
+                if($signos->frecuenciaCardiaca != null){
+                    $obs = $this->GetObservation($reference, "final", $category, "Frecuencia Cardiaca", [$signos->frecuenciaCardiaca, "lmp"], false);
+                    $this->bundle->addEntry($obs);
+                }
+                if($signos->frecuenciaRespiratoria != null){
+                    $obs = $this->GetObservation($reference, "final", $category, "Frecuencia Respiratoria", [$signos->frecuenciaRespiratoria, "rmp"], false);
+                    $this->bundle->addEntry($obs);
+                }
+                if($signos->saturacionOxigeno != null){
+                    $obs = $this->GetObservation($reference, "final", $category, "Saturación de Oxígeno", [$signos->saturacionOxigeno, "%"], false);
+                    $this->bundle->addEntry($obs);
+                }
+                if($signos->glucosa != null){
+                    $obs = $this->GetObservation($reference, "final", $category, "Glucosa", [$signos->glucosa, "mg/dL"], false);
+                    $this->bundle->addEntry($obs);
+                }
+            }
+        }
+    }
 }
