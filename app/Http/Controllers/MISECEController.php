@@ -75,7 +75,27 @@ class MISECEController extends Controller
     }
 
     function sendexpedientebasico($curp){
-        return "sendexpedientebasico curp: ".$curp;
+        $paciente = Paciente::where('curp', $curp)->first();
+        if($paciente != null){
+            $this->bundle = new Bundle;
+            $this->bundle->setType("transaction");
+            $this->patient = $this->PatientRss($paciente);
+            $this->bundle->addEntry($this->patient);
+            
+            //Primero Historia clinica, ya que solo es una (interrogatorios)
+            $inter = Interrogatorio::where('paciente_id', $paciente->id)->first();
+            $this->HistoriaRss($inter);
+            
+            $data = array();
+            $data["json"] = json_encode($this->bundle->toArray());
+            $response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/test/json', $data);
+
+            return $response->body();
+
+            return json_encode($this->bundle->toArray());
+        }else{
+            return response()->json(['Error' => 'Paciente Desconocido.'], 500);
+        }
     }
 
     function sendindice(Request $request){
