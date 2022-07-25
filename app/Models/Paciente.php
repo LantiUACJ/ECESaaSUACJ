@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * Class Paciente
@@ -43,6 +45,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Paciente extends Model
 {
+    use HasFactory, RefreshDatabase;
     
     static $rules = [
        // 'nombre' => 'required|max:255',

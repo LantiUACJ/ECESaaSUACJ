@@ -8,20 +8,25 @@ use Faker\Generator as Faker;
 
 class PatientFactory extends Factory
 {
+
+    protected $model = Paciente::class;
+
     /**
      * Define the model's default state.
      *
      * @return array
      */
-    public function definition(Faker $faker)
+    public function definition()
     {
         return [
-            'curp' => $faker->text,
-            'nombre' => $faker->text,
-            'slug' => $faker->slug,
-            'keywords' => $faker->text,
-            'description' => $faker->text,
-            'content' => $faker->paragraph,
+            'curp' => $this->faker->text,
+            'nombre' => $this->faker->text,
+            /*
+            'slug' => $this->faker->slug,
+            'keywords' => $this->faker->text,
+            'description' => $this->faker->text,
+            'content' => $this->faker->paragraph,
+            */
         ];
     }
 }
