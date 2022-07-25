@@ -13,6 +13,6 @@ class AddPatients extends Seeder
      */
     public function run()
     {
-        //
+        //factory(App\PatientFaker::class, 100)->create();
     }
 }

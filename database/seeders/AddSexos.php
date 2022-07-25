@@ -14,12 +14,12 @@ class AddSexos extends Seeder
      */
     public function run()
     {
-        grupoetnico::create([
+        Sexo::create([
             "numero" => 1,
             "descripcion" => "Masculino"
         ]);
 
-        grupoetnico::create([
+        Sexo::create([
             "numero" => 2,
             "descripcion" => "Femenino"
         ]);
