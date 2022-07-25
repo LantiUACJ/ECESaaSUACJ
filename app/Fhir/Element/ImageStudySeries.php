@@ -14,37 +14,37 @@ class ImageStudySeries extends Element{
     }
     private function loadData($json){
         if(isset($json->uid))
-            $arrayData["uid"] = $json->uid;
+            $this->uid = $json->uid;
         if(isset($json->number))
-            $arrayData["number"] = $json->number;
+            $this->number = $json->number;
         if(isset($json->modality))
-            $arrayData["modality"] = Coding::Load($json->modality);
+            $this->modality = Coding::Load($json->modality);
         if(isset($json->description))
-            $arrayData["description"] = $json->description;
+            $this->description = $json->description;
         if(isset($json->numberOfInstances))
-            $arrayData["numberOfInstances"] = CodeableConcept::Load($json->numberOfInstances);
+            $this->numberOfInstances = $json->numberOfInstances;
         if(isset($json->endpoint)){
             foreach($json->endpoint as $endpoint)
-                $arrayData["endpoint"][] = Reference::Load($endpoint);
+                $this->endpoint[] = Reference::Load($endpoint);
         }
         if(isset($json->bodySite))
-            $arrayData["bodySite"] = Coding::Load($json->bodySite);
+            $this->bodySite = Coding::Load($json->bodySite);
         if(isset($json->laterality))
-            $arrayData["laterality"] = Coding::Load($json->laterality);
+            $this->laterality = Coding::Load($json->laterality);
         if(isset($json->specimen)){
             foreach($json->specimen as $specimen)
-                $arrayData["specimen"][] = Reference::Load($specimen);
+                $this->specimen[] = Reference::Load($specimen);
         }
         if(isset($json->started))
-            $arrayData["started"] = $json->started;
+            $this->started = $json->started;
         if(isset($json->performer))
             foreach($json->performer as $performer){
                 $data = [];
                 if(isset($performer->actor))
                     $data["actor"] = Reference::Load($performer->actor);
-                if(isset($json->function))
-                    $data["function"] = Reference::Load($performer->function);
-                $arrayData["performer"][] = $data;
+                if(isset($performer->function))
+                    $data["function"] = CodeableConcept::Load($performer->function);
+                $this->performer[] = $data;
             }
         if(isset($json->instance)){
             foreach($json->instance as $instance){
@@ -56,8 +56,8 @@ class ImageStudySeries extends Element{
                 if(isset($instance->title))
                     $data["title"] = $instance->title;
                 if(isset($instance->sopClass))
-                    $data["sopClass"] = $instance->sopClass;
-                $arrayData["instance"][] = $data;
+                    $data["sopClass"] = Coding::Load($instance->sopClass);
+                $this->instance[] = $data;
             }
         }
     }
@@ -81,8 +81,8 @@ class ImageStudySeries extends Element{
     public function setNumberOfInstances(CodeableConcept $numberOfInstances){
         $this->numberOfInstances = $numberOfInstances;
     }
-    public function addEndpoint(Reference $endpoint){
-        $this->endpoint[] = $endpoint;
+    public function addEndpoint(Resource $endpoint){
+        $this->endpoint[] = $endpoint->toReference();
     }
     public function setBodySite(Coding $bodySite){
         $this->bodySite = $bodySite;
@@ -90,8 +90,8 @@ class ImageStudySeries extends Element{
     public function setLaterality(Coding $laterality){
         $this->laterality = $laterality;
     }
-    public function addSpecimen(Reference $specimen){
-        $this->specimen[] = $specimen;
+    public function addSpecimen(Resource $specimen){
+        $this->specimen[] = $specimen->toReference();
     }
     public function setStarted($started){
         $this->started = $started;
@@ -122,8 +122,8 @@ class ImageStudySeries extends Element{
             $arrayData["modality"] = $this->modality->toArray();
         if(isset($this->description))
             $arrayData["description"] = $this->description;
-        if(isset($this->numberOfInstances))
-            $arrayData["numberOfInstances"] = $this->numberOfInstances->toArray();
+        if(isset($this->numberOfInstances) && $this->numberOfInstances)
+            $arrayData["numberOfInstances"] = $this->numberOfInstances;
         foreach($this->endpoint as $endpoint)
             $arrayData["endpoint"][] = $endpoint->toArray();
         if(isset($this->bodySite))
@@ -137,24 +137,24 @@ class ImageStudySeries extends Element{
         if(isset($this->performer)){
             foreach($this->performer as $performer){
                 $data = [];
-                if(isset($performer->actor))
-                    $data["actor"] = $performer->actor;
-                if(isset($performer->function))
-                    $data["function"] = $performer->function;
+                if(isset($performer["actor"]))
+                    $data["actor"] = $performer["actor"]->toArray();
+                if(isset($performer["function"]))
+                    $data["function"] = $performer["function"]->toArray();
                 $arrayData["performer"][] = $data;
             }
         }
         if(isset($this->instance)){
             foreach($this->instance as $instance){
                 $data = [];
-                if(isset($instance->uid))
-                    $data["uid"] = $instance->uid;
-                if(isset($instance->number))
-                    $data["number"] = $instance->number;
-                if(isset($instance->title))
-                    $data["title"] = $instance->title;
-                if(isset($instance->sopClass))
-                    $data["sopClass"] = $instance->sopClass->toArray();
+                if(isset($instance["uid"]))
+                    $data["uid"] = $instance["uid"];
+                if(isset($instance["number"]))
+                    $data["number"] = $instance["number"];
+                if(isset($instance["title"]))
+                    $data["title"] = $instance["title"];
+                if(isset($instance["sopClass"]))
+                    $data["sopClass"] = $instance["sopClass"]->toArray();
                 $arrayData["instance"][] = $data;
             }
         }

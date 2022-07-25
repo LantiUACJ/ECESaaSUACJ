@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 //Resources
 use App\Fhir\Resource\Bundle;
+use App\Fhir\Resource\Composition;
 use App\Fhir\Resource\Patient;
 use App\Fhir\Resource\Observation;
 use App\Fhir\Resource\Encounter;
@@ -15,6 +16,7 @@ use App\Fhir\Element\Coding;
 use App\Fhir\Element\Reference;
 use App\Fhir\Element\Period;
 use App\Fhir\Element\Quantity;
+use App\Fhir\Element\CompositionSection;
 
 use App\Models\Paciente;
 use App\Models\Consulta;
@@ -39,8 +41,6 @@ use Carbon\Carbon;
 
 class MISECEController extends Controller
 {
-    private $bundle;
-    private $patient;
     //////
     //Metodos del MISECE al ECE
     //////
@@ -48,8 +48,20 @@ class MISECEController extends Controller
         $paciente = Paciente::where('curp', $curp)->first();
         if($paciente != null){
             $this->bundle = new Bundle;
-            $this->bundle->setType("transaction");
+            $this->bundle->setType("document");
+            $this->bundle->setTimestamp(Carbon::now()->format('Y-m-d H:i:s'));
+
             $this->patient = $this->PatientRss($paciente);
+            
+            $this->composition = new Composition;
+            $this->composition->setStatus("final");
+            $this->composition->historiaClinica();
+            $this->composition->setSubject($this->patient);
+            $this->composition->setDate(Carbon::now()->format('Y-m-d H:i:s'));
+            $this->composition->setTitle("Historia Clínica");
+            $this->composition->setConfidentiality("N");
+
+            $this->bundle->addEntry($this->composition);
             $this->bundle->addEntry($this->patient);
             
             //Primero Historia clinica, ya que solo es una (interrogatorios)
@@ -57,11 +69,13 @@ class MISECEController extends Controller
             $this->HistoriaRss($inter);
             
             //Segundo consultas, nota de consultas, exploracion fisica y signos vitales (por cada consulta (enconter))
-            $consults = Consulta::where("paciente_id", $paciente->id)->get();
+            $consults = Consulta::where("paciente_id", $paciente->id)->orderBy('created_at', 'desc')->get();
             foreach($consults as $consult){
                 $this->ConsultaRss($consult);
             }
-            
+
+            return $this->bundle->toArray();
+
             $data = array();
             $data["json"] = json_encode($this->bundle->toArray());
             $response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/test/json', $data);
@@ -78,7 +92,7 @@ class MISECEController extends Controller
         $paciente = Paciente::where('curp', $curp)->first();
         if($paciente != null){
             $this->bundle = new Bundle;
-            $this->bundle->setType("transaction");
+            $this->bundle->setType("document");
             $this->patient = $this->PatientRss($paciente);
             $this->bundle->addEntry($this->patient);
             
@@ -194,12 +208,10 @@ class MISECEController extends Controller
 
     //Methods for Marcos Library
     private function PatientRss(Paciente $paciente){
-        $patient = new Patient;    
-
-        $humanname = new HumanName;
-        $humanname->setText($paciente->nombre." ".$paciente->primerApellido." ".$paciente->segundoApellido);
+        $patient = new Patient;
+        $humanname = new HumanName($paciente->nombre." ".$paciente->primerApellido." ".$paciente->segundoApellido);
         $humanname->setUse("official");
-        $patient->setName($humanname);
+        $patient->addName($humanname);
 
         $sexo = Sexo::where('id', $paciente->sexo_id)->first()->descripcion;
         $patient->setGender($sexo == "Masculino" || $sexo == "Femenino"? $sexo: "other");
@@ -219,158 +231,186 @@ class MISECEController extends Controller
 
     private function HistoriaRss(Interrogatorio $inter){
         //create observation foreach antecedente
-        $historia = new Observation;
-        $historia->setSubject($this->patient);
-        $historia->setStatus("final");
-        $historia->addCategory(new CodeableConcept("Historia Clinica", new Coding("Historia Clinica", "Historia Clinica")));
-        
-        $this->bundle->addEntry($historia);
-
         //heredo familiar
         if($inter->anteHF_id != null){
-            $this->AddAnteHF($historia, $inter->anteHF_id);
+            $this->AddAnteHF($inter->anteHF_id);
         }
         //personales patologicos
         if($inter->antePP_id != null){
-            $this->AddAntePP($historia, $inter->antePP_id);
+            $this->AddAntePP($inter->antePP_id);
         }
         //personales no patologicos
         if($inter->antePNP_id != null){
-            $this->AddAntePNP($historia, $inter->antePNP_id);
+            $this->AddAntePNP($inter->antePNP_id);
         }
         //aparatos y sistemas
         if($inter->interAS_id != null){
-            $this->AddInterAS($historia, $inter->interAS_id);
+            $this->AddInterAS($inter->interAS_id);
         }
     }
 
-    private function AddAnteHF(&$history, $id){
+    private function AddAnteHF($id){
         $hf = Antecedenteshf::where("id", $id)->first();
-        $category[0] = "Interrogatorio";
-        $category[1] = "Antecedentes Heredo Familiares";
-        $reference = $history->toReference();
+        $ante = "Antecedentes Heredo-Familiares";
+        $compSection = new CompositionSection;
+        $compSection->setTitle("Antecedentes Heredo-Familiares");
+        $compSection->setCode(new CodeableConcept($ante, new Coding($ante, "D2.2")));
+
         if($hf->grupo_id != null){
             $grupo = grupoetnico::where("id", $hf->grupo_id)->first()->lenguaIndigena;
-            $obs = $this->GetObservation($reference, "final", $category, "Grupo Étnico", [$grupo], false);
+            $obs = $this->GetObservation($this->composition, "final", "Grupo Étnico", [$grupo], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($hf->diabetes == 1){
-            $obs = $this->GetObservation($reference, "final", $category, "Diabetes", ["Postitivo"], true);
+            $obs = $this->GetObservation($this->composition, "final", "Diabetes", ["Postitivo"], true);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($hf->hipertension == 1){
-            $obs = $this->GetObservation($reference, "final", $category, "Hipertension", ["Postitivo"], true);
+            $obs = $this->GetObservation($this->composition, "final", "Hipertension", ["Postitivo"], true);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($hf->dislipidemias == 1){
-            $obs = $this->GetObservation($reference, "final", $category, "Dislipidemias", ["Postitivo"], true);
+            $obs = $this->GetObservation($this->composition, "final", "Dislipidemias", ["Postitivo"], true);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($hf->neoplasias == 1){
-            $obs = $this->GetObservation($reference, "final", $category, "Neoplasias", ["Postitivo"], true);
+            $obs = $this->GetObservation($this->composition, "final", "Neoplasias", ["Postitivo"], true);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($hf->tuberculosis == 1){
-            $obs = $this->GetObservation($reference, "final", $category, "Tuberculosis", ["Postitivo"], true);
+            $obs = $this->GetObservation($this->composition, "final", "Tuberculosis", ["Postitivo"], true);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($hf->artritis == 1){
-            $obs = $this->GetObservation($reference, "final", $category, "Artritis", ["Postitivo"], true);
+            $obs = $this->GetObservation($this->composition, "final", "Artritis", ["Postitivo"], true);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($hf->cardiopatias == 1){
-            $obs = $this->GetObservation($reference, "final", $category, "Cardiopatias", ["Postitivo"], true);
+            $obs = $this->GetObservation($this->composition, "final", "Cardiopatias", ["Postitivo"], true);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($hf->alzheimer == 1){
-            $obs = $this->GetObservation($reference, "final", $category, "Alzheimer", ["Postitivo"], true);
+            $obs = $this->GetObservation($this->composition, "final", "Alzheimer", ["Postitivo"], true);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($hf->epilepsia == 1){
-            $obs = $this->GetObservation($reference, "final", $category, "Epilepsia", ["Postitivo"], true);
+            $obs = $this->GetObservation($this->composition, "final", "Epilepsia", ["Postitivo"], true);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($hf->parkinson == 1){
-            $obs = $this->GetObservation($reference, "final", $category, "Parkinson", ["Postitivo"], true);
+            $obs = $this->GetObservation($this->composition, "final", "Parkinson", ["Postitivo"], true);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($hf->esclerosisMultiple == 1){
-            $obs = $this->GetObservation($reference, "final", $category, "Esclerosis Multiple", ["Postitivo"], true);
+            $obs = $this->GetObservation($this->composition, "final", "Esclerosis Multiple", ["Postitivo"], true);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($hf->trastornoAnsiedad == 1){
-            $obs = $this->GetObservation($reference, "final", $category, "Trastorno Ansiedad", ["Postitivo"], true);
+            $obs = $this->GetObservation($this->composition, "final", "Trastorno Ansiedad", ["Postitivo"], true);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($hf->depresion == 1){
-            $obs = $this->GetObservation($reference, "final", $category, "Depresion", ["Postitivo"], true);
+            $obs = $this->GetObservation($this->composition, "final", "Depresion", ["Postitivo"], true);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($hf->esquizofrenia == 1){
-            $obs = $this->GetObservation($reference, "final", $category, "Esquizofrenia", ["Postitivo"], true);
+            $obs = $this->GetObservation($this->composition, "final", "Esquizofrenia", ["Postitivo"], true);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($hf->Cirrosis == 1){
-            $obs = $this->GetObservation($reference, "final", $category, "Cirrosis", ["Postitivo"], true);
+            $obs = $this->GetObservation($this->composition, "final", "Cirrosis", ["Postitivo"], true);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($hf->colestasis == 1){
-            $obs = $this->GetObservation($reference, "final", $category, "Colestasis", ["Postitivo"], true);
+            $obs = $this->GetObservation($this->composition, "final", "Colestasis", ["Postitivo"], true);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($hf->hepatitis == 1){
-            $obs = $this->GetObservation($reference, "final", $category, "Hepatitis", ["Postitivo"], true);
+            $obs = $this->GetObservation($this->composition, "final", "Hepatitis", ["Postitivo"], true);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($hf->alergias == 1){
-            $obs = $this->GetObservation($reference, "final", $category, "Alergias", ["Postitivo"], true);
+            $obs = $this->GetObservation($this->composition, "final", "Alergias", ["Postitivo"], true);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($hf->enfermedadesEndocrinas == 1){
-            $obs = $this->GetObservation($reference, "final", $category, "Enfermedades Endocrinas", ["Postitivo"], true);
+            $obs = $this->GetObservation($this->composition, "final", "Enfermedades Endocrinas", ["Postitivo"], true);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($hf->enfermedadesGeneticas == 1){
-            $obs = $this->GetObservation($reference, "final", $category, "Enfermedades Geneticas", ["Postitivo"], true);
+            $obs = $this->GetObservation($this->composition, "final", "Enfermedades Geneticas", ["Postitivo"], true);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($hf->otros != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Otros", [$hf->otros], false);
+            $obs = $this->GetObservation($this->composition, "final", "Otros", [$hf->otros], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
+
+        $this->composition->addSection($compSection);
     }
 
-    private function AddAntePP(&$history, $id){
+    private function AddAntePP($id){
         $pp = Antecedentespp::where("id", $id)->first();
-        $category[0] = "Interrogatorio";
-        $category[1] = "Antecedentes Personales Patológicos";
-        $reference = $history->toReference();
+        $ante = "Antecedentes Personales Patológicos";
+        $compSection = new CompositionSection;
+        $compSection->setTitle("Antecedentes Personales Patológico");
+        $compSection->setCode(new CodeableConcept($ante, new Coding($ante, "D2.4")));
+
         if($pp->enfermedadInfectaContagiosa != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Enfermedad Infecta-Contagiosa", [$pp->enfermedadInfectaContagiosa], false);
+            $obs = $this->GetObservation($this->composition, "final", "Enfermedad Infecta-Contagiosa", [$pp->enfermedadInfectaContagiosa], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($pp->enfermedadCronicaDegenerativa != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Enfermedad Cronica Degenerativa", [$pp->enfermedadCronicaDegenerativa], false);
+            $obs = $this->GetObservation($this->composition, "final", "Enfermedad Cronica Degenerativa", [$pp->enfermedadCronicaDegenerativa], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($pp->traumatologicos != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Traumatologicos", [$pp->traumatologicos], false);
+            $obs = $this->GetObservation($this->composition, "final", "Traumatologicos", [$pp->traumatologicos], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($pp->alergicos != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Alergicos", [$pp->alergicos], false);
+            $obs = $this->GetObservation($this->composition, "final", "Alergicos", [$pp->alergicos], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($pp->quirurgicos != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Quirurgicos", [$pp->quirurgicos], false);
+            $obs = $this->GetObservation($this->composition, "final", "Quirurgicos", [$pp->quirurgicos], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($pp->hospitalizacionesPrevias != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Hospitalizaciones Previas", [$pp->hospitalizacionesPrevias], false);
+            $obs = $this->GetObservation($this->composition, "final", "Hospitalizaciones Previas", [$pp->hospitalizacionesPrevias], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($pp->transfusiones != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Transfusiones", [$pp->transfusiones], false);
+            $obs = $this->GetObservation($this->composition, "final", "Transfusiones", [$pp->transfusiones], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($pp->toxicomaniasAlcoholismo != null){
@@ -379,105 +419,132 @@ class MISECEController extends Controller
             foreach($toxicos as $toxico){
                 $data .= $this->getToxicologia($toxico)." - ";
             }
-            $obs = $this->GetObservation($reference, "final", $category, "Toxicomanias y Alcoholismo", [$data], false);
+            $obs = $this->GetObservation($this->composition, "final", "Toxicomanias y Alcoholismo", [$data], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($pp->otros != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Otros", [$pp->otros], false);
+            $obs = $this->GetObservation($this->composition, "final", "Otros", [$pp->otros], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
+
+        $this->composition->addSection($compSection);
+
     }
 
-    private function AddAntePNP(&$history, $id){
+    private function AddAntePNP($id){
         $pnp = Antecedentespnp::where("id", $id)->first();
-        $category[0] = "Interrogatorio";
-        $category[1] = "Antecedentes Personales NO Patológicos";
-        $reference = $history->toReference();
+        $ante = "Antecedentes Personales No Patológicos";
+        $compSection = new CompositionSection;
+        $compSection->setTitle("Antecedentes Personales No Patológico");
+        $compSection->setCode(new CodeableConcept($ante, new Coding($ante, "D2.3")));
+
         if($pnp->vivienda != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Vivienda", [$pnp->vivienda], false);
+            $obs = $this->GetObservation($this->composition, "final", "Vivienda", [$pnp->vivienda], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($pnp->higiene != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Higiene", [$pnp->higiene], false);
+            $obs = $this->GetObservation($this->composition, "final", "Higiene", [$pnp->higiene], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($pnp->dieta != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Dieta", [$pnp->dieta], false);
+            $obs = $this->GetObservation($this->composition, "final", "Dieta", [$pnp->dieta], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($pnp->zoonosis != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Zoonosis", [$pnp->zoonosis], false);
+            $obs = $this->GetObservation($this->composition, "final", "Zoonosis", [$pnp->zoonosis], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($pnp->otros != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Otros", [$pnp->otros], false);
+            $obs = $this->GetObservation($this->composition, "final", "Otros", [$pnp->otros], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
+
+        $this->composition->addSection($compSection);
     }
 
-    private function AddInterAS(&$history, $id){
+    private function AddInterAS($id){
         $as = Interrogatorioaparato::where("id", $id)->first();
-        $category[0] = "Interrogatorio";
-        $category[1] = "Interrogatorio Por Aparatos y Sistemas";
-        $reference = $history->toReference();
+        $ante = "Interrogarotio por Aparatos y Sistemas";
+        $compSection = new CompositionSection;
+        $compSection->setTitle("Interrogarotio por Aparatos y Sistemas");
+        $compSection->setCode(new CodeableConcept($ante, new Coding($ante, "D2.6")));
+
         if($as->signosYsintomas != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Signos Y Sintomas", [$as->signosYsintomas], false);
+            $obs = $this->GetObservation($this->composition, "final", "Signos Y Sintomas", [$as->signosYsintomas], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($as->aparatoCardiovascular != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Aparato Cardiovascular", [$as->aparatoCardiovascular], false);
+            $obs = $this->GetObservation($this->composition, "final", "Aparato Cardiovascular", [$as->aparatoCardiovascular], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($as->aparatoRespiratorio != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Aparato Respiratorio", [$as->aparatoRespiratorio], false);
+            $obs = $this->GetObservation($this->composition, "final", "Aparato Respiratorio", [$as->aparatoRespiratorio], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($as->sistemaNefro != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Sistema Nefrologico", [$as->sistemaNefro], false);
+            $obs = $this->GetObservation($this->composition, "final", "Sistema Nefrologico", [$as->sistemaNefro], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($as->sistemaEndocrino != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Sistema Endocrino", [$as->sistemaEndocrino], false);
+            $obs = $this->GetObservation($this->composition, "final", "Sistema Endocrino", [$as->sistemaEndocrino], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($as->sistemaHemato != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Sistema Hemato", [$as->sistemaHemato], false);
+            $obs = $this->GetObservation($this->composition, "final", "Sistema Hemato", [$as->sistemaHemato], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($as->sistemaNervioso != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Sistema Nervioso", [$as->sistemaNervioso], false);
+            $obs = $this->GetObservation($this->composition, "final", "Sistema Nervioso", [$as->sistemaNervioso], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($as->sistemaMusculoEsqueletico != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Sistema Musculo-Esqueletico", [$as->sistemaMusculoEsqueletico], false);
+            $obs = $this->GetObservation($this->composition, "final", "Sistema Musculo-Esqueletico", [$as->sistemaMusculoEsqueletico], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($as->pielYtegumentos != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Piel Y Tegumentos", [$as->pielYtegumentos], false);
+            $obs = $this->GetObservation($this->composition, "final", "Piel Y Tegumentos", [$as->pielYtegumentos], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($as->organosSentidos != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Organos de los Sentidos", [$as->organosSentidos], false);
+            $obs = $this->GetObservation($this->composition, "final", "Organos de los Sentidos", [$as->organosSentidos], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
         if($as->esferaPsiquica != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Esfera Psiquica", [$as->esferaPsiquica], false);
+            $obs = $this->GetObservation($this->composition, "final", "Esfera Psiquica", [$as->esferaPsiquica], false);
+            $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }
+
+        $this->composition->addSection($compSection);
     }
 
-    private function GetObservation($reference, $status, $category, $code, $values, $isbool){//$category = Antecedentes || $code = dato de antecedentes (eg. Grupo Etnico) || $values[0] = valor, $values[1] = unidad
+    private function GetObservation($reference, $status, $category, $values, $isbool){//$category = Antecedentes || $code = dato de antecedentes (eg. Grupo Etnico) || $values[0] = valor, $values[1] = unidad
         $ob = new Observation;
         $ob->setSubject($this->patient);
         $ob->setStatus($status);
-        $ob->addCategory(new CodeableConcept($category[1], new Coding($category[0], $category[1])));
-        $ob->setCode(new CodeableConcept($code, new Coding("", $code)));
-        $ob->addPartOf($reference);
+        $ob->setCode(new CodeableConcept($category, new Coding($category, ""))); //Coding = display, code
         if(count($values) > 1){
             $ob->setValueQuantity(new Quantity($values[0], $values[1]));
         }else{
             if($isbool)
-                $ob->setValueString("Positivo");
+                $ob->setValueBoolean(true);
             else
                 $ob->setValueString($values[0]);
         }
@@ -504,40 +571,90 @@ class MISECEController extends Controller
     }
 
     private function ConsultaRss(Consulta $consult){
+        $compositionnote = new Composition;
+        $compositionnote->setStatus("final");
+        $compositionnote->notaEvolucion();
+        $compositionnote->setSubject($this->patient);
+        $compositionnote->setDate(Carbon::now()->format('Y-m-d H:i:s'));
+        $compositionnote->setTitle("Consulta General");
+        $compositionnote->setConfidentiality("N");
+
+        $this->bundle->addEntry($compositionnote);
+
+        $note = "Consulta General";
+        $display = "Datos de Consulta";
+
         $consulta = new Encounter;
         $consulta->setSubject($this->patient);
         $consult->terminada == 1? $consulta->setStatus("finished"): $consulta->setStatus("in-progress");
-        $consulta->setPeriod(new Period($consult->created_at, $consult->updated_at));
-        
+        $consulta->setPeriod(new Period($consult->created_at->format('Y-m-d H:i:s'), $consult->updated_at->format('Y-m-d H:i:s')));
+        $compositionnote->setEncounter($consulta);
         $this->bundle->addEntry($consulta);
 
-        //Datos de la consulta
-        $category[0] = "Consulta General";
-        $category[1] = "Datos de la Consulta";
-        $reference = $consulta->toReference();
-
         if($consult->motivoConsulta != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Motivo de Consulta", [$consult->motivoConsulta], false);
+            $obs = $this->GetObservation($this->composition, "final", "Motivo de Consulta", [$consult->motivoConsulta], false);
+
+            $compSection = new CompositionSection;
+            $compSection->setTitle("Motivo de Consulta");
+            $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
+            $compSection->addEntry($obs);
+            $compositionnote->addSection($compSection);
+
             $this->bundle->addEntry($obs);
         }
         if($consult->cuadroClinico != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Cuadro Clínico", [$consult->cuadroClinico], false);
+            $obs = $this->GetObservation($this->composition, "final", "Cuadro Clínico", [$consult->cuadroClinico], false);
+
+            $compSection = new CompositionSection;
+            $compSection->setTitle("Cuadro Clínico");
+            $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
+            $compSection->addEntry($obs);
+            $compositionnote->addSection($compSection);
+
             $this->bundle->addEntry($obs);
         }
         if($consult->resultadosLaboratorioGabinete != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Resultados de Laboratorio y Gabinete", [$consult->resultadosLaboratorioGabinete], false);
+            $obs = $this->GetObservation($this->composition, "final", "Resultados de Laboratorio y Gabinete", [$consult->resultadosLaboratorioGabinete], false);
+            
+            $compSection = new CompositionSection;
+            $compSection->setTitle("Resultados de Laboratorio y Gabinete");
+            $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
+            $compSection->addEntry($obs);
+            $compositionnote->addSection($compSection);
+
             $this->bundle->addEntry($obs);
         }
         if($consult->diagnosticoProblemasClinicos != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Diagnosticos o Problemas Clínicos", [$consult->diagnosticoProblemasClinicos], false);
+            $obs = $this->GetObservation($this->composition, "final", "Diagnosticos o Problemas Clínicos", [$consult->diagnosticoProblemasClinicos], false);
+            
+            $compSection = new CompositionSection;
+            $compSection->setTitle("Diagnosticos o Problemas Clínicos");
+            $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
+            $compSection->addEntry($obs);
+            $compositionnote->addSection($compSection);
+            
             $this->bundle->addEntry($obs);
         }
         if($consult->pronostico != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Pronóstico", [$consult->pronostico], false);
+            $obs = $this->GetObservation($this->composition, "final", "Pronóstico", [$consult->pronostico], false);
+
+            $compSection = new CompositionSection;
+            $compSection->setTitle("Pronóstico");
+            $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
+            $compSection->addEntry($obs);
+            $compositionnote->addSection($compSection);
+
             $this->bundle->addEntry($obs);
         }
         if($consult->indicacionTerapeutica != null){
-            $obs = $this->GetObservation($reference, "final", $category, "Indicación Terapéutica", [$consult->indicacionTerapeutica], false);
+            $obs = $this->GetObservation($this->composition, "final", "Indicación Terapéutica", [$consult->indicacionTerapeutica], false);
+
+            $compSection = new CompositionSection;
+            $compSection->setTitle("Indicación Terapéutica");
+            $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
+            $compSection->addEntry($obs);
+            $compositionnote->addSection($compSection);
+
             $this->bundle->addEntry($obs);
         }
 
@@ -545,76 +662,191 @@ class MISECEController extends Controller
         if($consult->exploracion_id != null){
             //Datos de la exploracion
             $exploracion = Exploracionfisica::where("id", $consult->exploracion_id)->first();
-            $category[0] = "Exploracion Física";
-            $category[1] = "Datos de Exploración Física";
+
+            $note = "Consulta General";
+            $display = "Exploracion Física";
+
             if($exploracion->habitusExterior != null){
-                $obs = $this->GetObservation($reference, "final", $category, "Habitus Exterior", [$exploracion->habitusExterior], false);
+                $obs = $this->GetObservation($this->composition, "final", "Habitus Exterior", [$exploracion->habitusExterior], false);
+
+                $compSection = new CompositionSection;
+                $compSection->setTitle("Habitus Exterior");
+                $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
+                $compSection->addEntry($obs);
+                $compositionnote->addSection($compSection);
+
                 $this->bundle->addEntry($obs);
             }
             if($exploracion->peso != null){
-                $obs = $this->GetObservation($reference, "final", $category, "Peso", [$exploracion->peso, "kg"], false);
+                $obs = $this->GetObservation($this->composition, "final", "Peso", [$exploracion->peso, "kg"], false);
+
+                $compSection = new CompositionSection;
+                $compSection->setTitle("Peso");
+                $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
+                $compSection->addEntry($obs);
+                $compositionnote->addSection($compSection);
+
                 $this->bundle->addEntry($obs);
             }
             if($exploracion->talla != null){
-                $obs = $this->GetObservation($reference, "final", $category, "Talla", [$exploracion->talla, "cm"], false);
+                $obs = $this->GetObservation($this->composition, "final", "Talla", [$exploracion->talla, "cm"], false);
+
+                $compSection = new CompositionSection;
+                $compSection->setTitle("Talla");
+                $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
+                $compSection->addEntry($obs);
+                $compositionnote->addSection($compSection);
+
                 $this->bundle->addEntry($obs);
             }
             if($exploracion->cabeza != null){
-                $obs = $this->GetObservation($reference, "final", $category, "Cabeza", [$exploracion->cabeza], false);
+                $obs = $this->GetObservation($this->composition, "final", "Cabeza", [$exploracion->cabeza], false);
+
+                $compSection = new CompositionSection;
+                $compSection->setTitle("Cabeza");
+                $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
+                $compSection->addEntry($obs);
+                $compositionnote->addSection($compSection);
+
                 $this->bundle->addEntry($obs);
             }
             if($exploracion->cuello != null){
-                $obs = $this->GetObservation($reference, "final", $category, "Cuello", [$exploracion->cuello], false);
+                $obs = $this->GetObservation($this->composition, "final", "Cuello", [$exploracion->cuello], false);
+
+                $compSection = new CompositionSection;
+                $compSection->setTitle("Cuello");
+                $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
+                $compSection->addEntry($obs);
+                $compositionnote->addSection($compSection);
+
                 $this->bundle->addEntry($obs);
             }
             if($exploracion->torax != null){
-                $obs = $this->GetObservation($reference, "final", $category, "Torax", [$exploracion->torax], false);
+                $obs = $this->GetObservation($this->composition, "final", "Torax", [$exploracion->torax], false);
+
+                $compSection = new CompositionSection;
+                $compSection->setTitle("Torax");
+                $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
+                $compSection->addEntry($obs);
+                $compositionnote->addSection($compSection);
+
                 $this->bundle->addEntry($obs);
             }
             if($exploracion->abdomen != null){
-                $obs = $this->GetObservation($reference, "final", $category, "Abdomen", [$exploracion->abdomen], false);
+                $obs = $this->GetObservation($this->composition, "final", "Abdomen", [$exploracion->abdomen], false);
+
+                $compSection = new CompositionSection;
+                $compSection->setTitle("Abdomen");
+                $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
+                $compSection->addEntry($obs);
+                $compositionnote->addSection($compSection);
+
                 $this->bundle->addEntry($obs);
             }
             if($exploracion->miembros != null){
-                $obs = $this->GetObservation($reference, "final", $category, "Miembros", [$exploracion->miembros], false);
+                $obs = $this->GetObservation($this->composition, "final", "Miembros", [$exploracion->miembros], false);
+
+                $compSection = new CompositionSection;
+                $compSection->setTitle("Miembros");
+                $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
+                $compSection->addEntry($obs);
+                $compositionnote->addSection($compSection);
+
                 $this->bundle->addEntry($obs);
             }
             if($exploracion->genitales != null){
-                $obs = $this->GetObservation($reference, "final", $category, "Genitales", [$exploracion->genitales], false);
+                $obs = $this->GetObservation($this->composition, "final", "Genitales", [$exploracion->genitales], false);
+
+                $compSection = new CompositionSection;
+                $compSection->setTitle("Genitales");
+                $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
+                $compSection->addEntry($obs);
+                $compositionnote->addSection($compSection);
+
                 $this->bundle->addEntry($obs);
             }
 
             //Signos vitales
             if($exploracion->signos_id != null){
                 $signos = Signovital::where("id", $exploracion->signos_id)->first();
-                $category[0] = "Exploracion Física";
-                $category[1] = "Signos Vitales";
+                $note = "Consulta General";
+                $display = "Signos Vitales";
+
                 if($signos->temperatura != null){
-                    $obs = $this->GetObservation($reference, "final", $category, "Temperatura", [$signos->temperatura, "°C"], false);
+                    $obs = $this->GetObservation($this->composition, "final", "Temperatura", [$signos->temperatura, "°C"], false);
+
+                    $compSection = new CompositionSection;
+                    $compSection->setTitle("Temperatura");
+                    $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
+                    $compSection->addEntry($obs);
+                    $compositionnote->addSection($compSection);
+
                     $this->bundle->addEntry($obs);
                 }
                 if($signos->tensionSistolica != null){
-                    $obs = $this->GetObservation($reference, "final", $category, "Tensión Sistolica", [$signos->tensionSistolica, "mmHg"], false);
+                    $obs = $this->GetObservation($this->composition, "final", "Tensión Sistolica", [$signos->tensionSistolica, "mmHg"], false);
+
+                    $compSection = new CompositionSection;
+                    $compSection->setTitle("Tensión Sistolica");
+                    $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
+                    $compSection->addEntry($obs);
+                    $compositionnote->addSection($compSection);
+
                     $this->bundle->addEntry($obs);
                 }
                 if($signos->tensionDiastolica != null){
-                    $obs = $this->GetObservation($reference, "final", $category, "Tensión Diastolica", [$signos->tensionDiastolica, "mmHg"], false);
+                    $obs = $this->GetObservation($this->composition, "final", "Tensión Diastolica", [$signos->tensionDiastolica, "mmHg"], false);
+
+                    $compSection = new CompositionSection;
+                    $compSection->setTitle("Tensión Diastolica");
+                    $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
+                    $compSection->addEntry($obs);
+                    $compositionnote->addSection($compSection);
+
                     $this->bundle->addEntry($obs);
                 }
                 if($signos->frecuenciaCardiaca != null){
-                    $obs = $this->GetObservation($reference, "final", $category, "Frecuencia Cardiaca", [$signos->frecuenciaCardiaca, "lmp"], false);
+                    $obs = $this->GetObservation($this->composition, "final", "Frecuencia Cardiaca", [$signos->frecuenciaCardiaca, "lmp"], false);
+
+                    $compSection = new CompositionSection;
+                    $compSection->setTitle("Frecuencia Cardiaca");
+                    $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
+                    $compSection->addEntry($obs);
+                    $compositionnote->addSection($compSection);
+
                     $this->bundle->addEntry($obs);
                 }
                 if($signos->frecuenciaRespiratoria != null){
-                    $obs = $this->GetObservation($reference, "final", $category, "Frecuencia Respiratoria", [$signos->frecuenciaRespiratoria, "rmp"], false);
+                    $obs = $this->GetObservation($this->composition, "final", "Frecuencia Respiratoria", [$signos->frecuenciaRespiratoria, "rmp"], false);
+                    
+                    $compSection = new CompositionSection;
+                    $compSection->setTitle("Frecuencia Respiratoria");
+                    $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
+                    $compSection->addEntry($obs);
+                    $compositionnote->addSection($compSection);
+                    
                     $this->bundle->addEntry($obs);
                 }
                 if($signos->saturacionOxigeno != null){
-                    $obs = $this->GetObservation($reference, "final", $category, "Saturación de Oxígeno", [$signos->saturacionOxigeno, "%"], false);
+                    $obs = $this->GetObservation($this->composition, "final", "Saturación de Oxígeno", [$signos->saturacionOxigeno, "%"], false);
+
+                    $compSection = new CompositionSection;
+                    $compSection->setTitle("Saturación de Oxígeno");
+                    $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
+                    $compSection->addEntry($obs);
+                    $compositionnote->addSection($compSection);
+
                     $this->bundle->addEntry($obs);
                 }
                 if($signos->glucosa != null){
-                    $obs = $this->GetObservation($reference, "final", $category, "Glucosa", [$signos->glucosa, "mg/dL"], false);
+                    $obs = $this->GetObservation($this->composition, "final", "Glucosa", [$signos->glucosa, "mg/dL"], false);
+
+                    $compSection = new CompositionSection;
+                    $compSection->setTitle("Glucosa");
+                    $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
+                    $compSection->addEntry($obs);
+                    $compositionnote->addSection($compSection);
+
                     $this->bundle->addEntry($obs);
                 }
             }

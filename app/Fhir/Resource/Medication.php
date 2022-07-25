@@ -9,8 +9,8 @@ use App\Fhir\Element\Ratio;
 
 class Medication extends DomainResource{
     public function __construct($json = null){
-        $this->resourceType = "Medication";
         parent::__construct($json);
+        $this->resourceType = "Medication";
         $this->identifier = [];
         $this->ingredient = [];
         if($json) $this->loadData($json);
@@ -78,10 +78,10 @@ class Medication extends DomainResource{
     public function setAmount(Ratio $amount){
         $this->amount = $amount;
     }
-    public function setIngredient(CodeableConcept $itemCodeableConcept, Reference $itemReference, $isActive, Ratio $strength){
+    public function addIngredient(CodeableConcept $itemCodeableConcept, Resource $itemReference, $isActive, Ratio $strength){
         $ingredient = [
             "itemCodeableConcept"=>$itemCodeableConcept,
-            "itemReference"=>$itemReference,
+            "itemReference"=>$itemReference->toReference(),
             "isActive"=>$isActive,
             "strength"=>$strength,
         ];
@@ -95,9 +95,9 @@ class Medication extends DomainResource{
     }
     public function toArray(){
         $arrayData = parent::toArray();
+        
 
         if(isset($this->identifier) && $this->identifier){
-            $arrayData = [];
             foreach($this->identifier as $identifier){
                 $arrayData["identifier"][] = $identifier->toArray();
             }
@@ -119,14 +119,14 @@ class Medication extends DomainResource{
         }
         foreach($this->ingredient as $ingredient){
             $data = [];
-            if(isset($ingredient->itemCodeableConcept))
-                $data["itemCodeableConcept"] = $ingredient->itemCodeableConcept;
-            if(isset($ingredient->itemReference))
-                $data["itemReference"] = $ingredient->itemReference;
-            if(isset($ingredient->isActive))
-                $data["isActive"] = $ingredient->isActive;
-            if(isset($ingredient->strength))
-                $data["strength"] = $ingredient->strength;
+            if(isset($ingredient["itemCodeableConcept"]))
+                $data["itemCodeableConcept"] = $ingredient["itemCodeableConcept"];
+            if(isset($ingredient["itemReference"]))
+                $data["itemReference"] = $ingredient["itemReference"];
+            if(isset($ingredient["isActive"]))
+                $data["isActive"] = $ingredient["isActive"];
+            if(isset($ingredient["strength"]))
+                $data["strength"] = $ingredient["strength"];
             $arrayData["ingredient"] = $data;
         }
         if(isset($this->batch)){
@@ -137,7 +137,6 @@ class Medication extends DomainResource{
                 $data["expirationDate"] = $this->batch["expirationDate"];
             $arrayData["batch"] = $data;
         }
-
         return $arrayData;
     }
 }

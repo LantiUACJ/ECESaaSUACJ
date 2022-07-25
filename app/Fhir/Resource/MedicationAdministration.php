@@ -106,8 +106,8 @@ class MedicationAdministration extends DomainResource{
     public function addInstantiates($instantiates){
         $this->instantiates[] = $instantiates;
     }
-    public function addPartOf(Reference $partOf){
-        $this->partOf[] = $partOf;
+    public function addPartOf(Resource $partOf){
+        $this->partOf[] = $partOf->toReference();
     }
     public function setStatus($status){
         $only = ["in-progress", "not-done", "on-hold", "completed", "entered-in-error", "stopped", "unknown"];
@@ -122,17 +122,17 @@ class MedicationAdministration extends DomainResource{
     public function setMedicationCodeableConcept(CodeableConcept $medicationCodeableConcept){
         $this->medicationCodeableConcept = $medicationCodeableConcept;
     }
-    public function setMedicationReference(Reference $medicationReference){
-        $this->medicationReference = $medicationReference;
+    public function setMedicationReference(Resource $medicationReference){
+        $this->medicationReference = $medicationReference->toReference();
     }
-    public function setSubject(Reference $subject){
-        $this->subject = $subject;
+    public function setSubject(Resource $subject){
+        $this->subject = $subject->toReference();
     }
-    public function setContext(Reference $context){
-        $this->context = $context;
+    public function setContext(Resource $context){
+        $this->context = $context->toReference();
     }
-    public function setSupportingInformation(Reference $supportingInformation){
-        $this->supportingInformation = $supportingInformation;
+    public function setSupportingInformation(Resource $supportingInformation){
+        $this->supportingInformation = $supportingInformation->toReference();
     }
     public function setEffectiveDateTime($effectiveDateTime){
         $this->effectiveDateTime = $effectiveDateTime;
@@ -140,23 +140,23 @@ class MedicationAdministration extends DomainResource{
     public function setEffectivePeriod(Period $effectivePeriod){
         $this->effectivePeriod = $effectivePeriod;
     }
-    public function addPerformer(CodeableConcept $performer, Reference $actor){
+    public function addPerformer(CodeableConcept $performer, Resource $actor){
         $this->performer[] = [
             "performer"=> $performer,
-            "actor"=>$actor
+            "actor"=>$actor->toReference()
         ];
     }
     public function addReasonCode(CodeableConcept $reasonCode){
         $this->reasonCode[] = $reasonCode;
     }
-    public function addReasonReference(Reference $reasonReference){
-        $this->reasonReference[] = $reasonReference;
+    public function addReasonReference(Resource $reasonReference){
+        $this->reasonReference[] = $reasonReference->toReference();
     }
-    public function setRequest(Reference $request){
-        $this->request = $request;
+    public function setRequest(Resource $request){
+        $this->request = $request->toReference();
     }
-    public function addDevice(Reference $device){
-        $this->device[] = $device;
+    public function addDevice(Resource $device){
+        $this->device[] = $device->toReference();
     }
     public function addNote(Annotation $note){
         $this->note[] = $note;
@@ -170,8 +170,8 @@ class MedicationAdministration extends DomainResource{
         $this->dosage["rateRatio"] = $rateRatio;
         $this->dosage["rateQuantity"] = $rateQuantity;
     }
-    public function addEventHistory(Reference $eventHistory){
-        $this->eventHistory[] = $eventHistory;
+    public function addEventHistory(Resource $eventHistory){
+        $this->eventHistory[] = $eventHistory->toReference();
     }
 
     public function toArray(){

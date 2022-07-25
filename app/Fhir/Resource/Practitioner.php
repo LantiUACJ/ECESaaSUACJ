@@ -55,7 +55,8 @@ class Practitioner extends DomainResource{
             foreach($json->qualification as $qualification){
                 $data = [];
                 if(isset($qualification->identifier))
-                    $data["identifier"] = Identifier::Load($qualification->identifier);
+                    foreach($qualification->identifier as $identifier)
+                        $data["identifier"][] = Identifier::Load($identifier);
                 if(isset($qualification->code))
                     $data["code"] = CodeableConcept::Load($qualification->code);
                 if(isset($qualification->period))
@@ -65,7 +66,8 @@ class Practitioner extends DomainResource{
                 $this->qualification[] = $data;
             }
         if(isset($json->communication)){
-            $this->communication = CodeableConcept::Load($json->communication);
+            foreach($json->communication as $communication)
+                $this->communication[] = CodeableConcept::Load($communication);
         }
     }
     public function addIdentifier(Identifier $identifier){
@@ -93,12 +95,12 @@ class Practitioner extends DomainResource{
     public function setPhoto(Attachment $photo){
         $this->photo = $photo;
     }
-    public function addQualification(Identifier $identifier, CodeableConcept $code, Period $period, Reference $issuer){
+    public function addQualification(Identifier $identifier, CodeableConcept $code, Period $period, Resource $issuer){
         $this->qualification[] = [
             "identifier" => $identifier,
             "code" => $code,
             "period" => $period,
-            "issuer" => $issuer
+            "issuer" => $issuer->toReference()
         ];
     }
     public function setCommunication(CodeableConcept $communication){
@@ -137,18 +139,20 @@ class Practitioner extends DomainResource{
         if(isset($this->qualification))
             foreach($this->qualification as $qualification){
                 $data = [];
-                if(isset($qualification->identifier))
-                    $data["identifier"] = $qualification["identifier"]->toArray();
-                if(isset($qualification->code))
+                if(isset($qualification["identifier"]))
+                    foreach($qualification["identifier"] as $identifier)
+                        $data["identifier"][] = $identifier->toArray();
+                if(isset($qualification["code"]))
                     $data["code"] = $qualification["code"]->toArray();
-                if(isset($qualification->period))
+                if(isset($qualification["period"]))
                     $data["period"] = $qualification["period"]->toArray();
-                if(isset($qualification->issuer))
+                if(isset($qualification["issuer"]))
                     $data["issuer"] = $qualification["issuer"]->toArray();
                 $arrayData["qualification"][] = $data;
             }
         if(isset($this->communication)){
-            $arrayData["communication"] = $this->communication->toArray();
+            foreach($this->communication as $communication)
+                $arrayData["communication"][] = $communication->toArray();
         }
         return $arrayData;
     }

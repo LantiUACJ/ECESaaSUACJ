@@ -53,8 +53,8 @@ class Encounter extends DomainResource{
         if(isset($json->classHistory)){
             foreach($json->classHistory as $classHistory){
                 $history = [];
-                if(isset($classHistory->status)){
-                    $history["coding"] = Coding::Load($classHistory->status);
+                if(isset($classHistory->class)){
+                    $history["class"] = Coding::Load($classHistory->class);
                 }
                 if(isset($classHistory->period)){
                     $history["period"] = Period::Load($classHistory->period);
@@ -118,7 +118,7 @@ class Encounter extends DomainResource{
         }
         if(isset($json->reasonCode)){
             foreach($json->reasonCode as $reasonCode){
-                $this->reasonCode[] = Reference::Load($reasonCode);
+                $this->reasonCode[] = CodeableConcept::Load($reasonCode);
             }
         }
         if(isset($json->reasonReference)){
@@ -218,7 +218,7 @@ class Encounter extends DomainResource{
     }
     public function addClassHistory(Coding $coding, Period $period){
         $classHistory = [
-            "coding"=>$coding,
+            "class"=>$coding,
             "period"=>$period
         ];
         $this->classHistory[] = $classHistory;
@@ -344,8 +344,8 @@ class Encounter extends DomainResource{
         }
         foreach($this->classHistory as $classHistory){
             $data = [];
-            if(isset($classHistory["coding"])){
-                $data["coding"] = $classHistory["coding"]->toArray();
+            if(isset($classHistory["class"])){
+                $data["class"] = $classHistory["class"]->toArray();
             }
             if(isset($classHistory["period"])){
                 $data["period"] = $classHistory["period"]->toArray();

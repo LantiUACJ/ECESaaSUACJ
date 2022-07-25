@@ -2,8 +2,9 @@
 namespace App\Fhir\Element;
 class HumanName extends Element{
 
-    public function __construct() {
+    public function __construct($name) {
         parent::__construct();
+        $this->setText($name);
     }
 
     public function loadData($json){
@@ -31,7 +32,7 @@ class HumanName extends Element{
     }
 
     public static function Load($json){
-        $humanname = new HumanName();
+        $humanname = new HumanName("");
         $humanname->loadData($json);
         return $humanname;
     }
@@ -46,30 +47,30 @@ class HumanName extends Element{
     public function setPeriod(Period $period){
         $this->period = $period;
     }
-    public function setPrefix($prefix){
+    public function addPrefix($prefix){
         $this->prefix [] = $prefix;
     }
-    public function setGiven($given){
+    public function addGiven($given){
         $this->given[] = $given;
     }
     public function setFamily($family){
         $this->family = $family;
     }
-    public function setSuffix($suffix){
+    public function addSuffix($suffix){
         $this->suffix[] = $suffix;
     }
 
     public function toArray(){
         $arrayData = parent::toArray();
 
-        if(isset($this->text)){
+        if(isset($this->text) && $this->text){
             $arrayData["text"] = $this->text;
         }
         if(isset($this->use)){
             $arrayData["use"] = $this->use;
         }
         if(isset($this->period)){
-            $arrayData["period"] = $this->period;
+            $arrayData["period"] = $this->period->toArray();
         }
         if(isset($this->prefix)){
             $arrayData["prefix"] = $this->prefix;

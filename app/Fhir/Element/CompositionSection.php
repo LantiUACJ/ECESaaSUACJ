@@ -56,8 +56,8 @@ class CompositionSection extends Element{
     public function setOrderedBy(CodeableConcept $orderedBy){
         $this->orderedBy = $orderedBy;
     }
-    public function addEntry($entry){
-        $this->entry[] = $entry;
+    public function addEntry(Resource $entry){
+        $this->entry[] = $entry->toReference();
     }
     public function setEmptyReason(CodeableConcept $emptyReason){
         $this->emptyReason = $emptyReason;
@@ -85,7 +85,7 @@ class CompositionSection extends Element{
             $array["mode"] = $this->mode;
         if(isset($this->orderedBy))
             $array["orderedBy"] = $this->orderedBy->toArray();
-        if(isset($this->entry)){
+        if(isset($this->entry) && $this->entry){
             $array["entry"] = [];
             foreach($this->entry as $entry){
                 $array["entry"][] = $entry->toArray();

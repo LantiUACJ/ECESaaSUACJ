@@ -30,8 +30,10 @@ class Period extends Element{
 
     public function toArray(){
         $arrayData = parent::toArray();
-        $arrayData["start"] = $this->start; 
-        $arrayData["end"] = $this->end; 
+        if($this->start)
+            $arrayData["start"] = $this->start; 
+        if($this->end)
+            $arrayData["end"] = $this->end; 
         
         return $arrayData;
     }

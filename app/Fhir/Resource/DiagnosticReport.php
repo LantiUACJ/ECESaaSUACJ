@@ -30,7 +30,7 @@ class DiagnosticReport extends DomainResource{
         if(isset($json->code)) $this->setCode(CodeableConcept::Load($json->code));
         if(isset($json->subject)) $this->subject = Reference::Load($json->subject);
         if(isset($json->encounter)) $this->encounter = Reference::Load($json->encounter);
-        if(isset($json->effectiveDateTime)) $this->setEffectiveDateTime(CodeableConcept::Load($json->effectiveDateTime));
+        if(isset($json->effectiveDateTime)) $this->setEffectiveDateTime($json->effectiveDateTime);
         if(isset($json->effectivePeriod)) $this->setEffectivePeriod(Period::Load($json->effectivePeriod));
         if(isset($json->issued)) $this->setIssued($json->issued);
         if(isset($json->conclusion)) $this->setConclusion($json->conclusion);
@@ -81,7 +81,7 @@ class DiagnosticReport extends DomainResource{
         $this->basedOn[] = $basedOn->toReference();
     }
     public function setStatus($status){
-        $status = ["registered", "partial","preliminary","final"];
+        $array = ["registered", "partial","preliminary","final"];
         $this->status = $status;
     }
     public function addCategory(CodeableConcept $category){

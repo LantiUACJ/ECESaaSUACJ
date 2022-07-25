@@ -1,8 +1,171 @@
 <?php
 namespace App\Fhir\Element;
+
 class Extension extends Element{
     public function __construct(){
         parent::__construct();
+    }
+
+    public function loadData($json){
+        if(isset($json->url)){
+            $this->url = $json->url;
+        }
+        if(isset($json->valueBase64Binary)){
+            $this->valueBase64Binary = $json->valueBase64Binary;
+        }
+        if(isset($json->valueBoolean)){
+            $this->valueBoolean = $json->valueBoolean;
+        }
+        if(isset($json->valueCanonical)){
+            $this->valueCanonical = $json->valueCanonical;
+        }
+        if(isset($json->valueCode)){
+            $this->valueCode = $json->valueCode;
+        }
+        if(isset($json->valueDate)){
+            $this->valueDate = $json->valueDate;
+        }
+        if(isset($json->valueDateTime)){
+            $this->valueDateTime = $json->valueDateTime;
+        }
+        if(isset($json->valueDecimal)){
+            $this->valueDecimal = $json->valueDecimal;
+        }
+        if(isset($json->valueId)){
+            $this->valueId = $json->valueId;
+        }
+        if(isset($json->valueInstant)){
+            $this->valueInstant = $json->valueInstant;
+        }
+        if(isset($json->valueInteger)){
+            $this->valueInteger = $json->valueInteger;
+        }
+        if(isset($json->valueMarkdown)){
+            $this->valueMarkdown = $json->valueMarkdown;
+        }
+        if(isset($json->valueOid)){
+            $this->valueOid = $json->valueOid;
+        }
+        if(isset($json->valuePositiveInt)){
+            $this->valuePositiveInt = $json->valuePositiveInt;
+        }
+        if(isset($json->valueString)){
+            $this->valueString = $json->valueString;
+        }
+        if(isset($json->valueTime)){
+            $this->valueTime = $json->valueTime;
+        }
+        if(isset($json->valueUnsignedInt)){
+            $this->valueUnsignedInt = $json->valueUnsignedInt;
+        }
+        if(isset($json->valueUri)){
+            $this->valueUri = $json->valueUri;
+        }
+        if(isset($json->valueUrl)){
+            $this->valueUrl = $json->valueUrl;
+        }
+        if(isset($json->valueUuid)){
+            $this->valueUuid = $json->valueUuid;
+        }
+        if(isset($json->valueAddress)){
+            $this->valueAddress = Address::Load($json->valueAddress);
+        }
+        if(isset($json->valueAge)){
+            $this->valueAge = Quantity::Load($json->valueAge);
+        }
+        if(isset($json->valueAnnotation)){
+            $this->valueAnnotation = Annotation::Load($json->valueAnnotation);
+        }
+        if(isset($json->valueAttachment)){
+            $this->valueAttachment = Attachment::Load($json->valueAttachment);
+        }
+        if(isset($json->valueCodeableConcept)){
+            $this->valueCodeableConcept = CodeableConcept::Load($json->valueCodeableConcept);
+        }
+        if(isset($json->valueCoding)){
+            $this->valueCoding = Coding::Load($json->valueCoding);
+        }
+        if(isset($json->valueContactPoint)){
+            $this->valueContactPoint = ContactPoint::Load($json->valueContactPoint);
+        }
+        if(isset($json->valueCount)){
+            $this->valueCount = Quantity::Load($json->valueCount);
+        }
+        if(isset($json->valueDistance)){
+            $this->valueDistance = Quantity::Load($json->valueDistance);
+        }
+        if(isset($json->valueDuration)){
+            $this->valueDuration = Quantity::Load($json->valueDuration);
+        }
+        if(isset($json->valueHumanName)){
+            $this->valueHumanName = HumanName::Load($json->valueHumanName);
+        }
+        if(isset($json->valueIdentifier)){
+            $this->valueIdentifier = Identifier::Load($json->valueIdentifier);
+        }
+        if(isset($json->valueMoney)){
+            $this->valueMoney = Quantity::Load($json->valueMoney);
+        }
+        if(isset($json->valuePeriod)){
+            $this->valuePeriod = Period::Load($json->valuePeriod);
+        }
+        if(isset($json->valueQuantity)){
+            $this->valueQuantity = Quantity::Load( $json->valueQuantity);
+        }
+        if(isset($json->valueRange)){
+            $this->valueRange = Range::Load($json->valueRange);
+        }
+        if(isset($json->valueRatio)){
+            $this->valueRatio = Ratio::Load($json->valueRatio);
+        }
+        if(isset($json->valueReference)){
+            $this->valueReference = Reference::Load($json->valueReference);
+        }
+        if(isset($json->valueSampledData)){
+            $this->valueSampledData = SampleData::Load($json->valueSampledData);
+        }
+        if(isset($json->valueSignature)){
+            //$this->valueSignature = $json->valueSignature
+        }
+        if(isset($json->valueTiming)){
+            $this->valueTiming = Timing::Load($json->valueTiming);
+        }
+        if(isset($json->valueContactDetail)){
+            $this->valueContactDetail = ContactDetail::Load($json->valueContactDetail);
+        }
+        if(isset($json->valueContributor)){
+            $this->valueContributor = Contributor::Load($json->valueContributor);
+        }
+        if(isset($json->valueDataRequirement)){
+            //$this->valueDataRequiremen = $json->valueDataRequirement->toArray();
+        }
+        if(isset($json->valueExpression)){
+            $this->valueExpression = Expression::Load($json->valueExpression);
+    }
+        if(isset($json->valueParameterDefinition)){
+            //$this->valueParameterDefin = $json->valueParameterDefinition->toArray();
+        }
+        if(isset($json->valueRelatedArtifact)){
+            //$this->valueRelatedArtifac = $json->valueRelatedArtifact->toArray();
+        }
+        if(isset($json->valueTriggerDefinition)){
+            //$this->valueTriggerDefinit = $json->valueTriggerDefinition->toArray();
+        }
+        if(isset($json->valueUsageContext)){
+            //$this->valueUsageContext = $json->valueUsageContext->toArray();
+        }
+        if(isset($json->valueDosage)){
+            $this->valueDosage = Dosage::Load($json->valueDosage);
+        }
+        if(isset($json->valueMeta)){
+            $this->valueMeta = Meta::Load($json->valueMeta);
+        }
+    }
+
+    public static function Load($json){
+        $extension = new Extension();
+        $extension->loadData($json);
+        return $extension;
     }
 
     public function setUrl($url){
@@ -68,7 +231,7 @@ class Extension extends Element{
     public function setValueAddress(Address $valueAddress){
         $this->valueAddress = $valueAddress;
     }
-    public function setValueAge(Age $valueAge){
+    public function setValueAge(Quantity $valueAge){
         $this->valueAge = $valueAge;
     }
     public function setValueAnnotation(Annotation $valueAnnotation){
@@ -86,13 +249,13 @@ class Extension extends Element{
     public function setValueContactPoint(ContactPoint $valueContactPoint){
         $this->valueContactPoint = $valueContactPoint;
     }
-    public function setValueCount(Count $valueCount){
+    public function setValueCount(Quantity $valueCount){
         $this->valueCount = $valueCount;
     }
-    public function setValueDistance(Distance $valueDistance){
+    public function setValueDistance(Quantity $valueDistance){
         $this->valueDistance = $valueDistance;
     }
-    public function setValueDuration(Duration $valueDuration){
+    public function setValueDuration(Quantity $valueDuration){
         $this->valueDuration = $valueDuration;
     }
     public function setValueHumanName(HumanName $valueHumanName){
@@ -101,7 +264,7 @@ class Extension extends Element{
     public function setValueIdentifier(Identifier $valueIdentifier){
         $this->valueIdentifier = $valueIdentifier;
     }
-    public function setValueMoney(Money $valueMoney){
+    public function setValueMoney(Quantity $valueMoney){
         $this->valueMoney = $valueMoney;
     }
     public function setValuePeriod(Period $valuePeriod){
@@ -119,12 +282,13 @@ class Extension extends Element{
     public function setValueReference(Reference $valueReference){
         $this->valueReference = $valueReference;
     }
+    /*
     public function setValueSampledData(SampledData $valueSampledData){
         $this->valueSampledData = $valueSampledData;
     }
     public function setValueSignature(Signature $valueSignature){
         $this->valueSignature = $valueSignature;
-    }
+    }*/
     public function setValueTiming(Timing $valueTiming){
         $this->valueTiming = $valueTiming;
     }
@@ -133,13 +297,13 @@ class Extension extends Element{
     }
     public function setValueContributor(Contributor $valueContributor){
         $this->valueContributor = $valueContributor;
-    }
+    }/*
     public function setValueDataRequirement(DataRequirement $valueDataRequirement){
         $this->valueDataRequiremen = $valueDataRequirement;
-    }
+    }*/
     public function setValueExpression(Expression $valueExpression){
         $this->valueExpression = $valueExpression;
-    }
+    }/*
     public function setValueParameterDefinition(ParameterDefinition $valueParameterDefinition){
         $this->valueParameterDefin = $valueParameterDefinition;
     }
@@ -151,7 +315,7 @@ class Extension extends Element{
     }
     public function setValueUsageContext(UsageContext $valueUsageContext){
         $this->valueUsageContext = $valueUsageContext;
-    }
+    }*/
     public function setValueDosage(Dosage $valueDosage){
         $this->valueDosage = $valueDosage;
     }

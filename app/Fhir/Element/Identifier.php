@@ -18,16 +18,19 @@ class Identifier extends Element{
 	}
 
 	private function loadData($json){
-		if(isset($json->use)) $this->setUse($json->use);
+		if(isset($json->use) && $json->use) $this->setUse($json->use);
 		if(isset($json->system)) $this->setSystem($json->system);
 		if(isset($json->period)) $this->setPeriod(Period::Load($json->period));
 		if(isset($json->assigner)) $this->assigner = Reference::Load($json->assigner);
 		if(isset($json->type)) $this->setType( CodeableConcept::Load($json->type));
 		if(isset($json->value)) $this->setValue( $json->value);
 	}
-	public static function Load($json){
+	public static function Load($json, $check = false){
 		$identifier = new Identifier("official","");
+		$identifier->use = "";
 		$identifier->loadData($json);
+		if($check)
+			dd($json);
 		return $identifier;
 	}
 	public function setUse($use){
@@ -57,7 +60,7 @@ class Identifier extends Element{
 	public function toArray(){
         $arrayData = parent::toArray();
 		
-		if(isset($this->use)) $arrayData["use"] = $this->use;
+		if(isset($this->use) && $this->use) $arrayData["use"] = $this->use;
 		if(isset($this->system)) $arrayData["system"] = $this->system;
 		if(isset($this->period)) $arrayData["period"] = $this->period->toArray();
 		if(isset($this->assigner)) $arrayData["assigner"] = $this->assigner->toArray();

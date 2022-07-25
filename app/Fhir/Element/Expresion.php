@@ -2,11 +2,35 @@
 
 namespace App\Fhir\Element;
 
-class Expresion extends Element{
+class Expression extends Element{
 
     public function __construct($language){
         parent::__construct();
         $this->setLanguage($language);
+    }
+
+    private function loadData($json){
+        if(isset($json->description)){
+            $this->description = $json->description;
+        }
+        if(isset($json->name)){
+            $this->name = $json->name;
+        }
+        if(isset($json->language)){
+            $this->language = $json->language;
+        }
+        if(isset($json->expression)){
+            $this->expression = $json->expression;
+        }
+        if(isset($json->reference)){
+            $this->reference = $json->reference;
+        }
+    }
+
+    public static function Load($json){
+        $contactdetail = new Expression("");
+        $contactdetail->loadData($json);
+        return $contactdetail;
     }
 
     public function description($description){
@@ -15,7 +39,7 @@ class Expresion extends Element{
     public function name($name){
         $this->name = $name;
     }
-    public function language($language){
+    public function setLanguage($language){
         $data = ["text/cql","text/fhirpath","application/x-fhir-query"];
         $this->language = $language;
     }

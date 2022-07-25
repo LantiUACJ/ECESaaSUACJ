@@ -282,12 +282,12 @@ class Procedure extends DomainResource{
         if(isset($this->performer))
             foreach($this->performer as $performer){
                 $data = [];
-                if(isset($performer->function))
-                    $data["function"] = $performer->function->toArray();
-                if(isset($performer->actor))
-                    $data["actor"] = $performer->actor->toArray();
-                if(isset($performer->onBehalfOf))
-                    $data["onBehalfOf"] = $performer->onBehalfOf->toArray();
+                if(isset($performer["function"]))
+                    $data["function"] = $performer["function"]->toArray();
+                if(isset($performer["actor"]))
+                    $data["actor"] = $performer["actor"]->toArray();
+                if(isset($performer["onBehalfOf"]))
+                    $data["onBehalfOf"] = $performer["onBehalfOf"]->toArray();
                 $arrayData["performer"][] = $data;
             }
         if(isset($this->location))

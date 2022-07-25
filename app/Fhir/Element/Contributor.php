@@ -8,6 +8,25 @@ class Contributor extends Element{
         parent::__construct();
         $this->contact = [];
     }
+
+    public function loadData($json){
+        if(isset($json->type)){
+            $this->type = $json->type;
+        }
+        if(isset($json->name)){
+            $this->name = $json->name;
+        }
+        if(isset($json->contact)){
+            $this->contact[] = ContactDetail::Load($json->contact);
+        }
+    }
+
+    public static function Load($json){
+        $cont = new Contributor("");
+        $cont->loadData($json);
+        return $cont;
+    }
+
     public function setType($type){
         $types = ["author","editor","reviewer","endorser"];
         $this->type = $type;

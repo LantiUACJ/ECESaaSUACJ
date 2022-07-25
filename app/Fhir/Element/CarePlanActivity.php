@@ -2,6 +2,8 @@
 
 namespace App\Fhir\Element;
 
+use App\Fhir\Resource\Resource;
+
 class CarePlanActivity extends Element{
     
     public function __construct(){
@@ -9,7 +11,6 @@ class CarePlanActivity extends Element{
         $this->outcomeCodeableConcept = [];
         $this->outcomeReference = [];
         $this->progress = [];
-        $this->reference = [];
     }
 
     private function loadData($json){
@@ -26,7 +27,7 @@ class CarePlanActivity extends Element{
                 $this->progress[] = Annotation::Load($progress);
         }
         if(isset($json->reference)){
-            $this->reference[] = Reference::Load($json->reference);
+            $this->reference = Reference::Load($json->reference);
         }
         if(isset($json->detail)){
             $detail = [];
@@ -101,73 +102,73 @@ class CarePlanActivity extends Element{
     }
 
     public function addOutcomeCodeableConcept(CodeableConcept $outcomeCodeableConcept){
-        $this->outcomeCodeableConcept[] = CodeableConcept::Load($outcomeCodeableConcept);
+        $this->outcomeCodeableConcept[] = $outcomeCodeableConcept;
     }
-    public function addOutcomeReference(Reference $outcomeReference){
-        $this->outcomeReference[] = Reference::Load($outcomeReference);
+    public function addOutcomeReference(Resource $outcomeReference){
+        $this->outcomeReference[] = $outcomeReference->toReference();
     }
     public function addProgress(Annotation $progress){
-        $this->progress[] = Annotation::Load($progress);
+        $this->progress[] = $progress;
     }
-    public function setReference(Reference $reference){
-        $this->reference[] = Reference::Load($reference);
+    public function addReference(Resource $reference){
+        $this->reference[] = $reference->toReference();
     }
     public function setKind($kind){
         $detail["kind"] = $kind;
     }
-    public function setInstantiatesCanonical(Reference $instantiatesCanonical){
-        $detail["instantiatesCanonical"][] = Reference::Load($instantiatesCanonical);
+    public function addInstantiatesCanonical(Resource $instantiatesCanonical){
+        $detail["instantiatesCanonical"][] = $instantiatesCanonical->toReference();
     }
-    public function setInstantiatesUri($instantiatesUri){
+    public function addInstantiatesUri($instantiatesUri){
         $detail["instantiatesUri"][] = $instantiatesUri;
     }
     public function setCode(CodeableConcept $code){
-        $detail["code"] = CodeableConcept::Load($code);
+        $detail["code"] = $code;
     }
-    public function setReasonCode(CodeableConcept $reasonCode){
-        $detail["reasonCode"][] = CodeableConcept::Load($reasonCode);
+    public function addReasonCode(CodeableConcept $reasonCode){
+        $detail["reasonCode"][] = $reasonCode;
     }
-    public function setReasonReference(Reference $reasonReference){
-        $detail["reasonReference"][] = Reference::Load($reasonReference);
+    public function addReasonReference(Resource $reasonReference){
+        $detail["reasonReference"][] = $reasonReference->toReference();
     }
-    public function setGoal(Reference $goal){
-        $detail["goal"][] = Reference::Load($goal);
+    public function addGoal(Resource $goal){
+        $detail["goal"][] = $goal->toReference();
     }
     public function setStatus($status){
         $detail["status"] = $status;
     }
     public function setStatusReason(CodeableConcept $statusReason){
-        $detail["statusReason"] = CodeableConcept::Load($statusReason);
+        $detail["statusReason"] = $statusReason;
     }
     public function setDoNotPerform($doNotPerform) {
         $detail["doNotPerform"] = $doNotPerform;
     }
     public function setScheduledTiming(Timing $scheduledTiming){
-        $detail["scheduledTiming"] = Timing::Load($scheduledTiming);
+        $detail["scheduledTiming"] = $scheduledTiming;
     }
     public function setScheduledPeriod(Period $scheduledPeriod){
-        $detail["scheduledPeriod"] = Period::Load($scheduledPeriod);
+        $detail["scheduledPeriod"] = $scheduledPeriod;
     }
     public function setScheduledString($scheduledString){
         $detail["scheduledString"] = $scheduledString;
     }
-    public function setLocation(Reference $location){
-        $detail["location"] = Reference::Load($location);
+    public function setLocation(Resource $location){
+        $detail["location"] = $location->toReference();
     }
-    public function setPerformer(Reference $performer){
-        $detail["performer"][] = Reference::Load($performer);
+    public function addPerformer(Resource $performer){
+        $detail["performer"][] = $performer->toReference();
     }
     public function setProductCodeableConcept($productCodeableConcept){
-        $detail["productCodeableConcept"] = CodeableConcept::Load($productCodeableConcept);
+        $detail["productCodeableConcept"] = $productCodeableConcept;
     }
-    public function setProductReference(Reference $productReference){
-        $detail["productReference"] = Reference::Load($productReference);
+    public function setProductReference(Resource $productReference){
+        $detail["productReference"] = $productReference->toReference();
     }
     public function setDailyAmount($dailyAmount){
-        $detail["dailyAmount"] = Quantity::Load($dailyAmount);
+        $detail["dailyAmount"] = $dailyAmount;
     }
     public function setQuantity(Quantity $quantity){
-        $detail["quantity"] = Quantity::Load($quantity);
+        $detail["quantity"] = $quantity;
     }
     public function setDescription($description){
         $detail["description"] = $description;
@@ -183,18 +184,18 @@ class CarePlanActivity extends Element{
         $arrayData = parent::toArray();
         if(isset($this->outcomeCodeableConcept)){
             foreach($this->outcomeCodeableConcept as $outcomeCodeableConcept)
-                $arrayData["outcomeCodeableConcept"][] = CodeableConcept::Load($outcomeCodeableConcept);
+                $arrayData["outcomeCodeableConcept"][] = $outcomeCodeableConcept->toArray();
         }
         if(isset($this->outcomeReference)){
             foreach($this->outcomeReference as $outcomeReference)
-                $arrayData["outcomeReference"][] = Reference::Load($outcomeReference);
+                $arrayData["outcomeReference"][] = $outcomeReference->toArray();
         }
         if(isset($this->progress)){
             foreach($this->progress as $progress)
-                $arrayData["progress"][] = Annotation::Load($progress);
+                $arrayData["progress"][] = $progress->toArray();
         }
         if(isset($this->reference)){
-            $arrayData["reference"][] = Reference::Load($this->reference);
+            $arrayData["reference"][] = $this->reference->toArray();
         }
         if(isset($this->detail)){
             $detail = [];
@@ -203,63 +204,63 @@ class CarePlanActivity extends Element{
             }
             if(isset($this->detail["instantiatesCanonical"])){
                 foreach($this->detail["instantiatesCanonical"] as $instantiatesCanonical)
-                    $detail["instantiatesCanonical"][] = Reference::Load($instantiatesCanonical);
+                    $detail["instantiatesCanonical"][] = $instantiatesCanonical->toArray();
             }
             if(isset($this->detail["instantiatesUri"])){
                 foreach($this->detail["instantiatesUri"] as $instantiatesUri)
                     $detail["instantiatesUri"][] = $instantiatesUri;
             }
             if(isset($this->detail["code"])){
-                $detail["code"] = CodeableConcept::Load($this->detail["code"]);
+                $detail["code"] = $this->detail["code"]->toArray();
             }
             if(isset($this->detail["reasonCode"])){
                 foreach($this->detail["reasonCode"] as $reasonCode)
-                    $detail["reasonCode"][] = CodeableConcept::Load($reasonCode);
+                    $detail["reasonCode"][] = $reasonCode->toArray();
             }
             if(isset($this->detail["reasonReference"])){
                 foreach($this->detail["reasonReference"] as $reasonReference)
-                    $detail["reasonReference"][] = Reference::Load($reasonReference);
+                    $detail["reasonReference"][] = $reasonReference->toArray();
             }
             if(isset($this->detail["goal"])){
                 foreach($this->detail["goal"] as $goal)
-                    $detail["goal"][] = Reference::Load($goal);
+                    $detail["goal"][] = $goal->toArray();
             }
             if(isset($this->detail["status"])){
                 $detail["status"] = $this->detail["status"];
             }
             if(isset($this->detail["statusReason"])){
-                $detail["statusReason"] = CodeableConcept::Load($this->detail["statusReason"]);
+                $detail["statusReason"] = $this->detail["statusReason"]->toArray();
             }
             if(isset($this->detail["doNotPerform"])) {
                 $detail["doNotPerform"] = $this->detail["doNotPerform"];
             }
             if(isset($this->detail["scheduledTiming"])){
-                $detail["scheduledTiming"] = Timing::Load($this->detail["scheduledTiming"]);
+                $detail["scheduledTiming"] = $this->detail["scheduledTiming"]->toArray();
             }
             if(isset($this->detail["scheduledPeriod"])){
-                $detail["scheduledPeriod"] = Period::Load($this->detail["scheduledPeriod"]);
+                $detail["scheduledPeriod"] = $this->detail["scheduledPeriod"]->toArray();
             }
             if(isset($this->detail["scheduledString"])){
                 $detail["scheduledString"] = $this->detail["scheduledString"];
             }
             if(isset($this->detail["location"])){
-                $detail["location"] = Reference::Load($this->detail["location"]);
+                $detail["location"] = $this->detail["location"]->toArray();
             }
             if(isset($this->detail["performer"])){
                 foreach($this->detail["performer"] as $performer)
-                    $detail["performer"][] = Reference::Load($performer);
+                    $detail["performer"][] = $performer->toArray();
             }
             if(isset($this->detail["productCodeableConcept"])){
-                $detail["productCodeableConcept"] = CodeableConcept::Load($this->detail["productCodeableConcept"]);
+                $detail["productCodeableConcept"] = $this->detail["productCodeableConcept"]->toArray();
             }
             if(isset($this->detail["productReference"])){
-                $detail["productReference"] = Reference::Load($this->detail["productReference"]);
+                $detail["productReference"] = $this->detail["productReference"]->toArray();
             }
             if(isset($this->detail["dailyAmount"])){
-                $detail["dailyAmount"] = Quantity::Load($this->detail["dailyAmount"]);
+                $detail["dailyAmount"] = $this->detail["dailyAmount"]->toArray();
             }
             if(isset($this->detail["quantity"])){
-                $detail["quantity"] = Quantity::Load($this->detail["quantity"]);
+                $detail["quantity"] = $this->detail["quantity"]->toArray();
             }
             if(isset($this->detail["description"])){
                 $detail["description"] = $this->detail["description"];

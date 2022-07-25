@@ -353,8 +353,10 @@
                                     <button class="btn btn-danger btn-sm hiddenli" type="button" id="stoprecdiag">&nbsp;&nbsp;<i class="fa fa-microphone-slash" aria-hidden="true"></i>&nbsp;&nbsp;</button>
                                     <p></p>
                                     <div class="col-md-12">
+                                        <!-- 
                                         <input class="form-control selectize" id="select-diag" name="select-diag">
                                         <p></p>
+                                        -->
                                         <textarea name="diagnostico" id="diagnostico" cols="30" rows="4" 
                                         class="form-control @error('diagnostico') is-invalid @enderror"
                                         value="" autocomplete="diagnostico" maxlength="255"

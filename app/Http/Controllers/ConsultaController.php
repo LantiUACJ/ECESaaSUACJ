@@ -201,11 +201,11 @@ class ConsultaController extends Controller
             $signos = null;
         }
 
-        $diagnostico = Snomeddescripcion::where('id', '845139016')->first();
+        //$diagnostico = Snomeddescripcion::where('id', '845139016')->first();
 
         return view('consultageneral.continuarconsulta', ['paciente' => $pac, 'age' => $age, 'consulta' => $consulta, 
         'grupos' => $grupos, 'inter' => $inter, 'exploracion' => $explo, 'anteHF' => $anteHF, 'antePP' => $antePP, 
-        'antePNP' => $antePNP, 'interAS' => $interAS, 'signos' => $signos, 'sexos' => $sexos, 'diagnostico' => $diagnostico]);
+    'antePNP' => $antePNP, 'interAS' => $interAS, 'signos' => $signos, 'sexos' => $sexos /*, 'diagnostico' => $diagnostico*/]);
     }
 
     //Almacena solo los datos de la consulta (no interrogatorios, ni exploración) llamada a traves de ajax.
@@ -218,7 +218,7 @@ class ConsultaController extends Controller
 
         $validated = $request->validate($rules);
 
-        $diagname = ($request->select != null && $request->select) != ""? Snomeddescripcion::where('id', $request->select)->first(): null;
+        //$diagname = ($request->select != null && $request->select) != ""? Snomeddescripcion::where('id', $request->select)->first(): null;
 
         $consulta = new Consulta;
         $consulta->motivoConsulta = $request->motivo;
@@ -229,8 +229,8 @@ class ConsultaController extends Controller
         $consulta->indicacionTerapeutica = $request->indicacion;
         $consulta->Paciente_id = $pacid;
         $consulta->medico_id = $request->user()->id;
-        $consulta->diag_id = $request->select;
-        $consulta->diag_name = $diagname != null? $diagname->term: null;
+        //$consulta->diag_id = $request->select;
+        //$consulta->diag_name = $diagname != null? $diagname->term: null;
         $result = $consulta->save();
 
         //El proceso de guardado de los archivos debe hacerse despues de guardar la consulta ya que se necesita el id para 
@@ -309,7 +309,7 @@ class ConsultaController extends Controller
 
         $validated = $request->validate($rules);
 
-        $diagname = ($request->select != null && $request->select) != ""? Snomeddescripcion::where('id', $request->select)->first(): null;
+        //$diagname = ($request->select != null && $request->select) != ""? Snomeddescripcion::where('id', $request->select)->first(): null;
 
         $consulta_id = session('consulta_id');
 
@@ -321,8 +321,8 @@ class ConsultaController extends Controller
             $consulta->diagnosticoProblemasClinicos = $request->diagnostico;
             $consulta->pronostico = $request->pronostico;
             $consulta->indicacionTerapeutica = $request->indicacion;
-            $consulta->diag_id = $request->select;
-            $consulta->diag_name = $diagname != null? $diagname->term: null;
+            //$consulta->diag_id = $request->select;
+            //$consulta->diag_name = $diagname != null? $diagname->term: null;
             $result = $consulta->save();
 
             //El proceso de guardado de los archivos debe hacerse despues de guardar la consulta ya que se necesita el id para 

@@ -9,6 +9,22 @@ class ContactDetail extends Element{
         $this->telecom = [];
         $this->setName($name);
     }
+
+    public function loadData($json){
+        if(isset($json->name)){
+            $this->name = $json->name;
+        }
+        if(isset($json->telecom)){
+            $this->telecom[] = ContactPoint::Load($json->telecom);
+        }
+    }
+
+    public static function Load($json){
+        $contactdetail = new ContactDetail("");
+        $contactdetail->loadData($json);
+        return $contactdetail;
+    }
+
     public function setName($name){
         $this->name = $name;
     }

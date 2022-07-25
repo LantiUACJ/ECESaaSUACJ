@@ -10,37 +10,91 @@ class Dosage extends Element{
         $this->doseAndRate = [];
     }
 
-    public function sequence($sequence){
+    private function loadData($json){
+        if(isset($json->sequence))
+            $this->sequence = $json->sequence;
+        if(isset($json->text))
+            $this->text = $json->text;
+        foreach($json->additionalInstruction as $additionalInstruction)
+            $this->additionalInstruction[] = $additionalInstruction->toArray();
+        if(isset($json->patientInstruction))
+            $this->patientInstruction = $json->patientInstruction;
+        if(isset($json->timing))
+            $this->timing = $json->timing->toArray();
+        if(isset($json->asNeededBoolean))
+            $this->asNeededBoolean = $json->asNeededBoolean;
+        if(isset($json->asNeededCodeableConcept))
+            $this->asNeededCodeableConcept = $json->asNeededCodeableConcept->toArray();
+        if(isset($json->site))
+            $this->site = $json->site->toArray();
+        if(isset($json->route))
+            $this->route = $json->route->toArray();
+        if(isset($json->method))
+            $this->method = $json->method->toArray();
+        foreach($json->doseAndRate as $doseAndRate){
+            $element = [];
+            $element["type"] = $doseAndRate["type"]->toArray();
+            if(isset($doseAndRate["doseRange"])){
+                $element["doseRange"] = $doseAndRate["doseRange"]->toArray();
+            }
+            if(isset($doseAndRate["doseQuantity"])){
+                $element["doseQuantity"] = $doseAndRate["doseQuantity"]->toArray();
+            }
+            if(isset($doseAndRate["rateRatio"])){
+                $element["rateRatio"] = $doseAndRate["rateRatio"]->toArray();
+            }
+            if(isset($doseAndRate["rateRange"])){
+                $element["rateRange"] = $doseAndRate["rateRange"]->toArray();
+            }
+            if(isset($doseAndRate["rateQuantity"])){
+                $element["rateQuantity"] = $doseAndRate["rateQuantity"]->toArray();
+            }
+            $this->doseAndRate[] = $element;
+        }
+        if(isset($json->maxDosePerPeriod))
+            $this->maxDosePerPeriod = $json->maxDosePerPeriod->toArray();
+        if(isset($json->maxDosePerAdministration))
+            $this->maxDosePerAdministration = $json->maxDosePerAdministration->toArray();
+        if(isset($json->maxDosePerLifetime))
+            $this->maxDosePerLifetime = $json->maxDosePerLifetime->toArray();
+    }
+    public static function Load($json){
+        $contactdetail = new Dosage("");
+        $contactdetail->loadData($json);
+        return $contactdetail;
+    }
+
+    public function setSequence($sequence){
         $this->sequence = $sequence;
     }
-    public function text($text){
+    public function setText($text){
         $this->text = $text;
     }
-    public function additionalInstruction(CodeableConcept $additionalInstruction){
+    public function addAdditionalInstruction(CodeableConcept $additionalInstruction){
         $this->additionalInstruction[] = $additionalInstruction;
     }
-    public function patientInstruction($patientInstruction){
+    public function setPatientInstruction($patientInstruction){
         $this->patientInstruction = $patientInstruction;
     }
-    public function timing(Timing $timing){
+    public function setTiming(Timing $timing){
         $this->timing = $timing;
     }
-    public function asNeededBoolean($asNeededBoolean){
+    public function setAsNeededBoolean($asNeededBoolean){
         $this->asNeededBoolean = $asNeededBoolean;
     }
-    public function asNeededCodeableConcept(CodeableConcept $asNeededCodeableConcept){
+    public function setAsNeededCodeableConcept(CodeableConcept $asNeededCodeableConcept){
         $this->asNeededCodeableConcept = $asNeededCodeableConcept;
     }
-    public function site(CodeableConcept $site){
+    public function setSite(CodeableConcept $site){
         $this->site = $site;
     }
-    public function route(CodeableConcept $route){
+    public function setRoute(CodeableConcept $route){
         $this->route = $route;
     }
-    public function method(CodeableConcept $method){
+    public function setMethod(CodeableConcept $method){
         $this->method = $method;
     }
-    public function doseAndRate(CodeableConcept $type, $dose, $rate){
+    public function addDoseAndRate(CodeableConcept $type, $dose, $rate){
         $doseAndRate = [];
         $doseAndRate["type"] = $type;
         if($dose instanceof Range || $dose instanceof Quantity){
@@ -64,13 +118,13 @@ class Dosage extends Element{
         }
         $this->doseAndRate[] = $doseAndRate;
     }
-    public function maxDosePerPeriod(Ratio $maxDosePerPeriod){
+    public function setMaxDosePerPeriod(Ratio $maxDosePerPeriod){
         $this->maxDosePerPeriod = $maxDosePerPeriod;
     }
-    public function maxDosePerAdministration(Quantity $maxDosePerAdministration){
+    public function setMaxDosePerAdministration(Quantity $maxDosePerAdministration){
         $this->maxDosePerAdministration = $maxDosePerAdministration;
     }
-    public function maxDosePerLifetime(Quantity $maxDosePerLifetime){
+    public function setMaxDosePerLifetime(Quantity $maxDosePerLifetime){
         $this->maxDosePerLifetime = $maxDosePerLifetime;
     }
 

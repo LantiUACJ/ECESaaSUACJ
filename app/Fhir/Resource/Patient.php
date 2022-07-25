@@ -52,7 +52,7 @@ class Patient extends DomainResource{
                 $this->telecom[] = ContactPoint::Load($telecom);
         if(isset($json->address))
             foreach($json->address as $address)
-                $json->address[] = Address::Load($address);
+                $this->address[] = Address::Load($address);
         if(isset($json->maritalStatus))
             $this->maritalStatus = $json->maritalStatus->toArray();
         if(isset($json->photo))
@@ -89,17 +89,17 @@ class Patient extends DomainResource{
             }
         if(isset($json->generalPractitioner))
             foreach($json->generalPractitioner as $generalPractitioner)
-                $json->generalPractitioner[] = $generalPractitioner->toArray();
+                $this->generalPractitioner[] = $generalPractitioner->toArray();
         if(isset($json->managingOrganization))
             $this->managingOrganization = Reference::Load($json->managingOrganization);
         if(isset($json->link))
             foreach($json->link as $link)
                 $this->link[] = $link->toArray();
     }
-    public function setName(HumanName $name){
+    public function addName(HumanName $name){
         $this->name[] = $name;
     }
-    public function setIdentifier(Identifier $identifier){
+    public function addIdentifier(Identifier $identifier){
         $this->identifier[] = $identifier;
     }
     public function setActive($active){
@@ -124,7 +124,7 @@ class Patient extends DomainResource{
     public function setMultipleBirthInteger($multipleBirthInteger){
         $this->multipleBirthInteger = $multipleBirthInteger;
     }
-    public function setTelecom(ContactPoint $telecom){
+    public function addTelecom(ContactPoint $telecom){
         $this->telecom[] = $telecom;
     }
     public function addAddress(Address $address){
@@ -136,7 +136,7 @@ class Patient extends DomainResource{
     public function setPhoto(Attachment $photo){
         $this->photo = $photo;
     }
-    public function setContact(CodeableConcept $relationship, HumanName $name, ContactPoint $telecom, Address $address, $gender, Resource $organization, Period $period){
+    public function addContact(CodeableConcept $relationship, HumanName $name, ContactPoint $telecom, Address $address, $gender, Resource $organization, Period $period){
         $relations = [];
         $relationship = [];
         $telecoms = [];
@@ -161,25 +161,24 @@ class Patient extends DomainResource{
         $contact["period"] = $period;
         $this->contact[] = $contact;
     }
-    public function setCommunication(CodeableConcept $language, $preferred){
+    public function addCommunication(CodeableConcept $language, $preferred){
         $this->communication[] = [
             "language"=>$language,
             "preferred"=>$preferred,
         ];
     }
-    public function setGeneralPractitioner(Resource $generalPractitioner){
+    public function addGeneralPractitioner(Resource $generalPractitioner){
         $this->generalPractitioner[] = $generalPractitioner->toReference();
     }
     public function setManagingOrganization(Resource $managingOrganization){
         $this->managingOrganization = $managingOrganization->toReference();
     }
-    public function setLink(Resource $link){
+    public function addLink(Resource $link){
         $this->link[] = $link->toReference();
     }
 
     public function toArray(){
         $arrayData = parent::toArray();
-
         foreach($this->name as $name){
             $arrayData["name"][] = $name->toArray();
         }
@@ -223,17 +222,17 @@ class Patient extends DomainResource{
             if($contact->relationship){
                 $arrayData["contact"]["relations"] = [];
                 foreach($contact->relationship as $rel)
-                    $arrayData["contact"]["relations"][] = CodeableConcept::Load($rel);
+                    $arrayData["contact"]["relations"][] = $rel->toArray();
             }
             if(isset($contact->name))
-                $arrayData["contact"]["name"] = HumanName::Load($contact->name);
+                $arrayData["contact"]["name"] = $contact->name->toArray();
             if(isset($contact->telecom)){
                 $arrayData["contact"]["telecom"] = [];
                 foreach($contact->telecom as $telecom)
-                    $arrayData["contact"]["telecom"][] = ContactPoint::Load($telecom);
+                    $arrayData["contact"]["telecom"][] = $telecom->toArray();
             }
             if(isset($contact->address))
-                $arrayData["contact"]["address"] = Address::Load($contact->address);
+                $arrayData["contact"]["address"] = $contact->address->toArray();
             if(isset($contact->gender))
                 $arrayData["contact"]["gender"] = $contact->gender;
         }
@@ -244,7 +243,7 @@ class Patient extends DomainResource{
             ];
         }
         foreach($this->generalPractitioner as $generalPractitioner){
-            $this->generalPractitioner[] = $generalPractitioner->toArray();
+            $arrayData["generalPractitioner"][] = $generalPractitioner->toArray();
         }
         if(isset($this->managingOrganization)){
             $arrayData["managingOrganization"] = $this->managingOrganization->toArray();

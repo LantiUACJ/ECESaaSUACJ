@@ -41,7 +41,7 @@ class AllergyIntolerance extends DomainResource{
         }
         if (isset($json->criticality)){
             $array = ["low","high", "unable-to-assess"];
-            $json->criticality;
+            $this->criticality = $json->criticality;
         }
         if (isset($json->code)){
             $this->code = CodeableConcept::Load($json->code);
@@ -71,13 +71,13 @@ class AllergyIntolerance extends DomainResource{
             $this->recoredDate = $json->recordedDate;
         }
         if (isset($json->recorder)){
-            $this->recoreder = Reference::Load($json->recorder);
+            $this->recorder = Reference::Load($json->recorder);
         }
         if (isset($json->asserter)){
             $this->asserter = Reference::Load($json->asserter);
         }
         if (isset($json->lastOccurrence)){
-            $this->lastOcurrence = $json->lastOccurrence;
+            $this->lastOccurrence = $json->lastOccurrence;
         }
         if (isset($json->note)){
             foreach ($json->note as $note)
@@ -106,18 +106,20 @@ class AllergyIntolerance extends DomainResource{
                     $array = ["mild", "moderate", "severe"];
                     $data["severity"] = $reaction->severity;
                 }
+                
                 if (isset($reaction->exposureRoute)){
                     $data["exposureRoute"] = CodeableConcept::Load($reaction->exposureRoute);
                 }
+                
                 if (isset($reaction->note)){
                     $notes = [];
                     foreach ($reaction->note as $note)
                         $notes[] = Annotation::Load($note);
                     $data["note"] = $notes;
                 }
-                $datas = $data;
+                $datas[] = $data;
             }
-            $this->reaction[] = $datas;
+            $this->reaction = $datas;
         }
         if (isset($json->identifier)){
             $identifiers = [];
@@ -127,10 +129,10 @@ class AllergyIntolerance extends DomainResource{
         }
     }
 
-    public function setClinicalStatus($clinicalStatus){
+    public function setClinicalStatus(CodeableConcept $clinicalStatus){
         $this->clinicalStatus = $clinicalStatus;
     }
-    public function setVerificationStatus($verificationStatus){
+    public function setVerificationStatus(CodeableConcept $verificationStatus){
         $this->verificationStatus = $verificationStatus;
     }
     public function setType($type){
@@ -140,25 +142,25 @@ class AllergyIntolerance extends DomainResource{
     public function addCategory($category){
         $this->category[] = $category;
     }
-    public function setCode($code){
+    public function setCode(CodeableConcept $code){
         $this->code = $code;
     }
-    public function setPatient($patient){
-        $this->patient = $patient;
+    public function setPatient(Resource $patient){
+        $this->patient = $patient->toReference();
     }
-    public function setEncounter($encounter){
-        $this->encounter = $encounter;
+    public function setEncounter(Resource $encounter){
+        $this->encounter = $encounter->toReference();
     }
     public function setOnsetDateTime($onsetDateTime){
         $this->onsetDateTime = $onsetDateTime;
     }
-    public function setOnsetAge($onsetAge){
+    public function setOnsetAge(Quantity $onsetAge){
         $this->onsetAge = $onsetAge;
     }
-    public function setOnsetPeriod($onsetPeriod){
+    public function setOnsetPeriod(Period $onsetPeriod){
         $this->onsetPeriod = $onsetPeriod;
     }
-    public function setOnsetRange($onsetRange){
+    public function setOnsetRange(Range $onsetRange){
         $this->onsetRange = $onsetRange;
     }
     public function setOnsetString($onsetString){
@@ -167,22 +169,22 @@ class AllergyIntolerance extends DomainResource{
     public function setRecoredDate($recoredDate){
         $this->recoredDate = $recoredDate;
     }
-    public function setRecoreder($recoreder){
-        $this->recoreder = $recoreder;
+    public function setRecoreder(Resource $recoreder){
+        $this->recoreder = $recoreder->toReference();
     }
-    public function setAsserter($asserter){
-        $this->asserter = $asserter;
+    public function setAsserter(Resource $asserter){
+        $this->asserter = $asserter->toReference();
     }
     public function setLastOcurrence($lastOcurrence){
         $this->lastOcurrence = $lastOcurrence;
     }
 
     /* array */
-    public function setNote($note){
+    public function addNote(Annotation $note){
         $this->note[] = $note;
     }
     /* array */
-    public function addReaction(CodeableConcept $substance, $manifestation, $description, $onset, $severity, CodeableConcept $exposureRoute, $note){
+    public function addReaction(CodeableConcept $substance, $manifestation, $description, $onset, $severity, CodeableConcept $exposureRoute, $notes){
         $data = [];
         if (isset($substance))
             $data["substance"] = $substance;
@@ -207,10 +209,10 @@ class AllergyIntolerance extends DomainResource{
             $data["exposureRoute"] = $exposureRoute;
         }
         if (isset($note)){
-            $notes = [];
-            foreach ($note as $note)
-                $notes[] = Annotation::Load($note);
-            $data["note"] = $notes;
+            $notesAr = [];
+            foreach ($notes as $note)
+                $notesAr[] = $note;
+            $data["note"] = $notesAr;
         }
         $this->reaction[] = $data;
     }
@@ -221,7 +223,7 @@ class AllergyIntolerance extends DomainResource{
 
     public function toArray(){
         $arrayData = parent::toArray();
-        if (isset($this->identifier)){
+        if (isset($this->identifier) && $this->identifier){
             $identifiers = [];
             foreach ($this->identifier as $identifier)
                 $identifiers[] = $identifier->toArray();
@@ -242,7 +244,7 @@ class AllergyIntolerance extends DomainResource{
             }
         }
         if (isset($this->criticality)){
-            $this->criticality;
+            $arrayData[] = $this->criticality;
         }
         if (isset($this->code)){
             $arrayData["code"] = $this->code->toArray();
@@ -272,52 +274,52 @@ class AllergyIntolerance extends DomainResource{
             $arrayData["recoredDate"] = $this->recordedDate;
         }
         if (isset($this->recorder)){
-            $arrayData["recoreder"] = $this->recorder->toArray();
+            $arrayData["recorder"] = $this->recorder->toArray();
         }
         if (isset($this->asserter)){
             $arrayData["asserter"] = $this->asserter->toArray();
         }
         if (isset($this->lastOccurrence)){
-            $arrayData["lastOcurrence"] = $this->lastOccurrence;
+            $arrayData["lastOccurrence"] = $this->lastOccurrence;
         }
         if (isset($this->note)){
             foreach ($this->note as $note)
                 $arrayData["note"][] = $note->toArray();
         }
-        if (isset($this->reaction)){
-            $datas = [];
+        if (isset($this->reaction) && $this->reaction){
+            $all = [];
             foreach ($this->reaction as $reaction){
                 $data = [];
-                if (isset($reaction->substance))
-                    $data["substance"] = $reaction->substance->toArray();
-                if (isset($reaction->manifestation)){
+                if (isset($reaction["substance"]))
+                    $data["substance"] = $reaction["substance"]->toArray();
+                if (isset($reaction["manifestation"])){
                     $manifestations = [];
-                    foreach ($reaction->manifestation as $manifestation){
+                    foreach ($reaction["manifestation"] as $manifestation){
                         $manifestations[] = $manifestation->toArray();
                     }
                     $data["manifestation"] = $manifestations;
                 }
-                if (isset($reaction->description)){
-                    $data["description"] = $reaction->description;
+                if (isset($reaction["description"])){
+                    $data["description"] = $reaction["description"];
                 }
-                if (isset($reaction->onset)){
-                    $data["onset"] = $reaction->onset;
+                if (isset($reaction["onset"])){
+                    $data["onset"] = $reaction["onset"];
                 }
-                if (isset($reaction->severity)){
-                    $data["severity"] = $reaction->severity;
+                if (isset($reaction["severity"])){
+                    $data["severity"] = $reaction["severity"];
                 }
-                if (isset($reaction->exposureRoute)){
-                    $data["exposureRoute"] = $reaction->exposureRoute->toArray();
+                if (isset($reaction["exposureRoute"])){
+                    $data["exposureRoute"] = $reaction["exposureRoute"]->toArray();
                 }
-                if (isset($reaction->note)){
+                if (isset($reaction["note"])){
                     $notes = [];
-                    foreach ($reaction->note as $note)
+                    foreach ($reaction["note"] as $note)
                         $notes[] = $note->toArray();
                     $data["note"] = $notes;
                 }
-                $datas = $data;
+                $all[] = $data;
             }
-            $arrayData["reaction"][] = $datas;
+            $arrayData["reaction"] = $all;
         }
         return $arrayData;
     }

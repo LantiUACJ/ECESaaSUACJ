@@ -2,192 +2,255 @@
 
 namespace App\Fhir\Resource;
 
-use App\Fhir\Element\Annotation;
+use App\Fhir\Element\Address;
 use App\Fhir\Element\CodeableConcept;
+use App\Fhir\Element\Coding;
+use App\Fhir\Element\ContactPoint;
 use App\Fhir\Element\Identifier;
-use App\Fhir\Element\Period;
-use App\Fhir\Element\Quantity;
-use App\Fhir\Element\Range;
 use App\Fhir\Element\Reference;
 
 class Location extends DomainResource{
     public function __construct($json = null){
         $this->resourceType = "Location";
         parent::__construct($json);
-        $this->name = [];
         $this->identifier = [];
-        $this->telecom = [];
-        $this->address = [];
-        $this->contact = [];
-        $this->communication = [];
-        $this->generalPractitioner = [];
-        $this->link = [];
         if($json) $this->loadData($json);
     }
     private function loadData($json){
-        @if (isset($obj->identifier))
-            <p><b>Identificador:</b></p>
-            @foreach ($obj->identifier as $identifier)
-                <div class="element">
-                    @include('fhir.element.identifier',["obj"=>$identifier])
-                </div>
-            @endforeach
-        @endif
-        @if (isset($obj->status))
-            <p><b>Estado:</b>
-                    {{ str_replace(
-                    ["active", "suspended","inactive"],
-                    ["active", "suspended","inactive"], strtolower($obj->status))}}
-            </p>
-        @endif
-        @if (isset($obj->operationalStatus))
-            <p><b>Estado operacional:</b></p>
-            <div class="element">
-                @include('fhir.element.coding',["obj"=>$obj->operationalStatus])
-            </div>
-        @endif
-        @if (isset($obj->name))
-            <p><b>Nombre: </b>
-                {{ $obj->name }}
-            </p>
-        @endif
-        @if (isset($obj->alias))
-            <p><b>Alias:</b></p>
-            @foreach ($obj->alias as $alias)
-                <div class="element">
-                    {{ $alias }}
-                </div>
-            @endforeach
-        @endif
-        @if (isset($obj->description))
-            <p><b>Descripcion: </b>
-                {{ $obj->description }}
-            </p>
-                    
-        @endif
-        @if (isset($obj->mode))
-            <p><b>Estado:</b>
-                {{ str_replace(
-                    ["instance", "kind"],
-                    ["instance", "kind"], strtolower($obj->mode))}}
-            </p>
-        @endif
-        @if (isset($obj->type))
-            <p><b>Tipo:</b></p>
-            @foreach ($obj->type as $type)
-                <div class="element">
-                    @include('fhir.element.codeableConcept',["obj"=>$type])
-                </div>
-            @endforeach
-        @endif
-        @if (isset($obj->telecom))
-            <p><b>Contacto:</b></p>
-            @foreach ($obj->telecom as $telecom)
-                <div class="element">
-                    @include('fhir.element.contactPoint',["obj"=>$telecom])
-                </div>
-            @endforeach
-        @endif
-        @if (isset($obj->address))
-            <p><b>Direccion:</b></p>
-            <div class="element">
-                @include('fhir.element.address',["obj"=>$obj->address])
-            </div>    
-        @endif
-        @if (isset($obj->physicalType))
-            <p><b>Tipo física:</b></p>
-            <div class="element">
-                @include('fhir.element.codeableConcept',["obj"=>$obj->physicalType])
-            </div>    
-        @endif
-        @if (isset($obj->position))
-            <p><b>houras de operación:</b></p>
-            <div class="element">
-                @if (isset($obj->position->longitude))
-                    <p><b>Longitud:</b></p>
-                    <div class="element">
-                        {{$obj->position->longitude}}
-                    </div>
-                @endif
-            </div>
-            <div class="element">
-                @if (isset($obj->position->latitude))
-                    <p><b>Latitud:</b></p>
-                    <div class="element">
-                        {{$obj->position->latitude}}
-                    </div>
-                @endif
-            </div>
-            <div class="element">
-                @if (isset($obj->position->altitude))
-                    <p><b>Altitud:</b></p>
-                    <div class="element">
-                        {{$obj->position->altitude}}
-                    </div>    
-                @endif
-            </div>
-        @endif
-        @if (isset($obj->managingOrganization))
-            <p><b>Tipo física:</b></p>
-            <div class="element">
-                @include('fhir.element.reference',["obj"=>$obj->managingOrganization])
-            </div>    
-        @endif
-        @if (isset($obj->partOf))
-            <p><b>Tipo física:</b></p>
-            <div class="element">
-                @include('fhir.element.reference',["obj"=>$obj->partOf])
-            </div>    
-        @endif
-        @if (isset($obj->hoursOfOperation))
-            <p><b>houras de operación:</b></p>
-            @foreach ($obj->hoursOfOperation as $hoursOfOperation)
-                <div class="element">
-                    @if (isset($hoursOfOperation->daysOfWeek))
-                        <p><b>Días de la semana:</b></p>
-                        @foreach ($hoursOfOperation->daysOfWeek as $daysOfWeek)
-                            <div class="element">
-                                {{str_replace(
-                                    ["mon","tue","wed","thu","fri","sat","sun"],
-                                    ["mon","tue","wed","thu","fri","sat","sun"],$daysOfWeek)}}
-                            </div>
-                        @endforeach
-                    @endif
-                    @if (isset($hoursOfOperation->allDay))
-                        <p><b>Todo el día:</b></p>
-                        <div class="element">
-                            {{$hoursOfOperation->allDay?"SI":"NO"}}
-                        </div>    
-                    @endif
-                    @if (isset($hoursOfOperation->openingTime))
-                        <p><b>Fecha de Apertura:</b></p>
-                        <div class="element">
-                            {{$hoursOfOperation->openingTime}}
-                        </div>    
-                    @endif
-                    @if (isset($hoursOfOperation->closingTime))
-                        <p><b>Fecha de cierre:</b></p>
-                        <div class="element">
-                            {{$hoursOfOperation->closingTime}}
-                        </div>    
-                    @endif
-                </div>
-            @endforeach
-        @endif
-        @if (isset($obj->availabilityExceptions))
-            <p><b>Descripción de excepciones disponibles:</b>
-                {{ $obj->availabilityExceptions }}
-            </p>
-        @endif
-        @if (isset($obj->endpoint))
-            <p><b>Tipo:</b></p>
-            @foreach ($obj->endpoint as $endpoint)
-                <div class="element">
-                    @include('fhir.element.reference',["obj"=>$endpoint])
-                </div>
-            @endforeach
-        @endif
+        if (isset($json->identifier))
+            foreach ($json->identifier as $identifier)
+                $this->identifier[] = Identifier::Load($identifier);
+        if (isset($json->status)){
+            $array = ["active", "suspended","inactive"];
+            $this->status = $json->status;
+        }
+        if (isset($json->operationalStatus)){
+            $this->operationStatus = Coding::Load($json->operationalStatus);
+        }
+        if (isset($json->name))
+            $this->name = $json->name;
+        if (isset($json->alias)){
+            $aliases = [];
+            foreach ($json->alias as $alias)
+                $aliases[] = $alias;
+            $this->alias = $aliases;
+        }
+        if (isset($json->description))
+            $this->description = $json->description;
+        if (isset($json->mode)){
+            $array = ["instance", "kind"];
+            $this->mode = $json->mode;
+        }
+        if (isset($json->type)){
+            $types = [];
+            foreach ($json->type as $type)
+                $types[] = CodeableConcept::Load($type);
+            $this->type = $types;
+        }
+        if (isset($json->telecom)){
+            $contactpoints = [];
+            foreach ($json->telecom as $telecom)
+                $contactpoints[] = ContactPoint::Load($telecom);
+            $this->telecom = $contactpoints;
+        }
+        if (isset($json->address))
+            $this->address = Address::Load($json->address);
+        if (isset($json->physicalType))
+            $this->physicalType = CodeableConcept::Load($json->physicalType);
+        if (isset($json->position)){
+            $this->position = [];
+            if (isset($json->position->longitude))
+                $this->position["longitude"] = $json->position->longitude;
+            if (isset($json->position->latitude))
+                $this->position["latitude"] = $json->position->latitude;
+            if (isset($json->position->altitude))
+                $this->position["altitude"] = $json->position->altitude;
+        }
+        if (isset($json->managingOrganization))
+            $this->managingOrganization = Reference::Load($json->managingOrganization);
+        if (isset($json->partOf))
+            $this->partOf = Reference::Load($json->partOf);
+        if (isset($json->hoursOfOperation)){
+            $hours = [];
+            foreach ($json->hoursOfOperation as $hoursOfOperation){
+                $hours = [];
+                if (isset($hoursOfOperation->daysOfWeek)){
+                    $days = [];
+                    foreach ($hoursOfOperation->daysOfWeek as $daysOfWeek){
+                        $array = ["mon","tue","wed","thu","fri","sat","sun"];
+                        $days[] = $daysOfWeek;
+                    }
+                    $hours["hoursOfOperation"] = $days;
+                }
+                if (isset($hoursOfOperation->allDay))
+                    $hours["allDay"] = $hoursOfOperation->allDay;
+                if (isset($hoursOfOperation->openingTime))
+                    $hours["openingTime"] = $hoursOfOperation->openingTime;
+                if (isset($hoursOfOperation->closingTime))
+                    $hours["closingTime"] = $hoursOfOperation->closingTime;
+            }
+        }
+        if (isset($json->availabilityExceptions))
+            $this->availabilityExceptions = $json->availabilityExceptions;
+        if (isset($json->endpoint))
+            foreach ($json->endpoint as $endpoint)
+                $this->endpoint[] = Reference::Load($endpoint);
     }
 
-    
+    public function addIdentifier(Identifier $identifier){
+        $this->identifier[] = $identifier;
+    }
+    public function setStatus($status){
+        $array = ["active", "suspended","inactive"];
+        $this->status = $status;
+    }
+    public function setOperationalStatus(Coding $operationalStatus){
+        $this->operationStatus = $operationalStatus;
+    }
+    public function setName($name){
+        $this->name = $name;
+    }
+    public function addAlias($alias){
+        $this->alias[] = $alias;
+    }
+    public function setDescription($description){
+        $this->description = $description;
+    }
+    public function setMode($mode){
+        $array = ["instance", "kind"];
+        $this->mode = $mode;
+    }
+    public function addType(CodeableConcept $type){
+        $this->type[] = $type;
+    }
+    public function addTelecom(ContactPoint $telecom){
+        $this->telecom[] = $telecom;
+    }
+    public function setAddress(Address $address){
+        $this->address = $address;
+    }
+    public function setPhysicalType(CodeableConcept $physicalType){
+        $this->physicalType = $physicalType;
+    }
+    public function setPosition($longitude, $latitude, $altitude){
+        $this->position = [];
+        if (isset($longitude))
+            $this->position["longitude"] = $longitude;
+        if (isset($latitude))
+            $this->position["latitude"] = $latitude;
+        if (isset($altitude))
+            $this->position["altitude"] = $altitude;
+    }
+    public function setManagingOrganization(Resource $managingOrganization){
+        $this->managingOrganization = $managingOrganization->toReference();
+    }
+    public function setPartOf(Resource $partOf){
+        $this->partOf = $partOf->toReference();
+    }
+    public function addHoursOfOperation($daysOfWeek, $allDay, $openingTime, $closingTime){
+        $hours = [];
+        $hours = [];
+        if (isset($daysOfWeek)){
+            $days = [];
+            foreach ($daysOfWeek as $daysdata){
+                $array = ["mon","tue","wed","thu","fri","sat","sun"];
+                $days[] = $daysdata;
+            }
+            $hours["daysOfWeek"] =$days;
+        }
+        if (isset($allDay))
+            $hours["allDay"] = $allDay;
+        if (isset($openingTime))
+            $hours["openingTime"] = $openingTime;
+        if (isset($closingTime))
+            $hours["closingTime"] = $closingTime;
+    }
+    public function setAvailabilityExceptions($availabilityExceptions){
+        $this->availabilityExceptions = $availabilityExceptions;
+    }
+    public function addEndpoint(Resource $endpoint){
+        $this->endpoint[] = $endpoint->toReference();
+    }
+    public function toArray(){
+        $arrayData = parent::toArray();
+        if (isset($this->identifier))
+            foreach ($this->identifier as $identifier)
+                $arrayData["identifier"][] = $identifier->toArray();
+        if (isset($this->status)){
+            $array = ["active", "suspended","inactive"];
+            $arrayData["status"] = $this->status;
+        }
+        if (isset($this->operationalStatus)){
+            $arrayData["operationStatus"] = $this->operationalStatus->toArray();
+        }
+        if (isset($this->name))
+            $arrayData["name"] = $this->name;
+        if (isset($this->alias)){
+            $aliases = [];
+            foreach ($this->alias as $alias)
+                $aliases[] = $alias;
+            $arrayData["alias"] = $aliases;
+        }
+        if (isset($this->description))
+            $arrayData["description"] = $this->description;
+        if (isset($this->mode)){
+            $array = ["instance", "kind"];
+            $arrayData["mode"] = $this->mode;
+        }
+        if (isset($this->type)){
+            $types = [];
+            foreach ($this->type as $type)
+                $types[] = $type->toArray();
+            $arrayData["type"][] = $types;
+        }
+        if (isset($this->telecom)){
+            $contactpoints = [];
+            foreach ($this->telecom as $telecom)
+                $contactpoints[] = $telecom->toArray();
+            $arrayData["telecom"] = $contactpoints;
+        }
+        if (isset($this->address))
+            $arrayData["address"] = $this->address->toArray();
+        if (isset($this->physicalType))
+            $arrayData["physicalType"] = $this->physicalType->toArray();
+        if (isset($this->position)){
+            $arrayData["position"] = [];
+            if (isset($this->position["longitude"]))
+                $arrayData["position"]["longitude"] = $this->position["longitude"];
+            if (isset($this->position["latitude"]))
+                $arrayData["position"]["latitude"] = $this->position["latitude"];
+            if (isset($this->position["altitude"]))
+                $arrayData["position"]["altitude"] = $this->position["altitude"];
+        }
+        if (isset($this->managingOrganization))
+            $arrayData["managingOrganization"] = $this->managingOrganization->toArray();
+        if (isset($this->partOf))
+            $arrayData["partOf"] = $this->partOf->toArray();
+        if (isset($this->hoursOfOperation)){
+            $hours = [];
+            foreach ($this->hoursOfOperation as $hoursOfOperation){
+                $hours = [];
+                if (isset($hoursOfOperation->daysOfWeek)){
+                    $days = [];
+                    foreach ($hoursOfOperation->daysOfWeek as $daysOfWeek){
+                        $array = ["mon","tue","wed","thu","fri","sat","sun"];
+                        $days[] = $daysOfWeek;
+                    }
+                    $hours["hoursOfOperation"] = $days;
+                }
+                if (isset($hoursOfOperation->allDay))
+                    $hours["allDay"] = $hoursOfOperation->allDay;
+                if (isset($hoursOfOperation->openingTime))
+                    $hours["openingTime"] = $hoursOfOperation->openingTime;
+                if (isset($hoursOfOperation->closingTime))
+                    $hours["closingTime"] = $hoursOfOperation->closingTime;
+            }
+        }
+        if (isset($this->availabilityExceptions))
+            $arrayData["availabilityExceptions"] = $this->availabilityExceptions;
+        if (isset($this->endpoint))
+            foreach ($this->endpoint as $endpoint)
+                $arrayData["endpoint"] = $endpoint->toArray();
+        return $arrayData;
+    }
 }

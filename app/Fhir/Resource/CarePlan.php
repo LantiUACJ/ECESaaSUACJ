@@ -155,8 +155,8 @@ class CarePlan extends DomainResource{
     public function setSubject(Resource $subject){
         $this->subject = $subject->toReference();
     }
-    public function setEncounter(Reference $encounter){
-        $this->encounter = $encounter;
+    public function setEncounter(Resource $encounter){
+        $this->encounter = $encounter->toReference();
     }
     public function setPeriod(Period $period){
         $this->period = $period;

@@ -19,7 +19,7 @@ class DomainResource extends Resource{
         if(isset($json->modifierExtension)) $this->setModifierExtension(new Extension($json->modifierExtension));
         if(isset($json->extension))
             foreach($json->extension as $extension)
-                $this->addExtension(new Extension($extension));
+                $this->addExtension(Extension::Load($extension));
     }
     public function setText($text){
         $this->text = $text;

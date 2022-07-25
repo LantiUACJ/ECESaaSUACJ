@@ -19,6 +19,7 @@ class Reference extends Element{
     }
     public static function Load($json){
         $reference = new Reference("","","");
+        $reference->reference = "";
         $reference->loadData($json);
         return $reference;
     }

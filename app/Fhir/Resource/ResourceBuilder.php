@@ -16,6 +16,9 @@ class ResourceBuilder{
             case "Composition":
                 return new Composition($resource);
             break;
+            case "Condition":
+                return new Condition($resource);
+            break;
             case "DiagnosticReport":
                 return new DiagnosticReport($resource);
             break;

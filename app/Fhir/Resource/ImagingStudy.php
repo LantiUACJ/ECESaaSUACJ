@@ -56,9 +56,9 @@ class ImagingStudy extends DomainResource{
         if(isset($json->numberOfInstances))
             $this->numberOfInstances = $json->numberOfInstances;
         if(isset($json->procedureReference))
-            $json->procedureReference = Reference::Load($json->procedureReference);
+            $this->procedureReference = Reference::Load($json->procedureReference);
         if(isset($json->location))
-            $json->location = Reference::Load($json->location);
+            $this->location = Reference::Load($json->location);
         if(isset($json->reasonCode))
             foreach($json->reasonCode as $reasonCode)
                 $this->reasonCode[] = CodeableConcept::Load($reasonCode);
@@ -69,12 +69,15 @@ class ImagingStudy extends DomainResource{
             foreach($json->note as $note)
                 $this->note[] = Annotation::Load($note);
         if(isset($json->description))
-            $json->description = $json->description;
+            $this->description = $json->description;
         if(isset($json->series))
             foreach($json->series as $series)
                 $this->series[] = ImageStudySeries::Load($series);
+        if(isset($json->procedureCode))
+            foreach($json->procedureCode as $procedureCode)
+                $this->procedureCode[] = CodeableConcept::Load($procedureCode);
     }
-    public function setIdentifier(Identifier $identifier){
+    public function addIdentifier(Identifier $identifier){
         $this->identifier[] = $identifier;
     }
     public function setStatus($status){
@@ -180,10 +183,10 @@ class ImagingStudy extends DomainResource{
             $arrayData["numberOfInstances"] = $this->numberOfInstances;
         }
         if(isset($this->procedureReference)){
-            $this->procedureReference = $this->procedureReference->toArray();
+            $arrayData["procedureReference"] = $this->procedureReference->toArray();
         }
         if(isset($this->location)){
-            $this->location = $this->location->toArray();
+            $arrayData["location"] = $this->location->toArray();
         }
         foreach($this->reasonCode as $reasonCode){
             $arrayData["reasonCode"][] = $reasonCode->toArray();
@@ -195,11 +198,14 @@ class ImagingStudy extends DomainResource{
             $arrayData["note"][] = $note->toArray();
         }
         if(isset($this->description)){
-            $this->description = $this->description;
+            $arrayData["description"] = $this->description;
         }
         foreach($this->series as $series){
             $arrayData["series"][] = $series->toArray();
         }
+        if(isset($this->procedureCode))
+            foreach($this->procedureCode as $procedureCode)
+                $arrayData["procedureCode"][] = $procedureCode->toArray();
         return $arrayData;
     }
 }

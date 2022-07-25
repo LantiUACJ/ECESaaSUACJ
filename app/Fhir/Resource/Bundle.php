@@ -52,6 +52,26 @@ class Bundle extends DomainResource{
     public function addEntry(Resource $resource){
         $this->entry[] = $resource;
     }
+    /**
+     * @param string $id
+     * @return \App\Fhir\Resource\Resource
+    */
+    public function findResource($id){
+        foreach($this->entry as $entry){
+            $resource = $entry;
+            if(isset($resource->id) && $resource->id == $id){
+                return $entry;
+            }
+        }
+    }
+    public function findCompositions(){
+        $data = [];
+        foreach($this->entry as $entry){
+            if($entry->resourceType == "Composition")
+                $data[] = $entry;
+        }
+        return $data;
+    }
     public function toArray(){
         $arrayData = parent::toArray();
 

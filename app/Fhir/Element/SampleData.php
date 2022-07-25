@@ -5,7 +5,6 @@ namespace App\Fhir\Element;
 class SampleData extends Element{
     public function __construct(){
         parent::__construct();
-        $this->line = [];
     }
 
     private function loadData($json){
@@ -30,6 +29,30 @@ class SampleData extends Element{
         $sampleData->loadData($json);
         return $sampleData;
     }
+
+
+    public function setOrigin($origin){
+        $this->origin = $origin;
+    }
+    public function setPeriod($period){
+        $this->period = $period;
+    }
+    public function setFactor($factor){
+        $this->factor = $factor;
+    }
+    public function setLowerLimit($lowerLimit){
+        $this->lowerLimit = $lowerLimit;
+    }
+    public function setUpperLimit($upperLimit){
+        $this->upperLimit = $upperLimit;
+    }
+    public function setDimensions($dimensions){
+        $this->dimensions = $dimensions;
+    }
+    public function setData($data){
+        $this->data = $data;
+    }
+
 
     public function toArray(){
         $arrayData = parent::toArray();

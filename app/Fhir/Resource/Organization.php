@@ -76,8 +76,8 @@ class Organization extends DomainResource{
     public function addAddress(Address $address){
         $this->address[] = $address;
     }
-    public function setPartOf(Reference $partOf){
-        $this->partOf = $partOf;
+    public function setPartOf(Resource $partOf){
+        $this->partOf = $partOf->toReference();
     }
     public function addContact(CodeableConcept $purpose, HumanName $name, ContactPoint $telecom, CodeableConcept $address){
         $this->contact[] = [
@@ -87,8 +87,8 @@ class Organization extends DomainResource{
             "address"=>$address,
         ];
     }
-    public function setEndpoint(Reference $endpoint){
-        $this->endpoint[] = $endpoint;
+    public function addEndpoint(Resource $endpoint){
+        $this->endpoint[] = $endpoint->toReference();
     }
 
     public function toArray(){
