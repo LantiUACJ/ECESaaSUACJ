@@ -15,15 +15,13 @@ class PatientFactory extends Factory
      */
     public function definition(Faker $faker)
     {
-        /*
         return [
             'curp' => $faker->text,
-            'nombre' => factory(App\User::class),
+            'nombre' => $faker->text,
             'slug' => $faker->slug,
             'keywords' => $faker->text,
             'description' => $faker->text,
             'content' => $faker->paragraph,
         ];
-        */
     }
 }

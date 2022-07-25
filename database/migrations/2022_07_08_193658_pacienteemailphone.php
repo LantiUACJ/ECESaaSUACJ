@@ -15,7 +15,7 @@ class Pacienteemailphone extends Migration
     {
         Schema::table('pacientes', function (Blueprint $table) {
             $table->string('email')->unique()->nullable()->after('responsable');
-            $table->string('phone', 10)->unique()->nullable()->after('email');
+            $table->string('phone', 10)->nullable()->after('email');
         });
     }
 
