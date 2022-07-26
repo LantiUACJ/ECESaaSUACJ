@@ -126,7 +126,7 @@ class MISECEController extends Controller
             $data[] = [
                 'curp'      => $pac->curp,
                 'nombre'    => $pac->nombre." ".$pac->primerApellido." ".$pac->segundoApellido,
-                'correo'    => $pac->email,
+                'email'    => $pac->email,
                 'telefono'  => $pac->phone
             ];
         }
