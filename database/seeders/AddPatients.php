@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Database\Factories\PatientFactory;
 use App\Models\Paciente;
+use App\Models\Consulta;
+use App\Models\Interrogatorio;
 
 class AddPatients extends Seeder
 {
@@ -19,6 +21,9 @@ class AddPatients extends Seeder
 
         //$patient = PatientFactory::build();
         
-        return $patient = Paciente::factory()->create();
+        Paciente::factory()//->count(100)
+            ->has(Consulta::factory()->count(rand(1, 1)))
+            ->has(Interrogatorio::factory())
+        ->create();
     }
 }

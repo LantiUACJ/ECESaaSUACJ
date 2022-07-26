@@ -10,4 +10,8 @@ class Exploracionfisica extends Model
     use HasFactory;
 
     protected $table = 'exploracionesfisicas';
+
+    public function consulta() {
+        return $this->belongsTo('App\Models\Consulta');
+    }
 }

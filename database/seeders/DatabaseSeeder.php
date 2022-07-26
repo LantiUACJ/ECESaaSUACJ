@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
         $this->call(UsersSeed::class);
         */
 
+
+
         $this->call(AddPatients::class);
     }
 }

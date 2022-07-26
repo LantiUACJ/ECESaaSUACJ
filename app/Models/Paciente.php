@@ -125,4 +125,9 @@ class Paciente extends Model
     {
         return $this->hasOne('App\Models\User', 'id', 'createdUser_id');
     }
+
+    public function interrogatorio()
+    {
+        return $this->hasOne('App\Models\Interrogatorio', 'paciente_id', 'id');
+    }
 }

@@ -16,4 +16,8 @@ class Consulta extends Model
     public function paciente() {
         return $this->belongsTo('App\Models\Paciente');
     }
+
+    public function exploracionfisica() {
+        return $this->hasOne('App\Models\Exploracionfisica', 'id', 'exploracion_id');
+    }
 }
