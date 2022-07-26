@@ -16,13 +16,9 @@ class AddPatients extends Seeder
      * @return void
      */
     public function run()
-    {
-        //factory(App\PatientFaker::class, 100)->create();
-
-        //$patient = PatientFactory::build();
-        
-        Paciente::factory()//->count(100)
-            ->has(Consulta::factory()->count(rand(1, 1)))
+    {        
+        Paciente::factory()->count(100)
+            ->has(Consulta::factory()->count(rand(1, 5)))
             ->has(Interrogatorio::factory())
         ->create();
     }

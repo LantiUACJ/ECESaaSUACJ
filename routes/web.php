@@ -48,15 +48,13 @@ Route::get('/indice', [App\Http\Controllers\MISECEController::class, 'sendindice
 //Peticion del ECE al MISECE
 //Peticion de codigo para consulta (paciente msg?)
 Route::post('/pacienteconsulta/{curp}', [App\Http\Controllers\MISECEController::class, 'consultaece'])->name('pacienteconsulta')->middleware('auth');
-
-
 //Consulta de ece al misece sin codigo, pide codigo
 Route::post('/expedienteece', [App\Http\Controllers\MISECEController::class, 'expece'])->name('expedienteece')->middleware('auth');
 //Consulta basico de ece al misece
 Route::post('/expedienteecebasico', [App\Http\Controllers\MISECEController::class, 'expecebasico'])->name('expedienteecebasico')->middleware('auth');
 
 
-//Pagina para Consulta MISECE ece-misece (con curp)
+//Pagina para Consulta (vista) MISECE ece-misece (con curp)
 Route::get('/misece', [App\Http\Controllers\MISECEController::class, 'consultarmisece'])->name('misece')->middleware('auth');
 
 

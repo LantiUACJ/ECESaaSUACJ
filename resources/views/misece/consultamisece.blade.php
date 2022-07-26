@@ -30,10 +30,6 @@
                             <input class="form-control form-control-sm" type="text" id="patientcurp" name="patientcurp" value="">
                         </div>
                         <div class="col-md-3 mx-auto">
-                            <label for="patientphone">Introduce número de teléfono del paciente:</label>
-                            <input class="form-control form-control-sm" type="text" id="patientphone" name="patientphone" value="">
-                        </div>
-                        <div class="col-md-3 mx-auto">
                             <label for="patientcode">Introduce código del paciente:</label>
                             <input class="form-control form-control-sm" type="text" id="patientcode" name="patientcode" value="">
                         </div>

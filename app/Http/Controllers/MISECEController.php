@@ -66,7 +66,9 @@ class MISECEController extends Controller
             
             //Primero Historia clinica, ya que solo es una (interrogatorios)
             $inter = Interrogatorio::where('paciente_id', $paciente->id)->first();
-            $this->HistoriaRss($inter);
+            if(isset($inter)){
+                $this->HistoriaRss($inter);
+            }
             
             //Segundo consultas, nota de consultas, exploracion fisica y signos vitales (por cada consulta (enconter))
             $consults = Consulta::where("paciente_id", $paciente->id)->orderBy('created_at', 'desc')->get();
@@ -74,13 +76,12 @@ class MISECEController extends Controller
                 $this->ConsultaRss($consult);
             }
 
-            return $this->bundle->toArray();
-
+            /*
             $data = array();
             $data["json"] = json_encode($this->bundle->toArray());
             $response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/test/json', $data);
-
             return $response->body();
+            */
 
             return json_encode($this->bundle->toArray());
         }else{
@@ -98,13 +99,15 @@ class MISECEController extends Controller
             
             //Primero Historia clinica, ya que solo es una (interrogatorios)
             $inter = Interrogatorio::where('paciente_id', $paciente->id)->first();
-            $this->HistoriaRss($inter);
-            
+            if(isset($inter)){
+                $this->HistoriaRss($inter);
+            }
+            /*
             $data = array();
             $data["json"] = json_encode($this->bundle->toArray());
             $response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/test/json', $data);
-
             return $response->body();
+            */
 
             return json_encode($this->bundle->toArray());
         }else{
@@ -147,11 +150,10 @@ class MISECEController extends Controller
         $paciente = Paciente::where('curp', $request->curp)->first();
         $data['consultor'] = auth()->user()->name;
         $data['codigo'] = $request->code != null? $request->code: null;
-        $data['numero'] = $paciente != null? "+52".$paciente->phone: $request->phone;
         
         //$jsondata = json_encode($data);
 
-        $response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/test/expediente/'.$request->curp, $data);
+        $response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/expediente/'.$request->curp, $data);
 
         if(str_contains($response->body(),"Error") ){
             return response()->json(['errormsg' => 'Código invalido.'], 401);
@@ -164,15 +166,16 @@ class MISECEController extends Controller
         $data = array();
         $data['consultor'] = auth()->user()->name;
 
-        $response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/test/expediente/basico/'.$request->curp, $data);
+        $response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/expediente/basico/'.$request->curp, $data);
 
         if(str_contains($response->body(),"Error") ){
-            return response()->json(['errormsg' => 'Código invalido.'], 401);
+            return $response->body();//response()->json(['errormsg' => 'Código invalido.'], 401);
         }else{
             return base64_encode($response->body());//$response->body();
         }
     }
 
+    // get to view 
     function consultarmisece(){
         return view('misece.consultamisece');
     }

@@ -400,13 +400,11 @@ function patientece(curp){
 function patientconsult(){
     let code = $("input[name=patientcode]").val();
     let curp = $("input[name=patientcurp]").val();
-    let phone = $("input[name=patientphone]").val();
 
-    if(curp != "" && phone != ""){
+    if(curp != ""){
         var fd = new FormData();
         fd.append('curp', curp);
         fd.append('code', code);
-        fd.append('phone', "+52"+phone);
 
         $.ajax({
             url: url + "/expedienteece/",
@@ -427,7 +425,7 @@ function patientconsult(){
             },
             error: function(response){
                 if(response.responseJSON.errormsg)
-                    alert("Se ha enviado un Código al paciente!");
+                    alert("Se ha enviado un Código al paciente! Espera unos minutos.");
                 else
                     alert("Ocurrio un error! Intentalo mas tarde.");
                 console.log(response);
