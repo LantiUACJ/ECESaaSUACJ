@@ -39,9 +39,9 @@ Route::post('/getdiags', function(Request $request){
 
 //Peticion del MISECE al ECE
 //Consulta de expediente por parte del misece
-Route::post('/expediente/{curp}', [App\Http\Controllers\MISECEController::class, 'sendexpediente'])->name('expediente');
+Route::post('/api/expediente/{curp}', [App\Http\Controllers\MISECEController::class, 'sendexpediente'])->name('api/expediente');
 //Consulta de expediente (resumido) por parte del misece
-Route::post('/expediente/basico/{curp}', [App\Http\Controllers\MISECEController::class, 'sendexpedientebasico'])->name('expediente/basico');
+Route::post('/api/expediente/basico/{curp}', [App\Http\Controllers\MISECEController::class, 'sendexpedientebasico'])->name('api/expediente/basico');
 //Consulta de expediente (resumido) por parte del misece
 Route::get('/api/update', [App\Http\Controllers\MISECEController::class, 'sendindice'])->name('api/update');
 
