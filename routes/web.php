@@ -43,7 +43,7 @@ Route::post('/expediente/{curp}', [App\Http\Controllers\MISECEController::class,
 //Consulta de expediente (resumido) por parte del misece
 Route::post('/expediente/basico/{curp}', [App\Http\Controllers\MISECEController::class, 'sendexpedientebasico'])->name('expediente/basico');
 //Consulta de expediente (resumido) por parte del misece
-Route::get('/indice', [App\Http\Controllers\MISECEController::class, 'sendindice'])->name('indice');
+Route::get('/api/update', [App\Http\Controllers\MISECEController::class, 'sendindice'])->name('api/update');
 
 //Peticion del ECE al MISECE
 //Peticion de codigo para consulta (paciente msg?)
