@@ -127,7 +127,7 @@ class MISECEController extends Controller
                 'curp'      => $pac->curp,
                 'nombre'    => $pac->nombre." ".$pac->primerApellido." ".$pac->segundoApellido,
                 'email'    => $pac->email,
-                'telefono'  => $pac->phone
+                'telefono'  => "+52".$pac->phone
             ];
         }
         return json_encode($data);
