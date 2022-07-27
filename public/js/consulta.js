@@ -408,7 +408,7 @@ function patientconsult(){
 
         $.ajax({
             url: url + "/expedienteece/",
-            type: "POST",
+            method: "POST",
             processData: false,
             contentType: false,
             data: fd,
@@ -446,7 +446,7 @@ function patientconsultbasic(){
 
         $.ajax({
             url: url + "/expedienteecebasico/",
-            type: "POST",
+            method: "POST",
             processData: false,
             contentType: false,
             data: fd,
