@@ -17,6 +17,7 @@ use App\Fhir\Element\Reference;
 use App\Fhir\Element\Period;
 use App\Fhir\Element\Quantity;
 use App\Fhir\Element\CompositionSection;
+use App\Fhir\Element\Identifier;
 
 use App\Models\Paciente;
 use App\Models\Consulta;
@@ -234,6 +235,11 @@ class MISECEController extends Controller
     //Methods for Marcos Library
     private function PatientRss(Paciente $paciente){
         $patient = new Patient;
+        $identifier = new Identifier("official", $paciente->curp);
+        $identifier->setSystem("urn:oid:2.16.840.1.113883.4.629");
+
+        $patient->addIdentifier($identifier);
+
         $humanname = new HumanName($paciente->nombre." ".$paciente->primerApellido." ".$paciente->segundoApellido);
         $humanname->setUse("official");
         $patient->addName($humanname);
