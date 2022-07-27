@@ -42,7 +42,7 @@ Route::post('/getdiags', function(Request $request){
 ///api/expediente/{curp}
 Route::get('/api/patient', [App\Http\Controllers\MISECEController::class, 'sendexpediente'])->name('api/patient');
 //Consulta de expediente (resumido) por parte del misece
-Route::get('/api/patient/basico', [App\Http\Controllers\MISECEController::class, 'sendexpedientebasico'])->name('api/patient/basico');
+Route::get('/api/patient/basic', [App\Http\Controllers\MISECEController::class, 'sendexpedientebasico'])->name('api/patient/basico');
 //Consulta de expediente (resumido) por parte del misece
 Route::get('/api/update', [App\Http\Controllers\MISECEController::class, 'sendindice'])->name('api/update');
 

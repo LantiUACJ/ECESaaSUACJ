@@ -97,29 +97,44 @@ class MISECEController extends Controller
 
     function sendexpedientebasico(Request $request){
         $curp = $request->curp;
-        $paciente = Paciente::where('curp', $curp)->first();
-        if($paciente != null){
-            $this->bundle = new Bundle;
-            $this->bundle->setType("document");
-            $this->patient = $this->PatientRss($paciente);
-            $this->bundle->addEntry($this->patient);
-            
-            //Primero Historia clinica, ya que solo es una (interrogatorios)
-            $inter = Interrogatorio::where('paciente_id', $paciente->id)->first();
-            if(isset($inter)){
-                $this->HistoriaRss($inter);
-            }
-            /*
-            $data = array();
-            $data["json"] = json_encode($this->bundle->toArray());
-            $response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/test/json', $data);
-            return $response->body();
-            */
+        if(isset($curp)){
+            $paciente = Paciente::where('curp', $curp)->first();
+            if($paciente != null){
+                $this->bundle = new Bundle;
+                $this->bundle->setType("document");
+                $this->bundle->setTimestamp(Carbon::now()->format('Y-m-d H:i:s'));
 
-            return json_encode($this->bundle->toArray());
-        }else{
-            return response()->json(['Error' => 'Paciente Desconocido.'], 500);
+                $this->patient = $this->PatientRss($paciente);
+                
+                $this->composition = new Composition;
+                $this->composition->setStatus("final");
+                $this->composition->historiaClinica();
+                $this->composition->setSubject($this->patient);
+                $this->composition->setDate(Carbon::now()->format('Y-m-d H:i:s'));
+                $this->composition->setTitle("Historia Clínica");
+                $this->composition->setConfidentiality("N");
+
+                $this->bundle->addEntry($this->composition);
+                $this->bundle->addEntry($this->patient);
+                
+                //Primero Historia clinica, ya que solo es una (interrogatorios)
+                $inter = Interrogatorio::where('paciente_id', $paciente->id)->first();
+                if(isset($inter)){
+                    $this->HistoriaRss($inter);
+                }
+                /*
+                $data = array();
+                $data["json"] = json_encode($this->bundle->toArray());
+                $response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/test/json', $data);
+                return $response->body();
+                */
+
+                return json_encode($this->bundle->toArray());
+            }else{
+                return response()->json(['Error' => 'Paciente Desconocido.'], 500);
+            }
         }
+        return response()->json(['Error' => 'La curp es obligatoria.'], 500);
     }
 
     function sendindice(Request $request){

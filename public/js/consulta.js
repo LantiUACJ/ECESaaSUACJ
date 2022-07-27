@@ -409,10 +409,9 @@ function patientconsult(){
         $.ajax({
             url: url + "/expedienteece",
             method: "POST",
-            data: {
-                curp : curp,
-                code : code
-            },
+            data: fd,
+            processData: false,
+            contentType: false,
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
