@@ -25,10 +25,10 @@
 
     <!-- App js -->
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/consulta.js')."?v=1.15" }}" defer></script> <!-- Script para manejar las operaciones crud de consulta -->
-    <script src="{{ asset('js/interrogatorio.js')."?v=1.15" }}" defer></script> <!-- Script para manejar las operaciones crud de interrogatorio -->
-    <script src="{{ asset('js/exploracion.js')."?v=1.15" }}" defer></script> <!-- Script para manejar las operaciones crud de interrogatorio -->
-    <script src="{{ asset('js/notifications.js')."?v=1.15" }}" defer></script> <!-- Script para manejar las notificaciones de consultas sin terminar -->
+    <script src="{{ asset('js/consulta.js')."?v=1.16" }}" defer></script> <!-- Script para manejar las operaciones crud de consulta -->
+    <script src="{{ asset('js/interrogatorio.js')."?v=1.16" }}" defer></script> <!-- Script para manejar las operaciones crud de interrogatorio -->
+    <script src="{{ asset('js/exploracion.js')."?v=1.16" }}" defer></script> <!-- Script para manejar las operaciones crud de interrogatorio -->
+    <script src="{{ asset('js/notifications.js')."?v=1.16" }}" defer></script> <!-- Script para manejar las notificaciones de consultas sin terminar -->
 
     <!-- Scripts -->
     <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
@@ -46,8 +46,8 @@
 
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css')."?v=1.15"  }}" rel="stylesheet">
-    <link href="{{ asset('css/myappstyle.css')."?v=1.15" }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css')."?v=1.16"  }}" rel="stylesheet">
+    <link href="{{ asset('css/myappstyle.css')."?v=1.16" }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css">
