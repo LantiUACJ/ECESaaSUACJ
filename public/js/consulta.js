@@ -407,11 +407,12 @@ function patientconsult(){
         fd.append('code', code);
 
         $.ajax({
-            url: url + "/expedienteece/",
+            url: url + "/expedienteece",
             method: "POST",
-            processData: false,
-            contentType: false,
-            data: fd,
+            data: {
+                curp : curp,
+                code : code
+            },
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
@@ -445,7 +446,7 @@ function patientconsultbasic(){
         fd.append('curp', curp);
 
         $.ajax({
-            url: url + "/expedienteecebasico/",
+            url: url + "/expedienteecebasico",
             method: "POST",
             processData: false,
             contentType: false,
