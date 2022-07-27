@@ -95,7 +95,7 @@ class Composition extends DomainResource{
     public function setType(CodeableConcept $type){
         $this->type = $type;
     }
-    public function setSubject(Resource $subject){
+    public function setSubect(Resource $subject){
         $this->subject = $subject->toReference();
     }
     public function setEncounter(Resource $encounter){
