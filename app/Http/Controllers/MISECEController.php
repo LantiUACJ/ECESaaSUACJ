@@ -601,6 +601,10 @@ class MISECEController extends Controller
         }
     }
 
+    /* 
+        Revisar encounters (consultas) para agregar mas parametros 
+        como class, diagnosis, etc.
+    */
     private function ConsultaRss(Consulta $consult){
         $compositionnote = new Composition;
         $compositionnote->setStatus("final");
@@ -622,72 +626,42 @@ class MISECEController extends Controller
         $compositionnote->setEncounter($consulta);
         $this->bundle->addEntry($consulta);
 
+        $compSection = new CompositionSection;
+        $compSection->setTitle("Datos de Consulta");
+        $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
+
         if($consult->motivoConsulta != null){
             $obs = $this->GetObservation($this->composition, "final", "Motivo de Consulta", [$consult->motivoConsulta], false);
-
-            $compSection = new CompositionSection;
-            $compSection->setTitle("Motivo de Consulta");
-            $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
             $compSection->addEntry($obs);
-            $compositionnote->addSection($compSection);
-
             $this->bundle->addEntry($obs);
         }
         if($consult->cuadroClinico != null){
             $obs = $this->GetObservation($this->composition, "final", "Cuadro Clínico", [$consult->cuadroClinico], false);
-
-            $compSection = new CompositionSection;
-            $compSection->setTitle("Cuadro Clínico");
-            $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
             $compSection->addEntry($obs);
-            $compositionnote->addSection($compSection);
-
             $this->bundle->addEntry($obs);
         }
         if($consult->resultadosLaboratorioGabinete != null){
             $obs = $this->GetObservation($this->composition, "final", "Resultados de Laboratorio y Gabinete", [$consult->resultadosLaboratorioGabinete], false);
-            
-            $compSection = new CompositionSection;
-            $compSection->setTitle("Resultados de Laboratorio y Gabinete");
-            $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
             $compSection->addEntry($obs);
-            $compositionnote->addSection($compSection);
-
             $this->bundle->addEntry($obs);
         }
         if($consult->diagnosticoProblemasClinicos != null){
             $obs = $this->GetObservation($this->composition, "final", "Diagnosticos o Problemas Clínicos", [$consult->diagnosticoProblemasClinicos], false);
-            
-            $compSection = new CompositionSection;
-            $compSection->setTitle("Diagnosticos o Problemas Clínicos");
-            $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
             $compSection->addEntry($obs);
-            $compositionnote->addSection($compSection);
-            
             $this->bundle->addEntry($obs);
         }
         if($consult->pronostico != null){
             $obs = $this->GetObservation($this->composition, "final", "Pronóstico", [$consult->pronostico], false);
-
-            $compSection = new CompositionSection;
-            $compSection->setTitle("Pronóstico");
-            $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
             $compSection->addEntry($obs);
-            $compositionnote->addSection($compSection);
-
             $this->bundle->addEntry($obs);
         }
         if($consult->indicacionTerapeutica != null){
             $obs = $this->GetObservation($this->composition, "final", "Indicación Terapéutica", [$consult->indicacionTerapeutica], false);
-
-            $compSection = new CompositionSection;
-            $compSection->setTitle("Indicación Terapéutica");
-            $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
             $compSection->addEntry($obs);
-            $compositionnote->addSection($compSection);
-
             $this->bundle->addEntry($obs);
         }
+
+        $compositionnote->addSection($compSection);
 
         //Exploracion Fisica - 
         if($consult->exploracion_id != null){
@@ -697,105 +671,57 @@ class MISECEController extends Controller
             $note = "Consulta General";
             $display = "Exploracion Física";
 
+            $compSection = new CompositionSection;
+            $compSection->setTitle("Exploración Física");
+            $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
+
             if($exploracion->habitusExterior != null){
                 $obs = $this->GetObservation($this->composition, "final", "Habitus Exterior", [$exploracion->habitusExterior], false);
-
-                $compSection = new CompositionSection;
-                $compSection->setTitle("Habitus Exterior");
-                $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
                 $compSection->addEntry($obs);
-                $compositionnote->addSection($compSection);
-
                 $this->bundle->addEntry($obs);
             }
             if($exploracion->peso != null){
                 $obs = $this->GetObservation($this->composition, "final", "Peso", [$exploracion->peso, "kg"], false);
-
-                $compSection = new CompositionSection;
-                $compSection->setTitle("Peso");
-                $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
                 $compSection->addEntry($obs);
-                $compositionnote->addSection($compSection);
-
                 $this->bundle->addEntry($obs);
             }
             if($exploracion->talla != null){
                 $obs = $this->GetObservation($this->composition, "final", "Talla", [$exploracion->talla, "cm"], false);
-
-                $compSection = new CompositionSection;
-                $compSection->setTitle("Talla");
-                $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
                 $compSection->addEntry($obs);
-                $compositionnote->addSection($compSection);
-
                 $this->bundle->addEntry($obs);
             }
             if($exploracion->cabeza != null){
                 $obs = $this->GetObservation($this->composition, "final", "Cabeza", [$exploracion->cabeza], false);
-
-                $compSection = new CompositionSection;
-                $compSection->setTitle("Cabeza");
-                $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
                 $compSection->addEntry($obs);
-                $compositionnote->addSection($compSection);
-
                 $this->bundle->addEntry($obs);
             }
             if($exploracion->cuello != null){
                 $obs = $this->GetObservation($this->composition, "final", "Cuello", [$exploracion->cuello], false);
-
-                $compSection = new CompositionSection;
-                $compSection->setTitle("Cuello");
-                $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
                 $compSection->addEntry($obs);
-                $compositionnote->addSection($compSection);
-
                 $this->bundle->addEntry($obs);
             }
             if($exploracion->torax != null){
                 $obs = $this->GetObservation($this->composition, "final", "Torax", [$exploracion->torax], false);
-
-                $compSection = new CompositionSection;
-                $compSection->setTitle("Torax");
-                $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
                 $compSection->addEntry($obs);
-                $compositionnote->addSection($compSection);
-
                 $this->bundle->addEntry($obs);
             }
             if($exploracion->abdomen != null){
                 $obs = $this->GetObservation($this->composition, "final", "Abdomen", [$exploracion->abdomen], false);
-
-                $compSection = new CompositionSection;
-                $compSection->setTitle("Abdomen");
-                $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
                 $compSection->addEntry($obs);
-                $compositionnote->addSection($compSection);
-
                 $this->bundle->addEntry($obs);
             }
             if($exploracion->miembros != null){
                 $obs = $this->GetObservation($this->composition, "final", "Miembros", [$exploracion->miembros], false);
-
-                $compSection = new CompositionSection;
-                $compSection->setTitle("Miembros");
-                $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
                 $compSection->addEntry($obs);
-                $compositionnote->addSection($compSection);
-
                 $this->bundle->addEntry($obs);
             }
             if($exploracion->genitales != null){
                 $obs = $this->GetObservation($this->composition, "final", "Genitales", [$exploracion->genitales], false);
-
-                $compSection = new CompositionSection;
-                $compSection->setTitle("Genitales");
-                $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
                 $compSection->addEntry($obs);
-                $compositionnote->addSection($compSection);
-
                 $this->bundle->addEntry($obs);
             }
+
+            $compositionnote->addSection($compSection);
 
             //Signos vitales
             if($exploracion->signos_id != null){
@@ -803,83 +729,47 @@ class MISECEController extends Controller
                 $note = "Consulta General";
                 $display = "Signos Vitales";
 
+                $compSection = new CompositionSection;
+                $compSection->setTitle("Signos Vitales");
+                $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
+
                 if($signos->temperatura != null){
                     $obs = $this->GetObservation($this->composition, "final", "Temperatura", [$signos->temperatura, "°C"], false);
-
-                    $compSection = new CompositionSection;
-                    $compSection->setTitle("Temperatura");
-                    $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
                     $compSection->addEntry($obs);
-                    $compositionnote->addSection($compSection);
-
                     $this->bundle->addEntry($obs);
                 }
                 if($signos->tensionSistolica != null){
                     $obs = $this->GetObservation($this->composition, "final", "Tensión Sistolica", [$signos->tensionSistolica, "mmHg"], false);
-
-                    $compSection = new CompositionSection;
-                    $compSection->setTitle("Tensión Sistolica");
-                    $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
                     $compSection->addEntry($obs);
-                    $compositionnote->addSection($compSection);
-
                     $this->bundle->addEntry($obs);
                 }
                 if($signos->tensionDiastolica != null){
                     $obs = $this->GetObservation($this->composition, "final", "Tensión Diastolica", [$signos->tensionDiastolica, "mmHg"], false);
-
-                    $compSection = new CompositionSection;
-                    $compSection->setTitle("Tensión Diastolica");
-                    $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
                     $compSection->addEntry($obs);
-                    $compositionnote->addSection($compSection);
-
                     $this->bundle->addEntry($obs);
                 }
                 if($signos->frecuenciaCardiaca != null){
                     $obs = $this->GetObservation($this->composition, "final", "Frecuencia Cardiaca", [$signos->frecuenciaCardiaca, "lmp"], false);
-
-                    $compSection = new CompositionSection;
-                    $compSection->setTitle("Frecuencia Cardiaca");
-                    $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
                     $compSection->addEntry($obs);
-                    $compositionnote->addSection($compSection);
-
                     $this->bundle->addEntry($obs);
                 }
                 if($signos->frecuenciaRespiratoria != null){
                     $obs = $this->GetObservation($this->composition, "final", "Frecuencia Respiratoria", [$signos->frecuenciaRespiratoria, "rmp"], false);
-                    
-                    $compSection = new CompositionSection;
-                    $compSection->setTitle("Frecuencia Respiratoria");
-                    $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
                     $compSection->addEntry($obs);
-                    $compositionnote->addSection($compSection);
-                    
                     $this->bundle->addEntry($obs);
                 }
                 if($signos->saturacionOxigeno != null){
                     $obs = $this->GetObservation($this->composition, "final", "Saturación de Oxígeno", [$signos->saturacionOxigeno, "%"], false);
-
-                    $compSection = new CompositionSection;
-                    $compSection->setTitle("Saturación de Oxígeno");
-                    $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
                     $compSection->addEntry($obs);
-                    $compositionnote->addSection($compSection);
-
                     $this->bundle->addEntry($obs);
                 }
                 if($signos->glucosa != null){
                     $obs = $this->GetObservation($this->composition, "final", "Glucosa", [$signos->glucosa, "mg/dL"], false);
-
-                    $compSection = new CompositionSection;
-                    $compSection->setTitle("Glucosa");
-                    $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
                     $compSection->addEntry($obs);
-                    $compositionnote->addSection($compSection);
-
                     $this->bundle->addEntry($obs);
                 }
+
+                $compositionnote->addSection($compSection);
             }
         }
     }
