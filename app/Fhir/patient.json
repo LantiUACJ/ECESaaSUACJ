@@ -1,13 +1,13 @@
 {
     "resourceType": "Bundle",
-    "id": "9e72f3cd9e98718e11c66d73fdfc687b",
+    "id": "8edbd73de6f8d6fc581019c2e8d4a135",
     "type": "document",
-    "timestamp": "2022-07-22 20:57:36",
+    "timestamp": "2022-07-28 20:55:46",
     "entry": [
         {
             "resource": {
                 "resourceType": "Composition",
-                "id": "1c5d1d9f2a49f456982c0d66c6fed73b",
+                "id": "34055df319f0237801c511517f95255b",
                 "status": "final",
                 "type": {
                     "text": "Historia Clínica",
@@ -19,10 +19,10 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "date": "2022-07-22 20:57:36",
+                "date": "2022-07-28 20:55:46",
                 "title": "Historia Clínica",
                 "confidentiality": "N",
                 "section": [
@@ -38,51 +38,59 @@
                         },
                         "entry": [
                             {
-                                "reference": "Observation/26314db0a07ea1af2830d529bc51b59f",
+                                "reference": "Observation/66a10246438285f5e0a2d80eb3d7cc82",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/35d01169fe42e18f0c37eae443659d9c",
+                                "reference": "Observation/bf0e85a2bddfa669481f770fdce4e296",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/35d01169fe42e18f0c37eae443659d9c",
+                                "reference": "Observation/94047e7f3a17df70c4e0b91b0bdbfa87",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/b7f8e6dfcec52743bab74f6d058b7e26",
+                                "reference": "Observation/3a1a8af6bd1d9113620d08d579d043d0",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/b7f8e6dfcec52743bab74f6d058b7e26",
+                                "reference": "Observation/9576c22190c1dccdec203e0ec969d476",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/b7f8e6dfcec52743bab74f6d058b7e26",
+                                "reference": "Observation/73841f1df7a8795f72bad6e067f3f135",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/3c5d12d129c39bf7fcca201783d09d1c",
+                                "reference": "Observation/ad43a7a1b6d33e78ee596502d731bbf3",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/3c5d12d129c39bf7fcca201783d09d1c",
+                                "reference": "Observation/0c287ce1cb9dca566f8c55e6b0f5a9ac",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/3c5d12d129c39bf7fcca201783d09d1c",
+                                "reference": "Observation/9d84633efcd89db6c8374f0836a5a19d",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/3242df774f540ed8ed8fceb105fb8db2",
+                                "reference": "Observation/904e51dd30269b03ea06e97a3e56a0d9",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/3242df774f540ed8ed8fceb105fb8db2",
+                                "reference": "Observation/3ca51303c5c30de8df5b2b3e60c6eec8",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/3242df774f540ed8ed8fceb105fb8db2",
+                                "reference": "Observation/c7e0e18badd39a418c5fbf3cf2b38896",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/2f1b410a2e2b60e8132640f9aaa4a78a",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/3ab1aed3acf5f81d4c14d78d174749be",
                                 "type": "Observation"
                             }
                         ]
@@ -99,39 +107,35 @@
                         },
                         "entry": [
                             {
-                                "reference": "Observation/3b22434b462cde7f84ada9f4cacf8409",
+                                "reference": "Observation/e9cfa61c5304040a07c852aaa24a8fa9",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/34c159aba0194891852f935164418fbc",
+                                "reference": "Observation/5d3b2260a1e0a72f9a3b5595cfc6c826",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/34c159aba0194891852f935164418fbc",
+                                "reference": "Observation/d97b99c901e57126dc80f4ffdc5e61a7",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/34c159aba0194891852f935164418fbc",
+                                "reference": "Observation/d0ea688161759244701ae376f0524182",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/7fcfd444afedcf48914fcd6a28c3b114",
+                                "reference": "Observation/8b4964ec8410f4d6e87f4a762f5a6d5e",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/7fcfd444afedcf48914fcd6a28c3b114",
+                                "reference": "Observation/d2036138fbc8e2003ec4e7ebdf1a4790",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/7fcfd444afedcf48914fcd6a28c3b114",
+                                "reference": "Observation/2cf08e2d8393dbe6fb2f1dd8c56d1ecc",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/7fcfd444afedcf48914fcd6a28c3b114",
-                                "type": "Observation"
-                            },
-                            {
-                                "reference": "Observation/ad7500b243880c0b418838b36e23b34e",
+                                "reference": "Observation/b97e6e9611afb34fc57563c65d8be20b",
                                 "type": "Observation"
                             }
                         ]
@@ -148,19 +152,23 @@
                         },
                         "entry": [
                             {
-                                "reference": "Observation/8670ca48dd161145f975b619b51c6d1e",
+                                "reference": "Observation/d7eb28232ec540c9d8ae0f5479ddd713",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/460c5bcc01583e028421d52e3ff9ec03",
+                                "reference": "Observation/089327ac366f1b885d79cf76974dcbf1",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/cb80b4271cb4875e0b11600465d17742",
+                                "reference": "Observation/0ac44e84838bc94f552515e573fa7e8b",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/cb80b4271cb4875e0b11600465d17742",
+                                "reference": "Observation/9c7efc662742fe83e0d1052ee7b43720",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/7023417112aa6783bb8ee45ab09834c9",
                                 "type": "Observation"
                             }
                         ]
@@ -177,79 +185,90 @@
                         },
                         "entry": [
                             {
-                                "reference": "Observation/59480a98418e52533b4d93a90746409a",
+                                "reference": "Observation/2552bed93804d7fda1573c62aeab0a8d",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/59480a98418e52533b4d93a90746409a",
+                                "reference": "Observation/db0477fb80b6c2880b559b9ea41c141c",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/b2dd34dc7b445bd85ecd6229abedf7fd",
+                                "reference": "Observation/e543b7ed83e8f540be7ee4b4ccb70d9f",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/b2dd34dc7b445bd85ecd6229abedf7fd",
+                                "reference": "Observation/849883d3849afab1edf0eb7bff346d04",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/b2dd34dc7b445bd85ecd6229abedf7fd",
+                                "reference": "Observation/937bd26187b1ca1561c2d65ee4929e50",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/66958c5998f21a57ec358ef0e2b3445b",
+                                "reference": "Observation/dfe0cfdc00edce325c04164e9ce0f55a",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/66958c5998f21a57ec358ef0e2b3445b",
+                                "reference": "Observation/b2c445fafa6c6c7e603793ac3783d6f6",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/66958c5998f21a57ec358ef0e2b3445b",
+                                "reference": "Observation/3bf8961c2cabb0d56f25340367bfdbee",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/66958c5998f21a57ec358ef0e2b3445b",
+                                "reference": "Observation/cbc1c498d3d0deb993b6555fe3e677c7",
                                 "type": "Observation"
                             },
                             {
-                                "reference": "Observation/880aeaec5721d4c5234c490be779556c",
+                                "reference": "Observation/72986fff446683b255e2446d5e892849",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/96971cc04b76ff26920749ec588ecb1f",
                                 "type": "Observation"
                             }
                         ]
                     }
                 ]
             },
-            "fullUrl": "1c5d1d9f2a49f456982c0d66c6fed73b"
+            "fullUrl": "34055df319f0237801c511517f95255b"
         },
         {
             "resource": {
                 "resourceType": "Patient",
-                "id": "e4049395eed4a608ffb301e84580f54d",
+                "id": "87df424ddb95eb0b27b9de0124b5c557",
                 "name": [
                     {
-                        "text": "Cesar Javier Maldonado Flores",
+                        "text": "Ana Isabel Pizarro Fuentes",
                         "use": "official"
                     }
                 ],
-                "gender": "Masculino",
-                "birthDate": "15-09-1993",
+                "identifier": [
+                    {
+                        "use": "official",
+                        "system": "urn:oid:2.16.840.1.113883.4.629",
+                        "value": "PIFA19650729MZSZEA65O"
+                    }
+                ],
+                "gender": "Femenino",
+                "birthDate": "29-07-1965",
                 "address": [
                     {
                         "use": "home",
                         "type": "physical",
-                        "text": "Col. México 68, Calle. Manganeso, #2742",
-                        "district": "JUÁREZ",
-                        "state": "CHIHUAHUA"
+                        "text": "Col. Camiño Alberto, Calle. Carrer Betancourt, #9886",
+                        "district": "AGUASCALIENTES",
+                        "state": "ZACATECAS"
                     }
                 ]
             },
-            "fullUrl": "e4049395eed4a608ffb301e84580f54d"
+            "fullUrl": "87df424ddb95eb0b27b9de0124b5c557"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "26314db0a07ea1af2830d529bc51b59f",
+                "id": "66a10246438285f5e0a2d80eb3d7cc82",
                 "status": "final",
                 "code": {
                     "text": "Grupo Étnico",
@@ -260,17 +279,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "MAZATECO"
+                "valueString": "SE IGNORA"
             },
-            "fullUrl": "26314db0a07ea1af2830d529bc51b59f"
+            "fullUrl": "66a10246438285f5e0a2d80eb3d7cc82"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "35d01169fe42e18f0c37eae443659d9c",
+                "id": "bf0e85a2bddfa669481f770fdce4e296",
                 "status": "final",
                 "code": {
                     "text": "Diabetes",
@@ -281,17 +300,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
                 "valueBoolean": true
             },
-            "fullUrl": "35d01169fe42e18f0c37eae443659d9c"
+            "fullUrl": "bf0e85a2bddfa669481f770fdce4e296"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "35d01169fe42e18f0c37eae443659d9c",
+                "id": "94047e7f3a17df70c4e0b91b0bdbfa87",
                 "status": "final",
                 "code": {
                     "text": "Hipertension",
@@ -302,17 +321,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
                 "valueBoolean": true
             },
-            "fullUrl": "35d01169fe42e18f0c37eae443659d9c"
+            "fullUrl": "94047e7f3a17df70c4e0b91b0bdbfa87"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "b7f8e6dfcec52743bab74f6d058b7e26",
+                "id": "3a1a8af6bd1d9113620d08d579d043d0",
                 "status": "final",
                 "code": {
                     "text": "Dislipidemias",
@@ -323,38 +342,59 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
                 "valueBoolean": true
             },
-            "fullUrl": "b7f8e6dfcec52743bab74f6d058b7e26"
+            "fullUrl": "3a1a8af6bd1d9113620d08d579d043d0"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "b7f8e6dfcec52743bab74f6d058b7e26",
+                "id": "9576c22190c1dccdec203e0ec969d476",
                 "status": "final",
                 "code": {
-                    "text": "Cardiopatias",
+                    "text": "Neoplasias",
                     "coding": [
                         {
-                            "display": "Cardiopatias"
+                            "display": "Neoplasias"
                         }
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
                 "valueBoolean": true
             },
-            "fullUrl": "b7f8e6dfcec52743bab74f6d058b7e26"
+            "fullUrl": "9576c22190c1dccdec203e0ec969d476"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "b7f8e6dfcec52743bab74f6d058b7e26",
+                "id": "73841f1df7a8795f72bad6e067f3f135",
+                "status": "final",
+                "code": {
+                    "text": "Artritis",
+                    "coding": [
+                        {
+                            "display": "Artritis"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueBoolean": true
+            },
+            "fullUrl": "73841f1df7a8795f72bad6e067f3f135"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "ad43a7a1b6d33e78ee596502d731bbf3",
                 "status": "final",
                 "code": {
                     "text": "Alzheimer",
@@ -365,17 +405,59 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
                 "valueBoolean": true
             },
-            "fullUrl": "b7f8e6dfcec52743bab74f6d058b7e26"
+            "fullUrl": "ad43a7a1b6d33e78ee596502d731bbf3"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "3c5d12d129c39bf7fcca201783d09d1c",
+                "id": "0c287ce1cb9dca566f8c55e6b0f5a9ac",
+                "status": "final",
+                "code": {
+                    "text": "Epilepsia",
+                    "coding": [
+                        {
+                            "display": "Epilepsia"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueBoolean": true
+            },
+            "fullUrl": "0c287ce1cb9dca566f8c55e6b0f5a9ac"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "9d84633efcd89db6c8374f0836a5a19d",
+                "status": "final",
+                "code": {
+                    "text": "Parkinson",
+                    "coding": [
+                        {
+                            "display": "Parkinson"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueBoolean": true
+            },
+            "fullUrl": "9d84633efcd89db6c8374f0836a5a19d"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "904e51dd30269b03ea06e97a3e56a0d9",
                 "status": "final",
                 "code": {
                     "text": "Depresion",
@@ -386,59 +468,59 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
                 "valueBoolean": true
             },
-            "fullUrl": "3c5d12d129c39bf7fcca201783d09d1c"
+            "fullUrl": "904e51dd30269b03ea06e97a3e56a0d9"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "3c5d12d129c39bf7fcca201783d09d1c",
+                "id": "3ca51303c5c30de8df5b2b3e60c6eec8",
                 "status": "final",
                 "code": {
-                    "text": "Esquizofrenia",
+                    "text": "Colestasis",
                     "coding": [
                         {
-                            "display": "Esquizofrenia"
+                            "display": "Colestasis"
                         }
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
                 "valueBoolean": true
             },
-            "fullUrl": "3c5d12d129c39bf7fcca201783d09d1c"
+            "fullUrl": "3ca51303c5c30de8df5b2b3e60c6eec8"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "3c5d12d129c39bf7fcca201783d09d1c",
+                "id": "c7e0e18badd39a418c5fbf3cf2b38896",
                 "status": "final",
                 "code": {
-                    "text": "Cirrosis",
+                    "text": "Hepatitis",
                     "coding": [
                         {
-                            "display": "Cirrosis"
+                            "display": "Hepatitis"
                         }
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
                 "valueBoolean": true
             },
-            "fullUrl": "3c5d12d129c39bf7fcca201783d09d1c"
+            "fullUrl": "c7e0e18badd39a418c5fbf3cf2b38896"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "3242df774f540ed8ed8fceb105fb8db2",
+                "id": "2f1b410a2e2b60e8132640f9aaa4a78a",
                 "status": "final",
                 "code": {
                     "text": "Enfermedades Endocrinas",
@@ -449,17 +531,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
                 "valueBoolean": true
             },
-            "fullUrl": "3242df774f540ed8ed8fceb105fb8db2"
+            "fullUrl": "2f1b410a2e2b60e8132640f9aaa4a78a"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "3242df774f540ed8ed8fceb105fb8db2",
+                "id": "3ab1aed3acf5f81d4c14d78d174749be",
                 "status": "final",
                 "code": {
                     "text": "Enfermedades Geneticas",
@@ -470,38 +552,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
                 "valueBoolean": true
             },
-            "fullUrl": "3242df774f540ed8ed8fceb105fb8db2"
+            "fullUrl": "3ab1aed3acf5f81d4c14d78d174749be"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "3242df774f540ed8ed8fceb105fb8db2",
-                "status": "final",
-                "code": {
-                    "text": "Otros",
-                    "coding": [
-                        {
-                            "display": "Otros"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueString": "Desorden de personalidad"
-            },
-            "fullUrl": "3242df774f540ed8ed8fceb105fb8db2"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "3b22434b462cde7f84ada9f4cacf8409",
+                "id": "e9cfa61c5304040a07c852aaa24a8fa9",
                 "status": "final",
                 "code": {
                     "text": "Enfermedad Infecta-Contagiosa",
@@ -512,17 +573,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "Enfermedad contagiosa."
+                "valueString": "Exantema súbito"
             },
-            "fullUrl": "3b22434b462cde7f84ada9f4cacf8409"
+            "fullUrl": "e9cfa61c5304040a07c852aaa24a8fa9"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "34c159aba0194891852f935164418fbc",
+                "id": "5d3b2260a1e0a72f9a3b5595cfc6c826",
                 "status": "final",
                 "code": {
                     "text": "Enfermedad Cronica Degenerativa",
@@ -533,17 +594,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "Enfermedad cronica"
+                "valueString": "Obesidad"
             },
-            "fullUrl": "34c159aba0194891852f935164418fbc"
+            "fullUrl": "5d3b2260a1e0a72f9a3b5595cfc6c826"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "34c159aba0194891852f935164418fbc",
+                "id": "d97b99c901e57126dc80f4ffdc5e61a7",
                 "status": "final",
                 "code": {
                     "text": "Traumatologicos",
@@ -554,17 +615,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "Trauma cerebral"
+                "valueString": "Fracturas"
             },
-            "fullUrl": "34c159aba0194891852f935164418fbc"
+            "fullUrl": "d97b99c901e57126dc80f4ffdc5e61a7"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "34c159aba0194891852f935164418fbc",
+                "id": "d0ea688161759244701ae376f0524182",
                 "status": "final",
                 "code": {
                     "text": "Alergicos",
@@ -575,17 +636,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "Alergia estacional"
+                "valueString": "Ibuprofeno "
             },
-            "fullUrl": "34c159aba0194891852f935164418fbc"
+            "fullUrl": "d0ea688161759244701ae376f0524182"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "7fcfd444afedcf48914fcd6a28c3b114",
+                "id": "8b4964ec8410f4d6e87f4a762f5a6d5e",
                 "status": "final",
                 "code": {
                     "text": "Quirurgicos",
@@ -596,17 +657,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "Ninguna"
+                "valueString": "Reparación de hernias, Complicaciones: Anestesia insuficiente. Intervención exitosa"
             },
-            "fullUrl": "7fcfd444afedcf48914fcd6a28c3b114"
+            "fullUrl": "8b4964ec8410f4d6e87f4a762f5a6d5e"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "7fcfd444afedcf48914fcd6a28c3b114",
+                "id": "d2036138fbc8e2003ec4e7ebdf1a4790",
                 "status": "final",
                 "code": {
                     "text": "Hospitalizaciones Previas",
@@ -617,17 +678,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "Ninguna"
+                "valueString": "Motivo: Choque de auto, heridas menores. Resuelto."
             },
-            "fullUrl": "7fcfd444afedcf48914fcd6a28c3b114"
+            "fullUrl": "d2036138fbc8e2003ec4e7ebdf1a4790"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "7fcfd444afedcf48914fcd6a28c3b114",
+                "id": "2cf08e2d8393dbe6fb2f1dd8c56d1ecc",
                 "status": "final",
                 "code": {
                     "text": "Transfusiones",
@@ -638,17 +699,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "Muchas"
+                "valueString": "Plasma, 100ml, choque de auto, sin reaccion adversa."
             },
-            "fullUrl": "7fcfd444afedcf48914fcd6a28c3b114"
+            "fullUrl": "2cf08e2d8393dbe6fb2f1dd8c56d1ecc"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "7fcfd444afedcf48914fcd6a28c3b114",
+                "id": "b97e6e9611afb34fc57563c65d8be20b",
                 "status": "final",
                 "code": {
                     "text": "Toxicomanias y Alcoholismo",
@@ -659,38 +720,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "Depresoras - Estimulantes - Cannabis - Alucinógenos/Psicodélicos - Inhalantes - "
+                "valueString": "Depresoras - "
             },
-            "fullUrl": "7fcfd444afedcf48914fcd6a28c3b114"
+            "fullUrl": "b97e6e9611afb34fc57563c65d8be20b"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "ad7500b243880c0b418838b36e23b34e",
-                "status": "final",
-                "code": {
-                    "text": "Otros",
-                    "coding": [
-                        {
-                            "display": "Otros"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueString": "Daño craniocefalico"
-            },
-            "fullUrl": "ad7500b243880c0b418838b36e23b34e"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "8670ca48dd161145f975b619b51c6d1e",
+                "id": "d7eb28232ec540c9d8ae0f5479ddd713",
                 "status": "final",
                 "code": {
                     "text": "Vivienda",
@@ -701,17 +741,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "Piso de tierra, techo de lamina de aluminio."
+                "valueString": "Hogar rural. Servicios: luz, drenaje. Dormitorios: 1. Habitan: 3 personas"
             },
-            "fullUrl": "8670ca48dd161145f975b619b51c6d1e"
+            "fullUrl": "d7eb28232ec540c9d8ae0f5479ddd713"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "460c5bcc01583e028421d52e3ff9ec03",
+                "id": "089327ac366f1b885d79cf76974dcbf1",
                 "status": "final",
                 "code": {
                     "text": "Higiene",
@@ -722,17 +762,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "Baño diario, agua potable."
+                "valueString": "Se baña todos los días, ropa limpia cada 2 días, se lava las manos antes de ir al baño y antes de comer."
             },
-            "fullUrl": "460c5bcc01583e028421d52e3ff9ec03"
+            "fullUrl": "089327ac366f1b885d79cf76974dcbf1"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "cb80b4271cb4875e0b11600465d17742",
+                "id": "0ac44e84838bc94f552515e573fa7e8b",
                 "status": "final",
                 "code": {
                     "text": "Dieta",
@@ -743,17 +783,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "Alta en grasas y harinas"
+                "valueString": "4 comidas al día, no respeta un horario, alta ingesta de harinas y sales."
             },
-            "fullUrl": "cb80b4271cb4875e0b11600465d17742"
+            "fullUrl": "0ac44e84838bc94f552515e573fa7e8b"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "cb80b4271cb4875e0b11600465d17742",
+                "id": "9c7efc662742fe83e0d1052ee7b43720",
                 "status": "final",
                 "code": {
                     "text": "Zoonosis",
@@ -764,17 +804,38 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "Ninguna"
+                "valueString": "Gatos y perros."
             },
-            "fullUrl": "cb80b4271cb4875e0b11600465d17742"
+            "fullUrl": "9c7efc662742fe83e0d1052ee7b43720"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "59480a98418e52533b4d93a90746409a",
+                "id": "7023417112aa6783bb8ee45ab09834c9",
+                "status": "final",
+                "code": {
+                    "text": "Otros",
+                    "coding": [
+                        {
+                            "display": "Otros"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Vive cerca de las vias de un tren."
+            },
+            "fullUrl": "7023417112aa6783bb8ee45ab09834c9"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "2552bed93804d7fda1573c62aeab0a8d",
                 "status": "final",
                 "code": {
                     "text": "Signos Y Sintomas",
@@ -785,17 +846,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium magna vitae risus consequat elementum. Sed rutrum maximus lacus, ac congue elit molestie sed."
+                "valueString": "Fiebre"
             },
-            "fullUrl": "59480a98418e52533b4d93a90746409a"
+            "fullUrl": "2552bed93804d7fda1573c62aeab0a8d"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "59480a98418e52533b4d93a90746409a",
+                "id": "db0477fb80b6c2880b559b9ea41c141c",
                 "status": "final",
                 "code": {
                     "text": "Aparato Cardiovascular",
@@ -806,17 +867,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium magna vitae risus consequat elementum. Sed rutrum maximus lacus, ac congue elit molestie sed."
+                "valueString": "Palpitaciones"
             },
-            "fullUrl": "59480a98418e52533b4d93a90746409a"
+            "fullUrl": "db0477fb80b6c2880b559b9ea41c141c"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "b2dd34dc7b445bd85ecd6229abedf7fd",
+                "id": "e543b7ed83e8f540be7ee4b4ccb70d9f",
                 "status": "final",
                 "code": {
                     "text": "Aparato Respiratorio",
@@ -827,17 +888,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium magna vitae risus consequat elementum. Sed rutrum maximus lacus, ac congue elit molestie sed."
+                "valueString": "Vómica"
             },
-            "fullUrl": "b2dd34dc7b445bd85ecd6229abedf7fd"
+            "fullUrl": "e543b7ed83e8f540be7ee4b4ccb70d9f"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "b2dd34dc7b445bd85ecd6229abedf7fd",
+                "id": "849883d3849afab1edf0eb7bff346d04",
                 "status": "final",
                 "code": {
                     "text": "Sistema Nefrologico",
@@ -848,17 +909,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium magna vitae risus consequat elementum. Sed rutrum maximus lacus, ac congue elit molestie sed."
+                "valueString": "Dolor renoureteral"
             },
-            "fullUrl": "b2dd34dc7b445bd85ecd6229abedf7fd"
+            "fullUrl": "849883d3849afab1edf0eb7bff346d04"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "b2dd34dc7b445bd85ecd6229abedf7fd",
+                "id": "937bd26187b1ca1561c2d65ee4929e50",
                 "status": "final",
                 "code": {
                     "text": "Sistema Endocrino",
@@ -869,17 +930,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium magna vitae risus consequat elementum. Sed rutrum maximus lacus, ac congue elit molestie sed."
+                "valueString": "Vello corporal"
             },
-            "fullUrl": "b2dd34dc7b445bd85ecd6229abedf7fd"
+            "fullUrl": "937bd26187b1ca1561c2d65ee4929e50"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "66958c5998f21a57ec358ef0e2b3445b",
+                "id": "dfe0cfdc00edce325c04164e9ce0f55a",
                 "status": "final",
                 "code": {
                     "text": "Sistema Hemato",
@@ -890,17 +951,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium magna vitae risus consequat elementum. Sed rutrum maximus lacus, ac congue elit molestie sed."
+                "valueString": "Adenomegalias"
             },
-            "fullUrl": "66958c5998f21a57ec358ef0e2b3445b"
+            "fullUrl": "dfe0cfdc00edce325c04164e9ce0f55a"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "66958c5998f21a57ec358ef0e2b3445b",
+                "id": "b2c445fafa6c6c7e603793ac3783d6f6",
                 "status": "final",
                 "code": {
                     "text": "Sistema Nervioso",
@@ -911,17 +972,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium magna vitae risus consequat elementum. Sed rutrum maximus lacus, ac congue elit molestie sed."
+                "valueString": "Debilidad muscular"
             },
-            "fullUrl": "66958c5998f21a57ec358ef0e2b3445b"
+            "fullUrl": "b2c445fafa6c6c7e603793ac3783d6f6"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "66958c5998f21a57ec358ef0e2b3445b",
+                "id": "3bf8961c2cabb0d56f25340367bfdbee",
                 "status": "final",
                 "code": {
                     "text": "Sistema Musculo-Esqueletico",
@@ -932,17 +993,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium magna vitae risus consequat elementum. Sed rutrum maximus lacus, ac congue elit molestie sed."
+                "valueString": "Hipotonía"
             },
-            "fullUrl": "66958c5998f21a57ec358ef0e2b3445b"
+            "fullUrl": "3bf8961c2cabb0d56f25340367bfdbee"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "66958c5998f21a57ec358ef0e2b3445b",
+                "id": "cbc1c498d3d0deb993b6555fe3e677c7",
                 "status": "final",
                 "code": {
                     "text": "Piel Y Tegumentos",
@@ -953,17 +1014,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium magna vitae risus consequat elementum. Sed rutrum maximus lacus, ac congue elit molestie sed."
+                "valueString": "Características del pelo"
             },
-            "fullUrl": "66958c5998f21a57ec358ef0e2b3445b"
+            "fullUrl": "cbc1c498d3d0deb993b6555fe3e677c7"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "880aeaec5721d4c5234c490be779556c",
+                "id": "72986fff446683b255e2446d5e892849",
                 "status": "final",
                 "code": {
                     "text": "Organos de los Sentidos",
@@ -974,17 +1035,38 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium magna vitae risus consequat elementum. Sed rutrum maximus lacus, ac congue elit molestie sed."
+                "valueString": "Alteraciones de la audición"
             },
-            "fullUrl": "880aeaec5721d4c5234c490be779556c"
+            "fullUrl": "72986fff446683b255e2446d5e892849"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "96971cc04b76ff26920749ec588ecb1f",
+                "status": "final",
+                "code": {
+                    "text": "Esfera Psiquica",
+                    "coding": [
+                        {
+                            "display": "Esfera Psiquica"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Ideaciones"
+            },
+            "fullUrl": "96971cc04b76ff26920749ec588ecb1f"
         },
         {
             "resource": {
                 "resourceType": "Composition",
-                "id": "56a18c2b778df383a70eebfc14859208",
+                "id": "f9c8f984af6521735ea3de0e5b61a298",
                 "status": "final",
                 "type": {
                     "text": "Nota de evolución",
@@ -996,19 +1078,19 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
                 "encounter": {
-                    "reference": "Encounter/81ff2b996490be4606be6579f723c5ae",
+                    "reference": "Encounter/ec49c04170dcea2421c5ede98b9d5cf2",
                     "type": "Encounter"
                 },
-                "date": "2022-07-22 20:57:36",
+                "date": "2022-07-28 20:55:46",
                 "title": "Consulta General",
                 "confidentiality": "N",
                 "section": [
                     {
-                        "title": "Motivo de Consulta",
+                        "title": "Datos de Consulta",
                         "code": {
                             "text": "Consulta General",
                             "coding": [
@@ -1019,98 +1101,78 @@
                         },
                         "entry": [
                             {
-                                "reference": "Observation/7b2401ed55f95b82923b34f7ed23f61b",
+                                "reference": "Observation/84c9c4a865d08c69c85bfb206d1e5dc2",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/b22bdcefff6f1bd4aad26e738c284792",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/25f9d7cbf737286b491b003a19b20e48",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/cc50a543b8c373f48c0f8f9a75290764",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/e8c55169d97f0dba7325f99d1b0f3cef",
                                 "type": "Observation"
                             }
                         ]
                     },
                     {
-                        "title": "Cuadro Clínico",
+                        "title": "Exploración Física",
                         "code": {
                             "text": "Consulta General",
                             "coding": [
                                 {
-                                    "display": "Datos de Consulta"
+                                    "display": "Exploracion Física"
                                 }
                             ]
                         },
                         "entry": [
                             {
-                                "reference": "Observation/873aff88d1e73b6c8c6bd62fa9916975",
+                                "reference": "Observation/dab3b8dc0708c1574e782989d9092fc7",
                                 "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Resultados de Laboratorio y Gabinete",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Datos de Consulta"
-                                }
-                            ]
-                        },
-                        "entry": [
+                            },
                             {
-                                "reference": "Observation/873aff88d1e73b6c8c6bd62fa9916975",
+                                "reference": "Observation/d74a0bc5310369af722e7e3f650218c3",
                                 "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Temperatura",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Signos Vitales"
-                                }
-                            ]
-                        },
-                        "entry": [
+                            },
                             {
-                                "reference": "Observation/6ab0b5bdf311a93d36b1340b7ff52805",
+                                "reference": "Observation/16a7f5e4854bcd0983ed343c7c48eac9",
                                 "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Tensión Sistolica",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Signos Vitales"
-                                }
-                            ]
-                        },
-                        "entry": [
+                            },
                             {
-                                "reference": "Observation/2e8bb17e043124b079d752b3720598b7",
+                                "reference": "Observation/a3d5710216098cc4640deaead435c4c8",
                                 "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Tensión Diastolica",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Signos Vitales"
-                                }
-                            ]
-                        },
-                        "entry": [
+                            },
                             {
-                                "reference": "Observation/2e8bb17e043124b079d752b3720598b7",
+                                "reference": "Observation/0e997b3e53a62f05ba91caef3d3052ee",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/afed7c468b813806aadc96024c5eb96c",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/ca3c6d04c4faec14fd6e4a5b308d0de0",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/3f39e91a6135044f75bb622a4152c56f",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/2878fd8f31fdc9fc755ef625a86ee2de",
                                 "type": "Observation"
                             }
                         ]
                     },
                     {
-                        "title": "Frecuencia Cardiaca",
+                        "title": "Signos Vitales",
                         "code": {
                             "text": "Consulta General",
                             "coding": [
@@ -1121,86 +1183,59 @@
                         },
                         "entry": [
                             {
-                                "reference": "Observation/2e8bb17e043124b079d752b3720598b7",
+                                "reference": "Observation/5287795f33c51fc570e63b5a51bd17b2",
                                 "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Frecuencia Respiratoria",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Signos Vitales"
-                                }
-                            ]
-                        },
-                        "entry": [
+                            },
                             {
-                                "reference": "Observation/77c7d9c33d2a24e49d4bd32dc2cece32",
+                                "reference": "Observation/2a5f850d445c8df469bce2be06ccb354",
                                 "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Saturación de Oxígeno",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Signos Vitales"
-                                }
-                            ]
-                        },
-                        "entry": [
+                            },
                             {
-                                "reference": "Observation/77c7d9c33d2a24e49d4bd32dc2cece32",
+                                "reference": "Observation/acecc6e634f013ceba5fe34bda41a7eb",
                                 "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Glucosa",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Signos Vitales"
-                                }
-                            ]
-                        },
-                        "entry": [
+                            },
                             {
-                                "reference": "Observation/77c7d9c33d2a24e49d4bd32dc2cece32",
+                                "reference": "Observation/f8b83a1268fe31b6e8e53e386fee0c45",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/9a9f335a1d4c943d8c20e8614cb02cff",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/5126da73312bb191674e975e54a6bf4f",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/c698716102cabc32d49228222cf129cb",
                                 "type": "Observation"
                             }
                         ]
                     }
                 ]
             },
-            "fullUrl": "56a18c2b778df383a70eebfc14859208"
+            "fullUrl": "f9c8f984af6521735ea3de0e5b61a298"
         },
         {
             "resource": {
                 "resourceType": "Encounter",
-                "id": "81ff2b996490be4606be6579f723c5ae",
+                "id": "ec49c04170dcea2421c5ede98b9d5cf2",
                 "status": "in-progress",
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
                 "period": {
-                    "start": "2022-07-21 17:23:54",
-                    "end": "2022-07-21 19:52:17"
+                    "start": "2022-07-26 19:10:08",
+                    "end": "2022-07-26 19:10:08"
                 }
             },
-            "fullUrl": "81ff2b996490be4606be6579f723c5ae"
+            "fullUrl": "ec49c04170dcea2421c5ede98b9d5cf2"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "7b2401ed55f95b82923b34f7ed23f61b",
+                "id": "84c9c4a865d08c69c85bfb206d1e5dc2",
                 "status": "final",
                 "code": {
                     "text": "Motivo de Consulta",
@@ -1211,17 +1246,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "654654654564"
+                "valueString": "Fuerte golpe en el hombro"
             },
-            "fullUrl": "7b2401ed55f95b82923b34f7ed23f61b"
+            "fullUrl": "84c9c4a865d08c69c85bfb206d1e5dc2"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "873aff88d1e73b6c8c6bd62fa9916975",
+                "id": "b22bdcefff6f1bd4aad26e738c284792",
                 "status": "final",
                 "code": {
                     "text": "Cuadro Clínico",
@@ -1232,1616 +1267,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "6455465456465"
+                "valueString": "Dislocación del hombro"
             },
-            "fullUrl": "873aff88d1e73b6c8c6bd62fa9916975"
+            "fullUrl": "b22bdcefff6f1bd4aad26e738c284792"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "873aff88d1e73b6c8c6bd62fa9916975",
-                "status": "final",
-                "code": {
-                    "text": "Resultados de Laboratorio y Gabinete",
-                    "coding": [
-                        {
-                            "display": "Resultados de Laboratorio y Gabinete"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueString": "safasdfasdf684645"
-            },
-            "fullUrl": "873aff88d1e73b6c8c6bd62fa9916975"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "6ab0b5bdf311a93d36b1340b7ff52805",
-                "status": "final",
-                "code": {
-                    "text": "Temperatura",
-                    "coding": [
-                        {
-                            "display": "Temperatura"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueQuantity": {
-                    "value": 12,
-                    "unit": "°C"
-                }
-            },
-            "fullUrl": "6ab0b5bdf311a93d36b1340b7ff52805"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "2e8bb17e043124b079d752b3720598b7",
-                "status": "final",
-                "code": {
-                    "text": "Tensión Sistolica",
-                    "coding": [
-                        {
-                            "display": "Tensión Sistolica"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueQuantity": {
-                    "value": 12,
-                    "unit": "mmHg"
-                }
-            },
-            "fullUrl": "2e8bb17e043124b079d752b3720598b7"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "2e8bb17e043124b079d752b3720598b7",
-                "status": "final",
-                "code": {
-                    "text": "Tensión Diastolica",
-                    "coding": [
-                        {
-                            "display": "Tensión Diastolica"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueQuantity": {
-                    "value": 12,
-                    "unit": "mmHg"
-                }
-            },
-            "fullUrl": "2e8bb17e043124b079d752b3720598b7"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "2e8bb17e043124b079d752b3720598b7",
-                "status": "final",
-                "code": {
-                    "text": "Frecuencia Cardiaca",
-                    "coding": [
-                        {
-                            "display": "Frecuencia Cardiaca"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueQuantity": {
-                    "value": 12,
-                    "unit": "lmp"
-                }
-            },
-            "fullUrl": "2e8bb17e043124b079d752b3720598b7"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "77c7d9c33d2a24e49d4bd32dc2cece32",
-                "status": "final",
-                "code": {
-                    "text": "Frecuencia Respiratoria",
-                    "coding": [
-                        {
-                            "display": "Frecuencia Respiratoria"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueQuantity": {
-                    "value": 12,
-                    "unit": "rmp"
-                }
-            },
-            "fullUrl": "77c7d9c33d2a24e49d4bd32dc2cece32"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "77c7d9c33d2a24e49d4bd32dc2cece32",
-                "status": "final",
-                "code": {
-                    "text": "Saturación de Oxígeno",
-                    "coding": [
-                        {
-                            "display": "Saturación de Oxígeno"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueQuantity": {
-                    "value": "12",
-                    "unit": "%"
-                }
-            },
-            "fullUrl": "77c7d9c33d2a24e49d4bd32dc2cece32"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "77c7d9c33d2a24e49d4bd32dc2cece32",
-                "status": "final",
-                "code": {
-                    "text": "Glucosa",
-                    "coding": [
-                        {
-                            "display": "Glucosa"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueQuantity": {
-                    "value": "12",
-                    "unit": "mg/dL"
-                }
-            },
-            "fullUrl": "77c7d9c33d2a24e49d4bd32dc2cece32"
-        },
-        {
-            "resource": {
-                "resourceType": "Composition",
-                "id": "a0ad0c90d89fb10f6b728da432983d71",
-                "status": "final",
-                "type": {
-                    "text": "Nota de evolución",
-                    "coding": [
-                        {
-                            "display": "Nota de evolución",
-                            "code": "urn:NOM-004-SSA3-2012"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "encounter": {
-                    "reference": "Encounter/a0ad0c90d89fb10f6b728da432983d71",
-                    "type": "Encounter"
-                },
-                "date": "2022-07-22 20:57:36",
-                "title": "Consulta General",
-                "confidentiality": "N",
-                "section": [
-                    {
-                        "title": "Motivo de Consulta",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Datos de Consulta"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/70e9d2d01055a6ab0a8a475a8d3715c0",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Cuadro Clínico",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Datos de Consulta"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/30a99b36ba4bb0060b39e8957d97bd4c",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Pronóstico",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Datos de Consulta"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/30a99b36ba4bb0060b39e8957d97bd4c",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Indicación Terapéutica",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Datos de Consulta"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/30a99b36ba4bb0060b39e8957d97bd4c",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Habitus Exterior",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Exploracion Física"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/36bf31b58cba44e13aa6cbfbd1907b01",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Cuello",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Exploracion Física"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/36bf31b58cba44e13aa6cbfbd1907b01",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Genitales",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Exploracion Física"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/7c30e3b06d0738c9604a7156f4ca0ec1",
-                                "type": "Observation"
-                            }
-                        ]
-                    }
-                ]
-            },
-            "fullUrl": "a0ad0c90d89fb10f6b728da432983d71"
-        },
-        {
-            "resource": {
-                "resourceType": "Encounter",
-                "id": "a0ad0c90d89fb10f6b728da432983d71",
-                "status": "in-progress",
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "period": {
-                    "start": "2022-07-21 17:19:01",
-                    "end": "2022-07-21 17:19:08"
-                }
-            },
-            "fullUrl": "a0ad0c90d89fb10f6b728da432983d71"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "70e9d2d01055a6ab0a8a475a8d3715c0",
-                "status": "final",
-                "code": {
-                    "text": "Motivo de Consulta",
-                    "coding": [
-                        {
-                            "display": "Motivo de Consulta"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueString": "asdfasdfasdfasdf"
-            },
-            "fullUrl": "70e9d2d01055a6ab0a8a475a8d3715c0"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "30a99b36ba4bb0060b39e8957d97bd4c",
-                "status": "final",
-                "code": {
-                    "text": "Cuadro Clínico",
-                    "coding": [
-                        {
-                            "display": "Cuadro Clínico"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueString": "asdfasdfasd"
-            },
-            "fullUrl": "30a99b36ba4bb0060b39e8957d97bd4c"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "30a99b36ba4bb0060b39e8957d97bd4c",
-                "status": "final",
-                "code": {
-                    "text": "Pronóstico",
-                    "coding": [
-                        {
-                            "display": "Pronóstico"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueString": "fasdfasdfasd"
-            },
-            "fullUrl": "30a99b36ba4bb0060b39e8957d97bd4c"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "30a99b36ba4bb0060b39e8957d97bd4c",
-                "status": "final",
-                "code": {
-                    "text": "Indicación Terapéutica",
-                    "coding": [
-                        {
-                            "display": "Indicación Terapéutica"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueString": "fasdfasdfa"
-            },
-            "fullUrl": "30a99b36ba4bb0060b39e8957d97bd4c"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "36bf31b58cba44e13aa6cbfbd1907b01",
-                "status": "final",
-                "code": {
-                    "text": "Habitus Exterior",
-                    "coding": [
-                        {
-                            "display": "Habitus Exterior"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueString": "asdfasd"
-            },
-            "fullUrl": "36bf31b58cba44e13aa6cbfbd1907b01"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "36bf31b58cba44e13aa6cbfbd1907b01",
-                "status": "final",
-                "code": {
-                    "text": "Cuello",
-                    "coding": [
-                        {
-                            "display": "Cuello"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueString": "fasdfasdf"
-            },
-            "fullUrl": "36bf31b58cba44e13aa6cbfbd1907b01"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "7c30e3b06d0738c9604a7156f4ca0ec1",
-                "status": "final",
-                "code": {
-                    "text": "Genitales",
-                    "coding": [
-                        {
-                            "display": "Genitales"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueString": "asdfasdf"
-            },
-            "fullUrl": "7c30e3b06d0738c9604a7156f4ca0ec1"
-        },
-        {
-            "resource": {
-                "resourceType": "Composition",
-                "id": "7c30e3b06d0738c9604a7156f4ca0ec1",
-                "status": "final",
-                "type": {
-                    "text": "Nota de evolución",
-                    "coding": [
-                        {
-                            "display": "Nota de evolución",
-                            "code": "urn:NOM-004-SSA3-2012"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "encounter": {
-                    "reference": "Encounter/7c30e3b06d0738c9604a7156f4ca0ec1",
-                    "type": "Encounter"
-                },
-                "date": "2022-07-22 20:57:36",
-                "title": "Consulta General",
-                "confidentiality": "N",
-                "section": [
-                    {
-                        "title": "Motivo de Consulta",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Datos de Consulta"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/8a316de3746cedf557d71c33d1e1dc49",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Habitus Exterior",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Exploracion Física"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/3fc2d9ff80aade72f147a481453f09e3",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Peso",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Exploracion Física"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/8672826104c8960298799bf4973cefd0",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Talla",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Exploracion Física"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/8672826104c8960298799bf4973cefd0",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Cabeza",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Exploracion Física"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/8672826104c8960298799bf4973cefd0",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Cuello",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Exploracion Física"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/77bcc592f04417ef4b0c329134158ae8",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Torax",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Exploracion Física"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/77bcc592f04417ef4b0c329134158ae8",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Abdomen",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Exploracion Física"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/77bcc592f04417ef4b0c329134158ae8",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Miembros",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Exploracion Física"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/77bcc592f04417ef4b0c329134158ae8",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Genitales",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Exploracion Física"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/77bcc592f04417ef4b0c329134158ae8",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Temperatura",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Signos Vitales"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/83f36c283ee8186b60da9875d4b2c604",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Tensión Sistolica",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Signos Vitales"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/83f36c283ee8186b60da9875d4b2c604",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Tensión Diastolica",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Signos Vitales"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/9f1319300b4285308d7a64391663c63d",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Frecuencia Cardiaca",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Signos Vitales"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/9f1319300b4285308d7a64391663c63d",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Frecuencia Respiratoria",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Signos Vitales"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/9f1319300b4285308d7a64391663c63d",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Saturación de Oxígeno",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Signos Vitales"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/9f1319300b4285308d7a64391663c63d",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Glucosa",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Signos Vitales"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/9f1319300b4285308d7a64391663c63d",
-                                "type": "Observation"
-                            }
-                        ]
-                    }
-                ]
-            },
-            "fullUrl": "7c30e3b06d0738c9604a7156f4ca0ec1"
-        },
-        {
-            "resource": {
-                "resourceType": "Encounter",
-                "id": "7c30e3b06d0738c9604a7156f4ca0ec1",
-                "status": "in-progress",
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "period": {
-                    "start": "2022-07-18 17:20:26",
-                    "end": "2022-07-18 17:20:48"
-                }
-            },
-            "fullUrl": "7c30e3b06d0738c9604a7156f4ca0ec1"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "8a316de3746cedf557d71c33d1e1dc49",
-                "status": "final",
-                "code": {
-                    "text": "Motivo de Consulta",
-                    "coding": [
-                        {
-                            "display": "Motivo de Consulta"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueString": "test signos register"
-            },
-            "fullUrl": "8a316de3746cedf557d71c33d1e1dc49"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "3fc2d9ff80aade72f147a481453f09e3",
-                "status": "final",
-                "code": {
-                    "text": "Habitus Exterior",
-                    "coding": [
-                        {
-                            "display": "Habitus Exterior"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueString": "Parece bien."
-            },
-            "fullUrl": "3fc2d9ff80aade72f147a481453f09e3"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "8672826104c8960298799bf4973cefd0",
-                "status": "final",
-                "code": {
-                    "text": "Peso",
-                    "coding": [
-                        {
-                            "display": "Peso"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueQuantity": {
-                    "value": 110,
-                    "unit": "kg"
-                }
-            },
-            "fullUrl": "8672826104c8960298799bf4973cefd0"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "8672826104c8960298799bf4973cefd0",
-                "status": "final",
-                "code": {
-                    "text": "Talla",
-                    "coding": [
-                        {
-                            "display": "Talla"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueQuantity": {
-                    "value": 178,
-                    "unit": "cm"
-                }
-            },
-            "fullUrl": "8672826104c8960298799bf4973cefd0"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "8672826104c8960298799bf4973cefd0",
-                "status": "final",
-                "code": {
-                    "text": "Cabeza",
-                    "coding": [
-                        {
-                            "display": "Cabeza"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueString": "bien"
-            },
-            "fullUrl": "8672826104c8960298799bf4973cefd0"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "77bcc592f04417ef4b0c329134158ae8",
-                "status": "final",
-                "code": {
-                    "text": "Cuello",
-                    "coding": [
-                        {
-                            "display": "Cuello"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueString": "bien"
-            },
-            "fullUrl": "77bcc592f04417ef4b0c329134158ae8"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "77bcc592f04417ef4b0c329134158ae8",
-                "status": "final",
-                "code": {
-                    "text": "Torax",
-                    "coding": [
-                        {
-                            "display": "Torax"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueString": "bien"
-            },
-            "fullUrl": "77bcc592f04417ef4b0c329134158ae8"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "77bcc592f04417ef4b0c329134158ae8",
-                "status": "final",
-                "code": {
-                    "text": "Abdomen",
-                    "coding": [
-                        {
-                            "display": "Abdomen"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueString": "bien"
-            },
-            "fullUrl": "77bcc592f04417ef4b0c329134158ae8"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "77bcc592f04417ef4b0c329134158ae8",
-                "status": "final",
-                "code": {
-                    "text": "Miembros",
-                    "coding": [
-                        {
-                            "display": "Miembros"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueString": "bien"
-            },
-            "fullUrl": "77bcc592f04417ef4b0c329134158ae8"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "77bcc592f04417ef4b0c329134158ae8",
-                "status": "final",
-                "code": {
-                    "text": "Genitales",
-                    "coding": [
-                        {
-                            "display": "Genitales"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueString": "bien"
-            },
-            "fullUrl": "77bcc592f04417ef4b0c329134158ae8"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "83f36c283ee8186b60da9875d4b2c604",
-                "status": "final",
-                "code": {
-                    "text": "Temperatura",
-                    "coding": [
-                        {
-                            "display": "Temperatura"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueQuantity": {
-                    "value": 36,
-                    "unit": "°C"
-                }
-            },
-            "fullUrl": "83f36c283ee8186b60da9875d4b2c604"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "83f36c283ee8186b60da9875d4b2c604",
-                "status": "final",
-                "code": {
-                    "text": "Tensión Sistolica",
-                    "coding": [
-                        {
-                            "display": "Tensión Sistolica"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueQuantity": {
-                    "value": 12,
-                    "unit": "mmHg"
-                }
-            },
-            "fullUrl": "83f36c283ee8186b60da9875d4b2c604"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "9f1319300b4285308d7a64391663c63d",
-                "status": "final",
-                "code": {
-                    "text": "Tensión Diastolica",
-                    "coding": [
-                        {
-                            "display": "Tensión Diastolica"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueQuantity": {
-                    "value": 12,
-                    "unit": "mmHg"
-                }
-            },
-            "fullUrl": "9f1319300b4285308d7a64391663c63d"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "9f1319300b4285308d7a64391663c63d",
-                "status": "final",
-                "code": {
-                    "text": "Frecuencia Cardiaca",
-                    "coding": [
-                        {
-                            "display": "Frecuencia Cardiaca"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueQuantity": {
-                    "value": 12,
-                    "unit": "lmp"
-                }
-            },
-            "fullUrl": "9f1319300b4285308d7a64391663c63d"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "9f1319300b4285308d7a64391663c63d",
-                "status": "final",
-                "code": {
-                    "text": "Frecuencia Respiratoria",
-                    "coding": [
-                        {
-                            "display": "Frecuencia Respiratoria"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueQuantity": {
-                    "value": 12,
-                    "unit": "rmp"
-                }
-            },
-            "fullUrl": "9f1319300b4285308d7a64391663c63d"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "9f1319300b4285308d7a64391663c63d",
-                "status": "final",
-                "code": {
-                    "text": "Saturación de Oxígeno",
-                    "coding": [
-                        {
-                            "display": "Saturación de Oxígeno"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueQuantity": {
-                    "value": "95",
-                    "unit": "%"
-                }
-            },
-            "fullUrl": "9f1319300b4285308d7a64391663c63d"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "9f1319300b4285308d7a64391663c63d",
-                "status": "final",
-                "code": {
-                    "text": "Glucosa",
-                    "coding": [
-                        {
-                            "display": "Glucosa"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueQuantity": {
-                    "value": "100",
-                    "unit": "mg/dL"
-                }
-            },
-            "fullUrl": "9f1319300b4285308d7a64391663c63d"
-        },
-        {
-            "resource": {
-                "resourceType": "Composition",
-                "id": "49e445e7b2aba37b674a3158fffcd6b9",
-                "status": "final",
-                "type": {
-                    "text": "Nota de evolución",
-                    "coding": [
-                        {
-                            "display": "Nota de evolución",
-                            "code": "urn:NOM-004-SSA3-2012"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "encounter": {
-                    "reference": "Encounter/49e445e7b2aba37b674a3158fffcd6b9",
-                    "type": "Encounter"
-                },
-                "date": "2022-07-22 20:57:36",
-                "title": "Consulta General",
-                "confidentiality": "N",
-                "section": [
-                    {
-                        "title": "Motivo de Consulta",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Datos de Consulta"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/5ffb2b75488278ed113114101d8566bc",
-                                "type": "Observation"
-                            }
-                        ]
-                    }
-                ]
-            },
-            "fullUrl": "49e445e7b2aba37b674a3158fffcd6b9"
-        },
-        {
-            "resource": {
-                "resourceType": "Encounter",
-                "id": "49e445e7b2aba37b674a3158fffcd6b9",
-                "status": "finished",
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "period": {
-                    "start": "2022-07-14 21:03:16",
-                    "end": "2022-07-14 21:03:38"
-                }
-            },
-            "fullUrl": "49e445e7b2aba37b674a3158fffcd6b9"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "5ffb2b75488278ed113114101d8566bc",
-                "status": "final",
-                "code": {
-                    "text": "Motivo de Consulta",
-                    "coding": [
-                        {
-                            "display": "Motivo de Consulta"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueString": "another test"
-            },
-            "fullUrl": "5ffb2b75488278ed113114101d8566bc"
-        },
-        {
-            "resource": {
-                "resourceType": "Composition",
-                "id": "5ffb2b75488278ed113114101d8566bc",
-                "status": "final",
-                "type": {
-                    "text": "Nota de evolución",
-                    "coding": [
-                        {
-                            "display": "Nota de evolución",
-                            "code": "urn:NOM-004-SSA3-2012"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "encounter": {
-                    "reference": "Encounter/013aeed34e5f1bd6537bd33d19f2603d",
-                    "type": "Encounter"
-                },
-                "date": "2022-07-22 20:57:36",
-                "title": "Consulta General",
-                "confidentiality": "N",
-                "section": [
-                    {
-                        "title": "Motivo de Consulta",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Datos de Consulta"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/e10e0709657023270f07f4cf099242de",
-                                "type": "Observation"
-                            }
-                        ]
-                    }
-                ]
-            },
-            "fullUrl": "5ffb2b75488278ed113114101d8566bc"
-        },
-        {
-            "resource": {
-                "resourceType": "Encounter",
-                "id": "013aeed34e5f1bd6537bd33d19f2603d",
-                "status": "finished",
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "period": {
-                    "start": "2022-07-14 20:59:55",
-                    "end": "2022-07-14 21:03:00"
-                }
-            },
-            "fullUrl": "013aeed34e5f1bd6537bd33d19f2603d"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "e10e0709657023270f07f4cf099242de",
-                "status": "final",
-                "code": {
-                    "text": "Motivo de Consulta",
-                    "coding": [
-                        {
-                            "display": "Motivo de Consulta"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueString": "more test group"
-            },
-            "fullUrl": "e10e0709657023270f07f4cf099242de"
-        },
-        {
-            "resource": {
-                "resourceType": "Composition",
-                "id": "e10e0709657023270f07f4cf099242de",
-                "status": "final",
-                "type": {
-                    "text": "Nota de evolución",
-                    "coding": [
-                        {
-                            "display": "Nota de evolución",
-                            "code": "urn:NOM-004-SSA3-2012"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "encounter": {
-                    "reference": "Encounter/e10e0709657023270f07f4cf099242de",
-                    "type": "Encounter"
-                },
-                "date": "2022-07-22 20:57:36",
-                "title": "Consulta General",
-                "confidentiality": "N",
-                "section": [
-                    {
-                        "title": "Motivo de Consulta",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Datos de Consulta"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/c4012758cdf87219736dbf44e219485d",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Cuadro Clínico",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Datos de Consulta"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/c4012758cdf87219736dbf44e219485d",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Resultados de Laboratorio y Gabinete",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Datos de Consulta"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/c4012758cdf87219736dbf44e219485d",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Diagnosticos o Problemas Clínicos",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Datos de Consulta"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/0c4e2cc9b712abccef1b10f3e66b7957",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Pronóstico",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Datos de Consulta"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/0c4e2cc9b712abccef1b10f3e66b7957",
-                                "type": "Observation"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Indicación Terapéutica",
-                        "code": {
-                            "text": "Consulta General",
-                            "coding": [
-                                {
-                                    "display": "Datos de Consulta"
-                                }
-                            ]
-                        },
-                        "entry": [
-                            {
-                                "reference": "Observation/0c4e2cc9b712abccef1b10f3e66b7957",
-                                "type": "Observation"
-                            }
-                        ]
-                    }
-                ]
-            },
-            "fullUrl": "e10e0709657023270f07f4cf099242de"
-        },
-        {
-            "resource": {
-                "resourceType": "Encounter",
-                "id": "e10e0709657023270f07f4cf099242de",
-                "status": "in-progress",
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "period": {
-                    "start": "2022-07-08 15:51:47",
-                    "end": "2022-07-22 20:13:13"
-                }
-            },
-            "fullUrl": "e10e0709657023270f07f4cf099242de"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "c4012758cdf87219736dbf44e219485d",
-                "status": "final",
-                "code": {
-                    "text": "Motivo de Consulta",
-                    "coding": [
-                        {
-                            "display": "Motivo de Consulta"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueString": "a lo mejor se quedó bien su casita."
-            },
-            "fullUrl": "c4012758cdf87219736dbf44e219485d"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "c4012758cdf87219736dbf44e219485d",
-                "status": "final",
-                "code": {
-                    "text": "Cuadro Clínico",
-                    "coding": [
-                        {
-                            "display": "Cuadro Clínico"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueString": "lorem repus"
-            },
-            "fullUrl": "c4012758cdf87219736dbf44e219485d"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "c4012758cdf87219736dbf44e219485d",
-                "status": "final",
-                "code": {
-                    "text": "Resultados de Laboratorio y Gabinete",
-                    "coding": [
-                        {
-                            "display": "Resultados de Laboratorio y Gabinete"
-                        }
-                    ]
-                },
-                "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
-                    "type": "Patient"
-                },
-                "valueString": "lorem repus"
-            },
-            "fullUrl": "c4012758cdf87219736dbf44e219485d"
-        },
-        {
-            "resource": {
-                "resourceType": "Observation",
-                "id": "0c4e2cc9b712abccef1b10f3e66b7957",
+                "id": "25f9d7cbf737286b491b003a19b20e48",
                 "status": "final",
                 "code": {
                     "text": "Diagnosticos o Problemas Clínicos",
@@ -2852,17 +1288,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "lorem repus"
+                "valueString": "El paciente se Disloco el hombro"
             },
-            "fullUrl": "0c4e2cc9b712abccef1b10f3e66b7957"
+            "fullUrl": "25f9d7cbf737286b491b003a19b20e48"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "0c4e2cc9b712abccef1b10f3e66b7957",
+                "id": "cc50a543b8c373f48c0f8f9a75290764",
                 "status": "final",
                 "code": {
                     "text": "Pronóstico",
@@ -2873,17 +1309,17 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "lorem repus"
+                "valueString": "Acomodo del hombro y recupeación en 2 meses"
             },
-            "fullUrl": "0c4e2cc9b712abccef1b10f3e66b7957"
+            "fullUrl": "cc50a543b8c373f48c0f8f9a75290764"
         },
         {
             "resource": {
                 "resourceType": "Observation",
-                "id": "0c4e2cc9b712abccef1b10f3e66b7957",
+                "id": "e8c55169d97f0dba7325f99d1b0f3cef",
                 "status": "final",
                 "code": {
                     "text": "Indicación Terapéutica",
@@ -2894,12 +1330,1649 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/e4049395eed4a608ffb301e84580f54d",
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
                     "type": "Patient"
                 },
-                "valueString": "lorem repus"
+                "valueString": "Evitar utilizar el brazo afectado hasta proximas indicaciones"
             },
-            "fullUrl": "0c4e2cc9b712abccef1b10f3e66b7957"
+            "fullUrl": "e8c55169d97f0dba7325f99d1b0f3cef"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "dab3b8dc0708c1574e782989d9092fc7",
+                "status": "final",
+                "code": {
+                    "text": "Habitus Exterior",
+                    "coding": [
+                        {
+                            "display": "Habitus Exterior"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "El paciente presenta moretones en brazos y manos, un ojo morado y el labio partido"
+            },
+            "fullUrl": "dab3b8dc0708c1574e782989d9092fc7"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "d74a0bc5310369af722e7e3f650218c3",
+                "status": "final",
+                "code": {
+                    "text": "Peso",
+                    "coding": [
+                        {
+                            "display": "Peso"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": 89.33,
+                    "unit": "kg"
+                }
+            },
+            "fullUrl": "d74a0bc5310369af722e7e3f650218c3"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "16a7f5e4854bcd0983ed343c7c48eac9",
+                "status": "final",
+                "code": {
+                    "text": "Talla",
+                    "coding": [
+                        {
+                            "display": "Talla"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": 73,
+                    "unit": "cm"
+                }
+            },
+            "fullUrl": "16a7f5e4854bcd0983ed343c7c48eac9"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "a3d5710216098cc4640deaead435c4c8",
+                "status": "final",
+                "code": {
+                    "text": "Cabeza",
+                    "coding": [
+                        {
+                            "display": "Cabeza"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Fugiat excepturi excepturi rerum beatae eveniet debitis minima doloremque."
+            },
+            "fullUrl": "a3d5710216098cc4640deaead435c4c8"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "0e997b3e53a62f05ba91caef3d3052ee",
+                "status": "final",
+                "code": {
+                    "text": "Cuello",
+                    "coding": [
+                        {
+                            "display": "Cuello"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Dolorem quo in id debitis ut beatae eaque nam."
+            },
+            "fullUrl": "0e997b3e53a62f05ba91caef3d3052ee"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "afed7c468b813806aadc96024c5eb96c",
+                "status": "final",
+                "code": {
+                    "text": "Torax",
+                    "coding": [
+                        {
+                            "display": "Torax"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Pariatur eius consequuntur architecto. Itaque sed asperiores a alias."
+            },
+            "fullUrl": "afed7c468b813806aadc96024c5eb96c"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "ca3c6d04c4faec14fd6e4a5b308d0de0",
+                "status": "final",
+                "code": {
+                    "text": "Abdomen",
+                    "coding": [
+                        {
+                            "display": "Abdomen"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Quasi assumenda doloremque optio."
+            },
+            "fullUrl": "ca3c6d04c4faec14fd6e4a5b308d0de0"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "3f39e91a6135044f75bb622a4152c56f",
+                "status": "final",
+                "code": {
+                    "text": "Miembros",
+                    "coding": [
+                        {
+                            "display": "Miembros"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Aut asperiores numquam delectus nulla optio."
+            },
+            "fullUrl": "3f39e91a6135044f75bb622a4152c56f"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "2878fd8f31fdc9fc755ef625a86ee2de",
+                "status": "final",
+                "code": {
+                    "text": "Genitales",
+                    "coding": [
+                        {
+                            "display": "Genitales"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Maiores ut velit doloribus voluptatem similique error."
+            },
+            "fullUrl": "2878fd8f31fdc9fc755ef625a86ee2de"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "5287795f33c51fc570e63b5a51bd17b2",
+                "status": "final",
+                "code": {
+                    "text": "Temperatura",
+                    "coding": [
+                        {
+                            "display": "Temperatura"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": 34.4,
+                    "unit": "°C"
+                }
+            },
+            "fullUrl": "5287795f33c51fc570e63b5a51bd17b2"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "2a5f850d445c8df469bce2be06ccb354",
+                "status": "final",
+                "code": {
+                    "text": "Tensión Sistolica",
+                    "coding": [
+                        {
+                            "display": "Tensión Sistolica"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": 58,
+                    "unit": "mmHg"
+                }
+            },
+            "fullUrl": "2a5f850d445c8df469bce2be06ccb354"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "acecc6e634f013ceba5fe34bda41a7eb",
+                "status": "final",
+                "code": {
+                    "text": "Tensión Diastolica",
+                    "coding": [
+                        {
+                            "display": "Tensión Diastolica"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": 105,
+                    "unit": "mmHg"
+                }
+            },
+            "fullUrl": "acecc6e634f013ceba5fe34bda41a7eb"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "f8b83a1268fe31b6e8e53e386fee0c45",
+                "status": "final",
+                "code": {
+                    "text": "Frecuencia Cardiaca",
+                    "coding": [
+                        {
+                            "display": "Frecuencia Cardiaca"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": 34,
+                    "unit": "lmp"
+                }
+            },
+            "fullUrl": "f8b83a1268fe31b6e8e53e386fee0c45"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "9a9f335a1d4c943d8c20e8614cb02cff",
+                "status": "final",
+                "code": {
+                    "text": "Frecuencia Respiratoria",
+                    "coding": [
+                        {
+                            "display": "Frecuencia Respiratoria"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": 47,
+                    "unit": "rmp"
+                }
+            },
+            "fullUrl": "9a9f335a1d4c943d8c20e8614cb02cff"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "5126da73312bb191674e975e54a6bf4f",
+                "status": "final",
+                "code": {
+                    "text": "Saturación de Oxígeno",
+                    "coding": [
+                        {
+                            "display": "Saturación de Oxígeno"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": "95",
+                    "unit": "%"
+                }
+            },
+            "fullUrl": "5126da73312bb191674e975e54a6bf4f"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "c698716102cabc32d49228222cf129cb",
+                "status": "final",
+                "code": {
+                    "text": "Glucosa",
+                    "coding": [
+                        {
+                            "display": "Glucosa"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": "282.42",
+                    "unit": "mg/dL"
+                }
+            },
+            "fullUrl": "c698716102cabc32d49228222cf129cb"
+        },
+        {
+            "resource": {
+                "resourceType": "Composition",
+                "id": "9dfeb9686f9206f3cd127f7b7d9f43ab",
+                "status": "final",
+                "type": {
+                    "text": "Nota de evolución",
+                    "coding": [
+                        {
+                            "display": "Nota de evolución",
+                            "code": "urn:NOM-004-SSA3-2012"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "encounter": {
+                    "reference": "Encounter/784f2bca9d1c5746470cce0f4d8274d6",
+                    "type": "Encounter"
+                },
+                "date": "2022-07-28 20:55:46",
+                "title": "Consulta General",
+                "confidentiality": "N",
+                "section": [
+                    {
+                        "title": "Datos de Consulta",
+                        "code": {
+                            "text": "Consulta General",
+                            "coding": [
+                                {
+                                    "display": "Datos de Consulta"
+                                }
+                            ]
+                        },
+                        "entry": [
+                            {
+                                "reference": "Observation/d37ad818b9495af17cdf4060ae238218",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/edfd8043e699ee0f4e574993e657b0a1",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/62896bf49ab3464cd4b08f054d8fe434",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/f427ce2f84f4d434a67544927cc3600a",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/c500b7d35bea6ea67f8f0ad8eda313eb",
+                                "type": "Observation"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Exploración Física",
+                        "code": {
+                            "text": "Consulta General",
+                            "coding": [
+                                {
+                                    "display": "Exploracion Física"
+                                }
+                            ]
+                        },
+                        "entry": [
+                            {
+                                "reference": "Observation/810294006717a2c1db06c4766a704d22",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/80562271807515f906dd5702209ac74a",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/9e1bcb6023ade5a817dc5bea9cb7552c",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/012a01762216b741e2e6f28ed88c8a56",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/3e67cb5975f54136712cbdce65774f84",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/395f45c51ea49be39945a7e493e0ed56",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/6adcc972261f5c8b6dc5379583f942c2",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/43c17895110eadc0bcb4db8cee949845",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/e256c8f0c35cd54346036f92ed2ec5d5",
+                                "type": "Observation"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Signos Vitales",
+                        "code": {
+                            "text": "Consulta General",
+                            "coding": [
+                                {
+                                    "display": "Signos Vitales"
+                                }
+                            ]
+                        },
+                        "entry": [
+                            {
+                                "reference": "Observation/8306a9ebcb6d1fef90bd79f8bf5f0647",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/93b5fa6dc5270284ed5722b6fd341afd",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/53c3124eb890b05c27ecf734c7e3b341",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/a7c331f5f8d7599bf3b27974adac8028",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/dc8bc6ad08ff7a0a3f33c0c9ad2a9086",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/e3eb0168650a377b1d8b41e454d180c8",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/9d949b65bc5c425c0ecfbd6bb4d6c34a",
+                                "type": "Observation"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "fullUrl": "9dfeb9686f9206f3cd127f7b7d9f43ab"
+        },
+        {
+            "resource": {
+                "resourceType": "Encounter",
+                "id": "784f2bca9d1c5746470cce0f4d8274d6",
+                "status": "in-progress",
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "period": {
+                    "start": "2022-07-26 19:10:08",
+                    "end": "2022-07-26 19:10:08"
+                }
+            },
+            "fullUrl": "784f2bca9d1c5746470cce0f4d8274d6"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "d37ad818b9495af17cdf4060ae238218",
+                "status": "final",
+                "code": {
+                    "text": "Motivo de Consulta",
+                    "coding": [
+                        {
+                            "display": "Motivo de Consulta"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Dolor agudo de cabeza"
+            },
+            "fullUrl": "d37ad818b9495af17cdf4060ae238218"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "edfd8043e699ee0f4e574993e657b0a1",
+                "status": "final",
+                "code": {
+                    "text": "Cuadro Clínico",
+                    "coding": [
+                        {
+                            "display": "Cuadro Clínico"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Cefalea tensional"
+            },
+            "fullUrl": "edfd8043e699ee0f4e574993e657b0a1"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "62896bf49ab3464cd4b08f054d8fe434",
+                "status": "final",
+                "code": {
+                    "text": "Diagnosticos o Problemas Clínicos",
+                    "coding": [
+                        {
+                            "display": "Diagnosticos o Problemas Clínicos"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "El paciente sufre de Cefalea tensional"
+            },
+            "fullUrl": "62896bf49ab3464cd4b08f054d8fe434"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "f427ce2f84f4d434a67544927cc3600a",
+                "status": "final",
+                "code": {
+                    "text": "Pronóstico",
+                    "coding": [
+                        {
+                            "display": "Pronóstico"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Tratamiento por 1 mes"
+            },
+            "fullUrl": "f427ce2f84f4d434a67544927cc3600a"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "c500b7d35bea6ea67f8f0ad8eda313eb",
+                "status": "final",
+                "code": {
+                    "text": "Indicación Terapéutica",
+                    "coding": [
+                        {
+                            "display": "Indicación Terapéutica"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "No realizar esfuerzos ni cargar mucho peso"
+            },
+            "fullUrl": "c500b7d35bea6ea67f8f0ad8eda313eb"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "810294006717a2c1db06c4766a704d22",
+                "status": "final",
+                "code": {
+                    "text": "Habitus Exterior",
+                    "coding": [
+                        {
+                            "display": "Habitus Exterior"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "El paciente tiene el cabello seco y descolorido, ojeras y un fuerte olor a alcohol"
+            },
+            "fullUrl": "810294006717a2c1db06c4766a704d22"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "80562271807515f906dd5702209ac74a",
+                "status": "final",
+                "code": {
+                    "text": "Peso",
+                    "coding": [
+                        {
+                            "display": "Peso"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": 35.84,
+                    "unit": "kg"
+                }
+            },
+            "fullUrl": "80562271807515f906dd5702209ac74a"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "9e1bcb6023ade5a817dc5bea9cb7552c",
+                "status": "final",
+                "code": {
+                    "text": "Talla",
+                    "coding": [
+                        {
+                            "display": "Talla"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": 139,
+                    "unit": "cm"
+                }
+            },
+            "fullUrl": "9e1bcb6023ade5a817dc5bea9cb7552c"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "012a01762216b741e2e6f28ed88c8a56",
+                "status": "final",
+                "code": {
+                    "text": "Cabeza",
+                    "coding": [
+                        {
+                            "display": "Cabeza"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Dolorem non qui similique et quis ad excepturi. Et nemo voluptatem eos unde."
+            },
+            "fullUrl": "012a01762216b741e2e6f28ed88c8a56"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "3e67cb5975f54136712cbdce65774f84",
+                "status": "final",
+                "code": {
+                    "text": "Cuello",
+                    "coding": [
+                        {
+                            "display": "Cuello"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Quod natus soluta dignissimos quam."
+            },
+            "fullUrl": "3e67cb5975f54136712cbdce65774f84"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "395f45c51ea49be39945a7e493e0ed56",
+                "status": "final",
+                "code": {
+                    "text": "Torax",
+                    "coding": [
+                        {
+                            "display": "Torax"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Dolor fugiat voluptatem consequatur voluptates."
+            },
+            "fullUrl": "395f45c51ea49be39945a7e493e0ed56"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "6adcc972261f5c8b6dc5379583f942c2",
+                "status": "final",
+                "code": {
+                    "text": "Abdomen",
+                    "coding": [
+                        {
+                            "display": "Abdomen"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Reprehenderit aliquam numquam voluptatem eum provident pariatur ullam."
+            },
+            "fullUrl": "6adcc972261f5c8b6dc5379583f942c2"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "43c17895110eadc0bcb4db8cee949845",
+                "status": "final",
+                "code": {
+                    "text": "Miembros",
+                    "coding": [
+                        {
+                            "display": "Miembros"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Illo alias et sint dolorum voluptatem consectetur."
+            },
+            "fullUrl": "43c17895110eadc0bcb4db8cee949845"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "e256c8f0c35cd54346036f92ed2ec5d5",
+                "status": "final",
+                "code": {
+                    "text": "Genitales",
+                    "coding": [
+                        {
+                            "display": "Genitales"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Veritatis doloribus sunt libero quae."
+            },
+            "fullUrl": "e256c8f0c35cd54346036f92ed2ec5d5"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "8306a9ebcb6d1fef90bd79f8bf5f0647",
+                "status": "final",
+                "code": {
+                    "text": "Temperatura",
+                    "coding": [
+                        {
+                            "display": "Temperatura"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": 33.7,
+                    "unit": "°C"
+                }
+            },
+            "fullUrl": "8306a9ebcb6d1fef90bd79f8bf5f0647"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "93b5fa6dc5270284ed5722b6fd341afd",
+                "status": "final",
+                "code": {
+                    "text": "Tensión Sistolica",
+                    "coding": [
+                        {
+                            "display": "Tensión Sistolica"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": 108,
+                    "unit": "mmHg"
+                }
+            },
+            "fullUrl": "93b5fa6dc5270284ed5722b6fd341afd"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "53c3124eb890b05c27ecf734c7e3b341",
+                "status": "final",
+                "code": {
+                    "text": "Tensión Diastolica",
+                    "coding": [
+                        {
+                            "display": "Tensión Diastolica"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": 104,
+                    "unit": "mmHg"
+                }
+            },
+            "fullUrl": "53c3124eb890b05c27ecf734c7e3b341"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "a7c331f5f8d7599bf3b27974adac8028",
+                "status": "final",
+                "code": {
+                    "text": "Frecuencia Cardiaca",
+                    "coding": [
+                        {
+                            "display": "Frecuencia Cardiaca"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": 23,
+                    "unit": "lmp"
+                }
+            },
+            "fullUrl": "a7c331f5f8d7599bf3b27974adac8028"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "dc8bc6ad08ff7a0a3f33c0c9ad2a9086",
+                "status": "final",
+                "code": {
+                    "text": "Frecuencia Respiratoria",
+                    "coding": [
+                        {
+                            "display": "Frecuencia Respiratoria"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": 27,
+                    "unit": "rmp"
+                }
+            },
+            "fullUrl": "dc8bc6ad08ff7a0a3f33c0c9ad2a9086"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "e3eb0168650a377b1d8b41e454d180c8",
+                "status": "final",
+                "code": {
+                    "text": "Saturación de Oxígeno",
+                    "coding": [
+                        {
+                            "display": "Saturación de Oxígeno"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": "87",
+                    "unit": "%"
+                }
+            },
+            "fullUrl": "e3eb0168650a377b1d8b41e454d180c8"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "9d949b65bc5c425c0ecfbd6bb4d6c34a",
+                "status": "final",
+                "code": {
+                    "text": "Glucosa",
+                    "coding": [
+                        {
+                            "display": "Glucosa"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": "197.08",
+                    "unit": "mg/dL"
+                }
+            },
+            "fullUrl": "9d949b65bc5c425c0ecfbd6bb4d6c34a"
+        },
+        {
+            "resource": {
+                "resourceType": "Composition",
+                "id": "5d4dbb55366536f0290df1bb28e10cfc",
+                "status": "final",
+                "type": {
+                    "text": "Nota de evolución",
+                    "coding": [
+                        {
+                            "display": "Nota de evolución",
+                            "code": "urn:NOM-004-SSA3-2012"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "encounter": {
+                    "reference": "Encounter/83e6c03cddd92dad2e034962900d9dba",
+                    "type": "Encounter"
+                },
+                "date": "2022-07-28 20:55:46",
+                "title": "Consulta General",
+                "confidentiality": "N",
+                "section": [
+                    {
+                        "title": "Datos de Consulta",
+                        "code": {
+                            "text": "Consulta General",
+                            "coding": [
+                                {
+                                    "display": "Datos de Consulta"
+                                }
+                            ]
+                        },
+                        "entry": [
+                            {
+                                "reference": "Observation/59b7aaf34531270062b6036f2fa0dbae",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/a15857d2c1e1a348a7e947cddfaecd92",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/2f46f32914cdf6438483ae1c1d1660b0",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/2632aedf5d69fc33fd318b3300a8a6bb",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/79e9647e70751a8334bf25a61ca90517",
+                                "type": "Observation"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Exploración Física",
+                        "code": {
+                            "text": "Consulta General",
+                            "coding": [
+                                {
+                                    "display": "Exploracion Física"
+                                }
+                            ]
+                        },
+                        "entry": [
+                            {
+                                "reference": "Observation/14115ccfed039394a6444b1f0f118e66",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/f463eab10115c2e9bae11cdbf5d195ef",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/4fd788e7caeb871fb515ec1816b115db",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/2bd59aa7d3a7a544a2d5fcf5a47796a5",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/9dbdb462629de01fdc1ce422e1ac363d",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/8eddc4222adcf3e929f8066c4013cb95",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/14f5adcf8f41b947729457e1e20ad076",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/120e9e52d9554850c8b98eb5f427d913",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/2856d4be927d1a9e42d424af165d8961",
+                                "type": "Observation"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Signos Vitales",
+                        "code": {
+                            "text": "Consulta General",
+                            "coding": [
+                                {
+                                    "display": "Signos Vitales"
+                                }
+                            ]
+                        },
+                        "entry": [
+                            {
+                                "reference": "Observation/b990bc3da5a81e58ae041ef0e0c49075",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/510d27ab3ef5e11a7759e78cac34ba4f",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/41f6afe16a515bb202408ced62330229",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/819164faeb6fc64756e58e231acab7c9",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/7322496765482ccc68ce696d2ed25994",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/1b07a213bb935626518fc0d1e298df48",
+                                "type": "Observation"
+                            },
+                            {
+                                "reference": "Observation/ad608dc43a30c8104b9616c62cfba939",
+                                "type": "Observation"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "fullUrl": "5d4dbb55366536f0290df1bb28e10cfc"
+        },
+        {
+            "resource": {
+                "resourceType": "Encounter",
+                "id": "83e6c03cddd92dad2e034962900d9dba",
+                "status": "finished",
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "period": {
+                    "start": "2022-07-26 19:10:08",
+                    "end": "2022-07-26 19:10:08"
+                }
+            },
+            "fullUrl": "83e6c03cddd92dad2e034962900d9dba"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "59b7aaf34531270062b6036f2fa0dbae",
+                "status": "final",
+                "code": {
+                    "text": "Motivo de Consulta",
+                    "coding": [
+                        {
+                            "display": "Motivo de Consulta"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Fuerte golpe en el hombro"
+            },
+            "fullUrl": "59b7aaf34531270062b6036f2fa0dbae"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "a15857d2c1e1a348a7e947cddfaecd92",
+                "status": "final",
+                "code": {
+                    "text": "Cuadro Clínico",
+                    "coding": [
+                        {
+                            "display": "Cuadro Clínico"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Dislocación del hombro"
+            },
+            "fullUrl": "a15857d2c1e1a348a7e947cddfaecd92"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "2f46f32914cdf6438483ae1c1d1660b0",
+                "status": "final",
+                "code": {
+                    "text": "Diagnosticos o Problemas Clínicos",
+                    "coding": [
+                        {
+                            "display": "Diagnosticos o Problemas Clínicos"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "El paciente se Disloco el hombro"
+            },
+            "fullUrl": "2f46f32914cdf6438483ae1c1d1660b0"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "2632aedf5d69fc33fd318b3300a8a6bb",
+                "status": "final",
+                "code": {
+                    "text": "Pronóstico",
+                    "coding": [
+                        {
+                            "display": "Pronóstico"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Acomodo del hombro y recupeación en 2 meses"
+            },
+            "fullUrl": "2632aedf5d69fc33fd318b3300a8a6bb"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "79e9647e70751a8334bf25a61ca90517",
+                "status": "final",
+                "code": {
+                    "text": "Indicación Terapéutica",
+                    "coding": [
+                        {
+                            "display": "Indicación Terapéutica"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Evitar utilizar el brazo afectado hasta proximas indicaciones"
+            },
+            "fullUrl": "79e9647e70751a8334bf25a61ca90517"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "14115ccfed039394a6444b1f0f118e66",
+                "status": "final",
+                "code": {
+                    "text": "Habitus Exterior",
+                    "coding": [
+                        {
+                            "display": "Habitus Exterior"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "El paciente presenta ojeras marcadas, palidez y visible cansancion físico"
+            },
+            "fullUrl": "14115ccfed039394a6444b1f0f118e66"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "f463eab10115c2e9bae11cdbf5d195ef",
+                "status": "final",
+                "code": {
+                    "text": "Peso",
+                    "coding": [
+                        {
+                            "display": "Peso"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": 61.5,
+                    "unit": "kg"
+                }
+            },
+            "fullUrl": "f463eab10115c2e9bae11cdbf5d195ef"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "4fd788e7caeb871fb515ec1816b115db",
+                "status": "final",
+                "code": {
+                    "text": "Talla",
+                    "coding": [
+                        {
+                            "display": "Talla"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": 179,
+                    "unit": "cm"
+                }
+            },
+            "fullUrl": "4fd788e7caeb871fb515ec1816b115db"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "2bd59aa7d3a7a544a2d5fcf5a47796a5",
+                "status": "final",
+                "code": {
+                    "text": "Cabeza",
+                    "coding": [
+                        {
+                            "display": "Cabeza"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Sint rerum rerum qui ipsa nulla molestias. Eum sint molestiae saepe quia."
+            },
+            "fullUrl": "2bd59aa7d3a7a544a2d5fcf5a47796a5"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "9dbdb462629de01fdc1ce422e1ac363d",
+                "status": "final",
+                "code": {
+                    "text": "Cuello",
+                    "coding": [
+                        {
+                            "display": "Cuello"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Et nam eaque consectetur velit consequatur ut."
+            },
+            "fullUrl": "9dbdb462629de01fdc1ce422e1ac363d"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "8eddc4222adcf3e929f8066c4013cb95",
+                "status": "final",
+                "code": {
+                    "text": "Torax",
+                    "coding": [
+                        {
+                            "display": "Torax"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Voluptatibus aut sunt quia officiis."
+            },
+            "fullUrl": "8eddc4222adcf3e929f8066c4013cb95"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "14f5adcf8f41b947729457e1e20ad076",
+                "status": "final",
+                "code": {
+                    "text": "Abdomen",
+                    "coding": [
+                        {
+                            "display": "Abdomen"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Eligendi amet vel ipsam labore sit."
+            },
+            "fullUrl": "14f5adcf8f41b947729457e1e20ad076"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "120e9e52d9554850c8b98eb5f427d913",
+                "status": "final",
+                "code": {
+                    "text": "Miembros",
+                    "coding": [
+                        {
+                            "display": "Miembros"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Dicta qui deserunt perspiciatis. Sint dolorem alias ex quaerat expedita."
+            },
+            "fullUrl": "120e9e52d9554850c8b98eb5f427d913"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "2856d4be927d1a9e42d424af165d8961",
+                "status": "final",
+                "code": {
+                    "text": "Genitales",
+                    "coding": [
+                        {
+                            "display": "Genitales"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueString": "Omnis ducimus officia itaque necessitatibus."
+            },
+            "fullUrl": "2856d4be927d1a9e42d424af165d8961"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "b990bc3da5a81e58ae041ef0e0c49075",
+                "status": "final",
+                "code": {
+                    "text": "Temperatura",
+                    "coding": [
+                        {
+                            "display": "Temperatura"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": 39.8,
+                    "unit": "°C"
+                }
+            },
+            "fullUrl": "b990bc3da5a81e58ae041ef0e0c49075"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "510d27ab3ef5e11a7759e78cac34ba4f",
+                "status": "final",
+                "code": {
+                    "text": "Tensión Sistolica",
+                    "coding": [
+                        {
+                            "display": "Tensión Sistolica"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": 100,
+                    "unit": "mmHg"
+                }
+            },
+            "fullUrl": "510d27ab3ef5e11a7759e78cac34ba4f"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "41f6afe16a515bb202408ced62330229",
+                "status": "final",
+                "code": {
+                    "text": "Tensión Diastolica",
+                    "coding": [
+                        {
+                            "display": "Tensión Diastolica"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": 134,
+                    "unit": "mmHg"
+                }
+            },
+            "fullUrl": "41f6afe16a515bb202408ced62330229"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "819164faeb6fc64756e58e231acab7c9",
+                "status": "final",
+                "code": {
+                    "text": "Frecuencia Cardiaca",
+                    "coding": [
+                        {
+                            "display": "Frecuencia Cardiaca"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": 37,
+                    "unit": "lmp"
+                }
+            },
+            "fullUrl": "819164faeb6fc64756e58e231acab7c9"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "7322496765482ccc68ce696d2ed25994",
+                "status": "final",
+                "code": {
+                    "text": "Frecuencia Respiratoria",
+                    "coding": [
+                        {
+                            "display": "Frecuencia Respiratoria"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": 24,
+                    "unit": "rmp"
+                }
+            },
+            "fullUrl": "7322496765482ccc68ce696d2ed25994"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "1b07a213bb935626518fc0d1e298df48",
+                "status": "final",
+                "code": {
+                    "text": "Saturación de Oxígeno",
+                    "coding": [
+                        {
+                            "display": "Saturación de Oxígeno"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": "84",
+                    "unit": "%"
+                }
+            },
+            "fullUrl": "1b07a213bb935626518fc0d1e298df48"
+        },
+        {
+            "resource": {
+                "resourceType": "Observation",
+                "id": "ad608dc43a30c8104b9616c62cfba939",
+                "status": "final",
+                "code": {
+                    "text": "Glucosa",
+                    "coding": [
+                        {
+                            "display": "Glucosa"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/87df424ddb95eb0b27b9de0124b5c557",
+                    "type": "Patient"
+                },
+                "valueQuantity": {
+                    "value": "293.19",
+                    "unit": "mg/dL"
+                }
+            },
+            "fullUrl": "ad608dc43a30c8104b9616c62cfba939"
         }
     ]
 }
