@@ -189,6 +189,13 @@ class CarePlan extends DomainResource{
         $this->note[] = $note;
     }
 
+    public function toString(){
+        $string = "Plan de cuidado";
+        if(isset($this->created))
+            $string .= " del día " . $this->created;
+        return $string;
+    }
+
     public function toArray(){
         $arrayData = parent::toArray();
         if(isset($this->identifier)){

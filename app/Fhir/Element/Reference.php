@@ -36,6 +36,19 @@ class Reference extends Element{
     public function setDisplay($display){
         $this->display = $display;
     }
+
+    public function getReferenceId(){
+        if(isset($this->reference)){
+            if(strpos($this->reference, "urn:uuid:") !== false)
+                return str_replace("urn:uuid:", "", $this->reference);
+            if(strpos($this->reference,"/")!== false){
+                $data = explode("/", $this->reference);
+                return $data[sizeof($data)-1];
+            }
+        }
+        return false;
+    }
+
     /* funciones */
     public function toArray(){
         $arrayData = parent::toArray();

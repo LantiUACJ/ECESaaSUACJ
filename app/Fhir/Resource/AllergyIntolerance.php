@@ -323,4 +323,12 @@ class AllergyIntolerance extends DomainResource{
         }
         return $arrayData;
     }
+
+    public function toString(){
+        $display = "";
+        if(isset($this->type) && $this->type == "allergy") $display .= "Alergia";
+        elseif(isset($this->type) && $this->type == "intolerance") $display .= "Intolerancia";
+        if(isset($this->code) && isset($this->code->display)) $display .= $this->code->display;
+        return $display;
+    }
 }

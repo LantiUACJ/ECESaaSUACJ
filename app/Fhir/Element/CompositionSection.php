@@ -65,6 +65,17 @@ class CompositionSection extends Element{
     public function addSection(CompositionSection $section){
         $this->section[] = $section;
     }
+
+    public function getReferences(){
+        $data = [];
+        if(isset($this->section)){
+            foreach($this->section as $section){
+                $data = array_merge($data, $section->getReferences());
+            }
+        }
+        return array_merge($this->entry, $data);
+    }
+
     public function toArray(){
         $array = parent::toArray();
         if(isset($this->title))

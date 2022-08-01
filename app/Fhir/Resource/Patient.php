@@ -176,7 +176,9 @@ class Patient extends DomainResource{
     public function addLink(Resource $link){
         $this->link[] = $link->toReference();
     }
-
+    public function toString(){
+        return "Datos del paciente: " . $this->name[0]->toString();
+    }
     public function toArray(){
         $arrayData = parent::toArray();
         foreach($this->name as $name){

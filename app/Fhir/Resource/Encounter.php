@@ -328,6 +328,15 @@ class Encounter extends DomainResource{
     public function setPartOf(Resource $partOf){
         $this->partOf = $partOf->toReference();
     }
+
+    public function toString(){
+        $texto = "Visita";
+        if(isset($this->period)){
+            $texto .= " ". $this->period->toString();
+        }
+        return $texto;
+    }
+
     public function toArray(){
         $arrayData = parent::toArray();
         foreach($this->identifier as $identifier){

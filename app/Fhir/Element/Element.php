@@ -14,6 +14,10 @@ class Element{
         $this->extension[] = $extension;
     }
 
+    public function toString(){
+        return "";
+    }
+
     public function toArray(){
         $arrayData = [];
         if($this->extension){

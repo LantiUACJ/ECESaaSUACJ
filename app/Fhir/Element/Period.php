@@ -27,7 +27,13 @@ class Period extends Element{
     public function setEnd($end){
         $this->end = $end;
     }
-
+    public function toString(){
+        $texto = "";
+        if($this->start) $texto .= $this->start;
+        if($this->start && $this->end) $texto .= " - ";
+        if($this->end) $texto .= $this->end;
+        return $texto;
+    }
     public function toArray(){
         $arrayData = parent::toArray();
         if($this->start)

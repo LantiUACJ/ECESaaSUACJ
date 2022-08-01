@@ -35,6 +35,27 @@ class Quantity extends Element{
     public function setCode($code){
         $this->code = $code;
     }
+
+    public function toString(){
+        $text = "";
+        if(isset($this->value)){
+            $text .= $this->value . " ";
+        }
+        if(isset($this->comparator)){
+            $text .= $this->comparator . " ";
+        }
+        if(isset($this->unit)){
+            $text .= $this->unit . " ";
+        }
+        if(isset($this->system)){
+            $text .= $this->system . " ";
+        }
+        if(isset($this->code)){
+            $text .= $this->code . " ";
+        }
+        return $text;
+    }
+
     public function toArray(){
         $arrayData = parent::toArray();
         if(isset($this->value)){

@@ -8,6 +8,7 @@ use App\Fhir\Exception\TextNotDefinedException;
 
 class Resource{
     public function __construct($json = null){
+        $this->mark = 0;
         $this->setId(hash("MD5", microtime(true) . " " . rand(0, 10000000)));
         if($json) $this->loadData($json);
     }
@@ -52,9 +53,13 @@ class Resource{
     public function toJson(){
         return json_encode($this->toArray());
     }
+    public function toString(){
+        return "";
+    }
     
     /* Funciones para clases heredadas */
     public function toReference(){
+        $this->referenceDisplay = $this->toString();
         if(isset($this->referenceDisplay))
             return new Reference($this->resourceType, $this->id, $this->referenceDisplay);
         return new Reference($this->resourceType, $this->id);

@@ -317,6 +317,60 @@ class Observation extends DomainResource{
         $this->component->referenceRange = $refences;
     }
 
+    public function toString(){
+        $display = "Observación: ";
+        if(isset($this->code) && isset($this->code->text)){
+            $display .= $this->code->text . " ";
+        }
+        if(isset($this->effectiveDateTime)){
+            $display .= "(" . $this->effectiveDateTime . ")";
+        }
+        if(isset($this->effectivePeriod)){
+            $display .= "(" . $this->effectivePeriod->toString() . ")";
+        }
+        if(isset($this->effectiveTiming)){
+            $display .= "(" . $this->effectiveTiming->toString() . ")";
+        }
+        if(isset($this->effectiveInstant)){
+            $display .= "(" . $this->effectiveInstant . ")";
+        }
+        /*
+        if(isset($this->valueQuantity)){
+            $display .= $this->valueQuantity->toString() . " ";
+        }
+        if(isset($this->valueCodeableConcept)){
+            $display .= $this->valueCodeableConcept->toString() . " ";
+        }
+        if(isset($this->valueString)){
+            $display .= $this->valueString . " ";
+        }
+        if(isset($this->valueBoolean)){
+            $display .= $this->valueBoolean . " ";
+        }
+        if(isset($this->valueInteger)){
+            $display .= $this->valueInteger . " ";
+        }
+        if(isset($this->valueRange)){
+            $display .= $this->valueRange->toString() . " ";
+        }
+        if(isset($this->valueRatio)){
+            $display .= $this->valueRatio->toString() . " ";
+        }
+        if(isset($this->valueSampledData)){
+            $display .= $this->valueSampledData->toString() . " ";
+        }
+        if(isset($this->valueTime)){
+            $display .= $this->valueTime . " ";
+        }
+        if(isset($this->valueDateTime)){
+            $display .= $this->valueDateTime . " ";
+        }
+        if(isset($this->valuePeriod)){
+            $display .= $this->valuePeriod->toString() . " ";
+        }*/
+        return trim($display);
+    }
+
     public function toArray(){
         $arrayData = parent::toArray();
 

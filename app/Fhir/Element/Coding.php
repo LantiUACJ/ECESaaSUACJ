@@ -5,7 +5,7 @@ class Coding extends Element{
         parent::__construct();
         $this->setDisplay($display);
         $this->setCode($code);
-        $this->setCode($system);
+        $this->setSystem($system);
     }
     public function loadData($json){
         if(isset($json->display)) $this->setDisplay($json->display);

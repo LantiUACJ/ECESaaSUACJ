@@ -161,14 +161,14 @@ class MedicationAdministration extends DomainResource{
     public function addNote(Annotation $note){
         $this->note[] = $note;
     }
-    public function setDosage($text, CodeableConcept $site, CodeableConcept $route, CodeableConcept $method, Quantity $dose, Ratio $rateRatio, Quantity $rateQuantity){
+    public function setDosage($text, CodeableConcept $site = null, CodeableConcept $route = null, CodeableConcept $method = null, Quantity $dose = null, Ratio $rateRatio = null, Quantity $rateQuantity = null){
         $this->dosage["text"] = $text;
-        $this->dosage["site"] = $site;
-        $this->dosage["route"] = $route;
-        $this->dosage["method"] = $method;
-        $this->dosage["dose"] = $dose;
-        $this->dosage["rateRatio"] = $rateRatio;
-        $this->dosage["rateQuantity"] = $rateQuantity;
+        if($site) $this->dosage["site"] = $site;
+        if($route) $this->dosage["route"] = $route;
+        if($method) $this->dosage["method"] = $method;
+        if($dose) $this->dosage["dose"] = $dose;
+        if($rateRatio) $this->dosage["rateRatio"] = $rateRatio;
+        if($rateQuantity) $this->dosage["rateQuantity"] = $rateQuantity;
     }
     public function addEventHistory(Resource $eventHistory){
         $this->eventHistory[] = $eventHistory->toReference();

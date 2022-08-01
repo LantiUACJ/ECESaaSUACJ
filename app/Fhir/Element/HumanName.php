@@ -60,6 +60,21 @@ class HumanName extends Element{
         $this->suffix[] = $suffix;
     }
 
+    public function toString(){
+        $name = "";
+        if($this->text){
+            $name .= $this->text . " ";
+        }
+        if(isset($this->given) && !$this->text){
+            foreach($this->given as $given)
+                $name .= $given . " ";
+        }
+        if(isset($this->family) && !$this->text){
+            $name .= $this->family . " ";
+        }
+        return $name;
+    }
+
     public function toArray(){
         $arrayData = parent::toArray();
 

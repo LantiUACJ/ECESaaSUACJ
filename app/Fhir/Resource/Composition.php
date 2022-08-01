@@ -156,13 +156,13 @@ class Composition extends DomainResource{
 
     public function esNotaEvolucion(){
         if(isset($this->type) && isset($this->type->coding) && isset($this->type->coding[0]->code)){
-            return $this->type->coding[0]->code == "D2";
+            return $this->type->coding[0]->code == "D3";
         }
         return false;
     }
     public function esHistoriaClinica(){
         if(isset($this->type) && isset($this->type->coding) && isset($this->type->coding[0]->code)){
-            return $this->type->coding[0]->code == "D3";
+            return $this->type->coding[0]->code == "D2";
         }
         return false;
     }
@@ -177,6 +177,16 @@ class Composition extends DomainResource{
             }
         }
         return $data;
+    }
+
+    public function toString(){
+        if($this->esNotaEvolucion()){
+            return "Nota de evolución";
+        }
+        if($this->esHistoriaClinica()){
+            return "Historia clínica";
+        }
+        return "Composición";
     }
 
     public function toArray(){
