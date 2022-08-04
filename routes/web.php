@@ -54,9 +54,9 @@ Route::post('/expedienteece', [App\Http\Controllers\MISECEController::class, 'ex
 //Consulta basico de ece al misece
 Route::post('/expedienteecebasico', [App\Http\Controllers\MISECEController::class, 'expecebasico'])->name('expedienteecebasico')->middleware('auth');
 
-
 //Pagina para Consulta (vista) MISECE ece-misece (con curp)
 Route::get('/misece', [App\Http\Controllers\MISECEController::class, 'consultarmisece'])->name('misece')->middleware('auth');
+
 
 
 //Consultas del paciente
