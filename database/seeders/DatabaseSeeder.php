@@ -18,9 +18,12 @@ class DatabaseSeeder extends Seeder
         $this->call(Estados::class);
         $this->call(Municipios::class);
         $this->call(AddSexos::class);
-        //$this->call(AddGeneros::class);
+        $this->call(AddGeneros::class);
+        $this->call(AddAfroMexicano::class);
+        $this->call(AddDHabiencias::class);
+        $this->call(AddIndigena::class);
         $this->call(GrupoEtnicoSeed::class);
-        //$this->call(GrupoSanguineoseed::class);
+        $this->call(GrupoSanguineoseed::class);
         $this->call(UsersSeed::class);
         //$this->call(Diagnostics::class); //Descontinuado
         

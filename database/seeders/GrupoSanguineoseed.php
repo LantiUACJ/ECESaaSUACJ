@@ -16,35 +16,39 @@ class GrupoSanguineoseed extends Seeder
     {
         Gruposanguineo::create([
             "descripcion" => "A positivo",
-            "slug" => "A +"
+            "slug" => "A+"
         ]);
         Gruposanguineo::create([
             "descripcion" => "A negativo",
-            "slug" => "A -"
+            "slug" => "A-"
         ]);
         Gruposanguineo::create([
             "descripcion" => "B positivo",
-            "slug" => "B +"
+            "slug" => "B+"
         ]);
         Gruposanguineo::create([
             "descripcion" => "B negativo",
-            "slug" => "B -"
+            "slug" => "B-"
         ]);
         Gruposanguineo::create([
             "descripcion" => "AB positivo",
-            "slug" => "AB +"
+            "slug" => "AB+"
         ]);
         Gruposanguineo::create([
             "descripcion" => "AB negativo",
-            "slug" => "AB -"
+            "slug" => "AB-"
         ]);
         Gruposanguineo::create([
             "descripcion" => "O positivo",
-            "slug" => "O +"
+            "slug" => "O+"
         ]);
         Gruposanguineo::create([
             "descripcion" => "O negativo",
-            "slug" => "O -"
+            "slug" => "O-"
+        ]);
+        Gruposanguineo::create([
+            "descripcion" => "SE DESCONOCE",
+            "slug" => "SE DESCONOCE"
         ]);
     }
 }

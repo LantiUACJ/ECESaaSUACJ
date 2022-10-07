@@ -16,42 +16,42 @@ class AddGeneros extends Seeder
     {
         Genero::create([
             "numero" => 0,
-            "descripcion" => "No Especificado"
+            "descripcion" => "NO ESPECIFICADO / SE DESCONOCE"
         ]);
 
         Genero::create([
             "numero" => 1,
-            "descripcion" => "Masculino"
+            "descripcion" => "MASCULINO"
         ]);
 
         Genero::create([
             "numero" => 2,
-            "descripcion" => "Femenino"
+            "descripcion" => "FEMENINO"
         ]);
 
         Genero::create([
             "numero" => 3,
-            "descripcion" => "Transgénero"
+            "descripcion" => "TRANSGÉNERO"
         ]);
 
         Genero::create([
             "numero" => 4,
-            "descripcion" => "Transexual"
+            "descripcion" => "TRANSEXUAL"
         ]);
 
         Genero::create([
             "numero" => 5,
-            "descripcion" => "Travesti"
+            "descripcion" => "TRAVESTI"
         ]);
 
         Genero::create([
             "numero" => 6,
-            "descripcion" => "Intersexual"
+            "descripcion" => "INTERSEXUAL"
         ]);
 
         Genero::create([
             "numero" => 88,
-            "descripcion" => "Otro"
+            "descripcion" => "OTRO"
         ]);
     }
 }
