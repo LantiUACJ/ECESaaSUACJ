@@ -9,6 +9,7 @@ use App\Models\Entidadesfederativa;
 use App\Models\Municipio;
 
 use App\Models\Consulta;
+use App\Models\Consultaembarazo;
 use App\Models\grupoetnico;
 use App\Models\User;
 use App\Models\Sexo;
@@ -25,7 +26,8 @@ use App\Models\Signovital;
 
 use App\Notifications\UserConsultation;
 
-use App\Models\Snomeddescripcion;
+use App\Models\Snomeddescripcion; //Conexion con base de datos snomed Lanti (requiere vpn)
+use App\Models\Diagnostico; //Conexion con tabla local snomed (copia tabla descripcion de base de datos snomed)
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -52,27 +54,27 @@ class ConsultaController extends Controller
 
     //Muestra las consultas dado un paciente ID
     public function index($pacid){
-        self::deletesession(); //Función encargada de limpiar las variables de sesión utilizada en la consulta.
+        $this->deletesession(); //Función encargada de limpiar las variables de sesión utilizada en la consulta.
         $pac = Paciente::find($pacid);
         $age = self::ageCalc($pac);
         $consultas = Consulta::where('paciente_id', $pacid)->orderBy('created_at', 'desc')->paginate(15);
         return view('consultageneral.consultas', ['paciente' => $pac, 'age' => $age, 'consultas' => $consultas]);
     }
 
-    //Consultas del medico
+    //Consultas del medico   route: /consultamedico
     public function medico(){
-        self::deletesession();
+        $this->deletesession();
         $medico_id = auth()->user()->id;
         $consultas = Consulta::where('medico_id', $medico_id)->orderBy('created_at', 'desc')->paginate(15);
-        return view('consultageneral.consultasmedico', ['consultas' => $consultas]);
+        return view('consultageneral.consultasmedico', ['consultas' => $consultas, 'search' => false]);
     }
 
     //Muestra la página con la lista de pacientes
     //Para seleccionar alguno y comenzar la consulta.
     public function pacientes(){
-        self::deletesession();
+        $this->deletesession();
         $pacientes = Paciente::orderBy('nombre', 'asc')->paginate(25);
-        return view('consultageneral.seleccionpaciente', ['pacientes' => $pacientes]);
+        return view('consultageneral.seleccionpaciente', ['pacientes' => $pacientes, 'search' => false]);
     }
 
     public function createpacienteConsulta(){
@@ -154,20 +156,23 @@ class ConsultaController extends Controller
             session(['inter_id' => null]);
         }
 
-        $age = self::ageCalc($pac);
+        $age = $this->ageCalc($pac);
+        $years = (int) substr($age, 0, strpos($age, "y"));
         $grupos = grupoetnico::all();
         $sexos = Sexo::all();
-        return view('consultageneral.registroconsulta', ['paciente' => $pac, 'age' => $age, 'grupos' => $grupos, 'sexos' => $sexos, 'inter' => $inter, 
+        return view('consultageneral.registroconsulta', ['paciente' => $pac, 'age' => $age, 'years' => $years, 'grupos' => $grupos, 'sexos' => $sexos, 'inter' => $inter, 
         'anteHF' => $anteHF, 'antePP' => $antePP, 'antePNP' => $antePNP, 'interAS' => $interAS]);
     }
 
     public function continuar($consulta_id){
         $consulta = Consulta::find($consulta_id);
         session(['consulta_id' => $consulta_id]);
+        session(['pregnantconsulta_id' => $consulta->consultaembarazo_id != null? $consulta->consultaembarazo_id: null]);
         //dd($consulta);
         $pac = Paciente::find($consulta->paciente_id);
         session(['pac_id' => $pac->id]);
         $age = self::ageCalc($pac);
+        $years = (int) substr($age, 0, strpos($age, "y"));
         $grupos = grupoetnico::all();
         $sexos = Sexo::all();
 
@@ -203,9 +208,9 @@ class ConsultaController extends Controller
 
         //$diagnostico = Snomeddescripcion::where('id', '845139016')->first();
 
-        return view('consultageneral.continuarconsulta', ['paciente' => $pac, 'age' => $age, 'consulta' => $consulta, 
+        return view('consultageneral.continuarconsulta', ['paciente' => $pac, 'age' => $age, 'years' => $years, 'consulta' => $consulta, 
         'grupos' => $grupos, 'inter' => $inter, 'exploracion' => $explo, 'anteHF' => $anteHF, 'antePP' => $antePP, 
-    'antePNP' => $antePNP, 'interAS' => $interAS, 'signos' => $signos, 'sexos' => $sexos /*, 'diagnostico' => $diagnostico*/]);
+        'antePNP' => $antePNP, 'interAS' => $interAS, 'signos' => $signos, 'sexos' => $sexos /*, 'diagnostico' => $diagnostico*/]);
     }
 
     //Almacena solo los datos de la consulta (no interrogatorios, ni exploración) llamada a traves de ajax.
@@ -218,7 +223,8 @@ class ConsultaController extends Controller
 
         $validated = $request->validate($rules);
 
-        //$diagname = ($request->select != null && $request->select) != ""? Snomeddescripcion::where('id', $request->select)->first(): null;
+        $diag = ($request->select != null && $request->select != "")? Snomeddescripcion::where('id', $request->select)->first(): null;
+        //$diag = ($request->select != null && $request->select != "") ? Diagnostico::where('id', $request->select)->first(): null;
 
         $consulta = new Consulta;
         $consulta->motivoConsulta = $request->motivo;
@@ -229,33 +235,30 @@ class ConsultaController extends Controller
         $consulta->indicacionTerapeutica = $request->indicacion;
         $consulta->Paciente_id = $pacid;
         $consulta->medico_id = $request->user()->id;
-        //$consulta->diag_id = $request->select;
-        //$consulta->diag_name = $diagname != null? $diagname->term: null;
+        $consulta->diag_id = $request->select;
+        $consulta->diag_name = isset($diag)? $diag->term: null;
         $result = $consulta->save();
 
         //El proceso de guardado de los archivos debe hacerse despues de guardar la consulta ya que se necesita el id para 
         //crear el directorio donde se guardaran los archivos.
         $mainpath = public_path().'/consultaResultados';
         //Creamos el directorio para guardar los resultados si es que no existe
-        if(!File::exists($mainpath)) {
+        if(!File::exists($mainpath)){
             // crear path
             File::makeDirectory($mainpath, 0777, true, true);
         }
-
         $consultapath = public_path().'/consultaResultados/'.$consulta->id;
         //Creamos el directorio de la consulta para guardar los resultados si es que no existe
-        if(!File::exists($consultapath)) {
+        if(!File::exists($consultapath)){
             // crear path
             File::makeDirectory($consultapath, 0777, true, true);
         }
-        
-        if($request->hasfile('filename'))
-        {
-            foreach($request->file('filename') as $file)
-            {
+        if($request->hasfile('filename')){
+            foreach($request->file('filename') as $file){
                 $name = $file->getClientOriginalName();
+                $ext = $file->getClientOriginalExtension();
                 $file->move(public_path().'/consultaResultados/'.$consulta->id, $name);
-                $data[] = $name;
+                $data[] = [$name, $ext];
             }
             $filenames = json_encode($data);
             $consulta->resultadosArchivos = $filenames;
@@ -263,7 +266,6 @@ class ConsultaController extends Controller
         }else{
             //Something unexpected has happend
         }
-        
         // Generacion de la notificacion. Se marca como leida si se termina la consutla.
         if(Auth::user()){ //usuario autenticado
             $user = User::find(Auth::user()->id);
@@ -274,6 +276,267 @@ class ConsultaController extends Controller
             session(['consulta_id' => $consulta->id]); //se guarda el id de la consulta para ser usado cuando se guarden los Interrogatorio y exploracion. 
             session(['pac_id' => $pacid]);
             return response()->json(['msg' => 'Nota de consulta guardada exitosamente!'], 200);
+        }else{
+            return response()->json(['errormsg' => 'Ocurrio un error al guardar los datos. Intentalo más tarde.'], 401);
+        }
+    }
+
+    public function storepregnant(Request $request, $pacid){
+        //Proceso completo de guardado de la consulta
+        //********* */
+        $rules = array(
+            'motivo' => 'required|max:255',
+            'filename.*' => 'mimes:doc,pdf,docx,png,jpg'
+        );
+
+        $validated = $request->validate($rules);
+
+        //$diag = ($request->select != null && $request->select) != ""? Snomeddescripcion::where('id', $request->select)->first(): null;
+        $diag = ($request->select != null && $request->select != "") ? Diagnostico::where('id', $request->select)->first(): null;
+
+        $consulta = new Consulta;
+        $consulta->motivoConsulta = $request->motivo;
+        $consulta->cuadroClinico = $request->cuadro;
+        $consulta->resultadosLaboratorioGabinete = $request->resultados;
+        $consulta->diagnosticoProblemasClinicos = $request->diagnostico;
+        $consulta->pronostico = $request->pronostico;
+        $consulta->indicacionTerapeutica = $request->indicacion;
+        $consulta->Paciente_id = $pacid;
+        $consulta->medico_id = $request->user()->id;
+        $consulta->diag_id = $request->select;
+        $consulta->diag_name = $diag != null? $diag->term: null;
+        $result = $consulta->save();
+
+        //El proceso de guardado de los archivos debe hacerse despues de guardar la consulta ya que se necesita el id para 
+        //crear el directorio donde se guardaran los archivos.
+        $mainpath = public_path().'/consultaResultados';
+        //Creamos el directorio para guardar los resultados si es que no existe
+        if(!File::exists($mainpath)){
+            // crear path
+            File::makeDirectory($mainpath, 0777, true, true);
+        }
+        $consultapath = public_path().'/consultaResultados/'.$consulta->id;
+        //Creamos el directorio de la consulta para guardar los resultados si es que no existe
+        if(!File::exists($consultapath)){
+            // crear path
+            File::makeDirectory($consultapath, 0777, true, true);
+        }
+        if($request->hasfile('filename')){
+            foreach($request->file('filename') as $file){
+                $name = $file->getClientOriginalName();
+                $file->move(public_path().'/consultaResultados/'.$consulta->id, $name);
+                $data[] = $name;
+            }
+            $filenames = json_encode($data);
+            $consulta->resultadosArchivos = $filenames;
+            $result = $consulta->save();
+        }else{
+            //Something unexpected has happend
+        }
+        // Generacion de la notificacion. Se marca como leida si se termina la consutla.
+        if(Auth::user()){ //usuario autenticado
+            $user = User::find(Auth::user()->id);
+            Auth::user()->notify(new UserConsultation($user, $consulta));
+        }
+
+        //Fin proceso de guardado consulta
+        //********* */
+
+        $pregConsult = new Consultaembarazo;
+        //$pregConsult->consulta_id = $consulta->id;
+        $pregConsult->relacionConsulta = $request->embarazo;
+        $pregConsult->trimestre = $request->trimestre;
+        $pregConsult->altoRiesgo = $request->altoriesgo;
+        $pregConsult->diabetes = $request->diabetes;
+        $pregConsult->infeccionUrinaria = $request->infeccion;
+        $pregConsult->preeclampsia = $request->preeclampsia;
+        $pregConsult->hemorragia = $request->hemorragia;
+        $pregConsult->sospechaCovid = $request->sospechacovid;
+        $pregConsult->confirmaCovid = $request->confirmacovid;
+        $result = $pregConsult->save();
+        
+        $consulta->consultaembarazo_id = $pregConsult->id;
+        $consulta->save();
+
+        if($result != false){
+            session(['consulta_id' => $consulta->id]); //se guarda el id de la consulta para ser usado cuando se guarden los Interrogatorio y exploracion. 
+            session(['pregnantconsulta_id' => $pregConsult->id]); //pregnant consulta
+            session(['pac_id' => $pacid]);
+            return response()->json(['msg' => 'Nota de Consulta guardada exitosamente!'], 200);
+        }else{
+            return response()->json(['errormsg' => 'Ocurrio un error al guardar los datos. Intentalo más tarde.'], 401);
+        }
+    }
+
+    //Actualización de los datos de consulta.
+    public function update(Request $request, $pacid){
+        $rules = array(
+            'motivo' => 'required|max:255',
+            'filename.*' => 'mimes:doc,pdf,docx,png,jpg'
+        );
+
+        $validated = $request->validate($rules);
+
+        $diag = ($request->select != null && $request->select != "")? Snomeddescripcion::where('id', $request->select)->first(): null;
+        //$diag = ($request->select != null && $request->select != "")? Snomeddescripcion::where('id', $request->select)->first(): null;
+
+        //$diag = ($request->select != null && $request->select != "") ? Diagnostico::where('id', $request->select)->first(): null;
+
+        $consulta_id = session('consulta_id');
+
+        if($consulta_id !== null){
+            $consulta = Consulta::find($consulta_id);
+            $consulta->motivoConsulta = $request->motivo;
+            $consulta->cuadroClinico = $request->cuadro;
+            $consulta->resultadosLaboratorioGabinete = $request->resultados;
+            $consulta->diagnosticoProblemasClinicos = $request->diagnostico;
+            $consulta->pronostico = $request->pronostico;
+            $consulta->indicacionTerapeutica = $request->indicacion;
+            $consulta->diag_id = $request->select;
+            $consulta->diag_name = isset($diag)? $diag->term: null;
+            $result = $consulta->save();
+
+            //El proceso de guardado de los archivos debe hacerse despues de guardar la consulta ya que se necesita el id para 
+            //crear el directorio donde se guardaran los archivos.
+            $mainpath = public_path().'/consultaResultados';
+            //Creamos el directorio para guardar los resultados si es que no existe
+            if(!File::exists($mainpath)){
+                File::makeDirectory($mainpath, 0777, true, true);
+            }
+
+            $consultapath = public_path().'/consultaResultados/'.$consulta->id;
+            //Creamos el directorio de la consulta para guardar los resultados si es que no existe
+            if(!File::exists($consultapath)){
+                File::makeDirectory($consultapath, 0777, true, true);
+            }/*else{
+                File::deleteDirectory($consultapath);
+                File::makeDirectory($consultapath, 0777, true, true);
+            }*/
+            
+            if($request->hasfile('filename')){
+                $filesDir = File::allFiles($consultapath);
+                foreach($request->file('filename') as $file){
+                    $name = $file->getClientOriginalName();
+                    $extension = $file->getClientOriginalExtension();
+                    $allowed = true;
+                    foreach ($filesDir as $fileDir) {
+                        if($fileDir->getFilename() == $name){
+                            $allowed = false;
+                        }
+                    }
+                    if($allowed){
+                        $file->move(public_path().'/consultaResultados/'.$consulta->id, $name);
+                        $data[] = [$name, $extension];
+                    }
+                }
+                if(!empty($data)){
+                    $data = $consulta->resultadosArchivos != null? array_merge(json_decode($consulta->resultadosArchivos), $data): $data;
+                    $filenames = json_encode($data);
+                    $consulta->resultadosArchivos = $filenames;
+                    $result = $consulta->save();
+                }
+            }
+        }else{
+            return response()->json(['errormsg' => 'Ocurrio un error al actualizar los datos.'], 401);
+        }
+        
+        if($result !== false){
+            return response()->json(['msg' => 'Nota de consulta actualizada exitosamente!'], 200);
+        }else{
+            return response()->json(['errormsg' => 'Ocurrio un error al actualizar los datos. Intentalo más tarde.'], 401);
+        }
+    }
+
+    public function updatepregnant(Request $request, $pacid){
+        $consulta_id = session('consulta_id');
+        $pregnantconsulta_id = session('pregnantconsulta_id');
+
+        $rules = array(
+            'motivo' => 'required|max:255',
+            'filename.*' => 'mimes:doc,pdf,docx,png,jpg'
+        );
+
+        $validated = $request->validate($rules);
+        $diag = ($request->select != null && $request->select != "")? Snomeddescripcion::where('id', $request->select)->first(): null;
+        //$diag = ($request->select != null && $request->select != "") ? Diagnostico::where('id', $request->select)->first(): null;
+        
+        if(isset($consulta_id)){ //isset($pregnantconsulta_id
+            $consulta = Consulta::find($consulta_id);
+            $consulta->motivoConsulta = $request->motivo;
+            $consulta->cuadroClinico = $request->cuadro;
+            $consulta->resultadosLaboratorioGabinete = $request->resultados;
+            $consulta->diagnosticoProblemasClinicos = $request->diagnostico;
+            $consulta->pronostico = $request->pronostico;
+            $consulta->indicacionTerapeutica = $request->indicacion;
+            $consulta->diag_id = $request->select;
+            $consulta->diag_name = $diag != null? $diag->term: null;
+            $result = $consulta->save();
+
+            //El proceso de guardado de los archivos debe hacerse despues de guardar la consulta ya que se necesita el id para 
+            //crear el directorio donde se guardaran los archivos.
+            $mainpath = public_path().'/consultaResultados';
+            //Creamos el directorio para guardar los resultados si es que no existe
+            if(!File::exists($mainpath)){
+                File::makeDirectory($mainpath, 0777, true, true);
+            }
+
+            $consultapath = public_path().'/consultaResultados/'.$consulta->id;
+            //Creamos el directorio de la consulta para guardar los resultados si es que no existe
+            if(!File::exists($consultapath)){
+                File::makeDirectory($consultapath, 0777, true, true);
+            }
+            
+            if($request->hasfile('filename')){
+                foreach($request->file('filename') as $file){
+                    $name = $file->getClientOriginalName();
+                    $extension = $file->getClientOriginalExtension();
+                    $file->move(public_path().'/consultaResultados/'.$consulta->id, $name);
+                    $data[] = [$name, $extension];
+                }
+                $filenames = json_encode($data);
+                $new = json_decode($filenames);
+                $consulta->resultadosArchivos = $filenames;
+                $result = $consulta->save();
+            }
+
+            if(isset($pregnantconsulta_id)){ //ya existe consulta por embarazo
+                $pregConsult = Consultaembarazo::find($pregnantconsulta_id);
+                $pregConsult->relacionConsulta = $request->embarazo;
+                $pregConsult->trimestre = $request->trimestre;
+                $pregConsult->altoRiesgo = $request->altoriesgo;
+                $pregConsult->diabetes = $request->diabetes;
+                $pregConsult->infeccionUrinaria = $request->infeccion;
+                $pregConsult->preeclampsia = $request->preeclampsia;
+                $pregConsult->hemorragia = $request->hemorragia;
+                $pregConsult->sospechaCovid = $request->sospechacovid;
+                $pregConsult->confirmaCovid = $request->confirmacovid;
+                $result = $pregConsult->save();
+            }else{ //no existe consulta por embarazo
+                $pregConsult = new Consultaembarazo;
+                //$pregConsult->consulta_id = $consulta->id;
+                $pregConsult->relacionConsulta = $request->embarazo;
+                $pregConsult->trimestre = $request->trimestre;
+                $pregConsult->altoRiesgo = $request->altoriesgo;
+                $pregConsult->diabetes = $request->diabetes;
+                $pregConsult->infeccionUrinaria = $request->infeccion;
+                $pregConsult->preeclampsia = $request->preeclampsia;
+                $pregConsult->hemorragia = $request->hemorragia;
+                $pregConsult->sospechaCovid = $request->sospechacovid;
+                $pregConsult->confirmaCovid = $request->confirmacovid;
+                $result = $pregConsult->save();
+                
+                $consulta->consultaembarazo_id = $pregConsult->id;
+                $consulta->save();
+
+                session(['pregnantconsulta_id' => $pregConsult->id]); //pregnant consulta
+            }
+
+        }else{
+            return response()->json(['errormsg' => 'Ocurrio un error. La consulta no fue encontrada.'], 401);
+        }
+
+        if($result != false){
+            return response()->json(['msg' => 'Nota de Embarazo actualizada exitosamente!'], 200);
         }else{
             return response()->json(['errormsg' => 'Ocurrio un error al guardar los datos. Intentalo más tarde.'], 401);
         }
@@ -300,85 +563,17 @@ class ConsultaController extends Controller
         return -1;
     }
 
-    //Actualización de los datos de consulta.
-    public function update(Request $request, $pacid){
-        $rules = array(
-            'motivo' => 'required|max:255',
-            'filename.*' => 'mimes:doc,pdf,docx,png,jpg'
-        );
-
-        $validated = $request->validate($rules);
-
-        //$diagname = ($request->select != null && $request->select) != ""? Snomeddescripcion::where('id', $request->select)->first(): null;
-
-        $consulta_id = session('consulta_id');
-
-        if($consulta_id !== null){
-            $consulta = Consulta::find($consulta_id);
-            $consulta->motivoConsulta = $request->motivo;
-            $consulta->cuadroClinico = $request->cuadro;
-            $consulta->resultadosLaboratorioGabinete = $request->resultados;
-            $consulta->diagnosticoProblemasClinicos = $request->diagnostico;
-            $consulta->pronostico = $request->pronostico;
-            $consulta->indicacionTerapeutica = $request->indicacion;
-            //$consulta->diag_id = $request->select;
-            //$consulta->diag_name = $diagname != null? $diagname->term: null;
-            $result = $consulta->save();
-
-            //El proceso de guardado de los archivos debe hacerse despues de guardar la consulta ya que se necesita el id para 
-            //crear el directorio donde se guardaran los archivos.
-            $mainpath = public_path().'/consultaResultados';
-            //Creamos el directorio para guardar los resultados si es que no existe
-            if(!File::exists($mainpath)) {
-                File::makeDirectory($mainpath, 0777, true, true);
-            }
-
-            $consultapath = public_path().'/consultaResultados/'.$consulta->id;
-            //Creamos el directorio de la consulta para guardar los resultados si es que no existe
-            if(!File::exists($consultapath)) {
-                File::makeDirectory($consultapath, 0777, true, true);
-            }else{
-                File::deleteDirectory($consultapath);
-                File::makeDirectory($consultapath, 0777, true, true);
-            }
-            
-            if($request->hasfile('filename'))
-            {
-                foreach($request->file('filename') as $file)
-                {
-                    $name = $file->getClientOriginalName();
-                    $extension = $file->getClientOriginalExtension();
-                    $file->move(public_path().'/consultaResultados/'.$consulta->id, $name);
-                    $data[] = [$name, $extension];
-                }
-                
-                $filenames = json_encode($data);
-                $new = json_decode($filenames);
-                $consulta->resultadosArchivos = $filenames;
-                $result = $consulta->save();
-            }
-        }else{
-            return response()->json(['errormsg' => 'Ocurrio un error al actualizar los datos.'], 401);
-        }
-        
-        if($result !== false){
-            return response()->json(['msg' => 'Nota de consulta actualizada exitosamente!'], 200);
-        }else{
-            return response()->json(['errormsg' => 'Ocurrio un error al actualizar los datos. Intentalo más tarde.'], 401);
-        }
-    }
-
     public function ageCalc(Paciente $pac){
         if($pac != null){
             $firstDate = $pac->fechaNacimiento;
             $secondDate = Carbon::now();
 
             $dateDifference = abs(strtotime($secondDate) - strtotime($firstDate));
-
+            
             $years  = floor($dateDifference / (365 * 60 * 60 * 24));
             $months = floor(($dateDifference - $years * 365 * 60 * 60 * 24) / (30 * 60 * 60 * 24));
             $days   = floor(($dateDifference - $years * 365 * 60 * 60 * 24 - $months * 30 * 60 * 60 *24) / (60 * 60 * 24));
-
+            $this->years = $years;
             $age = $years."y ".$months."m ".$days."d";
 
             return $age;
@@ -432,27 +627,33 @@ class ConsultaController extends Controller
         'antePNP' => $antePNP, 'interAS' => $interAS, 'signos' => $signos, 'sexos' => $sexos]);
     }
 
-    public function searchmedico(Request $request){
-
+    public function searchconsulta(Request $request){
         $search = $request->get('search');
         $medico_id = auth()->user()->id;
-        $consultas = Consulta::where('motivoConsulta', 'like', '%'.$search.'%')->orderBy('created_at', 'desc')->paginate(25);
+        $this->deletesession();
+        if(isset($search)){
+            $consultas = Consulta::whereLike(['motivoConsulta', 'diagnosticoProblemasClinicos', 'paciente.nombre', 'paciente.primerApellido', 'paciente.segundoApellido', 'paciente.curp'], $search)
+            ->orderBy('created_at', 'DESC')->paginate(25);//sortByDesc('created_at')->paginate(25);
 
-        $filtered = $consultas->where('medico_id', $medico_id)->paginate(25); //Reference: https://gist.github.com/simonhamp/549e8821946e2c40a617c85d2cf5af5e
-
-        //dd($filtered);
-        return view('consultageneral.consultasmedico', ['consultas' => $filtered]);
+            //$consultas = Consulta::where('motivoConsulta', 'like', '%'.$search.'%')->orderBy('created_at', 'desc')->paginate(25);
+            //$filtered = $consultas->where('medico_id', $medico_id)->paginate(25); //Reference: https://gist.github.com/simonhamp/549e8821946e2c40a617c85d2cf5af5e
+            return view('consultageneral.consultasmedico', ['consultas' => $consultas, 'search' => true]);
+        }
+        $consultas = Consulta::where('medico_id', $medico_id)->orderBy('created_at', 'desc')->paginate(15);
+        return view('consultageneral.consultasmedico', ['consultas' => $consultas, 'search' => true]);
     }
 
-    public function searchpacientemedico(Request $request){
+    public function searchpaciente(Request $request){
         
         $search = $request->get('search');
-        $pacientes = Paciente::where('curp', 'like', '%'.$search.'%')
-        ->orwhere('nombre', 'like', '%'.$search.'%')
-        ->orwhere('primerApellido', 'like', '%'.$search.'%')
-        ->orwhere('segundoApellido', 'like', '%'.$search.'%')
-        ->orderBy('nombre', 'asc')->paginate(25);
-        return view('consultageneral.seleccionaciente', ['pacientes' => $pacientes]);
+        $this->deletesession();
+        if(isset($search)){
+            $pacientes = Paciente::whereLike(['nombre', 'primerApellido', 'segundoApellido', 'curp'], $search)
+            ->orderBy('nombre', 'ASC')->paginate(25);
+            return view('consultageneral.seleccionpaciente', ['pacientes' => $pacientes, 'search' => true]);
+        }
+        $pacientes = Paciente::orderBy('nombre', 'asc')->paginate(25);
+        return view('consultageneral.seleccionpaciente', ['pacientes' => $pacientes, 'search' => true]);
     }
 
     public function test(){
@@ -468,7 +669,7 @@ class ConsultaController extends Controller
         dd($collection);
     }
 
-    public function getconsulta(){
+    public function getconsulta(Request $request){
         if(session('consulta_id') !== null)
             return session('inter_id') !== null? 1: 0;
         else
@@ -505,21 +706,21 @@ class ConsultaController extends Controller
 
                 //
     
-                self::deletesession();
+                $this->deletesession();
             } catch (\Throwable $th) {
                 return view('errors.404');
             }
 
             if($result){
                 session()->flash('successMsg', 'Consulta Terminada Correctamente!');
-                return view('consultageneral.consultasmedico', ['consultas' => $consultas]);
+                return view('consultageneral.consultasmedico', ['consultas' => $consultas, 'search' => false]);
             }
             else
                 return view('404');
         }else{
             $medico_id = auth()->user()->id;    
             $consultas = Consulta::where('medico_id', $medico_id)->orderBy('created_at', 'desc')->paginate(15);
-            return view('consultageneral.consultasmedico', ['consultas' => $consultas]);
+            return view('consultageneral.consultasmedico', ['consultas' => $consultas, 'search' => false]);
         }
     }
 
@@ -574,6 +775,7 @@ class ConsultaController extends Controller
 
     public function deletesession(){
         session()->forget('consulta_id');
+        session()->forget('pregnantconsulta_id');
         session()->forget('inter_id');
         session()->forget('anteHF_id');
         session()->forget('antePP_id');

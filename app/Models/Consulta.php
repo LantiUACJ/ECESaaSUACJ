@@ -20,4 +20,8 @@ class Consulta extends Model
     public function exploracionfisica() {
         return $this->hasOne('App\Models\Exploracionfisica', 'id', 'exploracion_id');
     }
+
+    public function consultaembarazo() {
+        return $this->hasOne('App\Models\Consultaembarazo', 'id', 'consultaembarazo_id');
+    }
 }

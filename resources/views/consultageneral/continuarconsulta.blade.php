@@ -6,7 +6,7 @@
         <div class="navigation">
             <ul class="nav nav-tabs navul" id="myTab" role="tablist">
                 <li class="brandli">
-                    <img class="appimg" src="{{ $paciente->sexo_id == 1? asset('img/person1.jpeg'): asset('img/person2.jpg') }}" alt="">
+                    <img class="appimg" src="{{ $paciente->sexo->numero == 1? asset('img/person1.jpeg'): asset('img/person2.jpg') }}" alt="">
                     <span class="maintitle"><h6 class="brandtitle">{{ $paciente->nombre }} {{ $paciente->primerApellido }} {{ $paciente->segundoApellido }}</h6></span>
                 </li>
                 <hr class="menuhr">
@@ -198,7 +198,7 @@
                         <div class="col-md-4">
                             <label>{{ __('Fecha de Nac') }}: </label>
                             <br>
-                            <input class="pacinput" id="fechanac" type="text"  value="{{ $paciente->fechaNacimiento }}" autocomplete="fechanac" maxlength="255" disabled autofocus>
+                            <input class="pacinput" id="fechanac" type="text"  value="{{ date('d/m/Y', strtotime($paciente->fechaNacimiento)) }}" autocomplete="fechanac" maxlength="255" disabled autofocus>
                         </div>
                         <div class="col-md-4">
                             <label>{{ __('Edad') }}:</label>
@@ -228,244 +228,421 @@
             <div class="tab-pane fade show active" id="consulta" role="tabpanel" aria-labelledby="home-tab">
                 <div class="card">
                     <div class="card-header">
-                        Nota de la consulta
+                        <ul class="nav nav-tabs card-header-tabs" id="mySecTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link tabtitle active" id="datosconsulta-tab" data-bs-toggle="tab" data-bs-target="#datosconsulta" type="button" role="tab" aria-controls="datosconsulta" aria-selected="false">
+                                    <span class="icon my-auto"><i class="fa fa-info-circle" aria-hidden="true"></i></span>
+                                    <span class="my-auto">Nota de la consulta</span>
+                                </a>
+                            </li>
+                            @if ($paciente->sexo->numero == 2 && ($years >= 9 && $years <= 59))
+                                <li class="nav-item">
+                                    <a class="nav-link tabtitle" id="embarazo-tab" data-bs-toggle="tab" data-bs-target="#embarazo" type="button" role="tab" aria-controls="embarazo" aria-selected="false">
+                                        <span class="icon my-auto"><i class="fa fa-info-circle" aria-hidden="true"></i></span>
+                                        <span class="my-auto">Embarazo</span>
+                                    </a>
+                                </li>
+                            @endif
+                        </ul>
                     </div>
                     <div class="card-body">
-                        <form method="POST" id="storeconsulta">
-                            @csrf
-
-                            <div class="form-group row text-center">
-                                <div class="col-md-4">
-                                    <label for="motivo" class="col-md-12 col-form-label">{{ __('Motivo de la Consulta') }}:</label>
-                                    <button class="btn btn-success btn-sm" type="button" value="motivo" id="startrecmotivo">&nbsp;&nbsp;<i class="fa fa-microphone" aria-hidden="true"></i>&nbsp;&nbsp;</button>
-                                    <button class="btn btn-danger btn-sm hiddenli" type="button" id="stoprecmotivo">&nbsp;&nbsp;<i class="fa fa-microphone-slash" aria-hidden="true"></i>&nbsp;&nbsp;</button>
-                                    <p></p>
-                                    <div class="col-md-12">
-                                        <textarea name="motivo" id="motivo" cols="30" rows="4" 
-                                        class="form-control @error('motivo') is-invalid @enderror"
-                                        value="" autocomplete="motivo" maxlength="255"
-                                        onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
-                                        autofocus>{{ $consulta->motivoConsulta }}</textarea>
-
-                                        <span class="invalid-feedback error-msg" id="error-motivo" role="alert">
-                                            <strong>El campo Motivo de Consulta es Obligatorio</strong>
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label for="cuadro" class="col-md-12 col-form-label">{{ __('Cuadro Clínico') }}:</label>
-                                    <button class="btn btn-success btn-sm" type="button" value="motivo" id="startreccuadro">&nbsp;&nbsp;<i class="fa fa-microphone" aria-hidden="true"></i>&nbsp;&nbsp;</button>
-                                    <button class="btn btn-danger btn-sm hiddenli" type="button" id="stopreccuadro">&nbsp;&nbsp;<i class="fa fa-microphone-slash" aria-hidden="true"></i>&nbsp;&nbsp;</button>
-                                    <p></p>
-                                    <div class="col-md-12">
-                                        <textarea name="cuadro" id="cuadro" cols="30" rows="4" 
-                                        class="form-control @error('cuadro') is-invalid @enderror"
-                                        value="" autocomplete="cuadro" maxlength="255"
-                                        onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
-                                        autofocus>{{ $consulta->cuadroClinico }}</textarea>
-
-                                        <span class="invalid-feedback error-msg" id="error-cuadro" role="alert">
-                                            <strong>El campo Cuadro Clinico es Obligatorio</strong>
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label for="resultados" class="col-md-12 col-form-label">{{ __('Resultados de Laboratorio y Gabinete') }}:</label>
-                                    <button class="btn btn-success btn-sm" type="button" value="motivo" id="startrecres">&nbsp;&nbsp;<i class="fa fa-microphone" aria-hidden="true"></i>&nbsp;&nbsp;</button>
-                                    <button class="btn btn-danger btn-sm hiddenli" type="button" id="stoprecres">&nbsp;&nbsp;<i class="fa fa-microphone-slash" aria-hidden="true"></i>&nbsp;&nbsp;</button>
-                                    <p></p>
-                                    <div class="col-md-12 text-center">
-                                        <input type="file" name="filename[]" id="filename" class="form-control" multiple accept=".doc,.docx,.pdf,.png,.jpg">
-                                        <input type="hidden" id="jsonfiles" value="{{ $consulta->resultadosArchivos != null? $consulta->resultadosArchivos: "" }}">
-                                        @if ($consulta->resultadosArchivos != null)
-                                            <div class="border" id="filescontainer" style="margin-top: 10px">
-                                                @php
-                                                    $files = json_decode($consulta->resultadosArchivos);
-                                                @endphp
-                                                @for ($i = 0; $i < count($files); $i++)
-                                                    @switch($files[$i][1])
-                                                        @case('png')
-                                                            <a href="{{ route('resultfile', $files[$i][0]) }}" download>
-                                                                <img class="resultfile imglink" src="{{ URL::asset("/img/icons/png.png") }}"
-                                                                data-toggle="tooltip" data-placement="top" title="{{ $files[$i][0] }}">
-                                                            </a>
-                                                            @break
-                                                        @case('jpg')
-                                                            <a href="{{ route('resultfile', $files[$i][0]) }}" download>
-                                                                <img class="resultfile imglink" src="{{ URL::asset("/img/icons/jpg.png") }}"
-                                                                data-toggle="tooltip" data-placement="top" title="{{ $files[$i][0] }}">
-                                                            </a>
-                                                            @break
-                                                        @case('docx')
-                                                            <a href="{{ route('resultfile', $files[$i][0]) }}" download>
-                                                                <img class="resultfile imglink" src="{{ URL::asset("/img/icons/docx.png") }}"
-                                                                data-toggle="tooltip" data-placement="top" title="{{ $files[$i][0] }}">
-                                                            </a>
-                                                            @break
-                                                        @case('doc')
-                                                            <a href="{{ route('resultfile', $files[$i][0]) }}" download>
-                                                                <img class="resultfile imglink" src="{{ URL::asset("/img/icons/doc.png") }}"
-                                                                data-toggle="tooltip" data-placement="top" title="{{ $files[$i][0] }}">
-                                                            </a>
-                                                            @break
-                                                        @case('pdf')
-                                                            <a href="{{ route('resultfile', $files[$i][0]) }}" download>
-                                                                <img class="resultfile imglink" src="{{ URL::asset("/img/icons/pdf.png") }}"
-                                                                data-toggle="tooltip" data-placement="top" title="{{ $files[$i][0] }}">
-                                                            </a>
-                                                            @break
-                                                    @endswitch
-                                                @endfor
+                        <div class="tab-content" id="mySecTabContent">
+                            <div class="tab-pane fade show active" id="datosconsulta" role="tabpanel" aria-labelledby="datosconsulta-tab">
+                                <form method="POST" id="storeconsulta">
+                                    @csrf
+        
+                                    <div class="form-group row text-center">
+                                        <div class="col-md-4">
+                                            <label for="motivo" class="col-md-12 col-form-label">
+                                                {{ __('Motivo de la Consulta') }}
+                                                <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" 
+                                                title="El motivo de consulta siempre debe ser introducido"></i>:
+                                            </label>
+                                            <button class="btn btn-success btn-sm" type="button" value="motivo" id="startrecmotivo">&nbsp;&nbsp;<i class="fa fa-microphone" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                            <button class="btn btn-danger btn-sm hiddenli" type="button" id="stoprecmotivo">&nbsp;&nbsp;<i class="fa fa-microphone-slash" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                            <p></p>
+                                            <div class="col-md-12">
+                                                <textarea name="motivo" id="motivo" cols="30" rows="2" 
+                                                class="form-control @error('motivo') is-invalid @enderror"
+                                                value="" autocomplete="motivo" maxlength="255"
+                                                onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
+                                                autofocus>{{ $consulta->motivoConsulta }}</textarea>
+        
+                                                <span class="invalid-feedback error-msg" id="error-motivo" role="alert">
+                                                    <strong>El campo Motivo de Consulta es Obligatorio</strong>
+                                                </span>
                                             </div>
-                                        @else
-                                            <div class="border hiddenli" id="filescontainer" style="margin-top: 10px"></div>
-                                        @endif
-                                        <textarea name="resultados" id="resultados" cols="30" rows="4" style="margin-top: 10px" 
-                                        class="form-control @error('resultados') is-invalid @enderror"
-                                        value="" autocomplete="resultados" maxlength="255"
-                                        onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
-                                        autofocus>{{ $consulta->resultadosLaboratorioGabinete }}</textarea>
-
-                                        <span class="invalid-feedback error-msg" id="error-resultados" role="alert">
-                                            <strong>El campo Resultados de Laboratorio es Obligatorio</strong>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group row text-center">
-                                <div class="col-md-4">
-                                    <label for="diagnostico" class="col-md-12 col-form-label">{{ __('Diagnósticos o Problemas Clínicos') }}:</label>
-                                    <button class="btn btn-success btn-sm" type="button" value="motivo" id="startrecdiag">&nbsp;&nbsp;<i class="fa fa-microphone" aria-hidden="true"></i>&nbsp;&nbsp;</button>
-                                    <button class="btn btn-danger btn-sm hiddenli" type="button" id="stoprecdiag">&nbsp;&nbsp;<i class="fa fa-microphone-slash" aria-hidden="true"></i>&nbsp;&nbsp;</button>
-                                    <p></p>
-                                    <div class="col-md-12">
-                                        <!-- 
-                                        <input class="form-control selectize" id="select-diag" name="select-diag" value="{{ $consulta->diag_id != null? $consulta->diag_name : "" }}">
-                                        <input type="hidden" id="real-select-diag" name="real-select-diag" value="{{ $consulta->diag_id != null? $consulta->diag_id : "" }}">
-                                        <p></p>
-                                        -->
-                                        <textarea name="diagnostico" id="diagnostico" cols="30" rows="4" 
-                                        class="form-control @error('diagnostico') is-invalid @enderror"
-                                        value="" autocomplete="diagnostico" maxlength="255"
-                                        onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
-                                        autofocus>{{ $consulta->diagnosticoProblemasClinicos }}</textarea>
-
-                                        <span class="invalid-feedback error-msg" id="error-diagnostico" role="alert">
-                                            <strong>El campo Diagnósticos o problemas Clínicos es Obligatorio</strong>
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label for="pronostico" class="col-md-12 col-form-label">{{ __('Pronóstico') }}:</label>
-                                    <button class="btn btn-success btn-sm" type="button" value="motivo" id="startrecpron">&nbsp;&nbsp;<i class="fa fa-microphone" aria-hidden="true"></i>&nbsp;&nbsp;</button>
-                                    <button class="btn btn-danger btn-sm hiddenli" type="button" id="stoprecpron">&nbsp;&nbsp;<i class="fa fa-microphone-slash" aria-hidden="true"></i>&nbsp;&nbsp;</button>
-                                    <p></p>
-                                    <div class="col-md-12">
-                                        <textarea name="pronostico" id="pronostico" cols="30" rows="4" 
-                                        class="form-control @error('pronostico') is-invalid @enderror"
-                                        value="" autocomplete="pronostico" maxlength="255"
-                                        onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
-                                        autofocus>{{ $consulta->pronostico }}</textarea>
-
-                                        <span class="invalid-feedback error-msg" id="error-pronostico" role="alert">
-                                            <strong>El campo Pronóstico es Obligatorio</strong>
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label for="indicacion" class="col-md-12 col-form-label">{{ __('Indicación Terapéutica') }}:</label>
-                                    <button class="btn btn-success btn-sm" type="button" value="motivo" id="startrecindica">&nbsp;&nbsp;<i class="fa fa-microphone" aria-hidden="true"></i>&nbsp;&nbsp;</button>
-                                    <button class="btn btn-danger btn-sm hiddenli" type="button" id="stoprecindica">&nbsp;&nbsp;<i class="fa fa-microphone-slash" aria-hidden="true"></i>&nbsp;&nbsp;</button>
-                                    <p></p>
-                                    <div class="col-md-12">
-                                        <textarea name="indicacion" id="indicacion" cols="30" rows="4" 
-                                        class="form-control @error('indicacion') is-invalid @enderror"
-                                        value="" autocomplete="indicacion" maxlength="255"
-                                        onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
-                                        autofocus>{{ $consulta->indicacionTerapeutica }}</textarea>
-
-                                        <span class="invalid-feedback error-msg" id="error-indicacion" role="alert">
-                                            <strong>El campo Indicación Terapéutica es Obligatorio</strong>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <br>
-
-                            <div class="form-group row text-center">
-                                <div class="col-md-4"></div>
-                                <div class="col-md-4">
-                                    <div id="consultasubmit" class="form-group row mb-0 {{ session('consulta_id') !== null ? 'hiddenli' : '' }}">
-                                        <div class="col-md-12">
-                                            <a onclick="subformbutton()" class="btn btn-primary" role="button">
-                                                {{ __('Guardar Nota de Consulta') }}
-                                            </a>
+                                        </div>
+        
+                                        <div class="col-md-4">
+                                            <label for="cuadro" class="col-md-12 col-form-label">{{ __('Cuadro Clínico') }}:</label>
+                                            <button class="btn btn-success btn-sm" type="button" value="motivo" id="startreccuadro">&nbsp;&nbsp;<i class="fa fa-microphone" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                            <button class="btn btn-danger btn-sm hiddenli" type="button" id="stopreccuadro">&nbsp;&nbsp;<i class="fa fa-microphone-slash" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                            <p></p>
+                                            <div class="col-md-12">
+                                                <textarea name="cuadro" id="cuadro" cols="30" rows="2" 
+                                                class="form-control @error('cuadro') is-invalid @enderror"
+                                                value="" autocomplete="cuadro" maxlength="255"
+                                                onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
+                                                autofocus>{{ $consulta->cuadroClinico }}</textarea>
+        
+                                                <span class="invalid-feedback error-msg" id="error-cuadro" role="alert">
+                                                    <strong>El campo Cuadro Clinico es Obligatorio</strong>
+                                                </span>
+                                            </div>
+                                        </div>
+        
+                                        <div class="col-md-4">
+                                            <label for="resultados" class="col-md-12 col-form-label">{{ __('Resultados de Laboratorio y Gabinete') }}:</label>
+                                            <button class="btn btn-success btn-sm" type="button" value="motivo" id="startrecres">&nbsp;&nbsp;<i class="fa fa-microphone" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                            <button class="btn btn-danger btn-sm hiddenli" type="button" id="stoprecres">&nbsp;&nbsp;<i class="fa fa-microphone-slash" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                            <p></p>
+                                            <div class="col-md-12 text-center">
+                                                <input type="file" name="filename[]" id="filename" class="form-control" multiple accept=".doc,.docx,.pdf,.png,.jpg">
+                                                <input type="hidden" id="jsonfiles" value="{{ $consulta->resultadosArchivos != null? $consulta->resultadosArchivos: "" }}">
+                                                @if ($consulta->resultadosArchivos != null)
+                                                    <div class="border" id="filescontainer" style="margin-top: 10px; margin-bottom: 10px">
+                                                        @php
+                                                            $files = json_decode($consulta->resultadosArchivos);
+                                                        @endphp
+                                                        @for ($i = 0; $i < count($files); $i++)
+                                                            @switch($files[$i][1])
+                                                                @case('png')
+                                                                    <a href="{{ route('resultfile', $files[$i][0]) }}" download >
+                                                                        <img style="margin: 5px" class="resultfile imglink" src="{{ URL::asset("/consultaResultados"."/".$consulta->id."/".$files[$i][0]) }}"
+                                                                        data-toggle="tooltip" data-placement="top" title="{{ $files[$i][0] }}">
+                                                                    </a>
+                                                                    @break
+                                                                @case('jpg')
+                                                                    <a href="{{ route('resultfile', $files[$i][0]) }}" download>
+                                                                        <img style="margin: 5px" class="resultfile imglink" src="{{ URL::asset("/consultaResultados"."/".$consulta->id."/".$files[$i][0]) }}"
+                                                                        data-toggle="tooltip" data-placement="top" title="{{ $files[$i][0] }}">
+                                                                    </a>
+                                                                    @break
+                                                                @case('docx')
+                                                                    <a href="{{ route('resultfile', $files[$i][0]) }}" download>
+                                                                        <img style="margin: 5px" class="resultfile imglink" src="{{ URL::asset("/img/icons/docx.png") }}"
+                                                                        data-toggle="tooltip" data-placement="top" title="{{ $files[$i][0] }}">
+                                                                    </a>
+                                                                    @break
+                                                                @case('doc')
+                                                                    <a href="{{ route('resultfile', $files[$i][0]) }}" download>
+                                                                        <img style="margin: 5px" class="resultfile imglink" src="{{ URL::asset("/img/icons/doc.png") }}"
+                                                                        data-toggle="tooltip" data-placement="top" title="{{ $files[$i][0] }}">
+                                                                    </a>
+                                                                    @break
+                                                                @case('pdf')
+                                                                    <a href="{{ route('resultfile', $files[$i][0]) }}" download>
+                                                                        <img style="margin: 5px" class="resultfile imglink" src="{{ URL::asset("/img/icons/pdf.png") }}"
+                                                                        data-toggle="tooltip" data-placement="top" title="{{ $files[$i][0] }}">
+                                                                    </a>
+                                                                    @break
+                                                            @endswitch
+                                                        @endfor
+                                                    </div>
+                                                @else
+                                                    <div class="border hiddenli" id="filescontainer" style="margin-top: 10px; margin-bottom: 10px"></div>
+                                                @endif
+                                                <textarea name="resultados" id="resultados" cols="30" rows="2" style="margin-top: 10px" 
+                                                class="form-control @error('resultados') is-invalid @enderror"
+                                                value="" autocomplete="resultados" maxlength="255"
+                                                onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
+                                                autofocus>{{ $consulta->resultadosLaboratorioGabinete }}</textarea>
+        
+                                                <span class="invalid-feedback error-msg" id="error-resultados" role="alert">
+                                                    <strong>El campo Resultados de Laboratorio es Obligatorio</strong>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
         
-                                    <div id="consultaupdate" class="form-group row mb-0 {{ session('consulta_id') !== null ? '' : 'hiddenli' }}">
-                                        <div class="col-md-12">
-                                            <a onclick="updateformbutton()" class="btn btn-success" role="button">
-                                                {{ __('Actualizar Nota de Consulta') }}
+                                    <div class="form-group row text-center">
+                                        <div class="col-md-4">
+                                            <label for="diagnostico" class="col-md-12 col-form-label">{{ __('Diagnósticos o Problemas Clínicos') }}:</label>
+                                            <button class="btn btn-success btn-sm" type="button" value="motivo" id="startrecdiag">&nbsp;&nbsp;<i class="fa fa-microphone" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                            <button class="btn btn-danger btn-sm hiddenli" type="button" id="stoprecdiag">&nbsp;&nbsp;<i class="fa fa-microphone-slash" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                            <p></p>
+                                            <div class="col-md-12">
+                                                <div class="input-group">
+                                                    <input class="form-control selectize" id="select-diag" name="select-diag" value="{{ $consulta->diag_id != null? $consulta->diag_name : "" }}">
+                                                    <div class="input-group-append">
+                                                        <div class="loader hiddenli" id="loadanimation">
+                                                            <div class="inner one"></div>
+                                                            <div class="inner two"></div>
+                                                            <div class="inner three"></div>
+                                                        </div>  
+                                                    </div>
+                                                </div>
+                                                
+                                                <input type="hidden" id="real-select-diag" name="real-select-diag" value="{{ $consulta->diag_id != null? $consulta->diag_id : "" }}">
+                                                <p></p>
+        
+                                                <textarea name="diagnostico" id="diagnostico" cols="30" rows="2" 
+                                                class="form-control @error('diagnostico') is-invalid @enderror"
+                                                value="" autocomplete="diagnostico" maxlength="255"
+                                                onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
+                                                autofocus>{{ $consulta->diagnosticoProblemasClinicos }}</textarea>
+        
+                                                <span class="invalid-feedback error-msg" id="error-diagnostico" role="alert">
+                                                    <strong>El campo Diagnósticos o problemas Clínicos es Obligatorio</strong>
+                                                </span>
+                                            </div>
+                                        </div>
+        
+                                        <div class="col-md-4">
+                                            <label for="pronostico" class="col-md-12 col-form-label">{{ __('Pronóstico') }}:</label>
+                                            <button class="btn btn-success btn-sm" type="button" value="motivo" id="startrecpron">&nbsp;&nbsp;<i class="fa fa-microphone" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                            <button class="btn btn-danger btn-sm hiddenli" type="button" id="stoprecpron">&nbsp;&nbsp;<i class="fa fa-microphone-slash" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                            <p></p>
+                                            <div class="col-md-12">
+                                                <textarea name="pronostico" id="pronostico" cols="30" rows="2" 
+                                                class="form-control @error('pronostico') is-invalid @enderror"
+                                                value="" autocomplete="pronostico" maxlength="255"
+                                                onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
+                                                autofocus>{{ $consulta->pronostico }}</textarea>
+        
+                                                <span class="invalid-feedback error-msg" id="error-pronostico" role="alert">
+                                                    <strong>El campo Pronóstico es Obligatorio</strong>
+                                                </span>
+                                            </div>
+                                        </div>
+        
+                                        <div class="col-md-4">
+                                            <label for="indicacion" class="col-md-12 col-form-label">{{ __('Indicación Terapéutica') }}:</label>
+                                            <button class="btn btn-success btn-sm" type="button" value="motivo" id="startrecindica">&nbsp;&nbsp;<i class="fa fa-microphone" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                            <button class="btn btn-danger btn-sm hiddenli" type="button" id="stoprecindica">&nbsp;&nbsp;<i class="fa fa-microphone-slash" aria-hidden="true"></i>&nbsp;&nbsp;</button>
+                                            <p></p>
+                                            <div class="col-md-12">
+                                                <textarea name="indicacion" id="indicacion" cols="30" rows="2" 
+                                                class="form-control @error('indicacion') is-invalid @enderror"
+                                                value="" autocomplete="indicacion" maxlength="255"
+                                                onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
+                                                autofocus>{{ $consulta->indicacionTerapeutica }}</textarea>
+        
+                                                <span class="invalid-feedback error-msg" id="error-indicacion" role="alert">
+                                                    <strong>El campo Indicación Terapéutica es Obligatorio</strong>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @if ($paciente->sexo->numero == 2 && ($years >= 9 && $years <= 59))
+                                        <br>
+                                        <hr>
+                                        <br>
+                                        <label for="ispregnant" class="col-form-label">
+                                            <input type="checkbox" id="ispregnant" name="ispregnant" onclick="collapsPreg()" {{ $consulta->consultaembarazo != null? "checked disabled": ""}} >
+                                            Consulta por Embarazo
+                                        </label>
+
+                                        <div id="pregContainer" class="{{ $consulta->consultaembarazo != null? "": "hiddenli"}}">
+                                            <div class="card-body row">
+                                                <div class="form-group text-left col-md-6">
+                                                    <div>
+                                                        <label for="consultaembarazo" class="col-md-12 col-form-label"><strong>{{ __('¿Primera Consulta por embarazo?') }}</strong></label>
+                                                        <div class="form-check col-md-10 mx-right">
+                                                            <input type="radio" name="consultaembarazo" id="consultaembarazo1" value="0" {{ $consulta->consultaembarazo != null? ($consulta->consultaembarazo->relacionConsulta == 0? "checked":""): ""}} {{ $consulta->consultaembarazo != null? "": "disabled"}}>
+                                                            <label for="consultaembarazo1">Primera Vez</label>
+                                                            <br>
+                                                            <input type="radio" name="consultaembarazo" id="consultaembarazo2" value="1" {{ $consulta->consultaembarazo != null? ($consulta->consultaembarazo->relacionConsulta == 1? "checked":""): ""}} {{ $consulta->consultaembarazo != null? "": "disabled"}}>
+                                                            <label for="consultaembarazo2">Subsecuente</label>
+                                                            <span class="invalid-feedback error-msg" id="error-consultaembarazo" role="alert">
+                                                                <strong>El campo Consulta por Embarazo es Obligatorio</strong>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <label for="trimestreembarazo" class="col-md-12 col-form-label"><strong>{{ __('¿En qué Trimestre Gestacional se encuentra?') }}</strong></label>
+                                                        <div class="col-md-10 mx-right">
+                                                            <input type="radio" name="trimestreembarazo" id="trimestreembarazo1" value="0" {{ $consulta->consultaembarazo != null? ($consulta->consultaembarazo->trimestre == 0? "checked":""): ""}} {{ $consulta->consultaembarazo != null? "": "disabled"}}>
+                                                            <label for="trimestreembarazo1">Primer Trimestre</label>
+                                                            <br>
+                                                            <input type="radio" name="trimestreembarazo" id="trimestreembarazo2" value="1" {{ $consulta->consultaembarazo != null? ($consulta->consultaembarazo->trimestre == 1? "checked":""): ""}} {{ $consulta->consultaembarazo != null? "": "disabled"}}> 
+                                                            <label for="trimestreembarazo2">Segundo Trimestre</label>
+                                                            <br>
+                                                            <input type="radio" name="trimestreembarazo" id="trimestreembarazo3" value="2" {{ $consulta->consultaembarazo != null? ($consulta->consultaembarazo->trimestre == 2? "checked":""): ""}} {{ $consulta->consultaembarazo != null? "": "disabled"}}>
+                                                            <label for="trimestreembarazo3">Tercer Trimestre</label> 
+                                                            <span class="invalid-feedback error-msg" id="error-trimestreembarazo" role="alert">
+                                                                <strong>El campo Trimestre Gestacional es Obligatorio</strong>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <label for="riesgoembarazo" class="col-md-12 col-form-label"><strong>{{ __('¿Es de Alto Riesgo?') }}</strong></label>
+                                                        <div class="col-md-10 mx-right">
+                                                            <input type="radio" name="riesgoembarazo" id="riesgoembarazo1" value="0" {{ $consulta->consultaembarazo != null? ($consulta->consultaembarazo->altoRiesgo == 0? "checked":""): ""}} {{ $consulta->consultaembarazo != null? "": "disabled"}}>
+                                                            <label for="riesgoembarazo1">No</label>
+                                                            <br>
+                                                            <input type="radio" name="riesgoembarazo" id="riesgoembarazo2" value="1" {{ $consulta->consultaembarazo != null? ($consulta->consultaembarazo->altoRiesgo == 1? "checked":""): ""}} {{ $consulta->consultaembarazo != null? "": "disabled"}}>
+                                                            <label for="riesgoembarazo2">Si</label>   
+                                                            <span class="invalid-feedback error-msg" id="error-riesgoembarazo" role="alert">
+                                                                <strong>El campo Alto Riesgo es Obligatorio</strong>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <label for="diabetesembarazo" class="col-md-12 col-form-label"><strong>{{ __('¿Hay Complicación por Diabetes?') }}</strong></label>
+                                                        <div class="col-md-10 mx-right">
+                                                            <input type="radio" name="diabetesembarazo" id="diabetesembarazo1" value="0" {{ $consulta->consultaembarazo != null? ($consulta->consultaembarazo->diabetes == 0? "checked":""): ""}} {{ $consulta->consultaembarazo != null? "": "disabled"}}>
+                                                            <label for="diabetesembarazo1">No</label>
+                                                            <br>
+                                                            <input type="radio" name="diabetesembarazo" id="diabetesembarazo2" value="1" {{ $consulta->consultaembarazo != null? ($consulta->consultaembarazo->diabetes == 1? "checked":""): ""}} {{ $consulta->consultaembarazo != null? "": "disabled"}}>
+                                                            <label for="diabetesembarazo2">Si</label>             
+                                                            <span class="invalid-feedback error-msg" id="error-diabetesembarazo" role="alert">
+                                                                <strong>El campo Complicación por Diabetes es Obligatorio</strong>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <label for="infeccionembarazo" class="col-md-12 col-form-label"><strong>{{ __('¿Hay Complicación por Infeccion Urinaria?') }}</strong></label>
+                                                        <div class="col-md-10 mx-right">
+                                                            <input type="radio" name="infeccionembarazo" id="infeccionembarazo1" value="0" {{ $consulta->consultaembarazo != null? ($consulta->consultaembarazo->infeccionUrinaria == 0? "checked":""): ""}} {{ $consulta->consultaembarazo != null? "": "disabled"}}>
+                                                            <label for="infeccionembarazo1">No</label>
+                                                            <br>
+                                                            <input type="radio" name="infeccionembarazo" id="infeccionembarazo2" value="1" {{ $consulta->consultaembarazo != null? ($consulta->consultaembarazo->infeccionUrinaria == 1? "checked":""): ""}} {{ $consulta->consultaembarazo != null? "": "disabled"}}>
+                                                            <label for="infeccionembarazo2">Si</label>          
+                                                            <span class="invalid-feedback error-msg" id="error-infeccionembarazo" role="alert">
+                                                                <strong>El campo Complicación por Infeccion Urinaria es Obligatorio</strong>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+        
+                                                <div class="form-group text-left col-md-6">
+                                                    <div>
+                                                        <label for="preclampsiaembarazo" class="col-md-12 col-form-label"><strong>{{ __('¿Hay Complicacion por PreeclampsiaEclampsia?') }}</strong></label>
+                                                        <div class="col-md-10 mx-right">
+                                                            <input type="radio" name="preclampsiaembarazo" id="preclampsiaembarazo1" value="0"  {{ $consulta->consultaembarazo != null? ($consulta->consultaembarazo->preeclampsia == 0? "checked":""): ""}} {{ $consulta->consultaembarazo != null? "": "disabled"}}>
+                                                            <label for="preclampsiaembarazo1">No</label>
+                                                            <br>
+                                                            <input type="radio" name="preclampsiaembarazo" id="preclampsiaembarazo2" value="1"  {{ $consulta->consultaembarazo != null? ($consulta->consultaembarazo->preeclampsia == 1? "checked":""): ""}} {{ $consulta->consultaembarazo != null? "": "disabled"}}>
+                                                            <label for="preclampsiaembarazo2">Si</label>            
+                                                            <span class="invalid-feedback error-msg" id="error-preclampsiaembarazo" role="alert">
+                                                                <strong>El campo Complicacion por PreeclampsiaEclampsia es Obligatorio</strong>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <label for="hemorragiaembarazo" class="col-md-12 col-form-label"><strong>{{ __('¿Hay Complicación por Hemorragia?') }}</strong></label>
+                                                        <div class="col-md-10 mx-right">
+                                                            <input type="radio" name="hemorragiaembarazo" id="hemorragiaembarazo1" value="0" {{ $consulta->consultaembarazo != null? ($consulta->consultaembarazo->hemorragia == 0? "checked":""): ""}} {{ $consulta->consultaembarazo != null? "": "disabled"}}>
+                                                            <label for="hemorragiaembarazo1">No</label>
+                                                            <br>
+                                                            <input type="radio" name="hemorragiaembarazo" id="hemorragiaembarazo2" value="1" {{ $consulta->consultaembarazo != null? ($consulta->consultaembarazo->hemorragia == 1? "checked":""): ""}} {{ $consulta->consultaembarazo != null? "": "disabled"}}>
+                                                            <label for="hemorragiaembarazo2">Si</label>           
+                                                            <span class="invalid-feedback error-msg" id="error-hemorragiaembarazo" role="alert">
+                                                                <strong>El campo Complicación por Hemorragia es Obligatorio</strong>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <label for="sospechacovidembarazo" class="col-md-12 col-form-label"><strong>{{ __('¿Se Sospecha que la paciente tiene Covid-19?') }}</strong></label>
+                                                        <div class="col-md-10 mx-right">
+                                                            <input type="radio" name="sospechacovidembarazo" id="sospechacovidembarazo1" value="0" {{ $consulta->consultaembarazo != null? ($consulta->consultaembarazo->sospechaCovid == 0? "checked":""): ""}} {{ $consulta->consultaembarazo != null? "": "disabled"}}>
+                                                            <label for="sospechacovidembarazo1">No</label>
+                                                            <br>
+                                                            <input type="radio" name="sospechacovidembarazo" id="sospechacovidembarazo2" value="1" {{ $consulta->consultaembarazo != null? ($consulta->consultaembarazo->sospechaCovid == 1? "checked":""): ""}} {{ $consulta->consultaembarazo != null? "": "disabled"}}>
+                                                            <label for="sospechacovidembarazo2">Si</label>             
+                                                            <span class="invalid-feedback error-msg" id="error-infeccionembarazo" role="alert">
+                                                                <strong>El campo Sospecha Covid-19 es Obligatorio</strong>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <label for="confirmacioncovidembarazo" class="col-md-12 col-form-label"><strong>{{ __('¿Se Confirma Covid-19?') }}</strong></label>
+                                                        <div class="col-md-10 mx-right">
+                                                            <input type="radio" name="confirmacioncovidembarazo" id="confirmacioncovidembarazo1" value="0" {{ $consulta->consultaembarazo != null? ($consulta->consultaembarazo->confirmaCovid == 0? "checked":""): ""}} {{ $consulta->consultaembarazo != null? "": "disabled"}}>
+                                                            <label for="confirmacioncovidembarazo1">No</label>
+                                                            <br>
+                                                            <input type="radio" name="confirmacioncovidembarazo" id="confirmacioncovidembarazo2" value="1" {{ $consulta->consultaembarazo != null? ($consulta->consultaembarazo->confirmaCovid == 1? "checked":""): ""}} {{ $consulta->consultaembarazo != null? "": "disabled"}}>
+                                                            <label for="confirmacioncovidembarazo2">Si</label>          
+                                                            <span class="invalid-feedback error-msg" id="error-confirmacioncovidembarazo" role="alert">
+                                                                <strong>El campo Confirmacion Covid-19 es Obligatorio</strong>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                            </div>
+                                        </div>
+                                    @else
+                                        <input class="hiddenli" type="checkbox" id="ispregnant" name="ispregnant" disabled>
+                                    @endif
+                                    <hr>
+                                    <div class="form-group row text-center">
+                                        <div class="col-md-4"></div>
+                                        <div class="col-md-4">
+                                            <div id="consultasubmit" class="form-group row mb-0 {{ session('consulta_id') !== null ? 'hiddenli' : '' }}">
+                                                <div class="col-md-12">
+                                                    <a onclick="subformbutton()" class="btn btn-primary" role="button">
+                                                        {{ __('Guardar Nota de Consulta') }}
+                                                    </a>
+                                                </div>
+                                            </div>
+                
+                                            <div id="consultaupdate" class="form-group row mb-0 {{ session('consulta_id') !== null ? '' : 'hiddenli' }}">
+                                                <div class="col-md-12">
+                                                    <a onclick="updateformbutton()" class="btn btn-success" role="button">
+                                                        {{ __('Actualizar Nota de Consulta') }}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <br>
+                                    <!--
+                                    <div class="form-group row mb-0">
+                                        <div class="col-md-5 offset-md-5">
+                                            <a href="{{ route('sessionone') }}" class="btn btn-primary" role="button">
+                                                {{ __('set consulta') }}
                                             </a>
                                         </div>
                                     </div>
-                                </div>
+                                    
+                                    <div class="form-group row mb-0">
+                                        <div class="col-md-5 offset-md-5">
+                                            <a href="{{ route('sessionone') }}" class="btn btn-primary" role="button">
+                                                {{ __('set consulta') }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    <div class="form-group row mb-0">
+                                        <div class="col-md-5 offset-md-5">
+                                            <a onclick="testbutton()" class="btn btn-primary" role="button">
+                                                {{ __('Test alerta!') }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    
+                                    <br>
+                                    <div class="form-group row mb-0">
+                                        <div class="col-md-5 offset-md-5">
+                                            <a href="{{ route('testfunc') }}" class="btn btn-primary" role="button">
+                                                {{ __('show session Id') }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    
+                                    <div class="form-group row mb-0">
+                                        <div class="col-md-5 offset-md-5">
+                                            <a href="{{ route('deletesession') }}" class="btn btn-primary" role="button">
+                                                {{ __('Delete Session') }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    -->
+                                    <br>
+                                </form>
                             </div>
-                            
-                            <br>
-                            <!--
-                            <div class="form-group row mb-0">
-                                <div class="col-md-5 offset-md-5">
-                                    <a href="{{ route('sessionone') }}" class="btn btn-primary" role="button">
-                                        {{ __('set consulta') }}
-                                    </a>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group row mb-0">
-                                <div class="col-md-5 offset-md-5">
-                                    <a href="{{ route('sessionone') }}" class="btn btn-primary" role="button">
-                                        {{ __('set consulta') }}
-                                    </a>
-                                </div>
-                            </div>
-                            
-                            
-                            <div class="form-group row mb-0">
-                                <div class="col-md-5 offset-md-5">
-                                    <a onclick="testbutton()" class="btn btn-primary" role="button">
-                                        {{ __('Test alerta!') }}
-                                    </a>
-                                </div>
-                            </div>
-                            
-                            <br>
-                            <div class="form-group row mb-0">
-                                <div class="col-md-5 offset-md-5">
-                                    <a href="{{ route('testfunc') }}" class="btn btn-primary" role="button">
-                                        {{ __('show session Id') }}
-                                    </a>
-                                </div>
-                            </div>
-                            <br>
-                            
-                            <div class="form-group row mb-0">
-                                <div class="col-md-5 offset-md-5">
-                                    <a href="{{ route('deletesession') }}" class="btn btn-primary" role="button">
-                                        {{ __('Delete Session') }}
-                                    </a>
-                                </div>
-                            </div>
-                            -->
-                            <br>
-                        </form>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        
                     </div>
                 </div>
             </div>
@@ -506,7 +683,6 @@
                     </div>
                     <div class="card-body">
                         <div class="tab-content" id="mySecTabContent">
-
                             <div class="tab-pane fade show active" id="antehf" role="tabpanel" aria-labelledby="hf-tab">
                                 <form method="POST" id="storeantehf">
 
@@ -517,22 +693,20 @@
                                                 <div class="col-md-6">
                                                     <select class="browser-default custom-select form-control @error('grupo') is-invalid @enderror" 
                                                     autocomplete="off" id="grupo" name="grupo">
+
                                                         @if ($grupos->count() == 0)
-                                                            <option value="0" selected>--- No se encontraron Grupos Étnicos ---</option>
+                                                            <option selected>--- No se encontraron Grupos Étnicos ---</option>
+                                                        @elseif ($anteHF->grupo_id == null)
+                                                            <option selected>--- Selecciona una Opción ---</option>
+                                                            @foreach ($grupos as $grupo)
+                                                                <option value="{{ $grupo->id }}">{{ $grupo->lenguaIndigena }}</option>
+                                                            @endforeach
                                                         @else
-                                                            @if ($anteHF->grupo_id == 0)
-                                                                <option selected>--- Selecciona una Opción ---</option>
-                                                                @foreach ($grupos as $grupo)
-                                                                    <option value="{{ $grupo->id }}">{{ $grupo->lenguaIndigena }}</option>
-                                                                @endforeach
-                                                            @else
-                                                                <option>--- Selecciona una Opción ---</option>
-                                                                @foreach ($grupos as $grupo)
-                                                                    <option value="{{ $grupo->id }}" {{ $grupo->id == $anteHF->grupo_id? "selected": "" }}>{{ $grupo->lenguaIndigena }}</option>
-                                                                @endforeach
-                                                            @endif
+                                                            <option>--- Selecciona una Opción ---</option>
+                                                            @foreach ($grupos as $grupo)
+                                                                <option value="{{ $grupo->id }}" {{ $grupo->id == $anteHF->grupo_id? "selected": "" }}>{{ $grupo->lenguaIndigena }}</option>
+                                                            @endforeach
                                                         @endif
-                                                        
                                                     </select>
                                                     <span class="invalid-feedback error-msg" id="error-grupo" role="alert">
                                                         <strong>El campo Grupo Étnico es Obligatorio</strong>
@@ -761,7 +935,7 @@
                                             <label for="infectacontagiosa" class="col-md-12 col-form-label">{{ __('Enfermedad Infecta Contagiosa') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="infectacontagiosa" id="infectacontagiosa" cols="30" rows="3" 
+                                                <textarea name="infectacontagiosa" id="infectacontagiosa" cols="30" rows="2" 
                                                 class="form-control @error('infectacontagiosa') is-invalid @enderror"
                                                 value="" autocomplete="infectacontagiosa" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -773,7 +947,7 @@
                                             <label for="cronicodegenerativa" class="col-md-12 col-form-label">{{ __('Enfermedad Crónico Degenerativa') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="cronicodegenerativa" id="cronicodegenerativa" cols="30" rows="3" 
+                                                <textarea name="cronicodegenerativa" id="cronicodegenerativa" cols="30" rows="2" 
                                                 class="form-control @error('cronicodegenerativa') is-invalid @enderror"
                                                 value="" autocomplete="cronicodegenerativa" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -785,7 +959,7 @@
                                             <label for="traumatologicos" class="col-md-12 col-form-label">{{ __('Traumatológicos') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="traumatologicos" id="traumatologicos" cols="30" rows="3" 
+                                                <textarea name="traumatologicos" id="traumatologicos" cols="30" rows="2" 
                                                 class="form-control @error('traumatologicos') is-invalid @enderror"
                                                 value="" autocomplete="traumatologicos" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -800,7 +974,7 @@
                                             <label for="alergicos" class="col-md-12 col-form-label">{{ __('Alérgicos') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="alergicos" id="alergicos" cols="30" rows="3" 
+                                                <textarea name="alergicos" id="alergicos" cols="30" rows="2" 
                                                 class="form-control @error('alergicos') is-invalid @enderror"
                                                 value="" autocomplete="alergicos" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -812,7 +986,7 @@
                                             <label for="quirurgicos" class="col-md-12 col-form-label">{{ __('Quirúrgicos') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="quirurgicos" id="quirurgicos" cols="30" rows="3" 
+                                                <textarea name="quirurgicos" id="quirurgicos" cols="30" rows="2" 
                                                 class="form-control @error('quirurgicos') is-invalid @enderror"
                                                 value="" autocomplete="quirurgicos" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -824,7 +998,7 @@
                                             <label for="hospitalizaciones" class="col-md-12 col-form-label">{{ __('Hospitalizaciones Previas') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="hospitalizaciones" id="hospitalizaciones" cols="30" rows="3" 
+                                                <textarea name="hospitalizaciones" id="hospitalizaciones" cols="30" rows="2" 
                                                 class="form-control @error('hospitalizaciones') is-invalid @enderror"
                                                 value="" autocomplete="hospitalizaciones" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -839,7 +1013,7 @@
                                             <label for="transfusiones" class="col-md-12 col-form-label">{{ __('Transfusiones') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="transfusiones" id="transfusiones" cols="30" rows="3" 
+                                                <textarea name="transfusiones" id="transfusiones" cols="30" rows="2" 
                                                 class="form-control @error('transfusiones') is-invalid @enderror"
                                                 value="" autocomplete="transfusiones" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -870,7 +1044,7 @@
                                                 
                                                 
                                                 <!-- Aterior textarea
-                                                <textarea name="toxicomanias" id="toxicomanias" cols="30" rows="3" 
+                                                <textarea name="toxicomanias" id="toxicomanias" cols="30" rows="2" 
                                                 class="form-control @error('toxicomanias') is-invalid @enderror"
                                                 value="" autocomplete="toxicomanias" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -883,7 +1057,7 @@
                                             <label for="otrospp" class="col-md-12 col-form-label">{{ __('Otros') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="otrospp" id="otrospp" cols="30" rows="3" 
+                                                <textarea name="otrospp" id="otrospp" cols="30" rows="2" 
                                                 class="form-control @error('otrospp') is-invalid @enderror"
                                                 value="" autocomplete="otrospp" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -927,7 +1101,7 @@
                                             <label for="vivienda" class="col-md-12 col-form-label">{{ __('Vivienda') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="vivienda" id="vivienda" cols="30" rows="3" 
+                                                <textarea name="vivienda" id="vivienda" cols="30" rows="2" 
                                                 class="form-control @error('vivienda') is-invalid @enderror"
                                                 value="" autocomplete="vivienda" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -939,7 +1113,7 @@
                                             <label for="higiene" class="col-md-12 col-form-label">{{ __('Higiene') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="higiene" id="higiene" cols="30" rows="3" 
+                                                <textarea name="higiene" id="higiene" cols="30" rows="2" 
                                                 class="form-control @error('higiene') is-invalid @enderror"
                                                 value="" autocomplete="higiene" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -951,7 +1125,7 @@
                                             <label for="dieta" class="col-md-12 col-form-label">{{ __('Dieta') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="dieta" id="dieta" cols="30" rows="3" 
+                                                <textarea name="dieta" id="dieta" cols="30" rows="2" 
                                                 class="form-control @error('dieta') is-invalid @enderror"
                                                 value="" autocomplete="dieta" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -966,7 +1140,7 @@
                                             <label for="zoonosis" class="col-md-12 col-form-label">{{ __('Zoonosis') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="zoonosis" id="zoonosis" cols="30" rows="3" 
+                                                <textarea name="zoonosis" id="zoonosis" cols="30" rows="2" 
                                                 class="form-control @error('zoonosis') is-invalid @enderror"
                                                 value="" autocomplete="zoonosis" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -978,7 +1152,7 @@
                                             <label for="otrospnp" class="col-md-12 col-form-label">{{ __('Otros') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="otrospnp" id="otrospnp" cols="30" rows="3" 
+                                                <textarea name="otrospnp" id="otrospnp" cols="30" rows="2" 
                                                 class="form-control @error('otrospnp') is-invalid @enderror"
                                                 value="" autocomplete="otrospnp" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -1026,7 +1200,7 @@
                                             <label for="signos" class="col-md-12 col-form-label">{{ __('Signos y Sintomas') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="signos" id="signos" cols="30" rows="3" 
+                                                <textarea name="signos" id="signos" cols="30" rows="2" 
                                                 class="form-control @error('signos') is-invalid @enderror"
                                                 value="" autocomplete="signos" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -1038,7 +1212,7 @@
                                             <label for="cardiovascular" class="col-md-12 col-form-label">{{ __('Aparato Cardiovascular') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="cardiovascular" id="cardiovascular" cols="30" rows="3" 
+                                                <textarea name="cardiovascular" id="cardiovascular" cols="30" rows="2" 
                                                 class="form-control @error('cardiovascular') is-invalid @enderror"
                                                 value="" autocomplete="cardiovascular" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -1050,7 +1224,7 @@
                                             <label for="respiratorio" class="col-md-12 col-form-label">{{ __('Aparato Respiratorio') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="respiratorio" id="respiratorio" cols="30" rows="3" 
+                                                <textarea name="respiratorio" id="respiratorio" cols="30" rows="2" 
                                                 class="form-control @error('respiratorio') is-invalid @enderror"
                                                 value="" autocomplete="respiratorio" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -1065,7 +1239,7 @@
                                             <label for="digestivo" class="col-md-12 col-form-label">{{ __('Aparato Digestivo') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="digestivo" id="digestivo" cols="30" rows="3" 
+                                                <textarea name="digestivo" id="digestivo" cols="30" rows="2" 
                                                 class="form-control @error('digestivo') is-invalid @enderror"
                                                 value="" autocomplete="digestivo" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -1077,7 +1251,7 @@
                                             <label for="nefro" class="col-md-12 col-form-label">{{ __('Sistema Nefrourologico') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="nefro" id="nefro" cols="30" rows="3" 
+                                                <textarea name="nefro" id="nefro" cols="30" rows="2" 
                                                 class="form-control @error('nefro') is-invalid @enderror"
                                                 value="" autocomplete="nefro" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -1089,7 +1263,7 @@
                                             <label for="endocrino" class="col-md-12 col-form-label">{{ __('Sistema Endocrino y Metabolismo') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="endocrino" id="endocrino" cols="30" rows="3" 
+                                                <textarea name="endocrino" id="endocrino" cols="30" rows="2" 
                                                 class="form-control @error('endocrino') is-invalid @enderror"
                                                 value="" autocomplete="endocrino" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -1104,7 +1278,7 @@
                                             <label for="hematopoyetico" class="col-md-12 col-form-label">{{ __('Sistema Hematopoyético') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="hematopoyetico" id="hematopoyetico" cols="30" rows="3" 
+                                                <textarea name="hematopoyetico" id="hematopoyetico" cols="30" rows="2" 
                                                 class="form-control @error('hematopoyetico') is-invalid @enderror"
                                                 value="" autocomplete="hematopoyetico" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -1116,7 +1290,7 @@
                                             <label for="nervioso" class="col-md-12 col-form-label">{{ __('Sistema Nervioso') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="nervioso" id="nervioso" cols="30" rows="3" 
+                                                <textarea name="nervioso" id="nervioso" cols="30" rows="2" 
                                                 class="form-control @error('nervioso') is-invalid @enderror"
                                                 value="" autocomplete="nervioso" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -1128,7 +1302,7 @@
                                             <label for="musculo" class="col-md-12 col-form-label">{{ __('Sistema Musculo Esquelético') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="musculo" id="musculo" cols="30" rows="3" 
+                                                <textarea name="musculo" id="musculo" cols="30" rows="2" 
                                                 class="form-control @error('musculo') is-invalid @enderror"
                                                 value="" autocomplete="musculo" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -1143,7 +1317,7 @@
                                             <label for="piel" class="col-md-12 col-form-label">{{ __('Piel y Tegumentos') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="piel" id="piel" cols="30" rows="3" 
+                                                <textarea name="piel" id="piel" cols="30" rows="2" 
                                                 class="form-control @error('piel') is-invalid @enderror"
                                                 value="" autocomplete="piel" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -1155,7 +1329,7 @@
                                             <label for="sentidos" class="col-md-12 col-form-label">{{ __('Órganos de los Sentidos') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="sentidos" id="sentidos" cols="30" rows="3" 
+                                                <textarea name="sentidos" id="sentidos" cols="30" rows="2" 
                                                 class="form-control @error('sentidos') is-invalid @enderror"
                                                 value="" autocomplete="sentidos" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -1167,7 +1341,7 @@
                                             <label for="psiquica" class="col-md-12 col-form-label">{{ __('Esfera Psíquica') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="psiquica" id="psiquica" cols="30" rows="3" 
+                                                <textarea name="psiquica" id="psiquica" cols="30" rows="2" 
                                                 class="form-control @error('psiquica') is-invalid @enderror"
                                                 value="" autocomplete="psiquica" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -1237,7 +1411,7 @@
                                             <label for="habitus" class="col-md-12 col-form-label">{{ __('Habitus Exterior') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="habitus" id="habitus" cols="30" rows="3" 
+                                                <textarea name="habitus" id="habitus" cols="30" rows="2" 
                                                 class="form-control @error('habitus') is-invalid @enderror"
                                                 value="" autocomplete="habitus" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -1299,7 +1473,7 @@
                                             <label for="cabeza" class="col-md-12 col-form-label">{{ __('Cabeza') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="cabeza" id="cabeza" cols="30" rows="3" 
+                                                <textarea name="cabeza" id="cabeza" cols="30" rows="2" 
                                                 class="form-control @error('cabeza') is-invalid @enderror"
                                                 value="" autocomplete="cabeza" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -1315,7 +1489,7 @@
                                             <label for="cuello" class="col-md-12 col-form-label">{{ __('Cuello') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="cuello" id="cuello" cols="30" rows="3" 
+                                                <textarea name="cuello" id="cuello" cols="30" rows="2" 
                                                 class="form-control @error('cuello') is-invalid @enderror"
                                                 value="" autocomplete="cuello" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -1331,7 +1505,7 @@
                                             <label for="torax" class="col-md-12 col-form-label">{{ __('Tórax') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="torax" id="torax" cols="30" rows="3" 
+                                                <textarea name="torax" id="torax" cols="30" rows="2" 
                                                 class="form-control @error('torax') is-invalid @enderror"
                                                 value="" autocomplete="torax" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -1350,7 +1524,7 @@
                                             <label for="abdomen" class="col-md-12 col-form-label">{{ __('Abdomen') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="abdomen" id="abdomen" cols="30" rows="3" 
+                                                <textarea name="abdomen" id="abdomen" cols="30" rows="2" 
                                                 class="form-control @error('abdomen') is-invalid @enderror"
                                                 value="" autocomplete="abdomen" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -1366,7 +1540,7 @@
                                             <label for="miembros" class="col-md-12 col-form-label">{{ __('Miembros') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="miembros" id="miembros" cols="30" rows="3" 
+                                                <textarea name="miembros" id="miembros" cols="30" rows="2" 
                                                 class="form-control @error('miembros') is-invalid @enderror"
                                                 value="" autocomplete="miembros" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -1382,7 +1556,7 @@
                                             <label for="genitales" class="col-md-12 col-form-label">{{ __('Genitales') }}:</label>
             
                                             <div class="col-md-12">
-                                                <textarea name="genitales" id="genitales" cols="30" rows="3" 
+                                                <textarea name="genitales" id="genitales" cols="30" rows="2" 
                                                 class="form-control @error('genitales') is-invalid @enderror"
                                                 value="" autocomplete="genitales" maxlength="255"
                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" 
@@ -1540,7 +1714,7 @@
                                             <div class="col-md-12">
                                                 <div class="col-md-12 input-group">
                                                     <input id="saturacionoxigeno" type="text" class="form-control"
-                                                    name="saturacionoxigeno" value="{{ $signos->saturacionOxigeno }}" autocomplete="saturacionoxigeno" maxlength="3"
+                                                    name="saturacionoxigeno" value="{{ $signos->saturacionOxigeno }}" autocomplete="off" maxlength="3"
                                                     onkeypress="return /[0-9]/i.test(event.key)"
                                                     title="La Saturación de Oxígeno es una cantidad númerica." autofocus>
                                                     <div class="input-group-append">
@@ -1620,14 +1794,14 @@
                         Consulta del Expediente clínico Electrónico del paciente <strong>{{ $paciente->nombre }} {{ $paciente->primerApellido }} {{ $paciente->segundoApellido }}</strong>
                     </div>
                     <div class="card-body text-center">
-                        <label for="">Introduce el código del paciente</label>
-                        <br>
                         <div>
-                            <div class="col-md-3 mx-auto">
+                            <div class="col-md-3 mx-auto hiddenli" id="codeArea">
+                                <label for="patientcode">Introduce el código del paciente</label>
                                 <input class="form-control form-control-sm" type="text" id="patientcode" name="patientcode" value="">
                             </div>
+                            <input type="hidden" name="patientcurp" id="patientcurp" value="{{ $paciente->curp }}">
                             <br>
-                            <button class="btn btn-sm btn-success" type="button" onclick="patientece('{{ $paciente->curp }}')">Consultar ECE</button>
+                            <button class="btn btn-sm btn-success" type="button" id="consultBtn" onclick="patientconsult()">Solicitar Código</button>
                         </div>
                         <br><br>
                         <div id="ece-content">
@@ -1641,8 +1815,9 @@
     </div>
 </div>
 
-<script>
-    
+<script src="{{ asset('js/speechtotext.js')."?v=1.15" }}" defer></script> <!-- Script para manejar las transcripciones speech to text de google cloud -->
+
+<script>    
     jQuery(function ($) {
 
         $("#showfiles").click(function(){ 
@@ -1663,6 +1838,7 @@
             load: (query, callback) => {
                 if(!query.length) return callback();
                 let textvalue = $("#select-diag-selectized").val();
+                $("#loadanimation").removeClass("hiddenli");
                 $.ajax({
                     url: url + "/getdiags",
                     type: 'POST',
@@ -1673,8 +1849,14 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    error: () => callback(),
-                    success:(res) => callback(res)
+                    error: () => {
+                        $("#loadanimation").addClass("hiddenli");
+                        callback()
+                    },
+                    success:(res) => {
+                        $("#loadanimation").addClass("hiddenli");
+                        callback(res)
+                    }
                 });
             },
 

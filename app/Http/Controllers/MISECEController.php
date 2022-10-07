@@ -178,8 +178,10 @@ class MISECEController extends Controller
 
         $response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/expediente/'.$request->curp, $data);
 
-        if(str_contains($response->body(),"Error") ){
-            return response()->json(['errormsg' => 'Código invalido.'], 401);
+        if(str_contains($response->body(),"no se encontr\u00f3 el paciente") ){
+            return response()->json(['errormsg' => 'No se encontraron expedientes del paciente.'], 401);
+        }else if(str_contains($response->body(),"Error")){ //Cambiar por "codigo enviado" cuando se confirme 
+            return response()->json(['errormsg' => 'Un código de verificación ha sido enviado al paciente.'], 401);
         }else{
             return base64_encode($response->body());//$response->body();
         }
@@ -642,6 +644,11 @@ class MISECEController extends Controller
         }
         if($consult->resultadosLaboratorioGabinete != null){
             $obs = $this->GetObservation($this->composition, "final", "Resultados de Laboratorio y Gabinete", [$consult->resultadosLaboratorioGabinete], false);
+            $compSection->addEntry($obs);
+            $this->bundle->addEntry($obs);
+        }
+        if($consult->diag_id != null && $consult->diag_name != null){
+            $obs = $this->GetObservation($this->composition, "final", "Diagnostico Snomed", ["id: ".$consult->diag_id."-"."Diagnostico: ".$consult->diag_name], false);
             $compSection->addEntry($obs);
             $this->bundle->addEntry($obs);
         }

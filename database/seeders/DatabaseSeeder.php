@@ -11,16 +11,20 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
+
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
         
         $this->call(Estados::class);
         $this->call(Municipios::class);
         $this->call(AddSexos::class);
+        //$this->call(AddGeneros::class);
         $this->call(GrupoEtnicoSeed::class);
+        //$this->call(GrupoSanguineoseed::class);
         $this->call(UsersSeed::class);
+        //$this->call(Diagnostics::class); //Descontinuado
         
         $this->call(AddPatients::class);
+        
     }
 }

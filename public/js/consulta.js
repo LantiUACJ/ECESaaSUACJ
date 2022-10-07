@@ -1,5 +1,3 @@
-const { each, forEach } = require("lodash");
-
 var url = $('meta[name="base_url"]').attr('content');
 
 var urlasset = $('meta[name="asset_url"]').attr('content');
@@ -18,6 +16,62 @@ $('#price').on('input', function() {
 
 $('#price2').on('input', function() {
     this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+});
+
+$('#filename').on('change', function(){
+    if($('#jsonfiles').val() == ""){
+        $('#filescontainer').empty();
+    }
+
+    let files = $('#filename').get(0).files;
+
+    if($('#filescontainer').hasClass('hiddenli')){
+        $('#filescontainer').removeClass('hiddenli');
+    }
+
+    for (let i = 0; i < files.length; i++) {
+        var filename = files[i].name;
+        var extension = filename.replace(/^.*\./, '');
+        var link = "";
+        switch(extension){
+            case 'png':
+                var link = '<a href="" download>'+
+                    '<img style="margin: 5px" class="resultfile imglink" src="'+URL.createObjectURL(files[i])+'"'+
+                    'data-toggle="tooltip" data-placement="top" title="'+filename+'">'+
+                '</a>';
+                break;
+            case 'jpg':
+                var link = '<a href="" download>'+
+                    '<img style="margin: 5px" class="resultfile imglink" src="'+URL.createObjectURL(files[i])+'"'+
+                    'data-toggle="tooltip" data-placement="top" title="'+filename+'">'+
+                '</a>';
+                break;
+            case 'docx':
+                var link = '<a href="" download>'+
+                    '<img style="margin: 5px" class="resultfile imglink" src="'+url + '/img/icons/docx.png'+'"'+
+                    'data-toggle="tooltip" data-placement="top" title="'+filename+'">'+
+                '</a>';
+                break;
+            case 'doc':
+                var link = '<a href="" download>'+
+                    '<img style="margin: 5px" class="resultfile imglink" src="'+url + '/img/icons/doc.png'+'"'+
+                    'data-toggle="tooltip" data-placement="top" title="'+filename+'">'+
+                '</a>';
+                break;
+            case 'pdf':
+                var link = '<a href="" download>'+
+                    '<img style="margin: 5px" class="resultfile imglink" src="'+url + '/img/icons/pdf.png'+'"'+
+                    'data-toggle="tooltip" data-placement="top" title="'+filename+'">'+
+                '</a>';
+                break;
+        }
+        $('#filescontainer').append(link);
+
+        $('[data-toggle="tooltip"]').tooltip({
+            trigger : 'hover',
+            boundary: 'viewport'
+        });
+    }
 });
 
 function fillFilesConsulta(){
@@ -103,7 +157,7 @@ function fillFilesConsulta(){
 
 function subformbutton(){ //store consulta
     let pacId = $("input[name=pac_id]").val();
-    let motivo = $("textarea[name=motivo]").val();
+    var motivo = $("textarea[name=motivo]").val();
     let cuadro = $("textarea[name=cuadro]").val();
     let resultados = $("textarea[name=resultados]").val();
     let diagnostico = $("textarea[name=diagnostico]").val();
@@ -111,11 +165,8 @@ function subformbutton(){ //store consulta
     let indicacion = $("textarea[name=indicacion]").val();
     let select = $("input[name=select-diag]").val();
     let filename = $('#filename').get(0).files;
-
-    console.log(select);
-
+    
     var fd = new FormData();
-    fd.append('motivo', motivo);
     fd.append('cuadro', cuadro);
     fd.append('resultados', resultados);
     fd.append('diagnostico', diagnostico);
@@ -127,43 +178,129 @@ function subformbutton(){ //store consulta
         fd.append('filename[]', filename[i]);
     }
 
-    $.ajax({
-        url: url + "/storeconsulta/" + pacId,
-        type: "POST",
-        processData: false,
-        contentType: false,
-        data: fd,
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function(response){
-            console.log(response);
-            if(response){
-                $('#consultamsg').text(response.msg);
-                $("#consultamodal").modal('show');
+    if(document.getElementById('ispregnant').checked){
+        clearRadios();
+        if(checkRadios()){ //Funcion que revisa que los radios hayan sido seleccionados 
+            if(motivo == ""){
+                motivo = "Consulta por Embarazo.";
+                $("textarea[name=motivo]").val(motivo)
+            }
 
-                $('#interrogatorio-tab').removeClass("disabled");
-                $('#exploracion-tab').removeClass("disabled");
-            }
-            clearErrorsConsulta();
-            $('#consultasubmit').css("display", "none");
-            $('#consultaupdate').css("display", "block"); 
-        },
-        error: function(response){
-            console.log(response);
-            if(response.responseJSON.errormsg == null){
-                console.log(response);
-                if(response.responseJSON.errors != null){
-                    //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
-                    errorValidationConsulta(response);
+            var embarazo = $("input[name=consultaembarazo]:checked").val();
+            var trimestre = $("input[name=trimestreembarazo]:checked").val();
+            var altoriesgo = $("input[name=riesgoembarazo]:checked").val();
+            var diabetes = $("input[name=diabetesembarazo]:checked").val();
+            var infeccion = $("input[name=infeccionembarazo]:checked").val();
+            var preeclampsia = $("input[name=preclampsiaembarazo]:checked").val();
+            var hemorragia = $("input[name=hemorragiaembarazo]:checked").val();
+            var sospechacovid = $("input[name=sospechacovidembarazo]:checked").val();
+            var confirmacovid = $("input[name=confirmacioncovidembarazo]:checked").val();
+    
+            fd.append('motivo', motivo);
+            fd.append('embarazo', embarazo);
+            fd.append('trimestre', trimestre);
+            fd.append('altoriesgo', altoriesgo);
+            fd.append('diabetes', diabetes);
+            fd.append('infeccion', infeccion);
+            fd.append('preeclampsia', preeclampsia);
+            fd.append('hemorragia', hemorragia);
+            fd.append('sospechacovid', sospechacovid);
+            fd.append('confirmacovid', confirmacovid);
+
+            $('#spinningmodal').modal('show');
+
+            $.ajax({
+                url: url + "/storepregnantconsulta/" + pacId,
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: fd,
+                complete: function () {
+                    $('#spinningmodal').modal('hide');
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response){
+                    console.log(response);
+                    if(response){
+                        $('#consultamsg').text(response.msg);
+                        $("#consultamodal").modal('show');
+        
+                        $('#interrogatorio-tab').removeClass("disabled");
+                        $('#exploracion-tab').removeClass("disabled");
+                    }
+                    clearErrorsConsulta();
+                    $('#consultasubmit').css("display", "none");
+                    $('#consultaupdate').css("display", "block");
+                    
+                    $('#embarazosubmit').css("display", "none");
+                    $('#embarazoupdate').css("display", "block");
+                },
+                error: function(response){
+                    console.log(response);
+                    if(response.responseJSON.errormsg == null){
+                        console.log(response);
+                        if(response.responseJSON.errors != null){
+                            //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
+                            errorValidationConsulta(response);
+                        }
+                    }else{
+                        $('#errormsg').text(response.msg);
+                        $("#errormodal").modal('show');
+                    }
+                    
+                },
+            });
+        }else{
+            alert("Campos faltantes de la seccion de consulta por embarazo.");
+        }
+        
+    }else{
+        fd.append('motivo', motivo);
+        $('#spinningmodal').modal('show');
+        $.ajax({
+            url: url + "/storeconsulta/" + pacId,
+            type: "POST",
+            processData: false,
+            contentType: false,
+            data: fd,
+            complete: function () {
+                $('#spinningmodal').modal('hide');
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response){
+                if(response){
+                    $('#consultamsg').text(response.msg);
+                    $("#consultamodal").modal('show');
+    
+                    $('#interrogatorio-tab').removeClass("disabled");
+                    $('#exploracion-tab').removeClass("disabled");
                 }
-            }else{
-                $('#errormsg').text(response.msg);
-                $("#errormodal").modal('show');
-            }
-            
-        },
-    });
+                clearErrorsConsulta();
+                $('#consultasubmit').css("display", "none");
+                $('#consultaupdate').css("display", "block"); 
+            },
+            error: function(response){
+                if(response.responseJSON.errormsg == null){
+                    if(response.responseJSON.errors != null){
+                        //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
+                        errorValidationConsulta(response);
+                    }
+                }else{
+                    $('#errormsg').text(response.msg);
+                    $("#errormodal").modal('show');
+                }
+                
+            },
+        });
+    }
+}
+
+function Testspiningmodal(){
+    $('#spinningmodal').modal('show');
 }
 
 function updateformbutton(){ //update consulta
@@ -176,8 +313,6 @@ function updateformbutton(){ //update consulta
     }else{
         var select = $("input[name=real-select-diag]").val();
     }
-
-    console.log(select);
     
     let pacId = $("input[name=pac_id]").val();
     let motivo = $("textarea[name=motivo]").val();
@@ -204,8 +339,255 @@ function updateformbutton(){ //update consulta
         fd.append('filename[]', filename[i]);
     }
 
+    if(document.getElementById('ispregnant').checked){
+        clearRadios();
+        if(checkRadios()){ //Funcion que revisa que los radios hayan sido seleccionados
+            var embarazo = $("input[name=consultaembarazo]:checked").val();
+            var trimestre = $("input[name=trimestreembarazo]:checked").val();
+            var altoriesgo = $("input[name=riesgoembarazo]:checked").val();
+            var diabetes = $("input[name=diabetesembarazo]:checked").val();
+            var infeccion = $("input[name=infeccionembarazo]:checked").val();
+            var preeclampsia = $("input[name=preclampsiaembarazo]:checked").val();
+            var hemorragia = $("input[name=hemorragiaembarazo]:checked").val();
+            var sospechacovid = $("input[name=sospechacovidembarazo]:checked").val();
+            var confirmacovid = $("input[name=confirmacioncovidembarazo]:checked").val();
+    
+            fd.append('embarazo', embarazo);
+            fd.append('trimestre', trimestre);
+            fd.append('altoriesgo', altoriesgo);
+            fd.append('diabetes', diabetes);
+            fd.append('infeccion', infeccion);
+            fd.append('preeclampsia', preeclampsia);
+            fd.append('hemorragia', hemorragia);
+            fd.append('sospechacovid', sospechacovid);
+            fd.append('confirmacovid', confirmacovid);
+
+            $('#spinningmodal').modal('show');
+
+            $.ajax({
+                url: url + "/updatepregnantconsulta/" + pacId,
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: fd,
+                complete: function () {
+                    $('#spinningmodal').modal('hide');
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response){
+                    console.log(response);
+                    if(response){
+                        $('#updateconsultamsg').text(response.msg);
+                        $("#updateconsultamodal").modal('show');
+                    }
+                },
+                error: function(response){
+                    console.log(response);
+                    if(response.responseJSON.errormsg == null){
+                        console.log(response);
+                        if(response.responseJSON.errors != null){
+                            //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
+                            errorValidationConsulta(response);
+                        }
+                    }else{
+                        $('#errormsg').text(response.msg);
+                        $("#errormodal").modal('show');
+                    }
+                    
+                },
+            });
+        }else
+            alert("Campos faltantes de la seccion de consulta por embarazo.");
+    }else{
+        $('#spinningmodal').modal('show');
+        $.ajax({
+            url: url + "/updateconsulta/" + pacId,
+            type: "POST",
+            processData: false,
+            contentType: false,
+            data: fd,
+            complete: function () {
+                $('#spinningmodal').modal('hide');
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response){
+                $('#spinningmodal').modal('hide');
+                if(response){
+                    $('#updateconsultamsg').text(response.msg);
+                    $("#updateconsultamodal").modal('show');
+                }
+                clearErrorsConsulta(); //limpia los mensaje de error en caso de que los haya
+            },
+            error: function(response){
+                $('#spinningmodal').modal('hide');
+                console.log(response.responseJSON.errormsg);
+                if(response.responseJSON.errormsg == null){
+                    if(response){
+                        //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
+                        errorValidationConsulta(response); //Muestra los mensajes de error correspondiente por campo
+                    }
+                }else{
+                    $('#errormsg').text(response.msg);
+                    $("#errormodal").modal('show');
+                }
+                
+            },
+        });
+    }
+}
+
+//Function that checks that radio buttons are selected when pregnant consultation is checkbox
+function checkRadios(){
+    let noerror = true;
+    if(typeof $("input[name=consultaembarazo]:checked").val() == 'undefined'){
+        $('#error-consultaembarazo').css("display", 'block');
+        $("label[for=consultaembarazo1]").addClass('invalid-label');
+        $("label[for=consultaembarazo2]").addClass('invalid-label');
+        noerror = false;
+    }
+    if(typeof $("input[name=trimestreembarazo]:checked").val() == 'undefined'){
+        $('#error-trimestreembarazo').css("display", 'block');
+        $("label[for=trimestreembarazo1]").addClass('invalid-label');
+        $("label[for=trimestreembarazo2]").addClass('invalid-label');
+        $("label[for=trimestreembarazo3]").addClass('invalid-label');
+        noerror = false;
+    }
+    if(typeof $("input[name=riesgoembarazo]:checked").val() == 'undefined'){
+        $('#error-riesgoembarazo').css("display", 'block');
+        $("label[for=riesgoembarazo1]").addClass('invalid-label');
+        $("label[for=riesgoembarazo2]").addClass('invalid-label');
+        noerror = false;
+    }
+    if(typeof $("input[name=diabetesembarazo]:checked").val() == 'undefined'){
+        $('#error-diabetesembarazo').css("display", 'block');
+        $("label[for=diabetesembarazo1]").addClass('invalid-label');
+        $("label[for=diabetesembarazo2]").addClass('invalid-label');
+        noerror = false;
+    }
+    if(typeof $("input[name=infeccionembarazo]:checked").val() == 'undefined'){
+        $('#error-infeccionembarazo').css("display", 'block');
+        $("label[for=infeccionembarazo1]").addClass('invalid-label');
+        $("label[for=infeccionembarazo2]").addClass('invalid-label');
+        noerror = false;
+    }
+    if(typeof $("input[name=preclampsiaembarazo]:checked").val() == 'undefined'){
+        $('#error-preclampsiaembarazo').css("display", 'block');
+        $("label[for=preclampsiaembarazo1]").addClass('invalid-label');
+        $("label[for=preclampsiaembarazo2]").addClass('invalid-label');
+        noerror = false;
+    }
+    if(typeof $("input[name=hemorragiaembarazo]:checked").val() == 'undefined'){
+        $('#error-hemorragiaembarazo').css("display", 'block');
+        $("label[for=hemorragiaembarazo1]").addClass('invalid-label');
+        $("label[for=hemorragiaembarazo2]").addClass('invalid-label');
+        noerror = false;
+    }
+    if(typeof $("input[name=sospechacovidembarazo]:checked").val() == 'undefined'){
+        $('#error-sospechacovidembarazo').css("display", 'block');
+        $("label[for=sospechacovidembarazo1]").addClass('invalid-label');
+        $("label[for=sospechacovidembarazo2]").addClass('invalid-label');
+        noerror = false;
+    }
+    if(typeof $("input[name=confirmacioncovidembarazo]:checked").val() == 'undefined'){
+        $('#error-confirmacioncovidembarazo').css("display", 'block');
+        $("label[for=confirmacioncovidembarazo1]").addClass('invalid-label');
+        $("label[for=confirmacioncovidembarazo2]").addClass('invalid-label');
+        noerror = false;
+    }
+    return noerror;
+
+}
+
+//Function that clear radio buttons on pregnant segment
+function clearRadios(){
+    if($("label[for=consultaembarazo1]").hasClass('invalid-label')){
+        $('#error-consultaembarazo').css("display", 'none');
+        $("label[for=consultaembarazo1]").removeClass('invalid-label');
+        $("label[for=consultaembarazo2]").removeClass('invalid-label');
+    }
+    if($("label[for=trimestreembarazo1]").hasClass('invalid-label')){
+        $('#error-trimestreembarazo').css("display", 'none');
+        $("label[for=trimestreembarazo1]").removeClass('invalid-label');
+        $("label[for=trimestreembarazo2]").removeClass('invalid-label');
+        $("label[for=trimestreembarazo3]").removeClass('invalid-label');
+    }
+    if($("label[for=riesgoembarazo1]").hasClass('invalid-label')){
+        $('#error-riesgoembarazo').css("display", 'none');
+        $("label[for=riesgoembarazo1]").removeClass('invalid-label');
+        $("label[for=riesgoembarazo2]").removeClass('invalid-label');
+    }
+    if($("label[for=diabetesembarazo1]").hasClass('invalid-label')){
+        $('#error-diabetesembarazo').css("display", 'none');
+        $("label[for=diabetesembarazo1]").removeClass('invalid-label');
+        $("label[for=diabetesembarazo2]").removeClass('invalid-label');
+    }
+    if($("label[for=infeccionembarazo1]").hasClass('invalid-label')){
+        $('#error-infeccionembarazo').css("display", 'none');
+        $("label[for=infeccionembarazo1]").removeClass('invalid-label');
+        $("label[for=infeccionembarazo2]").removeClass('invalid-label');
+    }
+    if($("label[for=preclampsiaembarazo1]").hasClass('invalid-label')){
+        $('#error-preclampsiaembarazo').css("display", 'none');
+        $("label[for=preclampsiaembarazo1]").removeClass('invalid-label');
+        $("label[for=preclampsiaembarazo2]").removeClass('invalid-label');
+    }
+    if($("label[for=hemorragiaembarazo1]").hasClass('invalid-label')){
+        $('#error-hemorragiaembarazo').css("display", 'none');
+        $("label[for=hemorragiaembarazo1]").removeClass('invalid-label');
+        $("label[for=hemorragiaembarazo2]").removeClass('invalid-label');
+    }
+    if($("label[for=sospechacovidembarazo1]").hasClass('invalid-label')){
+        $('#error-sospechacovidembarazo').css("display", 'none');
+        $("label[for=sospechacovidembarazo1]").removeClass('invalid-label');
+        $("label[for=sospechacovidembarazo2]").removeClass('invalid-label');
+    }
+    if($("label[for=confirmacioncovidembarazo1]").hasClass('invalid-label')){
+        $('#error-confirmacioncovidembarazo').css("display", 'none');
+        $("label[for=confirmacioncovidembarazo1]").removeClass('invalid-label');
+        $("label[for=confirmacioncovidembarazo2]").removeClass('invalid-label');
+    }
+
+}
+
+function subembarazobutton(){ //store consulta
+    let pacId = $("input[name=pac_id]").val();
+
+    if($("textarea[name=motivo]").val() == ""){
+        var motivo = "Consulta por Embarazo.";
+        $("textarea[name=motivo]").val(motivo)
+    }else{
+        var motivo = $("textarea[name=motivo]").val();
+    }
+
+    let embarazo = $("select[name=consultaembarazo]").val();
+    let trimestre = $("select[name=trimestreembarazo]").val();
+    let altoriesgo = $("select[name=riesgoembarazo]").val();
+    let diabetes = $("select[name=diabetesembarazo]").val();
+    let infeccion = $("select[name=infeccionembarazo]").val();
+    let preeclampsia = $("select[name=preclampsiaembarazo]").val();
+    let hemorragia = $("select[name=hemorragiaembarazo]").val();
+    let sospechacovid = $("select[name=sospechacovidembarazo]").val();
+    let confirmacovid = $("select[name=confirmacioncovidembarazo]").val();
+
+    
+    var fd = new FormData();
+    fd.append('motivo', motivo);
+    fd.append('embarazo', embarazo);
+    fd.append('trimestre', trimestre);
+    fd.append('altoriesgo', altoriesgo);
+    fd.append('diabetes', diabetes);
+    fd.append('infeccion', infeccion);
+    fd.append('preeclampsia', preeclampsia);
+    fd.append('hemorragia', hemorragia);
+    fd.append('sospechacovid', sospechacovid);
+    fd.append('confirmacovid', confirmacovid);
+
     $.ajax({
-        url: url + "/updateconsulta/" + pacId,
+        url: url + "/storepregnantconsulta/" + pacId,
         type: "POST",
         processData: false,
         contentType: false,
@@ -214,18 +596,84 @@ function updateformbutton(){ //update consulta
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response){
+            console.log(response);
+            if(response){
+                $('#consultamsg').text(response.msg);
+                $("#consultamodal").modal('show');
+
+                $('#interrogatorio-tab').removeClass("disabled");
+                $('#exploracion-tab').removeClass("disabled");
+            }
+            $('#consultasubmit').css("display", "none");
+            $('#consultaupdate').css("display", "block");
+            
+            $('#embarazosubmit').css("display", "none");
+            $('#embarazoupdate').css("display", "block");
+        },
+        error: function(response){
+            console.log(response);
+            if(response.responseJSON.errormsg == null){
+                console.log(response);
+                if(response.responseJSON.errors != null){
+                    //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
+                    errorValidationConsulta(response);
+                }
+            }else{
+                $('#errormsg').text(response.msg);
+                $("#errormodal").modal('show');
+            }
+            
+        },
+    });
+}
+
+function updateembarazobutton(){ //update consulta
+    let pacId = $("input[name=pac_id]").val();
+
+    let embarazo = $("select[name=consultaembarazo]").val();
+    let trimestre = $("select[name=trimestreembarazo]").val();
+    let altoriesgo = $("select[name=riesgoembarazo]").val();
+    let diabetes = $("select[name=diabetesembarazo]").val();
+    let infeccion = $("select[name=infeccionembarazo]").val();
+    let preeclampsia = $("select[name=preclampsiaembarazo]").val();
+    let hemorragia = $("select[name=hemorragiaembarazo]").val();
+    let sospechacovid = $("select[name=sospechacovidembarazo]").val();
+    let confirmacovid = $("select[name=confirmacioncovidembarazo]").val();
+
+    var fd = new FormData();
+    fd.append('embarazo', embarazo);
+    fd.append('trimestre', trimestre);
+    fd.append('altoriesgo', altoriesgo);
+    fd.append('diabetes', diabetes);
+    fd.append('infeccion', infeccion);
+    fd.append('preeclampsia', preeclampsia);
+    fd.append('hemorragia', hemorragia);
+    fd.append('sospechacovid', sospechacovid);
+    fd.append('confirmacovid', confirmacovid);
+
+    $.ajax({
+        url: url + "/updatepregnantconsulta/" + pacId,
+        type: "POST",
+        processData: false,
+        contentType: false,
+        data: fd,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response){
+            console.log(response);
             if(response){
                 $('#updateconsultamsg').text(response.msg);
                 $("#updateconsultamodal").modal('show');
             }
-            clearErrorsConsulta(); //limpia los mensaje de error en caso de que los haya
         },
         error: function(response){
-            console.log(response.responseJSON.errormsg);
+            console.log(response);
             if(response.responseJSON.errormsg == null){
-                if(response){
+                console.log(response);
+                if(response.responseJSON.errors != null){
                     //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
-                    errorValidationConsulta(response); //Muestra los mensajes de error correspondiente por campo
+                    errorValidationConsulta(response);
                 }
             }else{
                 $('#errormsg').text(response.msg);
@@ -251,6 +699,73 @@ function testbutton(){
     $('#exploracion-tab').removeClass("disabled");
 }
 
+function collapsPreg(){
+    var pregbox = document.getElementById('ispregnant');
+    var pregContainer = document.getElementById('pregContainer');
+
+    if(pregbox.checked){
+        pregContainer.classList.contains('hiddenli') ? pregContainer.classList.remove('hiddenli'): "";
+
+        document.getElementById('consultaembarazo1').disabled = false;
+        document.getElementById('consultaembarazo2').disabled = false;
+
+        document.getElementById('trimestreembarazo1').disabled = false;
+        document.getElementById('trimestreembarazo2').disabled = false;
+        document.getElementById('trimestreembarazo3').disabled = false;
+
+        document.getElementById('riesgoembarazo1').disabled = false;
+        document.getElementById('riesgoembarazo2').disabled = false;
+
+        document.getElementById('diabetesembarazo1').disabled = false;
+        document.getElementById('diabetesembarazo2').disabled = false;
+
+        document.getElementById('infeccionembarazo1').disabled = false;
+        document.getElementById('infeccionembarazo2').disabled = false;
+
+        document.getElementById('preclampsiaembarazo1').disabled = false;
+        document.getElementById('preclampsiaembarazo2').disabled = false;
+
+        document.getElementById('hemorragiaembarazo1').disabled = false;
+        document.getElementById('hemorragiaembarazo2').disabled = false;
+
+        document.getElementById('sospechacovidembarazo1').disabled = false;
+        document.getElementById('sospechacovidembarazo2').disabled = false;
+
+        document.getElementById('confirmacioncovidembarazo1').disabled = false;
+        document.getElementById('confirmacioncovidembarazo2').disabled = false;
+
+    }else{
+        pregContainer.classList.contains('hiddenli') ? "": pregContainer.classList.add('hiddenli');
+
+        document.getElementById('consultaembarazo1').disabled = true;
+        document.getElementById('consultaembarazo2').disabled = true;
+
+        document.getElementById('trimestreembarazo1').disabled = true;
+        document.getElementById('trimestreembarazo2').disabled = true;
+        document.getElementById('trimestreembarazo3').disabled = true;
+
+        document.getElementById('riesgoembarazo1').disabled = true;
+        document.getElementById('riesgoembarazo2').disabled = true;
+
+        document.getElementById('diabetesembarazo1').disabled = true;
+        document.getElementById('diabetesembarazo2').disabled = true;
+
+        document.getElementById('infeccionembarazo1').disabled = true;
+        document.getElementById('infeccionembarazo2').disabled = true;
+
+        document.getElementById('preclampsiaembarazo1').disabled = true;
+        document.getElementById('preclampsiaembarazo2').disabled = true;
+
+        document.getElementById('hemorragiaembarazo1').disabled = true;
+        document.getElementById('hemorragiaembarazo2').disabled = true;
+
+        document.getElementById('sospechacovidembarazo1').disabled = true;
+        document.getElementById('sospechacovidembarazo2').disabled = true;
+
+        document.getElementById('confirmacioncovidembarazo1').disabled = true;
+        document.getElementById('confirmacioncovidembarazo2').disabled = true;
+    }
+}
 
 function testconsulta(){
     var items = document.getElementsByClassName("item");
@@ -326,14 +841,28 @@ function clearErrorsConsulta(){
 }
 
 function terminarConsulta(){
-    $.get( "/getconsulta/", function( data ) {
-        if(data == 1){
-            $("#terminarmodal").modal('show');
-        }else{
-            $("#noIntermodal").modal('show');
-        }
-    }).fail(function(){
-        $("#noConsultamodal").modal('show');
+    var fd = new FormData();
+    fd.append('test', "test");
+
+    $.ajax({
+        url: url + "/getconsulta/",
+        type: "GET",
+        processData: false,
+        contentType: false,
+        data: fd,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response){
+            if(response == 1){
+                $("#terminarmodal").modal('show');
+            }else{
+                $("#noIntermodal").modal('show');
+            }
+        },
+        error: function(response){
+            $("#noConsultamodal").modal('show');
+        },
     });
 }
 
@@ -365,6 +894,10 @@ function patientece(curp){
     var c_iframe = iframe.replace("_url_", thisurl);
     $("#ece-content").html(c_iframe);
     */
+    if($('#codeArea').hasClass('hiddenli')){
+        $('#codeArea').removeClass('hiddenli');
+    }
+
     var code = document.getElementById('patientcode').value;
     var fd = new FormData();
     fd.append('curp', curp);
@@ -398,6 +931,7 @@ function patientece(curp){
 
 //consulta completa pagina misece consulta
 function patientconsult(){
+    
     let code = $("input[name=patientcode]").val();
     let curp = $("input[name=patientcurp]").val();
 
@@ -416,6 +950,11 @@ function patientconsult(){
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(response){
+                if($('#codeArea').hasClass('hiddenli')){
+                    $('#codeArea').removeClass('hiddenli');
+                }
+
+                $('#consultBtn').text("Consultar ECE");
                 alert("Peticion completado con exito!");
                 var iframe = document.getElementById('iframecontent');
                 iframe.height="900px"
@@ -425,14 +964,14 @@ function patientconsult(){
             },
             error: function(response){
                 if(response.responseJSON.errormsg)
-                    alert("Se ha enviado un Código al paciente! Espera unos minutos.");
+                    alert(response.responseJSON.errormsg);
                 else
-                    alert("Ocurrio un error! Intentalo mas tarde.");
+                    alert("A Ocurrio un error! Intentalo mas tarde.");
                 console.log(response);
             },
         });
     }else{
-        alert("La curp y número teléfonico del paciente debe ser introducidos!");
+        alert("La curp del paciente debe ser introducida!");
     }
 }
 

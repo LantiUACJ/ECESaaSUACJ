@@ -17,7 +17,7 @@ class AddPatients extends Seeder
      */
     public function run()
     {        
-        Paciente::factory()->count(100)
+        Paciente::factory()->count(20)
             ->has(Consulta::factory()->count(rand(1, 5)))
             ->has(Interrogatorio::factory())
         ->create();

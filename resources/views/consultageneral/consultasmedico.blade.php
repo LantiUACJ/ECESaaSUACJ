@@ -38,7 +38,7 @@
                 @endif
                 <div class="card text-center">
                     <div class="card-header">
-                        <h5>Consultas del Doctor - {{ auth()->user()->name }}</h5>
+                        <h5>Consultas del Doctor: {{ auth()->user()->name." ". auth()->user()->primerApellido." ". auth()->user()->segundoApellido }}</h5>
                     </div>
                     <div class="card-body">
                         @if ($consultas->count() > 0)
@@ -48,7 +48,7 @@
                                 </div>
                                 <form method="GET" class="form-inline my-2 my-lg-0 mysearchbar col-md-6 t-right" action="{{ route('searchconsultamedico') }}">
                                     <input class="form-control mr-sm-2 mysearchst" type="search" placeholder="Buscar Consulta"
-                                    aria-label="Search" name="search">
+                                    aria-label="Search" name="search" autocomplete="off">
                                     <button class="btn btn-outline-success my-2 my-sm-0 mybtn" type="submit">Buscar</button>
                                 </form>
                             </div>
@@ -76,7 +76,7 @@
                                         @if ($consulta->terminada)
                                             <tr>
                                                 <th label="#" scope="row">{{ $count++ }}</th>
-                                                <td label="Fecha/Hora">{{$consulta->created_at->format('d - m - Y') }}::{{ $consulta->created_at->format('H:i') }}</td>
+                                                <td label="Fecha/Hora">{{$consulta->created_at->format('d/m/Y') }} : {{ $consulta->created_at->format('H:i') }}</td>
                                                 <td label="Paciente">{{ $consulta->paciente->nombre." ".$consulta->paciente->primerApellido." ".$consulta->paciente->segundoApellido }}</td>
                                                 <td label="Motivo">{{ $consulta->motivoConsulta }}</td>
                                                 <td label="Acciones">
@@ -88,7 +88,7 @@
                                         @else
                                             <tr class="bg-info opacity-50">
                                                 <th label="#" scope="row">{{ $count++ }}</th>
-                                                <td label="Fecha/Hora">{{$consulta->created_at->format('d - m - Y') }}::{{ $consulta->created_at->format('H:i') }}</td>
+                                                <td label="Fecha/Hora">{{$consulta->created_at->format('d/m/Y') }} : {{ $consulta->created_at->format('H:i') }}</td>
                                                 <td label="Paciente">{{ $consulta->paciente->nombre." ".$consulta->paciente->primerApellido." ".$consulta->paciente->segundoApellido }}</td>
                                                 <td label="Motivo">{{ $consulta->motivoConsulta }}</td>
                                                 <td label="Acciones">
@@ -113,14 +113,46 @@
                                 </div>
                             @endif  
                         @else
-                            <br><br>
-                            <h3 class="opacy6">No hay consultas para el Doctor {{ auth()->user()->name }}... Da de alta una nueva Consulta</h3>
-                            <br><br>
-                            <div>
-                                <a href="{{ route('seleccionarpaciente') }}" type="button" class="btn btn-success">Nueva Consulta</a>
-                            </div>
-                            <br><br>
-                            <img class="emptyimg" src="{{ asset('img/empty.png')}}" alt="">
+                            @if ($search)
+                                <div class="row">
+                                    <div class="col-md-6 t-left">
+                                        <a class="btn btn-primary my-sm-0 mybtn" href="{{ route('seleccionarpaciente') }}" role="button">Nueva Consulta</a>
+                                    </div>
+                                    <form method="GET" class="form-inline my-2 my-lg-0 mysearchbar col-md-6 t-right" action="{{ route('searchconsultamedico') }}">
+                                        <input class="form-control mr-sm-2 mysearchst" type="search" placeholder="Buscar Consulta"
+                                        aria-label="Search" name="search" autocomplete="off">
+                                        <button class="btn btn-outline-success my-2 my-sm-0 mybtn" type="submit">Buscar</button>
+                                    </form>
+                                </div>
+                                <br>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Fecha/Hora</th>
+                                            <th scope="col">Paciente</th>
+                                            <th scope="col">Motivo</th>
+                                            <th scope="col">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="5"><h5 class="opacy6">No se encontraron consultas en la búsqueda</h5></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <br>
+                                <!--img class="emptyimg" src="{{ asset('img/empty.png')}}" alt=""-->
+                            @else
+                                <br><br>
+                                <h5 class="opacy6">No hay consultas para el Doctor {{ auth()->user()->name }}... Da de alta una nueva Consulta</h5>
+                                <br><br>
+                                <div>
+                                    <a href="{{ route('seleccionarpaciente') }}" type="button" class="btn btn-success">Nueva Consulta</a>
+                                </div>
+                                <br><br>
+                                <img class="emptyimg" src="{{ asset('img/empty.png')}}" alt="">
+                            @endif
                         @endif                   
                     </div>
                 </div>

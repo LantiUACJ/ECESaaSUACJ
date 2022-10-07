@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\PDFController;
 use App\Models\Egi;
 
+use App\Models\Diagnostico;
 use App\Models\Snomeddescripcion;
 
 /*
@@ -22,41 +23,47 @@ use App\Models\Snomeddescripcion;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
+
+Route::get('/welcome', function () {
+    return view('welcome');
+})->name('a');
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
+Route::get('/about', [App\Http\Controllers\HomeController::class, 'about'])->name('about');
 Route::get('/configuracion', [App\Http\Controllers\HomeController::class, 'index'])->name('homeconfiguracion');
 
 Route::get('/page404', [App\Http\Controllers\ConsultaController::class, 'page404'])->name('page404')->middleware('auth');
 
 Route::post('/getdiags', function(Request $request){
-    $diags = Snomeddescripcion::where('active', 1)->where('category_id', 4)->where('term', 'LIKE', '%'.$request->term.'%')->get(['id', 'term']);
+    //$diags = Diagnostico::where('active', 1)->where('term', 'LIKE', '%'.$request->term.'%')->get(['id', 'term']);
+    $diags = Snomeddescripcion::where('active', 1)->where('category_id', 4)->where('term', 'LIKE', '%'.$request->term.'%')->take(100)->get(['id', 'term']);
     return $diags;
 });
 
+/* Rutas para el MISECE*/
+    //Peticion del MISECE al ECE
+    //Consulta de expediente por parte del misece
+    ///api/expediente/{curp}
+    Route::get('/api/patient', [App\Http\Controllers\MISECEController::class, 'sendexpediente'])->name('api/patient');
+    //Consulta de expediente (resumido) por parte del misece
+    Route::get('/api/patient/basic', [App\Http\Controllers\MISECEController::class, 'sendexpedientebasico'])->name('api/patient/basico');
+    //Consulta de expediente (resumido) por parte del misece
+    Route::get('/api/update', [App\Http\Controllers\MISECEController::class, 'sendindice'])->name('api/update');
 
-//Peticion del MISECE al ECE
-//Consulta de expediente por parte del misece
-///api/expediente/{curp}
-Route::get('/api/patient', [App\Http\Controllers\MISECEController::class, 'sendexpediente'])->name('api/patient');
-//Consulta de expediente (resumido) por parte del misece
-Route::get('/api/patient/basic', [App\Http\Controllers\MISECEController::class, 'sendexpedientebasico'])->name('api/patient/basico');
-//Consulta de expediente (resumido) por parte del misece
-Route::get('/api/update', [App\Http\Controllers\MISECEController::class, 'sendindice'])->name('api/update');
+    //Peticion del ECE al MISECE
+    //Peticion de codigo para consulta (paciente msg?)
+    Route::post('/pacienteconsulta/{curp}', [App\Http\Controllers\MISECEController::class, 'consultaece'])->name('pacienteconsulta')->middleware('auth');
+    //Consulta de ece al misece sin codigo, pide codigo
+    Route::post('/expedienteece', [App\Http\Controllers\MISECEController::class, 'expece'])->name('expedienteece')->middleware('auth');
+    //Consulta basico de ece al misece
+    Route::post('/expedienteecebasico', [App\Http\Controllers\MISECEController::class, 'expecebasico'])->name('expedienteecebasico')->middleware('auth');
 
-//Peticion del ECE al MISECE
-//Peticion de codigo para consulta (paciente msg?)
-Route::post('/pacienteconsulta/{curp}', [App\Http\Controllers\MISECEController::class, 'consultaece'])->name('pacienteconsulta')->middleware('auth');
-//Consulta de ece al misece sin codigo, pide codigo
-Route::post('/expedienteece', [App\Http\Controllers\MISECEController::class, 'expece'])->name('expedienteece')->middleware('auth');
-//Consulta basico de ece al misece
-Route::post('/expedienteecebasico', [App\Http\Controllers\MISECEController::class, 'expecebasico'])->name('expedienteecebasico')->middleware('auth');
-
-//Pagina para Consulta (vista) MISECE ece-misece (con curp)
-Route::get('/misece', [App\Http\Controllers\MISECEController::class, 'consultarmisece'])->name('misece')->middleware('auth');
-
+    //Pagina para Consulta (vista) MISECE ece-misece (con curp)
+    Route::get('/misece', [App\Http\Controllers\MISECEController::class, 'consultarmisece'])->name('misece')->middleware('auth');
+/**/
 
 
 //Consultas del paciente
@@ -66,9 +73,9 @@ Route::get('/consultamedico', [App\Http\Controllers\ConsultaController::class, '
 //Seleccionar paciente al cual realizar la consulta
 Route::get('/seleccionarpaciente', [App\Http\Controllers\ConsultaController::class, 'pacientes'])->name('seleccionarpaciente')->middleware('auth');
 //Busqueda de consulta (medico)
-Route::get('/searchconsultamedico', [App\Http\Controllers\ConsultaController::class, 'searchmedico'])->name('searchconsultamedico')->middleware('auth');
+Route::get('/searchconsultamedico', [App\Http\Controllers\ConsultaController::class, 'searchconsulta'])->name('searchconsultamedico')->middleware('auth');
 //Busqueda de paciente
-Route::get('/searchpacientemedico', [App\Http\Controllers\ConsultaController::class, 'searchpacientemedico'])->name('searchpacientemedico')->middleware('auth');
+Route::get('/searchpacienteseleccion', [App\Http\Controllers\ConsultaController::class, 'searchpaciente'])->name('searchpacienteseleccion')->middleware('auth');
 //Registro de paciente desde seleccion de paciente en creacion de nueva consulta
 Route::get('/createpacfromcons', [App\Http\Controllers\ConsultaController::class, 'createpacienteConsulta'])->name('createpacfromcons')->middleware('auth');
 //Store de paciente -> continua consulta
@@ -78,8 +85,12 @@ Route::post('/storepacienteconsulta', [App\Http\Controllers\ConsultaController::
 Route::get('/registrarconsulta/{id}', [App\Http\Controllers\ConsultaController::class, 'registrar'])->name('registrarconsulta')->middleware('auth');
 //Se guarda la consulta
 Route::post('/storeconsulta/{id}', [App\Http\Controllers\ConsultaController::class, 'store'])->name('storeconsulta')->middleware('auth');
+//Consulta por embarazo
+Route::post('/storepregnantconsulta/{id}', [App\Http\Controllers\ConsultaController::class, 'storepregnant'])->name('storepregnantconsulta')->middleware('auth');
 //Se actualiza la consulta
 Route::post('/updateconsulta/{id}', [App\Http\Controllers\ConsultaController::class, 'update'])->name('updateconsulta')->middleware('auth');
+//Actualizar consulta embarazo
+Route::post('/updatepregnantconsulta/{id}', [App\Http\Controllers\ConsultaController::class, 'updatepregnant'])->name('updatepregnantconsulta')->middleware('auth');
 //Vista de la consulta
 Route::get('/viewconsulta/{id}', [App\Http\Controllers\ConsultaController::class, 'view'])->name('viewconsulta')->middleware('auth');
 //Continuar la consulta
@@ -168,6 +179,12 @@ Route::resource('agudezavisualauditivas', App\Http\Controllers\Agudezavisualaudi
 
 //Rutas para acceder a los catálogos
 Route::resource('sexos', App\Http\Controllers\SexoController::class)->middleware('auth');
+Route::resource('indigenas', App\Http\Controllers\IndigenaController::class)->middleware('auth');
+Route::resource('afromexicanos', App\Http\Controllers\AfromexicanoController::class)->middleware('auth');
+Route::resource('generos', App\Http\Controllers\GeneroController::class)->middleware('auth');
+Route::resource('gruposanguineos', App\Http\Controllers\GruposanguineoController::class)->middleware('auth');
+Route::resource('derechohabiencias', App\Http\Controllers\DerechohabienciaController::class)->middleware('auth');
+Route::resource('programasmymgs', App\Http\Controllers\ProgramasmymgController::class)->middleware('auth');
 Route::resource('geriatriaproyectos', App\Http\Controllers\GeriatriaproyectoController::class)->middleware('auth');
 
 //Ruta para generar PDF

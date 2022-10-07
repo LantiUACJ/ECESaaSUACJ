@@ -118,7 +118,7 @@
 
                         <div class="card">
                             <div class="card-body">
-                                <h5>{{ __('Consultas') }}</h4>
+                                <h5>{{ __('Consultas') }}</h5>
                             </div>
                         </div>
                         <div class="card text-center">
@@ -158,7 +158,7 @@
                                     @endif
                                 @else
                                     <br><br>
-                                    <h3 class="opacy6">El paciente no tiene Consultas para mostrar... Da de alta una nueva Consulta</h3>
+                                    <h5 class="opacy6">El paciente no tiene Consultas para mostrar... Da de alta una nueva Consulta</h5>
                                     <br><br>
                                     <div>
                                         <a href="{{ route('registrarconsulta', $paciente->id) }}" type="button" class="btn btn-success">Nueva Consulta</a>

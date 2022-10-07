@@ -15,13 +15,28 @@ class AddSexos extends Seeder
     public function run()
     {
         Sexo::create([
+            "numero" => 0,
+            "descripcion" => "No Especificado"
+        ]);
+
+        Sexo::create([
             "numero" => 1,
-            "descripcion" => "Masculino"
+            "descripcion" => "Hombre"
         ]);
 
         Sexo::create([
             "numero" => 2,
-            "descripcion" => "Femenino"
+            "descripcion" => "Mujer"
+        ]);
+
+        Sexo::create([
+            "numero" => 3,
+            "descripcion" => "Intersexual"
+        ]);
+
+        Sexo::create([
+            "numero" => 9,
+            "descripcion" => "Se ignora"
         ]);
     }
 }

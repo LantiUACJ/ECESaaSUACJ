@@ -13,19 +13,22 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
-                                {{ __('Sexos') }}
+                                <strong>{{ __('Sexos') }}</strong>
                             </span>
 
                              <div class="float-right">
                                 <a href="{{ route('sexos.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Registrar') }}
+                                    {{ __('Registrar sexo') }}
                                 </a>
                               </div>
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
-                        <div class="alert alert-success">
-                            <p>{{ $message }}</p>
+                        <div class="alert alert-success text-center">
+                            {{ $message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                     @endif
 
@@ -34,7 +37,7 @@
                             <table class="table table-striped table-hover">
                                 <thead class="thead">
                                     <tr>                                                                             
-										<th>Número</th>
+										<th>No</th>
 										<th>Descripción</th>
                                         <th></th>
                                     </tr>
@@ -42,28 +45,43 @@
                                 <tbody>
                                     @foreach ($sexos as $sexo)
                                         <tr>
-											<td>{{ $sexo->numero }}</td>
+											<td>{{ ++$i }}</td>
 											<td>{{ $sexo->descripcion }}</td>
-
                                             <td>
-                                                <form action="{{ route('sexos.destroy',$sexo->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('sexos.show',$sexo->id) }}">
-                                                        <i class="fa fa-fw fa-eye"></i> 
-                                                        Consultar
-                                                    </a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('sexos.edit',$sexo->id) }}">
-                                                        <i class="fa fa-fw fa-edit"></i> 
-                                                        Actualizar
-                                                    </a>
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm">
-                                                        <i class="fa fa-fw fa-trash"></i> 
-                                                        Eliminar
-                                                    </button>
-                                                </form>
+                                                <a class="btn" href="{{ route('sexos.edit',$sexo->id) }}"data-toggle="tooltip" data-placement="right" title="Actualizar">
+                                                    <span class="icon my-auto"><i class="fa fa-fw fa-pencil"></i> </span>
+                                                </a>
+
+                                                <a data-toggle="modal" class="btn" data-target="#deleteModal_{{$sexo->id}}" data-bs-toggle="tooltip" 
+                                                    data-action="{{ route('sexos.destroy', $sexo->id) }}"  title="Eliminar"><i class="bi bi-trash"></i>
+                                                </a>
                                             </td>
                                         </tr>
+                                        <!-- Delete Docente Modal -->
+                                        <div class="modal fade" id="deleteModal_{{$sexo->id}}" data-backdrop="static" tabindex="-1" role="dialog"
+                                            aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h6 class="modal-title text-danger" id="deleteModalLabel"><strong>Esta acción es irreversible.</strong></h6>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <form action="{{ route('sexos.destroy',$sexo->id) }}" method="POST">
+                                                        <div class="modal-body">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <h6 class="text-center">¿Está seguro de que quieres eliminar el sexo {{ $sexo->descripcion }} ?</h6>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                        <button type="submit" class="btn btn-danger">Si, eliminar sexo</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @endforeach
                                 </tbody>
                             </table>

@@ -109,7 +109,7 @@ function storesignos(){
     let diastolica = $("input[name=diastolica]").val();
     let frecuenciacardiaca = $("input[name=frecuenciacardiaca]").val();
     let frecuenciarespiratoria = $("input[name=frecuenciarespiratoria]").val();
-    let saturacion = $("input[name=saturacionoxigeno]").val();
+    let saturacionoxigeno = $("input[name=saturacionoxigeno]").val();
     let glucosa = $("input[name=glucosa]").val();
 
     $.ajax({
@@ -121,7 +121,7 @@ function storesignos(){
             diastolica : diastolica,
             frecuenciacardiaca : frecuenciacardiaca,
             frecuenciarespiratoria : frecuenciarespiratoria,
-            saturacion : saturacion,
+            saturacionoxigeno : saturacionoxigeno,
             glucosa : glucosa
         },
         headers: {
@@ -160,9 +160,11 @@ function updatesignos(){
     let diastolica = $("input[name=diastolica]").val();
     let frecuenciacardiaca = $("input[name=frecuenciacardiaca]").val();
     let frecuenciarespiratoria = $("input[name=frecuenciarespiratoria]").val();
-    let saturacion = $("input[name=saturacionoxigeno]").val();
+    let saturacionoxigeno = $("input[name=saturacionoxigeno]").val();
     let glucosa = $("input[name=glucosa]").val();
 
+    console.log("saturacion: "+saturacionoxigeno);
+    
     $.ajax({
         url: url + "/updatesignos",
         type: "POST",
@@ -172,7 +174,7 @@ function updatesignos(){
             diastolica : diastolica,
             frecuenciacardiaca : frecuenciacardiaca,
             frecuenciarespiratoria : frecuenciarespiratoria,
-            saturacion : saturacion,
+            saturacionoxigeno : saturacionoxigeno,
             glucosa : glucosa
         },
         headers: {

@@ -56,7 +56,7 @@ class InterrogatorioController extends Controller
         if($inter_id){ //si existe inter_id continuar normalmente
             //guardamos los antecedentes hf
             $antecedenteshf = new Antecedenteshf;
-            $antecedenteshf->grupo_id = $request->grupo == 0? null: $request->grupo;
+            $antecedenteshf->grupo_id = isset($request->grupo)? $request->grupo: null;
             $antecedenteshf->diabetes = $request->diabetes;
             $antecedenteshf->hipertension = $request->hipertension;
             $antecedenteshf->dislipidemias = $request->dislipidemias;
@@ -105,7 +105,7 @@ class InterrogatorioController extends Controller
 
             //guardamos los antecedenteshf
             $antecedenteshf = new Antecedenteshf;
-            $antecedenteshf->grupo_id = $request->grupo == 0? null: $request->grupo;
+            $antecedenteshf->grupo_id = isset($request->grupo)? $request->grupo: null;
             $antecedenteshf->diabetes = $request->diabetes;
             $antecedenteshf->hipertension = $request->hipertension;
             $antecedenteshf->dislipidemias = $request->dislipidemias;

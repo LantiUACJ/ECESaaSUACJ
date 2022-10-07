@@ -29,7 +29,7 @@
             <div class="col-md-12">
                 <div class="card text-center">
                     <div class="card-header">
-                        <h5>Selecciona el paciente para realizar la consulta</h5>
+                        <h5>Consulta - Seleccionar paciente</h5>
                     </div>
                     <div class="card-body">
                         @if ($pacientes->count() > 0)
@@ -37,15 +37,15 @@
                                 <div class="col-md-4 col-sm-4 t-left">
                                     <a class="btn btn-primary my-sm-0 mybtn" href="{{ route('createpacfromcons') }}" role="button">Nuevo Paciente</a>
                                 </div>
-                                <form method="GET" class="form-inline my-2 my-lg-0 mysearchbar col-md-8 col-sm-8 t-right" action="{{ route('searchpacientemedico') }}">
+                                <form method="GET" class="form-inline my-2 my-lg-0 mysearchbar col-md-8 col-sm-8 t-right" action="{{ route('searchpacienteseleccion') }}">
                                     <input class="form-control mr-sm-2 mysearchst" type="search" placeholder="Buscar Paciente"
-                                    aria-label="Search" name="search">
+                                    aria-label="Search" name="search" autocomplete="off">
                                     <button class="btn btn-outline-success my-2 my-sm-0 mybtn" type="submit">Buscar</button>
                                 </form>
                             </div>
                             <br>
                             <table class="table table-striped">
-                                <thead class="thead-dark">
+                                <thead>
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Nombre</th>
@@ -63,15 +63,7 @@
                                             <th label="#" scope="row">{{ $count++ }}</th>
                                             <td label="Nombre">{{ $paciente->nombre }} {{ $paciente->primerApellido }} {{ $paciente->segundoApellido }}</td>
                                             <td label="CURP">{{ $paciente->curp }}</td>
-                                            @if ($paciente->sexo_id == 1)
-                                                <td label="Sexo">Hombre</td>
-                                            @elseif ($paciente->sexo_id == 2)
-                                                <td label="Sexo">Mujer</td>
-                                            @elseif ($paciente->sexo_id == 8)
-                                                <td label="Sexo">Se ignora</td>
-                                            @else
-                                                <td label="Sexo">No especificado</td>
-                                            @endif
+                                            <td label="Sexo">{{ $paciente->sexo->descripcion }}</td>
                                             <td label="Acciones">
                                                 <a class="action-btn btn btn-success" href="{{ route('registrarconsulta', $paciente->id) }}">
                                                 Seleccionar Paciente
@@ -87,14 +79,43 @@
                                 </div>
                             @endif  
                         @else
-                            <br><br>
-                            <h3 class="opacy6">No hay pacientes en el sistema... Da de alta un nuevo paciente</h3>
-                            <br><br>
-                            <div>
-                                <a href="{{ route('pacientes.create') }}" type="button" class="btn btn-success">Nuevo Paciente</a>
-                            </div>
-                            <br><br>
-                            <img class="emptyimg" src="{{ asset('img/empty.png')}}" alt="">
+                            @if ($search)
+                                <div class="row">
+                                    <div class="col-md-4 col-sm-4 t-left">
+                                        <a class="btn btn-primary my-sm-0 mybtn" href="{{ route('createpacfromcons') }}" role="button">Nuevo Paciente</a>
+                                    </div>
+                                    <form method="GET" class="form-inline my-2 my-lg-0 mysearchbar col-md-8 col-sm-8 t-right" action="{{ route('searchpacienteseleccion') }}">
+                                        <input class="form-control mr-sm-2 mysearchst" type="search" placeholder="Buscar Paciente"
+                                        aria-label="Search" name="search" autocomplete="off">
+                                        <button class="btn btn-outline-success my-2 my-sm-0 mybtn" type="submit">Buscar</button>
+                                    </form>
+                                </div>
+                                <br>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Nombre</th>
+                                            <th scope="col">CURP</th>
+                                            <th scope="col">Sexo</th>
+                                            <th scope="col">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td colspan="5"><h5 class="opacy6">No se encontraron pacientes en la búsqueda</h5></td></tr>
+                                    </tbody>
+                                </table>
+                                <br>
+                            @else
+                                <br><br>
+                                <h5 class="opacy6">No hay pacientes en el sistema... Da de alta un nuevo paciente</h5>
+                                <br>
+                                <div>
+                                    <a href="{{ route('pacientes.create') }}" type="button" class="btn btn-success">Nuevo Paciente</a>
+                                </div>
+                                <br>
+                                <img class="emptyimg" src="{{ asset('img/empty.png')}}" alt="">
+                            @endif
                         @endif                   
                     </div>
                 </div>

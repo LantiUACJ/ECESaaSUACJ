@@ -60,7 +60,7 @@ class ExploracionController extends Controller
 
     function storesignos(Request $request){
         $explo_id = session('explo_id');
-        if($explo_id){ //si existe explo_id continuar normalmente
+        if(isset($explo_id)){ //si existe explo_id continuar normalmente
             //guardamos los signos vitales
             $signos = new Signovital;
             $signos->temperatura = $request->temperatura;
@@ -68,7 +68,7 @@ class ExploracionController extends Controller
             $signos->tensionDiastolica = $request->diastolica;
             $signos->frecuenciaCardiaca = $request->frecuenciacardiaca;
             $signos->frecuenciaRespiratoria = $request->frecuenciarespiratoria;
-            $signos->saturacionOxigeno = $request->saturacion;
+            $signos->saturacionOxigeno = $request->saturacionoxigeno;
             $signos->glucosa = $request->glucosa;
 
             $result = $signos->save();
@@ -84,14 +84,13 @@ class ExploracionController extends Controller
             }else{
                 return response()->json(['errormsg' => 'Ocurrio un error al guardar los datos. Intentalo más tarde.'], 401);
             }
-        }else{ //si no existe inter_id, primero crear interrogatorio, y luego crear antecedentes hf
-            //guardamos el interrogtorio
+        }else{ //si no existe explo_id, primero crear exploracion fisica
             $exploracion = new Exploracionfisica;
             $exploracion->save();
             session(['explo_id' => $exploracion->id]);
             $explo_id = $exploracion->id;
 
-            //guardamos el interrogatorio en la consulta
+            //guardamos la exploracion en la consulta
             $consulta_id = session('consulta_id');
             $consulta = Consulta::find($consulta_id);
             $consulta->exploracion_id = $exploracion->id;
@@ -104,7 +103,7 @@ class ExploracionController extends Controller
             $signos->tensionDiastolica = $request->diastolica;
             $signos->frecuenciaCardiaca = $request->frecuenciacardiaca;
             $signos->frecuenciaRespiratoria = $request->frecuenciarespiratoria;
-            $signos->saturacionOxigeno = $request->saturacion;
+            $signos->saturacionOxigeno = $request->saturacionoxigeno;
             $signos->glucosa = $request->glucosa;
 
             $result = $signos->save();
@@ -115,7 +114,7 @@ class ExploracionController extends Controller
             $explo->save();
 
             if($result !== false){
-                session(['signos_id' => $signos->id]); //se guarda el id de los antecedentes pp para ser usado en actualizar si se llega a recargar la pagina 
+                session(['signos_id' => $signos->id]); //se guarda el id de los signos para ser usado en actualizar si se llega a recargar la pagina 
                 return response()->json(['msg' => 'Signos Vitales guardados exitosamente!'], 200);
             }else{
                 return response()->json(['errormsg' => 'Ocurrio un error al guardar los datos. Intentalo más tarde.'], 401);
@@ -132,7 +131,7 @@ class ExploracionController extends Controller
         $signos->tensionDiastolica = $request->diastolica;
         $signos->frecuenciaCardiaca = $request->frecuenciacardiaca;
         $signos->frecuenciaRespiratoria = $request->frecuenciarespiratoria;
-        $signos->saturacionOxigeno = $request->saturacion;
+        $signos->saturacionOxigeno = $request->saturacionoxigeno;
         $signos->glucosa = $request->glucosa;
 
         $result = $signos->save();

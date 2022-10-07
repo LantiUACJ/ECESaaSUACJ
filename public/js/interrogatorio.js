@@ -83,7 +83,6 @@ function updatedatosinter(){
 
 //Store y update de antecedesntes heredo familiares
 function storeantecedenteshf(){
-    let grupo = $('select[name=grupo] option').filter(':selected').val();
 
     let diabetes = $("input[name=diabetes]").is(':checked') ? 1: 0;
     let hipertension = $("input[name=hipertension]").is(':checked') ? 1: 0;
@@ -105,13 +104,13 @@ function storeantecedenteshf(){
     let alergias = $('input[name=alergias]').is(':checked') ? 1: 0;
     let endocrinas = $('input[name=endocrinas]').is(':checked') ? 1: 0;
     let geneticas = $('input[name=geneticas]').is(':checked') ? 1: 0;
+    let grupo = $('select[name=grupo] option').filter(':selected').val();
     let otroshf = $('input[name=otroshf]').val();
 
     $.ajax({
         url: url + "/storeantecedenteshf",
         type: "POST",
         data: {
-            grupo: grupo,
             diabetes : diabetes,
             hipertension : hipertension,
             dislipidemias : dislipidemias,
@@ -132,6 +131,7 @@ function storeantecedenteshf(){
             alergias : alergias,
             endocrinas : endocrinas,
             geneticas : geneticas,
+            grupo : grupo,
             otros : otroshf
         },
         headers: {
@@ -166,8 +166,6 @@ function storeantecedenteshf(){
 }
 
 function updateantecedenteshf(){
-    let grupo = $('select[name=grupo] option').filter(':selected').val();
-
     let diabetes = $("input[name=diabetes]").is(':checked') ? 1: 0;
     let hipertension = $("input[name=hipertension]").is(':checked') ? 1: 0;
     let dislipidemias = $('input[name=dislipidemias]').is(':checked') ? 1: 0;
@@ -188,13 +186,13 @@ function updateantecedenteshf(){
     let alergias = $('input[name=alergias]').is(':checked') ? 1: 0;
     let endocrinas = $('input[name=endocrinas]').is(':checked') ? 1: 0;
     let geneticas = $('input[name=geneticas]').is(':checked') ? 1: 0;
+    let grupo = $('select[name=grupo] option').filter(':selected').val();
     let otroshf = $('input[name=otroshf]').val();
 
     $.ajax({
         url: url + "/updateantecedenteshf",
         type: "POST",
         data: {
-            grupo: grupo,
             diabetes : diabetes,
             hipertension : hipertension,
             dislipidemias : dislipidemias,
@@ -215,6 +213,7 @@ function updateantecedenteshf(){
             alergias : alergias,
             endocrinas : endocrinas,
             geneticas : geneticas,
+            grupo : grupo,
             otros : otroshf
         },
         headers: {
@@ -262,10 +261,18 @@ function storeantecedentespp(){
     let otrospp = $('textarea[name=otrospp]').val();
     let toxico = []; //arreglo de toxicomanias
 
-    let multiselect = $('select[name="multiselecttoxic[]"] option:selected').each(function() {
-        toxico.push($(this).val());
-    });
-     
+    let toxicomanias = document.getElementsByClassName("item");
+    let count = 0;
+
+    if(toxicomanias.length > 0){
+        [].forEach.call(toxicomanias, function(element) {
+            if(isNumeric(element.getAttribute("data-value"))){
+                toxico[count] = element.getAttribute("data-value");
+                count++;
+            }
+        });
+    }
+
     
     $.ajax({
         url: url + "/storeantecedentespp",
@@ -326,10 +333,19 @@ function updateantecedentespp(){
 
     let toxico = []; //arreglo de toxicomanias
 
-    let multiselect = $('select[name="multiselecttoxic[]"] option:selected').each(function() {
-        toxico.push($(this).val());
-    });
+    let toxicomanias = document.getElementsByClassName("item");
+    let count = 0;
 
+    if(toxicomanias.length > 0){
+        [].forEach.call(toxicomanias, function(element) {
+            if(isNumeric(element.getAttribute("data-value"))){
+                toxico[count] = element.getAttribute("data-value");
+                count++;
+            }
+        });
+    }
+
+    
     $.ajax({
         url: url + "/updateantecedentespp",
         type: "POST",

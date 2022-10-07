@@ -17,11 +17,17 @@ class UsersSeed extends Seeder
     public function run()
     {
         User::create([
-            "name" => "Cesar Javier Maldonado Flores",
+            "name" => "Cesar Javier",
+            "primerApellido" => "Maldonado",
+            "segundoApellido" => "Flores",
             "email" => "certero.art@hotmail.es",
-            "password" => "certero.art@hotmail.es",
-            'password'  => bcrypt('naruto114'),
-            'created_at' => Carbon::now()
+            'password'  => bcrypt('naruto114')
+        ]);
+
+        User::create([
+            "name" => "test user",
+            "email" => "test@test",
+            'password'  => bcrypt('test1234')
         ]);
     }
 }

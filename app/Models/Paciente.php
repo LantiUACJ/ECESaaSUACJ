@@ -30,6 +30,12 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @property $sexo_id
  * @property $email
  * @property $phone
+ * @property $indigena_id
+ * @property $afromexicano_id
+ * @property $derechohabiencia_id
+ * @property $programasmymg_id
+ * @property $genero_id
+ * @property $gruposanguineo_id
  *
  * @property Consulta[] $consultas
  * @property Entidadesfederativa $entidadesfederativanac
@@ -40,6 +46,12 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @property Tamizaje[] $tamizajes
  * @property User $user
  * @property User $user
+ * @property Indigena $indigena
+ * @property Afromexicano $afromexicano
+ * @property Derechohabiencia $derechohabiencia
+ * @property Programasmymg $programasmymg
+ * @property Genero $genero
+ * @property Gruposanguineo $gruposanguineo
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
@@ -59,7 +71,7 @@ class Paciente extends Model
      *
      * @var array
      */
-    protected $fillable = ['curp','nombre','primerApellido','segundoApellido','fechaNacimiento','calle','colonia','numero','responsable','createdUser_id','updateUser_id','entidadNac_id','municipioNac_id','entidadFederativa_id','municipio_id','sexo_id','email','phone'];
+    protected $fillable = ['curp','nombre','primerApellido','segundoApellido','fechaNacimiento','calle','colonia','numero','responsable','createdUser_id','updateUser_id','entidadNac_id','municipioNac_id','entidadFederativa_id','municipio_id','sexo_id','email','phone', 'indigena_id', 'afromexicano_id','derechohabiencia_id','programasmymg_id','genero_id','gruposanguineo_id'];
 
 
     /**
@@ -109,6 +121,14 @@ class Paciente extends Model
     {
         return $this->hasOne('App\Models\Sexo', 'id', 'sexo_id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function genero()
+    {
+        return $this->hasOne('App\Models\Genero', 'id', 'genero_id');
+    }
     
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -129,5 +149,41 @@ class Paciente extends Model
     public function interrogatorio()
     {
         return $this->hasOne('App\Models\Interrogatorio', 'paciente_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function dhp()
+    {
+        return $this->hasMany('App\Models\Pacientedh', 'pacientes_id', 'id');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function indigena()
+    {
+        return $this->hasOne('App\Models\Indigena', 'id', 'indigena_id');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function afromexicano()
+    {
+        return $this->hasOne('App\Models\Afromexicano', 'id', 'afromexicano_id');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function programasmymg()
+    {
+        return $this->hasOne('App\Models\Programasmymg', 'id', 'programasmymg_id');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function gruposanguineo()
+    {
+        return $this->hasOne('App\Models\Gruposanguine', 'id', 'gruposanguineo_id');
     }
 }
