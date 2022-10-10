@@ -963,10 +963,17 @@ function patientconsult(){
                 console.log(response);
             },
             error: function(response){
-                if(response.responseJSON.errormsg)
+                if(response.responseJSON.errormsg){
                     alert(response.responseJSON.errormsg);
-                else
+                }else if(response.responseJSON.codemsg){
+                    if($('#codeArea').hasClass('hiddenli')){
+                        $('#codeArea').removeClass('hiddenli');
+                    }
+                    $('#consultBtn').text("Consultar ECE");
+                    alert(response.responseJSON.codemsg);
+                }else{
                     alert("A Ocurrio un error! Intentalo mas tarde.");
+                }
                 console.log(response);
             },
         });
