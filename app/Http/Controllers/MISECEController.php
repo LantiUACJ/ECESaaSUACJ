@@ -180,8 +180,8 @@ class MISECEController extends Controller
 
         //return response()->json(['errormsg' => 'Un código de verificación ha sido enviado al paciente.'], 201);
 
-        //$response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/expediente/' . $request->curp, $data);
-        $response = Http::withBasicAuth('online', 'potato')->post('https://misece.link/api/v1/expediente/' . $request->curp, $data);
+        $response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/expediente/' . $request->curp, $data);
+        //$response = Http::withBasicAuth('online', 'potato')->post('https://misece.link/api/v1/expediente/' . $request->curp, $data);
         
         //dd($response->body());
 
