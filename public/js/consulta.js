@@ -939,7 +939,7 @@ function patientconsult(){
         var fd = new FormData();
         fd.append('curp', curp);
         fd.append('code', code);
-
+        //console.log("curp: "+curp);
         $.ajax({
             url: url + "/expedienteece",
             method: "POST",

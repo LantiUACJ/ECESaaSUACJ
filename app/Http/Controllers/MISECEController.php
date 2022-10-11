@@ -139,8 +139,7 @@ class MISECEController extends Controller
         return response()->json(['Error' => 'La curp es obligatoria.'], 500);
     }
 
-    function sendindice(Request $request)
-    {
+    function sendindice(Request $request){
         if ($request->fecha != null) {
             $pacientes = Paciente::where('created_at', '>', $request->fecha)->get();
         } else {
@@ -181,7 +180,10 @@ class MISECEController extends Controller
 
         //return response()->json(['errormsg' => 'Un código de verificación ha sido enviado al paciente.'], 201);
 
-        $response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/expediente/' . $request->curp, $data);
+        //$response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/expediente/' . $request->curp, $data);
+        $response = Http::withBasicAuth('online', 'potato')->post('https://misece.link/api/v1/expediente/' . $request->curp, $data);
+        
+        //dd($response->body());
 
         if (str_contains($response->body(), "no se encontr\u00f3 el paciente")) {
             return response()->json(['errormsg' => 'No se encontraron expedientes del paciente.'], 401);
