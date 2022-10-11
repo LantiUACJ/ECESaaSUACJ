@@ -1125,6 +1125,48 @@
                             <div class="tab-pane fade" id="antepnp" role="tabpanel" aria-labelledby="pnp-tab">
 
                                 <form method="POST" id="storeantepnp">
+                                   <div class="card">
+                                    <div class="card-header">
+                                        Dificultades del Paciente
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group row">
+                                            <div class="col-md-4">
+                                                <label for="tipodificultad" class="col-md-12 col-form-label">{{ __('Tipo de Dificultad') }}:</label>
+                
+                                                <div class="col-md-12">
+                                                    <select class="form-control @error('tipodificultad') is-invalid @enderror" 
+                                                    name="tipodificultad" id="tipodificultad">
+                                                    @foreach ($tiposDif as $tipo)
+                                                        <option value="{{ $tipo->id }}">{{ $tipo->tipo }}</option>
+                                                    @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="gradodificultad" class="col-md-12 col-form-label">{{ __('Grado de Dificultad') }}:</label>
+                
+                                                <div class="col-md-12">
+                                                    <select class="form-control @error('gradodificultad') is-invalid @enderror" 
+                                                    name="gradodificultad" id="gradodificultad">
+                                                    
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="origendificultad" class="col-md-12 col-form-label">{{ __('Origen de Dificultad') }}:</label>
+                
+                                                <div class="col-md-12">
+                                                    <select class="form-control @error('origendificultad') is-invalid @enderror" 
+                                                    name="origendificultad" id="origendificultad">
+                                                    
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   </div>
+                                   <br>
                                     <div class="form-group row">
                                         <div class="col-md-4">
                                             <label for="vivienda" class="col-md-12 col-form-label">{{ __('Vivienda') }}:</label>
@@ -1161,7 +1203,6 @@
                                                 autofocus>{{ $antePNP->dieta }}</textarea>
                                             </div>
                                         </div>
-                                        
                                     </div>
 
                                     <div class="form-group row">

@@ -207,8 +207,6 @@ function subformbutton(){ //store consulta
             fd.append('sospechacovid', sospechacovid);
             fd.append('confirmacovid', confirmacovid);
 
-            $('#spinningmodal').modal('show');
-
             $.ajax({
                 url: url + "/storepregnantconsulta/" + pacId,
                 type: "POST",
@@ -258,16 +256,12 @@ function subformbutton(){ //store consulta
         
     }else{
         fd.append('motivo', motivo);
-        $('#spinningmodal').modal('show');
         $.ajax({
             url: url + "/storeconsulta/" + pacId,
             type: "POST",
             processData: false,
             contentType: false,
             data: fd,
-            complete: function () {
-                $('#spinningmodal').modal('hide');
-            },
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
@@ -293,7 +287,6 @@ function subformbutton(){ //store consulta
                     $('#errormsg').text(response.msg);
                     $("#errormodal").modal('show');
                 }
-                
             },
         });
     }
@@ -313,7 +306,7 @@ function updateformbutton(){ //update consulta
     }else{
         var select = $("input[name=real-select-diag]").val();
     }
-    
+
     let pacId = $("input[name=pac_id]").val();
     let motivo = $("textarea[name=motivo]").val();
     let cuadro = $("textarea[name=cuadro]").val();
@@ -362,17 +355,12 @@ function updateformbutton(){ //update consulta
             fd.append('sospechacovid', sospechacovid);
             fd.append('confirmacovid', confirmacovid);
 
-            $('#spinningmodal').modal('show');
-
             $.ajax({
                 url: url + "/updatepregnantconsulta/" + pacId,
                 type: "POST",
                 processData: false,
                 contentType: false,
                 data: fd,
-                complete: function () {
-                    $('#spinningmodal').modal('hide');
-                },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
@@ -401,16 +389,12 @@ function updateformbutton(){ //update consulta
         }else
             alert("Campos faltantes de la seccion de consulta por embarazo.");
     }else{
-        $('#spinningmodal').modal('show');
         $.ajax({
             url: url + "/updateconsulta/" + pacId,
             type: "POST",
             processData: false,
             contentType: false,
             data: fd,
-            complete: function () {
-                $('#spinningmodal').modal('hide');
-            },
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
