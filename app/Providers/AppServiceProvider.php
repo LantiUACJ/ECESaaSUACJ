@@ -49,7 +49,7 @@ class AppServiceProvider extends ServiceProvider
 
         Builder::macro('whereLike', function ($attributes, string $searchTerm) {
             $this->where(function (Builder $query) use ($attributes, $searchTerm) {
-                foreach (array_wrap($attributes) as $attribute) {
+                foreach (Arr::wrap($attributes) as $attribute) {
                     $query->when(
                         str_contains($attribute, '.'),
                         function (Builder $query) use ($attribute, $searchTerm) {
