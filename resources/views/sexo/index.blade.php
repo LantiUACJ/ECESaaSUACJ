@@ -5,91 +5,54 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid main">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-header">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
+<h5 class="section-title title">Sexos</h5>
+<p class="breadcrumbs">
+    <a href="{{ url('/home') }}">Inicio</a> >
+    <a href="">Catálogos</a> >
+    <a href="#!">Sexos</a>
+</p>
+<hr style="opacity: 0.3">
+<div class="scroll-section scroll-table">
 
-                            <span id="card_title">
-                                <strong>{{ __('Sexos') }}</strong>
-                            </span>
+    <div class="table-content">
 
-                             <div class="float-right">
-                                <a href="{{ route('sexos.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                    {{ __('Registrar sexo') }}
-                                </a>
-                              </div>
-                        </div>
-                    </div>
-                    @if ($message = Session::get('success'))
-                        <div class="alert alert-success text-center">
-                            {{ $message }}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    @endif
+        <table class="striped highlight responsive-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Catalog Key</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
 
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped table-hover">
-                                <thead class="thead">
-                                    <tr>                                                                             
-										<th>No</th>
-										<th>Descripción</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($sexos as $sexo)
-                                        <tr>
-											<td>{{ ++$i }}</td>
-											<td>{{ $sexo->descripcion }}</td>
-                                            <td>
-                                                <a class="btn" href="{{ route('sexos.edit',$sexo->id) }}"data-toggle="tooltip" data-placement="right" title="Actualizar">
-                                                    <span class="icon my-auto"><i class="fa fa-fw fa-pencil"></i> </span>
-                                                </a>
-
-                                                <a data-toggle="modal" class="btn" data-target="#deleteModal_{{$sexo->id}}" data-bs-toggle="tooltip" 
-                                                    data-action="{{ route('sexos.destroy', $sexo->id) }}"  title="Eliminar"><i class="bi bi-trash"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <!-- Delete Docente Modal -->
-                                        <div class="modal fade" id="deleteModal_{{$sexo->id}}" data-backdrop="static" tabindex="-1" role="dialog"
-                                            aria-labelledby="deleteModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h6 class="modal-title text-danger" id="deleteModalLabel"><strong>Esta acción es irreversible.</strong></h6>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <form action="{{ route('sexos.destroy',$sexo->id) }}" method="POST">
-                                                        <div class="modal-body">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <h6 class="text-center">¿Está seguro de que quieres eliminar el sexo {{ $sexo->descripcion }} ?</h6>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                                        <button type="submit" class="btn btn-danger">Si, eliminar sexo</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                {!! $sexos->links() !!}
-            </div>
-        </div>
+            <tbody>
+                @foreach ($sexos as $sexo)
+                <tr>
+                    <td>{{ ++$i }}</td>
+                    <td>{{ $sexo->numero }}</td>
+					<td>{{ $sexo->descripcion }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
+    @if ($sexos->count() > 0)
+        {{ $sexos->links('vendor.pagination.materializecss') }}
+    @endif
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+@if ($message = Session::get('success'))
+    <script> 
+        M.toast({html: '{{$message}}' , classes: 'rounded green', displayLength: 5000}); 
+    </script>
+@endif
+@if ($message = Session::get('error'))
+    <script> 
+        M.toast({html: '{{$message}}' , classes: 'rounded red', displayLength: 5000}); 
+    </script>
+@endif
+
 @endsection

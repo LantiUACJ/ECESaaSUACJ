@@ -16,17 +16,15 @@ function storedatosinter(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response){
-            console.log(response);
             if(response){
                 $('#intermsg').text(response.msg);
-                $("#intermodal").modal('show');
+                $("#intermodal").modal('open');
             }
             clearErrorsInterrogatorio();
-            $('#intersubmit').css("display", "none");
-            $('#interupdate').css("display", "block"); 
+            $('#intersubmit').addClass('hide');
+            $('#interupdate').removeClass('hide');
         },
         error: function(response){
-            console.log(response.responseJSON.errormsg);
             if(response.responseJSON.errormsg == null){
                 if(response){
                     //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
@@ -34,7 +32,7 @@ function storedatosinter(){
                 }
             }else{
                 $('#errormsg').text(response.msg);
-                $("#errormodal").modal('show');
+                $("#errormodal").modal('open');
             }
             
         },
@@ -56,17 +54,15 @@ function updatedatosinter(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response){
-            console.log(response);
             if(response){
                 $('#intermsg').text(response.msg);
-                $("#intermodal").modal('show');
+                $("#intermodal").modal('open');
             }
             clearErrorsInterrogatorio();
-            $('#intersubmit').css("display", "none");
-            $('#interupdate').css("display", "block"); 
+            $('#intersubmit').addClass('hide');
+            $('#interupdate').removeClass('hide');
         },
         error: function(response){
-            console.log(response.responseJSON.errormsg);
             if(response.responseJSON.errormsg == null){
                 if(response){
                     //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
@@ -74,7 +70,7 @@ function updatedatosinter(){
                 }
             }else{
                 $('#errormsg').text(response.msg);
-                $("#errormodal").modal('show');
+                $("#errormodal").modal('open');
             }
             
         },
@@ -105,7 +101,7 @@ function storeantecedenteshf(){
     let endocrinas = $('input[name=endocrinas]').is(':checked') ? 1: 0;
     let geneticas = $('input[name=geneticas]').is(':checked') ? 1: 0;
     let grupo = $('select[name=grupo] option').filter(':selected').val();
-    let otroshf = $('input[name=otroshf]').val();
+    let otroshf = $('textarea[name=otroshf]').val();
 
     $.ajax({
         url: url + "/storeantecedenteshf",
@@ -138,29 +134,28 @@ function storeantecedenteshf(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response){
-            console.log(response);
             if(response){
                 $('#intermsg').text(response.msg);
-                $("#intermodal").modal('show');
+                $("#intermodal").modal('open');
             }
-            $('#antehrsubmit').css("display", "none");
-            $('#antehrupdate').css("display", "block");
-            if($('#interupdate').hasClass('hiddenli')){
-                $('#interupdate').removeClass('hiddenli')
-                $('#intersubmit').addClass('hiddenli');
+            $('#antehrsubmit').addClass('hide');
+            $('#antehrupdate').removeClass('hide');
+            if($('#interupdate').hasClass('hide')){
+                $('#interupdate').removeClass('hide')
+                $('#intersubmit').addClass('hide');
             }
+            document.getElementById('scrollwindow').scrollTo(0, 0); 
         },
         error: function(response){
-            console.log(response.responseJSON.errormsg);
             if(response.responseJSON.errormsg == null){
                 if(response){
                     //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
                 }
             }else{
                 $('#errormsg').text(response.msg);
-                $("#errormodal").modal('show');
+                $("#errormodal").modal('open');
             }
-            
+            document.getElementById('scrollwindow').scrollTo(0, 0);             
         },
     });
 }
@@ -187,7 +182,7 @@ function updateantecedenteshf(){
     let endocrinas = $('input[name=endocrinas]').is(':checked') ? 1: 0;
     let geneticas = $('input[name=geneticas]').is(':checked') ? 1: 0;
     let grupo = $('select[name=grupo] option').filter(':selected').val();
-    let otroshf = $('input[name=otroshf]').val();
+    let otroshf = $('textarea[name=otroshf]').val();
 
     $.ajax({
         url: url + "/updateantecedenteshf",
@@ -220,23 +215,22 @@ function updateantecedenteshf(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response){
-            console.log(response);
             if(response){
                 $('#intermsg').text(response.msg);
-                $("#intermodal").modal('show');
+                $("#intermodal").modal('open');
             }
+            document.getElementById('scrollwindow').scrollTo(0, 0); 
         },
         error: function(response){
-            console.log(response.responseJSON.errormsg);
             if(response.responseJSON.errormsg == null){
                 if(response){
                     //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
                 }
             }else{
                 $('#errormsg').text(response.msg);
-                $("#errormodal").modal('show');
+                $("#errormodal").modal('open');
             }
-            
+            document.getElementById('scrollwindow').scrollTo(0, 0);             
         },
     });
 }
@@ -292,29 +286,28 @@ function storeantecedentespp(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response){
-            console.log(response);
             if(response){
                 $('#intermsg').text(response.msg);
-                $("#intermodal").modal('show');
+                $("#intermodal").modal('open');
             }
-            $('#antePPsubmit').css("display", "none");
-            $('#antePPupdate').css("display", "block");
-            if($('#interupdate').hasClass('hiddenli')){
-                $('#interupdate').removeClass('hiddenli')
-                $('#intersubmit').addClass('hiddenli');
+            $('#antePPsubmit').addClass('hide');
+            $('#antePPupdate').removeClass('hide');
+            if($('#interupdate').hasClass('hide')){
+                $('#interupdate').removeClass('hide')
+                $('#intersubmit').addClass('hide');
             }
+            document.getElementById('scrollwindow').scrollTo(0, 0); 
         },
         error: function(response){
-            console.log(response.responseJSON.errormsg);
             if(response.responseJSON.errormsg == null){
                 if(response){
                     //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
                 }
             }else{
                 $('#errormsg').text(response.msg);
-                $("#errormodal").modal('show');
+                $("#errormodal").modal('open');
             }
-            
+            document.getElementById('scrollwindow').scrollTo(0, 0);             
         },
     });
 }
@@ -364,23 +357,22 @@ function updateantecedentespp(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response){
-            console.log(response);
             if(response){
                 $('#intermsg').text(response.msg);
-                $("#intermodal").modal('show');
+                $("#intermodal").modal('open');
             }
+            document.getElementById('scrollwindow').scrollTo(0, 0); 
         },
         error: function(response){
-            console.log(response.responseJSON.errormsg);
             if(response.responseJSON.errormsg == null){
                 if(response){
                     //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
                 }
             }else{
                 $('#errormsg').text(response.msg);
-                $("#errormodal").modal('show');
+                $("#errormodal").modal('open');
             }
-            
+            document.getElementById('scrollwindow').scrollTo(0, 0);             
         },
     });
 }
@@ -388,6 +380,9 @@ function updateantecedentespp(){
 //Store y update de antecedesntes personales No patologicos
 function storeantecedentespnp(){
 
+    let tipo = $('select[name=tipodificultad] option').filter(':selected').val();
+    let grado = $('select[name=gradodificultad] option').filter(':selected').val();
+    let origen = $('select[name=origendificultad] option').filter(':selected').val();
     let vivienda = $('textarea[name=vivienda]').val();
     let higiene = $('textarea[name=higiene]').val();
     let dieta = $('textarea[name=dieta]').val();
@@ -398,6 +393,9 @@ function storeantecedentespnp(){
         url: url + "/storeantecedentespnp",
         type: "POST",
         data: {
+            tipo : tipo,
+            grado : grado,
+            origen : origen,
             vivienda : vivienda,
             higiene : higiene,
             dieta : dieta,
@@ -408,35 +406,36 @@ function storeantecedentespnp(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response){
-            console.log(response);
             if(response){
                 $('#intermsg').text(response.msg);
-                $("#intermodal").modal('show');
+                $("#intermodal").modal('open');
             }
-            $('#antePNPsubmit').css("display", "none");
-            $('#antePNPupdate').css("display", "block");
-            if($('#interupdate').hasClass('hiddenli')){
-                $('#interupdate').removeClass('hiddenli')
-                $('#intersubmit').addClass('hiddenli');
+            $('#antePNPsubmit').addClass('hide');
+            $('#antePNPupdate').removeClass('hide');
+            if($('#interupdate').hasClass('hide')){
+                $('#interupdate').removeClass('hide')
+                $('#intersubmit').addClass('hide');
             }
+            document.getElementById('scrollwindow').scrollTo(0, 0); 
         },
         error: function(response){
-            console.log(response.responseJSON.errormsg);
             if(response.responseJSON.errormsg == null){
                 if(response){
                     //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
                 }
             }else{
                 $('#errormsg').text(response.msg);
-                $("#errormodal").modal('show');
+                $("#errormodal").modal('open');
             }
-            
+            document.getElementById('scrollwindow').scrollTo(0, 0);             
         },
     });
 }
 
 function updateantecedentespnp(){
-
+    let tipo = $('select[name=tipodificultad] option').filter(':selected').val();
+    let grado = $('select[name=gradodificultad] option').filter(':selected').val();
+    let origen = $('select[name=origendificultad] option').filter(':selected').val();
     let vivienda = $('textarea[name=vivienda]').val();
     let higiene = $('textarea[name=higiene]').val();
     let dieta = $('textarea[name=dieta]').val();
@@ -447,6 +446,9 @@ function updateantecedentespnp(){
         url: url + "/updateantecedentespnp",
         type: "POST",
         data: {
+            tipo : tipo,
+            grado : grado,
+            origen : origen,
             vivienda : vivienda,
             higiene : higiene,
             dieta : dieta,
@@ -457,23 +459,22 @@ function updateantecedentespnp(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response){
-            console.log(response);
             if(response){
                 $('#intermsg').text(response.msg);
-                $("#intermodal").modal('show');
+                $("#intermodal").modal('open');
             }
+            document.getElementById('scrollwindow').scrollTo(0, 0); 
         },
         error: function(response){
-            console.log(response.responseJSON.errormsg);
             if(response.responseJSON.errormsg == null){
                 if(response){
                     //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
                 }
             }else{
                 $('#errormsg').text(response.msg);
-                $("#errormodal").modal('show');
+                $("#errormodal").modal('open');
             }
-            
+            document.getElementById('scrollwindow').scrollTo(0, 0);             
         },
     });
 }
@@ -514,29 +515,28 @@ function storeaparatos(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response){
-            console.log(response);
             if(response){
                 $('#intermsg').text(response.msg);
-                $("#intermodal").modal('show');
+                $("#intermodal").modal('open');
             }
-            $('#aparatossubmit').css("display", "none");
-            $('#aparatosupdate').css("display", "block");
-            if($('#interupdate').hasClass('hiddenli')){
-                $('#interupdate').removeClass('hiddenli')
-                $('#intersubmit').addClass('hiddenli');
+            $('#aparatossubmit').addClass('hide');
+            $('#aparatosupdate').removeClass('hide');
+            if($('#interupdate').hasClass('hide')){
+                $('#interupdate').removeClass('hide')
+                $('#intersubmit').addClass('hide');
             }
+            document.getElementById('scrollwindow').scrollTo(0, 0); 
         },
         error: function(response){
-            console.log(response.responseJSON.errormsg);
             if(response.responseJSON.errormsg == null){
                 if(response){
                     //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
                 }
             }else{
                 $('#errormsg').text(response.msg);
-                $("#errormodal").modal('show');
+                $("#errormodal").modal('open');
             }
-            
+            document.getElementById('scrollwindow').scrollTo(0, 0);             
         },
     });
 }
@@ -576,23 +576,22 @@ function updateaparatos(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response){
-            console.log(response);
             if(response){
                 $('#intermsg').text(response.msg);
-                $("#intermodal").modal('show');
+                $("#intermodal").modal('open');
             }
+            document.getElementById('scrollwindow').scrollTo(0, 0); 
         },
         error: function(response){
-            console.log(response.responseJSON.errormsg);
             if(response.responseJSON.errormsg == null){
                 if(response){
                     //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
                 }
             }else{
                 $('#errormsg').text(response.msg);
-                $("#errormodal").modal('show');
+                $("#errormodal").modal('open');
             }
-            
+            document.getElementById('scrollwindow').scrollTo(0, 0);             
         },
     });
 }

@@ -9,6 +9,13 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
+use App\Models\tenant;
+use App\currentTenantConf;
+use DB;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+
 class RegisterController extends Controller
 {
     /*
@@ -57,6 +64,35 @@ class RegisterController extends Controller
     }
 
     /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        $this->guard()->login($user);
+
+        if ($response = $this->registered($request, $user)) {
+            return $response;
+        }
+        
+        LoginController::setMultiTenant($request);
+
+        if($request->session()->has("tenants")){
+            return redirect("/setTenant");
+        }
+
+        return $request->wantsJson()
+                    ? new JsonResponse([], 201)
+                    : redirect($this->redirectPath());
+    }
+
+    /**
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
@@ -64,10 +100,35 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+        $user = User::where("email", $data["email"])->first();
+        $tenant = tenant::where("tenant_alias", $data["company"])->first();
+        if ($user) {
+           $readyExist = DB::table("usersTenants")
+            ->where("user_id", $user->id)
+            ->where("tenant_id", $tenant->id)
+            ->first();
+
+            if ($readyExist) {
+                return $user;
+            }
+        }else{
+            $user = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password'])
+            ]);
+
+            if (!$user) {
+                return $user;
+            }
+        }
+
+        $insert = DB::table("usersTenants")->insert([
+            "user_id" => $user->id,
+            "tenant_id" => $tenant->id
         ]);
+
+        return $insert ? $user : null;
+         
     }
 }

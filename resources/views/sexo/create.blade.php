@@ -5,26 +5,18 @@
 @endsection
 
 @section('content')
-    <section class="content container-fluid main">
-        <div class="row">
-            <div class="col-md-12">
-
-                @includeif('partials.errors')
-
-                <div class="card card-default">
-                    <div class="card-header">
-                        <span class="card-title"><strong>Registrar Sexo</strong></span>
-                    </div>
-                    <div class="card-body">
-                        <form method="POST" action="{{ route('sexos.store') }}"  role="form" enctype="multipart/form-data">
-                            @csrf
-
-                            @include('sexo.form')
-
-                        </form>
-                    </div>
-                </div>
-            </div>
+    <form method="POST" action="{{ route('sexos.store') }}"  role="form" enctype="multipart/form-data">
+        @csrf
+        <h5 class="section-title title">Registrar sexo</h5>
+        <p class="breadcrumbs"> 
+            <a href="{{ url('/home') }}">Inicio</a> >
+            <a href="">Catálogos</a> >
+            <a href="{{ route('pacientes.index') }}">Sexos</a> >
+            <a href="#!">Registrar Sexo</a>
+        </p>
+        <hr style="opacity: 0.3">
+        <div class="scroll-section">
+            @include('sexo.form')            
         </div>
-    </section>
+    </form>
 @endsection

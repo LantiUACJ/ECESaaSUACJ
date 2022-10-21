@@ -5,71 +5,41 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-header">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
+<h5 class="section-title title">Entidades federativas</h5>
+<p class="breadcrumbs">
+    <a href="{{ url('/home') }}">Inicio</a> >
+    <a href="">Catálogos</a> >
+    <a href="#!">Entidades federativas</a>
+</p>
+<hr style="opacity: 0.3">
+<div class="scroll-section scroll-table">
 
-                            <span id="card_title">
-                                {{ __('Entidadesfederativa') }}
-                            </span>
+    <div class="table-content">
 
-                             <div class="float-right">
-                                <a href="{{ route('entidadesfederativas.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Create New') }}
-                                </a>
-                              </div>
-                        </div>
-                    </div>
-                    @if ($message = Session::get('success'))
-                        <div class="alert alert-success">
-                            <p>{{ $message }}</p>
-                        </div>
-                    @endif
+        <table class="striped highlight responsive-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Catalog Key</th>
+                    <th>Entidad</th>
+                    <th>Abreviatura</th>
+                </tr>
+            </thead>
 
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped table-hover">
-                                <thead class="thead">
-                                    <tr>
-                                        <th>No</th>
-                                        
-										<th>Catalogkey</th>
-										<th>Entidad</th>
-										<th>Abreviatura</th>
-
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($entidadesfederativas as $entidadesfederativa)
-                                        <tr>
-                                            <td>{{ ++$i }}</td>
-                                            
-											<td>{{ $entidadesfederativa->catalogKey }}</td>
-											<td>{{ $entidadesfederativa->entidad }}</td>
-											<td>{{ $entidadesfederativa->abreviatura }}</td>
-
-                                            <td>
-                                                <form action="{{ route('entidadesfederativas.destroy',$entidadesfederativa->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('entidadesfederativas.show',$entidadesfederativa->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('entidadesfederativas.edit',$entidadesfederativa->id) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                {!! $entidadesfederativas->links() !!}
-            </div>
-        </div>
+            <tbody>
+                @foreach ($entidadesfederativas as $entidadesfederativa)
+                <tr>
+                    <td>{{ ++$i }}</td>
+                    <td>{{ $entidadesfederativa->catalogKey }}</td>
+                    <td>{{ $entidadesfederativa->entidad }}</td>
+                    <td>{{ $entidadesfederativa->abreviatura }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
+    @if ($entidadesfederativas->count() > 0)
+        {{ $entidadesfederativas->links('vendor.pagination.materializecss') }}
+    @endif
+</div>
 @endsection

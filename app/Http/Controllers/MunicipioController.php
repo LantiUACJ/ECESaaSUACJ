@@ -18,7 +18,8 @@ class MunicipioController extends Controller
      */
     public function index()
     {
-        $municipios = Municipio::paginate();
+        session(['menunav' => "municipio"]);
+        $municipios = Municipio::paginate(10);
 
         return view('municipio.index', compact('municipios'))
             ->with('i', (request()->input('page', 1) - 1) * $municipios->perPage());

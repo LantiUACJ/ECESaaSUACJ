@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use App\Models\tenant;
+use DB;
 
 use Carbon\Carbon;
 
@@ -16,18 +18,78 @@ class UsersSeed extends Seeder
      */
     public function run()
     {
-        User::create([
+        //Los primero 2 usuarios tendran acceso a 
+
+        //USUARIOS CONACYT
+        $user = User::create([
+            "name" => "Usuario de Prueba 01",
+            "email" => "testuser@prueba.com",
+            'password'  => bcrypt('test2022')
+        ]);
+
+        DB::table("usersTenants")->insert([
+            "user_id" => $user->id,
+            "tenant_id" => 1
+        ]);
+
+        DB::table("usersTenants")->insert([
+            "user_id" => $user->id,
+            "tenant_id" => 2
+        ]);
+
+        $user = User::create([
+            "name" => "Usuario de Prueba 02",
+            "email" => "testuser2@prueba.com",
+            'password'  => bcrypt('test2022')
+        ]);
+
+        DB::table("usersTenants")->insert([
+            "user_id" => $user->id,
+            "tenant_id" => 1
+        ]);
+
+        DB::table("usersTenants")->insert([
+            "user_id" => $user->id,
+            "tenant_id" => 2
+        ]);
+
+        //Usuarios LANTI
+        /*
+        $user = User::create([
             "name" => "Cesar Javier",
             "primerApellido" => "Maldonado",
             "segundoApellido" => "Flores",
             "email" => "certero.art@hotmail.es",
-            'password'  => bcrypt('naruto114')
+            'password'  => bcrypt('potato2022')
         ]);
 
-        User::create([
-            "name" => "test user",
-            "email" => "test@test",
-            'password'  => bcrypt('test1234')
+        DB::table("usersTenants")->insert([
+            "user_id" => $user->id,
+            "tenant_id" => 1
         ]);
+
+        DB::table("usersTenants")->insert([
+            "user_id" => $user->id,
+            "tenant_id" => 2
+        ]);
+
+        $user = User::create([
+            "name" => "Yadira Kiquey",
+            "primerApellido" => "Ortiz",
+            "segundoApellido" => "Chou",
+            "email" => "yadira@prueba.com",
+            'password'  => bcrypt('potato2021')
+        ]);
+
+        DB::table("usersTenants")->insert([
+            "user_id" => $user->id,
+            "tenant_id" => 1
+        ]);
+
+        DB::table("usersTenants")->insert([
+            "user_id" => $user->id,
+            "tenant_id" => 2
+        ]);
+        */
     }
 }

@@ -16,13 +16,14 @@ class InterrogatorioController extends Controller
     function store(Request $request){
         //guardamos el interrogtorio
         $interrogatorio = new Interrogatorio;
+        $interrogatorio->tenant_id = session('tenant')->id;
         $interrogatorio->grupo_id = $request->grupo == 0? null: $request->grupo;
         $interrogatorio->padecimientoActual = $request->padecimiento;
         $result = $interrogatorio->save();
 
         //guardamos el interrogatorio en la consulta
         $consulta_id = session('consulta_id');
-        $consulta = Consulta::find($consulta_id);
+        $consulta = Consulta::where('tenant_id', session('tenant')->id)->find($consulta_id);
         $consulta->interrogatorio_id = $interrogatorio->id;
         $consulta->save();
 
@@ -38,7 +39,7 @@ class InterrogatorioController extends Controller
     function update(Request $request){
         //actualizamos el interrogtorio
         $inter_id = session('inter_id');
-        $interrogatorio = Interrogatorio::find($inter_id);
+        $interrogatorio = Interrogatorio::where('tenant_id', session('tenant')->id)->find($inter_id);
         $interrogatorio->grupo_id = $request->grupo == 0? null: $request->grupo;
         $interrogatorio->padecimientoActual = $request->padecimiento;
         $result = $interrogatorio->save();
@@ -56,6 +57,7 @@ class InterrogatorioController extends Controller
         if($inter_id){ //si existe inter_id continuar normalmente
             //guardamos los antecedentes hf
             $antecedenteshf = new Antecedenteshf;
+            $antecedenteshf->tenant_id = session('tenant')->id;
             $antecedenteshf->grupo_id = isset($request->grupo)? $request->grupo: null;
             $antecedenteshf->diabetes = $request->diabetes;
             $antecedenteshf->hipertension = $request->hipertension;
@@ -82,7 +84,7 @@ class InterrogatorioController extends Controller
             $result = $antecedenteshf->save();
 
             //guardamos los antecedentes en el interrogatorio
-            $inter = Interrogatorio::find($inter_id);
+            $inter = Interrogatorio::where('tenant_id', session('tenant')->id)->find($inter_id);
             $inter->anteHF_id = $antecedenteshf->id;
             $inter->save();
 
@@ -96,6 +98,7 @@ class InterrogatorioController extends Controller
             //guardamos el interrogtorio
 
             $interrogatorio = new Interrogatorio;
+            $interrogatorio->tenant_id = session('tenant')->id;
             $interrogatorio->paciente_id = session('pac_id');
             $interrogatorio->padecimientoActual = null;
             $interrogatorio->save();
@@ -105,6 +108,7 @@ class InterrogatorioController extends Controller
 
             //guardamos los antecedenteshf
             $antecedenteshf = new Antecedenteshf;
+            $antecedenteshf->tenant_id = session('tenant')->id;
             $antecedenteshf->grupo_id = isset($request->grupo)? $request->grupo: null;
             $antecedenteshf->diabetes = $request->diabetes;
             $antecedenteshf->hipertension = $request->hipertension;
@@ -131,7 +135,7 @@ class InterrogatorioController extends Controller
             $result = $antecedenteshf->save();
 
             //guardamos los antecedentes en el interrogatorio
-            $inter = Interrogatorio::find($inter_id);
+            $inter = Interrogatorio::where('tenant_id', session('tenant')->id)->find($inter_id);
             $inter->anteHF_id = $antecedenteshf->id;
             $inter->save();
 
@@ -147,7 +151,7 @@ class InterrogatorioController extends Controller
     function updateantehf(Request $request){
         //guardamos los antecedentes hf
         $anteHF_id = session('anteHF_id');
-        $antecedenteshf = Antecedenteshf::find($anteHF_id);
+        $antecedenteshf = Antecedenteshf::where('tenant_id', session('tenant')->id)->find($anteHF_id);
         $antecedenteshf->grupo_id = $request->grupo == 0? null: $request->grupo;
         $antecedenteshf->diabetes = $request->diabetes;
         $antecedenteshf->hipertension = $request->hipertension;
@@ -188,6 +192,7 @@ class InterrogatorioController extends Controller
             
             //guardamos los antecedentes pp
             $antecedentespp = new Antecedentespp;
+            $antecedentespp->tenant_id = session('tenant')->id;
             $antecedentespp->enfermedadInfectaContagiosa = $request->infectacontagiosa;
             $antecedentespp->enfermedadCronicaDegenerativa = $request->cronicodegenerativa;
             $antecedentespp->traumatologicos = $request->traumatologicos;
@@ -201,7 +206,7 @@ class InterrogatorioController extends Controller
             $result = $antecedentespp->save();
 
             //guardamos los antecedentes en el interrogatorio
-            $inter = Interrogatorio::find($inter_id);
+            $inter = Interrogatorio::where('tenant_id', session('tenant')->id)->find($inter_id);
             $inter->antePP_id = $antecedentespp->id;
             $inter->save();
 
@@ -215,6 +220,7 @@ class InterrogatorioController extends Controller
             //guardamos el interrogtorio
             
             $interrogatorio = new Interrogatorio;
+            $interrogatorio->tenant_id = session('tenant')->id;
             $interrogatorio->paciente_id = session('pac_id');
             $interrogatorio->padecimientoActual = null;
             $interrogatorio->save();
@@ -226,6 +232,7 @@ class InterrogatorioController extends Controller
 
             //guardamos los antecedenteshf
             $antecedentespp = new Antecedentespp;
+            $antecedentespp->tenant_id = session('tenant')->id;
             $antecedentespp->enfermedadInfectaContagiosa = $request->infectacontagiosa;
             $antecedentespp->enfermedadCronicaDegenerativa = $request->cronicodegenerativa;
             $antecedentespp->traumatologicos = $request->traumatologicos;
@@ -239,7 +246,7 @@ class InterrogatorioController extends Controller
             $result = $antecedentespp->save();
 
             //guardamos los antecedentes en el interrogatorio
-            $inter = Interrogatorio::find($inter_id);
+            $inter = Interrogatorio::where('tenant_id', session('tenant')->id)->find($inter_id);
             $inter->antePP_id = $antecedentespp->id;
             $inter->save();
 
@@ -258,7 +265,7 @@ class InterrogatorioController extends Controller
         
         $toxicojson = $request->toxicomanias != null? json_encode($request->toxicomanias): null;
 
-        $antecedentespp = Antecedentespp::find($antePP_id);
+        $antecedentespp = Antecedentespp::where('tenant_id', session('tenant')->id)->find($antePP_id);
         $antecedentespp->enfermedadInfectaContagiosa = $request->infectacontagiosa;
         $antecedentespp->enfermedadCronicaDegenerativa = $request->cronicodegenerativa;
         $antecedentespp->traumatologicos = $request->traumatologicos;
@@ -283,6 +290,10 @@ class InterrogatorioController extends Controller
         if($inter_id){ //si existe inter_id continuar normalmente
             //guardamos los antecedentes pnp
             $antecedentespnp = new Antecedentespnp;
+            $antecedentespnp->tenant_id = session('tenant')->id;
+            $antecedentespnp->tipoD_id  = $request->tipo != ""? $request->tipo: null;
+            $antecedentespnp->gradoD_id  = $request->grado != ""? $request->grado: null;
+            $antecedentespnp->origenD_id  = $request->origen != ""? $request->origen: null;
             $antecedentespnp->vivienda = $request->vivienda;
             $antecedentespnp->higiene = $request->higiene;
             $antecedentespnp->dieta = $request->dieta;
@@ -292,7 +303,7 @@ class InterrogatorioController extends Controller
             $result = $antecedentespnp->save();
 
             //guardamos los antecedentes en el interrogatorio
-            $inter = Interrogatorio::find($inter_id);
+            $inter = Interrogatorio::where('tenant_id', session('tenant')->id)->find($inter_id);
             $inter->antePNP_id = $antecedentespnp->id;
             $inter->save();
 
@@ -305,6 +316,7 @@ class InterrogatorioController extends Controller
         }else{ //si no existe inter_id, primero crear Interrogatorio, y luego crear antecedentes hf
             //guardamos el interrogtorio
             $interrogatorio = new Interrogatorio;
+            $interrogatorio->tenant_id = session('tenant')->id;
             $interrogatorio->paciente_id = session('pac_id');
             $interrogatorio->padecimientoActual = null;
             $interrogatorio->save();
@@ -314,6 +326,10 @@ class InterrogatorioController extends Controller
 
             //guardamos los antecedentespnp
             $antecedentespnp = new Antecedentespnp;
+            $antecedentespnp->tenant_id = session('tenant')->id;
+            $antecedentespnp->tipoD_id  = $request->tipo != ""? $request->tipo: null;
+            $antecedentespnp->gradoD_id  = $request->grado != ""? $request->grado: null;
+            $antecedentespnp->origenD_id  = $request->origen != ""? $request->origen: null;
             $antecedentespnp->vivienda = $request->vivienda;
             $antecedentespnp->higiene = $request->higiene;
             $antecedentespnp->dieta = $request->dieta;
@@ -323,7 +339,7 @@ class InterrogatorioController extends Controller
             $result = $antecedentespnp->save();
 
             //guardamos los antecedentes en el interrogatorio
-            $inter = Interrogatorio::find($inter_id);
+            $inter = Interrogatorio::where('tenant_id', session('tenant')->id)->find($inter_id);
             $inter->antePNP_id = $antecedentespnp->id;
             $inter->save();
 
@@ -339,7 +355,10 @@ class InterrogatorioController extends Controller
     function updateantepnp(Request $request){
         $antePNP_id = session('antePNP_id');
         //guardamos los antecedentes pnp
-        $antecedentespnp = Antecedentespnp::find($antePNP_id);
+        $antecedentespnp = Antecedentespnp::where('tenant_id', session('tenant')->id)->find($antePNP_id);
+        $antecedentespnp->tipoD_id  = $request->tipo != ""? $request->tipo: null;
+        $antecedentespnp->gradoD_id  = $request->grado != ""? $request->grado: null;
+        $antecedentespnp->origenD_id  = $request->origen != ""? $request->origen: null;
         $antecedentespnp->vivienda = $request->vivienda;
         $antecedentespnp->higiene = $request->higiene;
         $antecedentespnp->dieta = $request->dieta;
@@ -360,6 +379,7 @@ class InterrogatorioController extends Controller
         if($inter_id){ //si existe inter_id continuar normalmente
             //guardamos el interrogatorio de AS
             $interrogatorioaparato = new Interrogatorioaparato;
+            $interrogatorioaparato->tenant_id = session('tenant')->id;
             $interrogatorioaparato->signosYsintomas = $request->signos;
             $interrogatorioaparato->aparatoCardiovascular = $request->cardiovascular;
             $interrogatorioaparato->aparatoRespiratorio = $request->respiratorio;
@@ -376,7 +396,7 @@ class InterrogatorioController extends Controller
             $result = $interrogatorioaparato->save();
 
             //guardamos el inter aparatos y sistemas en el interrogatorio
-            $inter = Interrogatorio::find($inter_id);
+            $inter = Interrogatorio::where('tenant_id', session('tenant')->id)->find($inter_id);
             $inter->interAS_id = $interrogatorioaparato->id;
             $inter->save();
 
@@ -389,6 +409,7 @@ class InterrogatorioController extends Controller
         }else{ //si no existe inter_id, primero crear interrogatorio, y luego crear antecedentes hf
             //guardamos el interrogtorio
             $interrogatorio = new Interrogatorio;
+            $interrogatorio->tenant_id = session('tenant')->id;
             $interrogatorio->paciente_id = session('pac_id');
             $interrogatorio->padecimientoActual = null;
             $interrogatorio->save();
@@ -398,12 +419,13 @@ class InterrogatorioController extends Controller
 
             //guardamos el interrogatorio en la consulta
             $consulta_id = session('consulta_id');
-            $consulta = Consulta::find($consulta_id);
+            $consulta = Consulta::where('tenant_id', session('tenant')->id)->find($consulta_id);
             $consulta->interrogatorio_id = $interrogatorio->id;
             $consulta->save();
 
             //guardamos el interrogatorio AS
             $interrogatorioaparato = new Interrogatorioaparato;
+            $interrogatorioaparato->tenant_id = session('tenant')->id;
             $interrogatorioaparato->signosYsintomas = $request->signos;
             $interrogatorioaparato->aparatoCardiovascular = $request->cardiovascular;
             $interrogatorioaparato->aparatoRespiratorio = $request->respiratorio;
@@ -420,7 +442,7 @@ class InterrogatorioController extends Controller
             $result = $interrogatorioaparato->save();
 
             //guardamos aparatos y sistemas en el interrogatorio
-            $inter = interrogatorio::find($inter_id);
+            $inter = interrogatorio::where('tenant_id', session('tenant')->id)->find($inter_id);
             $inter->interAS_id = $interrogatorioaparato->id;
             $inter->save();
 
@@ -437,7 +459,7 @@ class InterrogatorioController extends Controller
         $interAS_id = session('interAS_id');
         
         //guardamos el interrogatorio de AS
-        $interrogatorioaparato = Interrogatorioaparato::find($interAS_id);
+        $interrogatorioaparato = Interrogatorioaparato::where('tenant_id', session('tenant')->id)->find($interAS_id);
         $interrogatorioaparato->signosYsintomas = $request->signos;
         $interrogatorioaparato->aparatoCardiovascular = $request->cardiovascular;
         $interrogatorioaparato->aparatoRespiratorio = $request->respiratorio;

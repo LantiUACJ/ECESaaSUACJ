@@ -15,16 +15,18 @@ class UserConsultation extends Notification
 
     public $user;
     public $consulta;
+    public $tenant;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($user, $consulta)
+    public function __construct($user, $consulta, $tenant)
     {
         $this->user = $user;
         $this->consulta = $consulta;
+        $this->tenant = $tenant;
     }
 
     /**
@@ -48,6 +50,7 @@ class UserConsultation extends Notification
     {
         return [
             'user_id' => $this->user['id'],
+            'tenant_id' => $this->tenant,
             'consulta_id' => $this->consulta['id'],
             'name' => $this->user['name'],
             'email' => $this->user['email'],

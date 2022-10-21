@@ -1,111 +1,138 @@
 @extends('layouts.app')
 
 @section('template_title')
-    {{ $paciente->name ?? 'Show Paciente' }}
+    {{ $paciente->name ?? 'Ver Paciente' }}
 @endsection
 
 @section('content')
-    <section class="mainhome content container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="float-left">
-                            <span class="card-title"><strong>Datos del paciente:</strong> {{ $paciente->nombre }} {{ $paciente->primerApellido }} {{ $paciente->segundoApellido }}</span>
-                        </div>
-                        <div class="float-right">
-                            <a class="btn btn-primary btn-sm" href="{{ route('pacientes.index') }}"> Regresar</a>
+    <h5 class="section-title title">Consultar datos del paciente</h5>
+    <p class="breadcrumbs">
+        <a href="{{ url('/home') }}">Inicio</a> >
+        <a href="{{ route('pacientes.index') }}">Pacientes</a> >
+        <a href="#!">Consultar paciente</a>
+    </p>
+    <hr style="opacity: 0.3">
+
+    <div class="scroll-section">
+        <div class="form-group">
+            <h6 class="subtt">Datos generales del paciente: <b>{{ $paciente->nombre }} {{ $paciente->primerApellido }} {{ $paciente->segundoApellido }}</b></h6>
+            <div class="input-field col s12 m6 l6 txtarin no-mar">
+                <div class="row nomargbot">
+                    <div class="col s12">
+                        <div class="row nomargbot">
+                            <div class="col s12 m6 l4">
+                                <p>CURP: <b>{{ $paciente->curp }}</b></p>
+                            </div>
+                            <div class="col s12 m6 l4">
+                                <p>Fecha de nacimiento: <b>{{ \Carbon\Carbon::parse($paciente->fechaNacimiento)->format('d/m/Y')  }}</b></p>
+                            </div>
+                            <div class="col s12 m6 l4">
+                                <p>Edad: <b>{{\Carbon\Carbon::parse($paciente->fechaNacimiento)->age }} años</b></p>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="card-body  text-left">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-sm">
-                                    <div class="form-group">
-                                        <strong>CURP:</strong>
-                                        {{ $paciente->curp }}
-                                    </div>
-                                </div>
-                                <div class="col-sm">
-                                    <div class="form-group">
-                                        <strong>Fecha de nacimiento:</strong>
-                                        {{ \Carbon\Carbon::parse($paciente->fechaNacimiento)->format('d/m/Y')  }}
-                                    </div>
-                                </div>
-                                <div class="col-sm">
-                                    <div class="form-group">
-                                        <strong>Edad:</strong>
-                                        {{\Carbon\Carbon::parse($paciente->fechaNacimiento)->age }} años
-                                    </div>
-                                </div>
+                </div>
+            </div>
+            <div class="input-field col s12 m6 l6 txtarin no-mar">
+                <div class="row nomargbot">
+                    <div class="col s12">
+                        <div class="row nomargbot">
+                            <div class="col s12 m6 l4">
+                                <p>Tipo de sangre: <b> {{ $paciente->gruposanguineo->slug }} </b></p>
                             </div>
-                            <div class="row">
-                                <div class="col-sm">
-                                    <div class="form-group">
-                                        <strong>Sexo:</strong>
-                                        {{ $paciente->sexo->descripcion }}
-                                    </div>
-                                </div>
-                                <div class="col-sm">                                    
-                                    <div class="form-group">
-                                        <strong>Municipio de nacimiento:</strong>
-                                        {{ $paciente->municipionac->municipio }}
-                                    </div>                                    
-                                </div>
-                                <div class="col-sm">
-                                    <div class="form-group">
-                                        <strong>Entidad de nacimiento:</strong>
-                                        {{ $paciente->entidadesfederativanac->entidad }}
-                                    </div>
-                                </div>
+                            <div class="col s12 m6 l4">
+                                <p>Sexo: <b>{{ $paciente->sexo->descripcion }} </b></p>
                             </div>
-
-                            <div class="card">
-                                <div class="card-header">
-                                    <span class="card-subtitle"><strong>Domicilio actual</strong></span>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-sm">
-                                            <div class="form-group">
-                                                <strong>Calle:</strong>
-                                                {{ $paciente->calle }}
-                                            </div>
-                                        </div>
-                                        <div class="col-sm">
-                                            <div class="form-group">
-                                                <strong>Número:</strong>
-                                                {{ $paciente->numero }}
-                                            </div>
-                                        </div>
-                                        <div class="col-sm">
-                                            <div class="form-group">
-                                                <strong>Colonia:</strong>
-                                                {{ $paciente->colonia }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm">
-                                            <div class="form-group">
-                                                <strong>Municipio:</strong>
-                                                {{ $paciente->municipio->municipio }}
-                                            </div>
-                                        </div>
-                                        <div class="col-sm">
-                                            <div class="form-group">
-                                                <strong>Entidad:</strong>
-                                                {{ $paciente->entidadesfederativa->entidad }}
-                                            </div> 
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="col s12 m6 l4">
+                                <p>Género: <b>{{ $paciente->genero->descripcion }} </b></p>
                             </div>
-                        </div>                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="input-field col s12 m6 l6 txtarin no-mar">
+                <div class="row nomargbot">
+                    <div class="col s12">
+                        <div class="row nomargbot">
+                            <div class="col s12 m6 l4">
+                                <p>¿Se considerá indigena?: <b>{{ $paciente->indigena->opcion }}</b></p>
+                            </div>
+                            <div class="col s12 m6 l4">
+                                <p>¿Se autodenomina afromexicano?: <b>{{ $paciente->afromexicano->opcionAfro }}</b></p>
+                            </div>
+                            <div class="col s12 m6 l4">
+                                <p>Correo electrónico: <b>{{ $paciente->email }}</b></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="input-field col s12 m6 l6 txtarin no-mar">
+                <div class="row nomargbot">
+                    <div class="col s12">
+                        <div class="row nomargbot">
+                            <div class="col s12 m6 l4">
+                                <p>Número de teléfono (10 dígitos): <b>{{ $paciente->phone }}</b></p>
+                            </div>
+                            <div class="col s12 m6 l4">
+                                <p>Entidad de nacimiento: <b> {{ $paciente->entidadesfederativanac->entidad }}</b></p>
+                            </div>
+                            <div class="col s12 m6 l4">
+                                <p>Municipio de nacimiento: <b>{{ $paciente->municipionac->municipio }}</b></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+        <div class="form-group">
+            <h6 class="subtt">Derechohabiencias</h6>
+            <div class="row nomargbot">
+                <div class="col s12">
+                    <div class="row nomargbot">
+                        @foreach($paciente->dhp as $pdh)
+                        <div class="col s12 m6 l4">
+                            
+                                <p><b>{{ $pdh->derechohabiencia->siglaDH }}</b></p>
+                           
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <h6 class="subtt">Domicilio actual</h6>
+            <div class="row nomargbot">
+                <div class="col s12">
+                    <div class="row nomargbot">
+                        <div class="col s12 m6 l4">
+                            <p>Calle: <b>{{ $paciente->calle }}</b></p>
+                        </div>
+                        <div class="col s12 m6 l4">
+                            <p>Número: <b>{{ $paciente->numero }}</b></p>
+                        </div>
+                        <div class="col s12 m6 l4">
+                            <p>Colonia: <b>{{ $paciente->colonia }}</b></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row nomargbot">
+                <div class="col s12">
+                    <div class="row nomargbot">
+                        <div class="col s12 m6 l4">
+                            <p>Entidad: <b>{{ $paciente->entidadesfederativa->entidad }}</b></p>
+                        </div>
+                        <div class="col s12 m6 l4">
+                            <p>Municipio: <b>{{ $paciente->municipio->municipio }}</b></p>
+                        </div>
+                        <div class="col s12 m6 l4">
+                            <p> <b></b></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

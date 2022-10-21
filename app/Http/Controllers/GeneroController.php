@@ -18,6 +18,7 @@ class GeneroController extends Controller
      */
     public function index()
     {
+        session(['menunav' => "genero"]);
         $generos = Genero::paginate();
 
         return view('genero.index', compact('generos'))

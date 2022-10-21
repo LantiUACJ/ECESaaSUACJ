@@ -5,71 +5,41 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-header">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
+<h5 class="section-title title">Municipios</h5>
+<p class="breadcrumbs">
+    <a href="{{ url('/home') }}">Inicio</a> >
+    <a href="">Catálogos</a> >
+    <a href="#!">Municipios</a>
+</p>
+<hr style="opacity: 0.3">
+<div class="scroll-section scroll-table">
 
-                            <span id="card_title">
-                                {{ __('Municipio') }}
-                            </span>
+    <div class="table-content">
 
-                             <div class="float-right">
-                                <a href="{{ route('municipios.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Create New') }}
-                                </a>
-                              </div>
-                        </div>
-                    </div>
-                    @if ($message = Session::get('success'))
-                        <div class="alert alert-success">
-                            <p>{{ $message }}</p>
-                        </div>
-                    @endif
+        <table class="striped highlight responsive-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Catalog key</th>
+                    <th>Entidad federativa</th>	
+                    <th>Municipio</th>
+                </tr>
+            </thead>
 
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped table-hover">
-                                <thead class="thead">
-                                    <tr>
-                                        <th>No</th>
-                                        
-										<th>Catalogkey</th>
-										<th>Municipio</th>
-										<th>Entidadfederativa Id</th>
-
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($municipios as $municipio)
-                                        <tr>
-                                            <td>{{ ++$i }}</td>
-                                            
-											<td>{{ $municipio->catalogKey }}</td>
-											<td>{{ $municipio->municipio }}</td>
-											<td>{{ $municipio->entidadFederativa_id }}</td>
-
-                                            <td>
-                                                <form action="{{ route('municipios.destroy',$municipio->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('municipios.show',$municipio->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('municipios.edit',$municipio->id) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                {!! $municipios->links() !!}
-            </div>
-        </div>
+            <tbody>
+                @foreach ($municipios as $municipio)
+                <tr>
+                    <td>{{ ++$i }}</td>
+                    <td>{{ $municipio->catalogKey }}</td>
+                    <td>{{ $municipio->entidadesfederativa->entidad }}</td>
+                    <td>{{ $municipio->municipio }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
+    @if ($municipios->count() > 0)
+        {{ $municipios->links('vendor.pagination.materializecss') }}
+    @endif
+</div>
 @endsection

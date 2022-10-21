@@ -1,23 +1,25 @@
 var url = $('meta[name="base_url"]').attr('content');
 
 //Como por ahora no se me ocurre una mejor solucion creare botones de inicio para cada text area. Espero poder remplazarlo pronto.
-const startBtnMtv = document.getElementById('startrecmotivo'); //Motivo
-const stopBtnMtv = document.getElementById('stoprecmotivo');
 
-const startBtnCc = document.getElementById('startreccuadro'); //Cuadro clinico
-const stopBtnCc = document.getElementById('stopreccuadro');
+const startBtnMtv = document.getElementById('startmotivo'); //Motivo
+const stopBtnMtv = document.getElementById('stopmotivo');
 
-const startBtnRs = document.getElementById('startrecres'); //Resultados
-const stopBtnRs = document.getElementById('stoprecres');
+const startBtnCc = document.getElementById('startcuadro'); //Cuadro clinico
+const stopBtnCc = document.getElementById('stopcuadro');
 
-const startBtnDiag = document.getElementById('startrecdiag'); //Diagnostico
-const stopBtnDiag = document.getElementById('stoprecdiag');
+const startBtnRs = document.getElementById('startres'); //Resultados
+const stopBtnRs = document.getElementById('stopres');
 
-const startBtnPron = document.getElementById('startrecpron'); //Pronostico
-const stopBtnPron = document.getElementById('stoprecpron');
+const startBtnDiag = document.getElementById('startdiag'); //Diagnostico
+const stopBtnDiag = document.getElementById('stopdiag');
 
-const startBtnIt = document.getElementById('startrecindica'); //Indicacion T.
-const stopBtnIt = document.getElementById('stoprecindica');
+const startBtnPron = document.getElementById('startpron'); //Pronostico
+const stopBtnPron = document.getElementById('stoppron');
+
+const startBtnIt = document.getElementById('startindica'); //Indicacion T.
+const stopBtnIt = document.getElementById('stopindica');
+
 
 var textparameter = ""; 
 
@@ -45,13 +47,15 @@ if(startBtns.length > 0){
 }
 */
 
+//Jquery
+
+
 //  -MOTIVO
 startBtnMtv.addEventListener('click', function() {
     textparameter = "motivo";
-    navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-        .then(handleSuccessMtv);
-    startBtnMtv.classList.add('hiddenli');
-    stopBtnMtv.classList.remove('hiddenli');
+    navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(handleSuccessMtv);
+    startBtnMtv.style.display = "none"; 
+    stopBtnMtv.style.display = "block"; 
 });
 
 const handleSuccessMtv = function(stream) {
@@ -71,8 +75,8 @@ const handleSuccessMtv = function(stream) {
 
     stopBtnMtv.addEventListener('click', function() {
         mediaRecorder.stop();
-        startBtnMtv.classList.remove('hiddenli');
-        stopBtnMtv.classList.add('hiddenli');
+        startBtnMtv.style.display = "block"; 
+        stopBtnMtv.style.display = "none"; 
     });
 
     mediaRecorder.start();
@@ -82,10 +86,9 @@ const handleSuccessMtv = function(stream) {
 //  -CUADRO CLINICO
 startBtnCc.addEventListener('click', function() {
     textparameter = "cuadro";
-    navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-        .then(handleSuccessCc);
-    startBtnCc.classList.add('hiddenli');
-    stopBtnCc.classList.remove('hiddenli');
+    navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(handleSuccessCc);
+    startBtnCc.style.display = "none"; 
+    stopBtnCc.style.display = "block"; 
 });
 
 const handleSuccessCc = function(stream) {
@@ -105,8 +108,8 @@ const handleSuccessCc = function(stream) {
 
     stopBtnCc.addEventListener('click', function() {
         mediaRecorder.stop();
-        startBtnCc.classList.remove('hiddenli');
-        stopBtnCc.classList.add('hiddenli');
+        startBtnCc.style.display = "block"; 
+        stopBtnCc.style.display = "none"; 
     });
 
     mediaRecorder.start();
@@ -118,8 +121,8 @@ startBtnRs.addEventListener('click', function() {
     textparameter = "resultados";
     navigator.mediaDevices.getUserMedia({ audio: true, video: false })
         .then(handleSuccessRs);
-    startBtnRs.classList.add('hiddenli');
-    stopBtnRs.classList.remove('hiddenli');
+    startBtnRs.style.display = "none"; 
+    stopBtnRs.style.display = "block"; 
 });
 
 const handleSuccessRs = function(stream) {
@@ -139,8 +142,8 @@ const handleSuccessRs = function(stream) {
 
     stopBtnRs.addEventListener('click', function() {
         mediaRecorder.stop();
-        startBtnRs.classList.remove('hiddenli');
-        stopBtnRs.classList.add('hiddenli');
+        startBtnRs.style.display = "block"; 
+        stopBtnRs.style.display = "none"; 
     });
 
     mediaRecorder.start();
@@ -150,10 +153,9 @@ const handleSuccessRs = function(stream) {
 //  -DIAGNOSTICO
 startBtnDiag.addEventListener('click', function() {
     textparameter = "diagnostico";
-    navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-        .then(handleSuccessDiag);
-    startBtnDiag.classList.add('hiddenli');
-    stopBtnDiag.classList.remove('hiddenli');
+    navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(handleSuccessDiag);
+    startBtnDiag.style.display = "none"; 
+    stopBtnDiag.style.display = "block"; 
 });
 
 const handleSuccessDiag = function(stream) {
@@ -173,8 +175,8 @@ const handleSuccessDiag = function(stream) {
 
     stopBtnDiag.addEventListener('click', function() {
         mediaRecorder.stop();
-        startBtnDiag.classList.remove('hiddenli');
-        stopBtnDiag.classList.add('hiddenli');
+        startBtnDiag.style.display = "block"; 
+        stopBtnDiag.style.display = "none"; 
     });
 
     mediaRecorder.start();
@@ -186,8 +188,8 @@ startBtnPron.addEventListener('click', function() {
     textparameter = "pronostico";
     navigator.mediaDevices.getUserMedia({ audio: true, video: false })
         .then(handleSuccessPron);
-    startBtnPron.classList.add('hiddenli');
-    stopBtnPron.classList.remove('hiddenli');
+    startBtnPron.style.display = "none"; 
+    stopBtnPron.style.display = "block"; 
 });
 
 const handleSuccessPron = function(stream) {
@@ -207,8 +209,8 @@ const handleSuccessPron = function(stream) {
 
     stopBtnPron.addEventListener('click', function() {
         mediaRecorder.stop();
-        startBtnPron.classList.remove('hiddenli');
-        stopBtnPron.classList.add('hiddenli');
+        startBtnPron.style.display = "block"; 
+        stopBtnPron.style.display = "none"; 
     });
 
     mediaRecorder.start();
@@ -220,8 +222,8 @@ startBtnIt.addEventListener('click', function() {
     textparameter = "indicacion";
     navigator.mediaDevices.getUserMedia({ audio: true, video: false })
         .then(handleSuccessIt);
-    startBtnIt.classList.add('hiddenli');
-    stopBtnIt.classList.remove('hiddenli');
+    startBtnIt.style.display = "none"; 
+    stopBtnIt.style.display = "block"; 
 });
 
 const handleSuccessIt = function(stream) {
@@ -241,8 +243,8 @@ const handleSuccessIt = function(stream) {
 
     stopBtnIt.addEventListener('click', function() {
         mediaRecorder.stop();
-        startBtnIt.classList.remove('hiddenli');
-        stopBtnIt.classList.add('hiddenli');
+        startBtnIt.style.display = "block"; 
+        stopBtnIt.style.display = "none"; 
     });
 
     mediaRecorder.start();
@@ -253,7 +255,6 @@ const handleSuccessIt = function(stream) {
 function transcriptSpeech(audio, text){
     var fd = new FormData();
     fd.append('audio', audio);
-
     $.ajax({
         url: url + "/transcriptspeech",
         type: "POST",

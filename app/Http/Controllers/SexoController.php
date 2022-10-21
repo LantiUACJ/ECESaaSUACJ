@@ -18,6 +18,7 @@ class SexoController extends Controller
      */
     public function index()
     {
+        session(['menunav' => "sexo"]);
         $sexos = Sexo::orderby('descripcion','asc')->paginate(10);
 
         return view('sexo.index', compact('sexos'))
@@ -32,7 +33,6 @@ class SexoController extends Controller
     public function create()
     {
         $sexo = new Sexo();
-        $sexo->numero = Sexo::latest('id')->first()->id+1;
         return view('sexo.create', compact('sexo'));
     }
 
@@ -46,9 +46,12 @@ class SexoController extends Controller
     {
         request()->validate(
             [
+                'numero' => 'required|unique:sexos',
                 'descripcion' => 'required|unique:sexos'
             ],
             [
+                'numero.required' => 'El catalog key del sexo es obligatorio.',
+                'numero.unique' => 'El catalog key del sexo ya esta registrado.',
                 'descripcion.required' => 'La descripción del sexo es obligatoria.',
                 'descripcion.unique' => 'La descripción del sexo ya esta registrada.'
             ]
@@ -97,9 +100,12 @@ class SexoController extends Controller
     {
         request()->validate(
             [
+                'numero' => 'required|unique:sexos,numero,'.$sexo->id,
                 'descripcion' => 'required|unique:sexos,descripcion,'.$sexo->id
             ],
             [
+                'numero.required' => 'El catalog key del sexo es obligatorio.',
+                'numero.unique' => 'El catalog key del sexo ya esta registrado.',
                 'descripcion.required' => 'La descripción del sexo es obligatoria.',
                 'descripcion.unique' => 'La descripción del sexo ya esta registrada.'
             ]

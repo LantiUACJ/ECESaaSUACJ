@@ -8,6 +8,10 @@ window.addEventListener("load", init(), false);
 function init(){
     //Crear funcion para mostrar las imagenes de los archivos guardados de la consulta
     //fillFilesConsulta();
+
+    if(document.getElementById('ispregnant').checked){
+        $('#pregContainer').removeClass('hide');
+    }
 }
 
 $('#price').on('input', function() {
@@ -18,6 +22,14 @@ $('#price2').on('input', function() {
     this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
 });
 
+$('input[data-id=price2]').on('input', function() {
+    this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+});
+
+$('#files').on('click', function(){
+    $('#filename').trigger('click');   
+});
+
 $('#filename').on('change', function(){
     if($('#jsonfiles').val() == ""){
         $('#filescontainer').empty();
@@ -25,52 +37,63 @@ $('#filename').on('change', function(){
 
     let files = $('#filename').get(0).files;
 
-    if($('#filescontainer').hasClass('hiddenli')){
-        $('#filescontainer').removeClass('hiddenli');
-    }
-
     for (let i = 0; i < files.length; i++) {
         var filename = files[i].name;
         var extension = filename.replace(/^.*\./, '');
         var link = "";
         switch(extension){
             case 'png':
-                var link = '<a href="" download>'+
+                /*var link = '<a href="" download>'+
                     '<img style="margin: 5px" class="resultfile imglink" src="'+URL.createObjectURL(files[i])+'"'+
                     'data-toggle="tooltip" data-placement="top" title="'+filename+'">'+
-                '</a>';
+                '</a>';*/
+                var link = 
+                    '<a href="#" class="img-grid-c">'+
+                        '<img src="'+URL.createObjectURL(files[i])+'">'+
+                    '</a>';
                 break;
             case 'jpg':
-                var link = '<a href="" download>'+
+                /*var link = '<a href="" download>'+
                     '<img style="margin: 5px" class="resultfile imglink" src="'+URL.createObjectURL(files[i])+'"'+
                     'data-toggle="tooltip" data-placement="top" title="'+filename+'">'+
-                '</a>';
+                '</a>';*/
+                var link = 
+                    '<a href="#" class="img-grid-c">'+
+                        '<img src="'+URL.createObjectURL(files[i])+'">'+
+                    '</a>';
                 break;
             case 'docx':
-                var link = '<a href="" download>'+
+                /*var link = '<a href="" download>'+
                     '<img style="margin: 5px" class="resultfile imglink" src="'+url + '/img/icons/docx.png'+'"'+
                     'data-toggle="tooltip" data-placement="top" title="'+filename+'">'+
-                '</a>';
+                '</a>';*/
+                var link = 
+                    '<a href="#" class="img-grid-c">'+
+                        '<img src="'+url+ '/img/icons/docx.png'+'">'+
+                    '</a>';
                 break;
             case 'doc':
-                var link = '<a href="" download>'+
+                /*var link = '<a href="" download>'+
                     '<img style="margin: 5px" class="resultfile imglink" src="'+url + '/img/icons/doc.png'+'"'+
                     'data-toggle="tooltip" data-placement="top" title="'+filename+'">'+
-                '</a>';
+                '</a>';*/
+                var link =
+                    '<a href="#" class="img-grid-c">'+
+                        '<img src="'+url + '/img/icons/doc.png'+'">'+
+                    '</a>';
                 break;
             case 'pdf':
-                var link = '<a href="" download>'+
+                /*var link = '<a href="" download>'+
                     '<img style="margin: 5px" class="resultfile imglink" src="'+url + '/img/icons/pdf.png'+'"'+
                     'data-toggle="tooltip" data-placement="top" title="'+filename+'">'+
-                '</a>';
+                '</a>';*/
+                var link =
+                    '<a href="#" class="img-grid-c">'+
+                        '<img src="'+url + '/img/icons/pdf.png'+'">'+
+                    '</a>';
                 break;
         }
         $('#filescontainer').append(link);
-
-        $('[data-toggle="tooltip"]').tooltip({
-            trigger : 'hover',
-            boundary: 'viewport'
-        });
     }
 });
 
@@ -80,7 +103,6 @@ function fillFilesConsulta(){
         console.log(urlasset);
         var arrayfiles = JSON.parse(jsonfiles);
         var contenedor = $("#filescontainer");
-        contenedor.removeClass('hiddenli');
         contenedor.empty();
         
         arrayfiles.forEach(element => {
@@ -177,7 +199,7 @@ function subformbutton(){ //store consulta
     for (let i = 0; i < filename.length; i++) {
         fd.append('filename[]', filename[i]);
     }
-
+    
     if(document.getElementById('ispregnant').checked){
         clearRadios();
         if(checkRadios()){ //Funcion que revisa que los radios hayan sido seleccionados 
@@ -213,47 +235,40 @@ function subformbutton(){ //store consulta
                 processData: false,
                 contentType: false,
                 data: fd,
-                complete: function () {
-                    $('#spinningmodal').modal('hide');
-                },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(response){
-                    console.log(response);
+                    document.getElementById('scrollwindow').scrollTo(0, 0);
                     if(response){
-                        $('#consultamsg').text(response.msg);
-                        $("#consultamodal").modal('show');
+                        $('#modalmsg').text(response.msg);
+                        $('#consultamodal').modal('open');
         
                         $('#interrogatorio-tab').removeClass("disabled");
                         $('#exploracion-tab').removeClass("disabled");
                     }
                     clearErrorsConsulta();
-                    $('#consultasubmit').css("display", "none");
-                    $('#consultaupdate').css("display", "block");
-                    
-                    $('#embarazosubmit').css("display", "none");
-                    $('#embarazoupdate').css("display", "block");
+                    $('#consultasubmit').addClass('hide');
+                    $('#consultaupdate').removeClass('hide');
                 },
                 error: function(response){
-                    console.log(response);
+                    document.getElementById('scrollwindow').scrollTo(0, 0);
                     if(response.responseJSON.errormsg == null){
-                        console.log(response);
                         if(response.responseJSON.errors != null){
                             //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
                             errorValidationConsulta(response);
                         }
                     }else{
                         $('#errormsg').text(response.msg);
-                        $("#errormodal").modal('show');
+                        $('#errormodal').modal('open');
                     }
                     
                 },
             });
         }else{
-            alert("Campos faltantes de la seccion de consulta por embarazo.");
+            $('#infomsg').text("Hay campos faltantes en la sección de consulta por embarazo.");
+            $('#infomissing').modal('open');
         }
-        
     }else{
         fd.append('motivo', motivo);
         $.ajax({
@@ -266,26 +281,31 @@ function subformbutton(){ //store consulta
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(response){
+                document.getElementById('scrollwindow').scrollTo(0, 0);
                 if(response){
-                    $('#consultamsg').text(response.msg);
-                    $("#consultamodal").modal('show');
+                    $('#modalmsg').text(response.msg);
+                    $('#consultamodal').modal('open');
     
                     $('#interrogatorio-tab').removeClass("disabled");
                     $('#exploracion-tab').removeClass("disabled");
                 }
                 clearErrorsConsulta();
-                $('#consultasubmit').css("display", "none");
-                $('#consultaupdate').css("display", "block"); 
+                $('#consultasubmit').addClass('hide');
+                $('#consultaupdate').removeClass('hide');
             },
             error: function(response){
                 if(response.responseJSON.errormsg == null){
                     if(response.responseJSON.errors != null){
                         //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
                         errorValidationConsulta(response);
+                        
+                        document.getElementById('scrollwindow').scrollTo(0, 0);
+                        $('#errormsg').text("Faltan Datos por Capturar!");
+                        $('#errormodal').modal('open');
                     }
                 }else{
                     $('#errormsg').text(response.msg);
-                    $("#errormodal").modal('show');
+                    $('#errormodal').modal('open');
                 }
             },
         });
@@ -297,7 +317,8 @@ function Testspiningmodal(){
 }
 
 function updateformbutton(){ //update consulta
-    let realselect = $('.item').attr("data-value");
+    
+    /*let realselect = $('.item').attr("data-value");
     let isnum = /^\d+$/.test(realselect);
     console.log(isnum);
 
@@ -305,7 +326,9 @@ function updateformbutton(){ //update consulta
         var select = realselect;
     }else{
         var select = $("input[name=real-select-diag]").val();
-    }
+    }*/
+
+    var select = $("input[name=select-diag]").val();
 
     let pacId = $("input[name=pac_id]").val();
     let motivo = $("textarea[name=motivo]").val();
@@ -316,8 +339,6 @@ function updateformbutton(){ //update consulta
     let indicacion = $("textarea[name=indicacion]").val();
     //let select = $("input[name=select-diag]").val();
     let filename = $('#filename').get(0).files;
-
-    console.log(select);
 
     var fd = new FormData();
     fd.append('motivo', motivo);
@@ -334,7 +355,9 @@ function updateformbutton(){ //update consulta
 
     if(document.getElementById('ispregnant').checked){
         clearRadios();
+
         if(checkRadios()){ //Funcion que revisa que los radios hayan sido seleccionados
+
             var embarazo = $("input[name=consultaembarazo]:checked").val();
             var trimestre = $("input[name=trimestreembarazo]:checked").val();
             var altoriesgo = $("input[name=riesgoembarazo]:checked").val();
@@ -365,29 +388,30 @@ function updateformbutton(){ //update consulta
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(response){
-                    console.log(response);
                     if(response){
                         $('#updateconsultamsg').text(response.msg);
-                        $("#updateconsultamodal").modal('show');
+                        $('#updateconsultamodal').modal('open');
                     }
+                    clearErrorsConsulta();
+                    document.getElementById('scrollwindow').scrollTo(0, 0);
                 },
                 error: function(response){
-                    console.log(response);
                     if(response.responseJSON.errormsg == null){
-                        console.log(response);
                         if(response.responseJSON.errors != null){
                             //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
                             errorValidationConsulta(response);
                         }
                     }else{
                         $('#errormsg').text(response.msg);
-                        $("#errormodal").modal('show');
+                        $('#errormodal').modal('open');
                     }
-                    
+                    document.getElementById('scrollwindow').scrollTo(0, 0);                    
                 },
             });
-        }else
-            alert("Campos faltantes de la seccion de consulta por embarazo.");
+        }else{
+            $('#infomsg').text("Hay campos faltantes en la sección de consulta por embarazo.");
+            $('#infomissing').modal('open');
+        }
     }else{
         $.ajax({
             url: url + "/updateconsulta/" + pacId,
@@ -399,16 +423,14 @@ function updateformbutton(){ //update consulta
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(response){
-                $('#spinningmodal').modal('hide');
                 if(response){
                     $('#updateconsultamsg').text(response.msg);
-                    $("#updateconsultamodal").modal('show');
+                    $('#updateconsultamodal').modal('open');
                 }
                 clearErrorsConsulta(); //limpia los mensaje de error en caso de que los haya
+                document.getElementById('scrollwindow').scrollTo(0, 0);
             },
             error: function(response){
-                $('#spinningmodal').modal('hide');
-                console.log(response.responseJSON.errormsg);
                 if(response.responseJSON.errormsg == null){
                     if(response){
                         //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
@@ -416,9 +438,9 @@ function updateformbutton(){ //update consulta
                     }
                 }else{
                     $('#errormsg').text(response.msg);
-                    $("#errormodal").modal('show');
+                    $('#errormodal').modal('open');
                 }
-                
+                document.getElementById('scrollwindow').scrollTo(0, 0);                
             },
         });
     }
@@ -428,244 +450,112 @@ function updateformbutton(){ //update consulta
 function checkRadios(){
     let noerror = true;
     if(typeof $("input[name=consultaembarazo]:checked").val() == 'undefined'){
-        $('#error-consultaembarazo').css("display", 'block');
+        $('#error-consultaembarazo').addClass('show');
         $("label[for=consultaembarazo1]").addClass('invalid-label');
         $("label[for=consultaembarazo2]").addClass('invalid-label');
         noerror = false;
     }
     if(typeof $("input[name=trimestreembarazo]:checked").val() == 'undefined'){
-        $('#error-trimestreembarazo').css("display", 'block');
+        $('#error-trimestreembarazo').addClass('show');
         $("label[for=trimestreembarazo1]").addClass('invalid-label');
         $("label[for=trimestreembarazo2]").addClass('invalid-label');
         $("label[for=trimestreembarazo3]").addClass('invalid-label');
         noerror = false;
     }
     if(typeof $("input[name=riesgoembarazo]:checked").val() == 'undefined'){
-        $('#error-riesgoembarazo').css("display", 'block');
+        $('#error-riesgoembarazo').addClass('show');
         $("label[for=riesgoembarazo1]").addClass('invalid-label');
         $("label[for=riesgoembarazo2]").addClass('invalid-label');
         noerror = false;
     }
     if(typeof $("input[name=diabetesembarazo]:checked").val() == 'undefined'){
-        $('#error-diabetesembarazo').css("display", 'block');
+        $('#error-diabetesembarazo').addClass('show');
         $("label[for=diabetesembarazo1]").addClass('invalid-label');
         $("label[for=diabetesembarazo2]").addClass('invalid-label');
         noerror = false;
     }
     if(typeof $("input[name=infeccionembarazo]:checked").val() == 'undefined'){
-        $('#error-infeccionembarazo').css("display", 'block');
+        $('#error-infeccionembarazo').addClass('show');
         $("label[for=infeccionembarazo1]").addClass('invalid-label');
         $("label[for=infeccionembarazo2]").addClass('invalid-label');
         noerror = false;
     }
     if(typeof $("input[name=preclampsiaembarazo]:checked").val() == 'undefined'){
-        $('#error-preclampsiaembarazo').css("display", 'block');
+        $('#error-preclampsiaembarazo').addClass('show');
         $("label[for=preclampsiaembarazo1]").addClass('invalid-label');
         $("label[for=preclampsiaembarazo2]").addClass('invalid-label');
         noerror = false;
     }
     if(typeof $("input[name=hemorragiaembarazo]:checked").val() == 'undefined'){
-        $('#error-hemorragiaembarazo').css("display", 'block');
+        $('#error-hemorragiaembarazo').addClass('show');
         $("label[for=hemorragiaembarazo1]").addClass('invalid-label');
         $("label[for=hemorragiaembarazo2]").addClass('invalid-label');
         noerror = false;
     }
     if(typeof $("input[name=sospechacovidembarazo]:checked").val() == 'undefined'){
-        $('#error-sospechacovidembarazo').css("display", 'block');
+        $('#error-sospechacovidembarazo').addClass('show');
         $("label[for=sospechacovidembarazo1]").addClass('invalid-label');
         $("label[for=sospechacovidembarazo2]").addClass('invalid-label');
         noerror = false;
     }
     if(typeof $("input[name=confirmacioncovidembarazo]:checked").val() == 'undefined'){
-        $('#error-confirmacioncovidembarazo').css("display", 'block');
+        $('#error-confirmacioncovidembarazo').addClass('show');
         $("label[for=confirmacioncovidembarazo1]").addClass('invalid-label');
         $("label[for=confirmacioncovidembarazo2]").addClass('invalid-label');
         noerror = false;
     }
     return noerror;
-
 }
 
 //Function that clear radio buttons on pregnant segment
 function clearRadios(){
     if($("label[for=consultaembarazo1]").hasClass('invalid-label')){
-        $('#error-consultaembarazo').css("display", 'none');
+        $('#error-consultaembarazo').removeClass('show');
         $("label[for=consultaembarazo1]").removeClass('invalid-label');
         $("label[for=consultaembarazo2]").removeClass('invalid-label');
     }
     if($("label[for=trimestreembarazo1]").hasClass('invalid-label')){
-        $('#error-trimestreembarazo').css("display", 'none');
+        $('#error-trimestreembarazo').removeClass('show');
         $("label[for=trimestreembarazo1]").removeClass('invalid-label');
         $("label[for=trimestreembarazo2]").removeClass('invalid-label');
         $("label[for=trimestreembarazo3]").removeClass('invalid-label');
     }
     if($("label[for=riesgoembarazo1]").hasClass('invalid-label')){
-        $('#error-riesgoembarazo').css("display", 'none');
+        $('#error-riesgoembarazo').removeClass('show');
         $("label[for=riesgoembarazo1]").removeClass('invalid-label');
         $("label[for=riesgoembarazo2]").removeClass('invalid-label');
     }
     if($("label[for=diabetesembarazo1]").hasClass('invalid-label')){
-        $('#error-diabetesembarazo').css("display", 'none');
+        $('#error-diabetesembarazo').removeClass('show');
         $("label[for=diabetesembarazo1]").removeClass('invalid-label');
         $("label[for=diabetesembarazo2]").removeClass('invalid-label');
     }
     if($("label[for=infeccionembarazo1]").hasClass('invalid-label')){
-        $('#error-infeccionembarazo').css("display", 'none');
+        $('#error-infeccionembarazo').removeClass('show');
         $("label[for=infeccionembarazo1]").removeClass('invalid-label');
         $("label[for=infeccionembarazo2]").removeClass('invalid-label');
     }
     if($("label[for=preclampsiaembarazo1]").hasClass('invalid-label')){
-        $('#error-preclampsiaembarazo').css("display", 'none');
+        $('#error-preclampsiaembarazo').removeClass('show');
         $("label[for=preclampsiaembarazo1]").removeClass('invalid-label');
         $("label[for=preclampsiaembarazo2]").removeClass('invalid-label');
     }
     if($("label[for=hemorragiaembarazo1]").hasClass('invalid-label')){
-        $('#error-hemorragiaembarazo').css("display", 'none');
+        $('#error-hemorragiaembarazo').removeClass('show');
         $("label[for=hemorragiaembarazo1]").removeClass('invalid-label');
         $("label[for=hemorragiaembarazo2]").removeClass('invalid-label');
     }
     if($("label[for=sospechacovidembarazo1]").hasClass('invalid-label')){
-        $('#error-sospechacovidembarazo').css("display", 'none');
+        $('#error-sospechacovidembarazo').removeClass('show');
         $("label[for=sospechacovidembarazo1]").removeClass('invalid-label');
         $("label[for=sospechacovidembarazo2]").removeClass('invalid-label');
     }
     if($("label[for=confirmacioncovidembarazo1]").hasClass('invalid-label')){
-        $('#error-confirmacioncovidembarazo').css("display", 'none');
+        $('#error-confirmacioncovidembarazo').removeClass('show');
         $("label[for=confirmacioncovidembarazo1]").removeClass('invalid-label');
         $("label[for=confirmacioncovidembarazo2]").removeClass('invalid-label');
     }
 
-}
-
-function subembarazobutton(){ //store consulta
-    let pacId = $("input[name=pac_id]").val();
-
-    if($("textarea[name=motivo]").val() == ""){
-        var motivo = "Consulta por Embarazo.";
-        $("textarea[name=motivo]").val(motivo)
-    }else{
-        var motivo = $("textarea[name=motivo]").val();
-    }
-
-    let embarazo = $("select[name=consultaembarazo]").val();
-    let trimestre = $("select[name=trimestreembarazo]").val();
-    let altoriesgo = $("select[name=riesgoembarazo]").val();
-    let diabetes = $("select[name=diabetesembarazo]").val();
-    let infeccion = $("select[name=infeccionembarazo]").val();
-    let preeclampsia = $("select[name=preclampsiaembarazo]").val();
-    let hemorragia = $("select[name=hemorragiaembarazo]").val();
-    let sospechacovid = $("select[name=sospechacovidembarazo]").val();
-    let confirmacovid = $("select[name=confirmacioncovidembarazo]").val();
-
-    
-    var fd = new FormData();
-    fd.append('motivo', motivo);
-    fd.append('embarazo', embarazo);
-    fd.append('trimestre', trimestre);
-    fd.append('altoriesgo', altoriesgo);
-    fd.append('diabetes', diabetes);
-    fd.append('infeccion', infeccion);
-    fd.append('preeclampsia', preeclampsia);
-    fd.append('hemorragia', hemorragia);
-    fd.append('sospechacovid', sospechacovid);
-    fd.append('confirmacovid', confirmacovid);
-
-    $.ajax({
-        url: url + "/storepregnantconsulta/" + pacId,
-        type: "POST",
-        processData: false,
-        contentType: false,
-        data: fd,
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function(response){
-            console.log(response);
-            if(response){
-                $('#consultamsg').text(response.msg);
-                $("#consultamodal").modal('show');
-
-                $('#interrogatorio-tab').removeClass("disabled");
-                $('#exploracion-tab').removeClass("disabled");
-            }
-            $('#consultasubmit').css("display", "none");
-            $('#consultaupdate').css("display", "block");
-            
-            $('#embarazosubmit').css("display", "none");
-            $('#embarazoupdate').css("display", "block");
-        },
-        error: function(response){
-            console.log(response);
-            if(response.responseJSON.errormsg == null){
-                console.log(response);
-                if(response.responseJSON.errors != null){
-                    //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
-                    errorValidationConsulta(response);
-                }
-            }else{
-                $('#errormsg').text(response.msg);
-                $("#errormodal").modal('show');
-            }
-            
-        },
-    });
-}
-
-function updateembarazobutton(){ //update consulta
-    let pacId = $("input[name=pac_id]").val();
-
-    let embarazo = $("select[name=consultaembarazo]").val();
-    let trimestre = $("select[name=trimestreembarazo]").val();
-    let altoriesgo = $("select[name=riesgoembarazo]").val();
-    let diabetes = $("select[name=diabetesembarazo]").val();
-    let infeccion = $("select[name=infeccionembarazo]").val();
-    let preeclampsia = $("select[name=preclampsiaembarazo]").val();
-    let hemorragia = $("select[name=hemorragiaembarazo]").val();
-    let sospechacovid = $("select[name=sospechacovidembarazo]").val();
-    let confirmacovid = $("select[name=confirmacioncovidembarazo]").val();
-
-    var fd = new FormData();
-    fd.append('embarazo', embarazo);
-    fd.append('trimestre', trimestre);
-    fd.append('altoriesgo', altoriesgo);
-    fd.append('diabetes', diabetes);
-    fd.append('infeccion', infeccion);
-    fd.append('preeclampsia', preeclampsia);
-    fd.append('hemorragia', hemorragia);
-    fd.append('sospechacovid', sospechacovid);
-    fd.append('confirmacovid', confirmacovid);
-
-    $.ajax({
-        url: url + "/updatepregnantconsulta/" + pacId,
-        type: "POST",
-        processData: false,
-        contentType: false,
-        data: fd,
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function(response){
-            console.log(response);
-            if(response){
-                $('#updateconsultamsg').text(response.msg);
-                $("#updateconsultamodal").modal('show');
-            }
-        },
-        error: function(response){
-            console.log(response);
-            if(response.responseJSON.errormsg == null){
-                console.log(response);
-                if(response.responseJSON.errors != null){
-                    //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
-                    errorValidationConsulta(response);
-                }
-            }else{
-                $('#errormsg').text(response.msg);
-                $("#errormodal").modal('show');
-            }
-            
-        },
-    });
 }
 
 function testbutton(){
@@ -685,10 +575,9 @@ function testbutton(){
 
 function collapsPreg(){
     var pregbox = document.getElementById('ispregnant');
-    var pregContainer = document.getElementById('pregContainer');
 
     if(pregbox.checked){
-        pregContainer.classList.contains('hiddenli') ? pregContainer.classList.remove('hiddenli'): "";
+        $('#pregContainer').removeClass('hide');
 
         document.getElementById('consultaembarazo1').disabled = false;
         document.getElementById('consultaembarazo2').disabled = false;
@@ -719,7 +608,7 @@ function collapsPreg(){
         document.getElementById('confirmacioncovidembarazo2').disabled = false;
 
     }else{
-        pregContainer.classList.contains('hiddenli') ? "": pregContainer.classList.add('hiddenli');
+        $('#pregContainer').addClass('hide');
 
         document.getElementById('consultaembarazo1').disabled = true;
         document.getElementById('consultaembarazo2').disabled = true;
@@ -772,55 +661,55 @@ function testconsulta(){
 
 function errorValidationConsulta(response){
     if(response.responseJSON.errors.motivo){
-        $('#error-motivo').css("display", 'block');
-        $('#motivo').addClass('is-invalid');
+        $('#error-motivo').addClass('show');
+        $('#motivo').addClass('error-textarea');
     }
     if(response.responseJSON.errors.cuadro){
-        $('#error-cuadro').css("display", 'block');
-        $('#cuadro').addClass('is-invalid');
+        $('#error-cuadro').addClass('show');
+        $('#cuadro').addClass('error-textarea');
     }
     if(response.responseJSON.errors.resultados){
-        $('#error-resultados').css("display", 'block');
-        $('#resultados').addClass('is-invalid');
+        $('#error-resultados').addClass('show');
+        $('#resultados').addClass('error-textarea');
     }
     if(response.responseJSON.errors.diagnostico){
-        $('#error-diagnostico').css("display", 'block');
-        $('#diagnostico').addClass('is-invalid');
+        $('#error-diagnostico').addClass('show');
+        $('#diagnostico').addClass('error-textarea');
     }
     if(response.responseJSON.errors.pronostico){
-        $('#error-pronostico').css("display", 'block');
-        $('#pronostico').addClass('is-invalid');
+        $('#error-pronostico').addClass('show');
+        $('#pronostico').addClass('error-textarea');
     }
     if(response.responseJSON.errors.indicacion){
-        $('#error-indicacion').css("display", 'block');
-        $('#indicacion').addClass('is-invalid');
+        $('#error-indicacion').addClass('show');
+        $('#indicacion').addClass('error-textarea');
     }
 }
 
 function clearErrorsConsulta(){
-    if($('#motivo').hasClass('is-invalid')){
-        $('#error-motivo').css("display", 'none');
-        $('#motivo').removeClass('is-invalid');
+    if($('#motivo').hasClass('error-textarea')){
+        $('#error-motivo').removeClass('show');
+        $('#motivo').removeClass('error-textarea');
     }
-    if($('#cuadro').hasClass('is-invalid')){
-        $('#error-cuadro').css("display", 'none');
-        $('#cuadro').removeClass('is-invalid');
+    if($('#cuadro').hasClass('error-textarea')){
+        $('#error-cuadro').removeClass('show');
+        $('#cuadro').removeClass('error-textarea');
     }
-    if($('#resultados').hasClass('is-invalid')){
-        $('#error-resultados').css("display", 'none');
-        $('#resultados').removeClass('is-invalid');
+    if($('#resultados').hasClass('error-textarea')){
+        $('#error-resultados').removeClass('show');
+        $('#resultados').removeClass('error-textarea');
     }
-    if($('#diagnostico').hasClass('is-invalid')){
-        $('#error-diagnostico').css("display", 'none');
-        $('#diagnostico').removeClass('is-invalid');
+    if($('#diagnostico').hasClass('error-textarea')){
+        $('#error-diagnostico').removeClass('show');
+        $('#diagnostico').removeClass('error-textarea');
     }
-    if($('#pronostico').hasClass('is-invalid')){
-        $('#error-pronostico').css("display", 'none');
-        $('#pronostico').removeClass('is-invalid');
+    if($('#pronostico').hasClass('error-textarea')){
+        $('#error-pronostico').removeClass('show');
+        $('#pronostico').removeClass('error-textarea');
     }
-    if($('#indicacion').hasClass('is-invalid')){
-        $('#error-indicacion').css("display", 'none');
-        $('#indicacion').removeClass('is-invalid');
+    if($('#indicacion').hasClass('error-textarea')){
+        $('#error-indicacion').removeClass('show');
+        $('#indicacion').removeClass('error-textarea');
     }
 }
 
@@ -839,13 +728,13 @@ function terminarConsulta(){
         },
         success: function(response){
             if(response == 1){
-                $("#terminarmodal").modal('show');
+                $("#terminarmodal").modal('open');
             }else{
-                $("#noIntermodal").modal('show');
+                $("#noIntermodal").modal('open');
             }
         },
         error: function(response){
-            $("#noConsultamodal").modal('show');
+            $("#noConsultamodal").modal('open');
         },
     });
 }
@@ -853,19 +742,24 @@ function terminarConsulta(){
 function interdisabled(){
     let inter = $('#interavailable').val();
     if(inter == 0){
-        $("#nointermodal").modal('show');
+        $("#nointermodal").modal('open');
     }
 }
 
 function explodisabled(){
     let explo = $('#exploavailable').val();
     if(explo == 0){
-        $("#noexplomodal").modal('show');
+        $("#noexplomodal").modal('open');
     }
 }
 
 function modaltest(){
-    $('#noConsultamodal').modal('show');
+    $('#noConsultamodal').modal('open');
+}
+
+function modaltestfunction(){
+    $('#modalmsg').text("Prueba de texto en modal numero 5465456465464564");
+    $('#consultamodal').modal('open');
 }
 
 //registro y continuar consulta funcion
@@ -878,8 +772,8 @@ function patientece(curp){
     var c_iframe = iframe.replace("_url_", thisurl);
     $("#ece-content").html(c_iframe);
     */
-    if($('#codeArea').hasClass('hiddenli')){
-        $('#codeArea').removeClass('hiddenli');
+    if($('#codeArea').hasClass('hide')){
+        $('#codeArea').removeClass('hide');
     }
 
     var code = document.getElementById('patientcode').value;
@@ -897,7 +791,9 @@ function patientece(curp){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response){
-            alert("Peticion completado con exito!");
+            $('#consultBtn').text("Consultar ECE");
+            $('#infomsg').text("Peticion Completada con exito");
+            $('#infomissing').modal('open');
             var iframe = document.getElementById('iframecontent');
             iframe.height="900px"
             iframe.width="100%"
@@ -908,14 +804,62 @@ function patientece(curp){
                 alert("Código Invalido");
             else
                 alert("Ocurrio un error! Intentalo mas tarde.");
-            console.log(response);
         },
     });
 }
 
+$(function() {
+    $('#consultBtn').on('click', function(){
+        let code = $("input[name=patientcode]").val();
+        let curp = $("input[name=patientcurp]").val();
+
+        if(curp != ""){
+            var fd = new FormData();
+            fd.append('curp', curp);
+            fd.append('code', code);
+
+            $.ajax({
+                url: url + "/expedienteece",
+                method: "POST",
+                data: fd,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response){
+                    if($('#codeArea').hasClass('hide')){
+                        $('#codeArea').removeClass('hide');
+                    }
+
+                    $('#consultBtn').text("Consultar ECE");
+                    $('#infomsg').text("Peticion Completada con exito");
+                    $('#infomissing').modal('open');
+                    var iframe = document.getElementById('iframecontent');
+                    iframe.height="900px"
+                    iframe.width="100%"
+                    iframe.src = "data:text/html;base64," + response;
+                },
+                error: function(response){
+                    if(response.responseJSON.errormsg){
+                        $('#infomsg').text(response.responseJSON.errormsg);
+                        $('#infomissing').modal('open');
+                    }else{
+                        $('#infomsg').text("¡Ha Ocurrido un error! Inténtalo más tarde");
+                        $('#infomissing').modal('open');
+                    }
+                },
+            });
+        }else{
+            $('#infomsg').text("¡Ha Ocurrido un error! Inténtalo más tarde");
+            $('#infomissing').modal('open');
+        }
+    });
+});
+
 //consulta completa pagina misece consulta
 function patientconsult(){
-    
+        
     let code = $("input[name=patientcode]").val();
     let curp = $("input[name=patientcurp]").val();
 
@@ -923,7 +867,7 @@ function patientconsult(){
         var fd = new FormData();
         fd.append('curp', curp);
         fd.append('code', code);
-        //console.log("curp: "+curp);
+
         $.ajax({
             url: url + "/expedienteece",
             method: "POST",
@@ -934,31 +878,26 @@ function patientconsult(){
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(response){
-                if($('#codeArea').hasClass('hiddenli')){
-                    $('#codeArea').removeClass('hiddenli');
+                if($('#codeArea').hasClass('hide')){
+                    $('#codeArea').removeClass('hide');
                 }
 
                 $('#consultBtn').text("Consultar ECE");
-                alert("Peticion completado con exito!");
+                $('#infomsg').text("Peticion Completada con exito");
+                $('#infomissing').modal('open');
                 var iframe = document.getElementById('iframecontent');
                 iframe.height="900px"
                 iframe.width="100%"
                 iframe.src = "data:text/html;base64," + response;
-                console.log(response);
             },
             error: function(response){
                 if(response.responseJSON.errormsg){
-                    alert(response.responseJSON.errormsg);
-                }else if(response.responseJSON.codemsg){
-                    if($('#codeArea').hasClass('hiddenli')){
-                        $('#codeArea').removeClass('hiddenli');
-                    }
-                    $('#consultBtn').text("Consultar ECE");
-                    alert(response.responseJSON.codemsg);
+                    $('#infomsg').text(response.responseJSON.errormsg);
+                    $('#infomissing').modal('open');
                 }else{
-                    alert("A Ocurrio un error! Intentalo mas tarde.");
+                    $('#infomsg').text("A Ocurrio un error! Intentalo mas tarde");
+                    $('#infomissing').modal('open');
                 }
-                console.log(response);
             },
         });
     }else{
@@ -984,19 +923,20 @@ function patientconsultbasic(){
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(response){
-                alert("Peticion completado con exito!");
+                $('#infomsg').text("Peticion Completada con exito");
+                $('#infomissing').modal('open');
                 var iframe = document.getElementById('iframecontentbasico');
                 iframe.height="900px"
                 iframe.width="100%"
                 iframe.src = "data:text/html;base64," + response;
-                console.log(response);
             },
             error: function(response){
-                alert("Ocurrio un error! Intentalo mas tarde.");
-                console.log(response);
+                $('#infomsg').text("Ocurrio un error. Intentalo mas tarde.");
+                $('#infomissing').modal('open');
             },
         });
     }else{
-        alert("La curp del paciente debe ser introducida!");
+        $('#infomsg').text("La curp del paciente debe ser introducida.");
+        $('#infomissing').modal('open');
     }
 }

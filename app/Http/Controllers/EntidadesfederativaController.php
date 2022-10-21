@@ -18,7 +18,8 @@ class EntidadesfederativaController extends Controller
      */
     public function index()
     {
-        $entidadesfederativas = Entidadesfederativa::paginate();
+        session(['menunav' => "entidad"]);
+        $entidadesfederativas = Entidadesfederativa::paginate(10);
 
         return view('entidadesfederativa.index', compact('entidadesfederativas'))
             ->with('i', (request()->input('page', 1) - 1) * $entidadesfederativas->perPage());

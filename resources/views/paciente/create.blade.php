@@ -1,35 +1,20 @@
 @extends('layouts.app')
 
 @section('template_title')
-    Create Paciente
+    Registro de paciente
 @endsection
 
 @section('content')
-    <section class="mainhome content container-fluid">
-        <div class="row">
-            <div class="col-md-12">
+    <form method="POST" action="{{ route('pacientes.store') }}"  role="form" enctype="multipart/form-data">
+        @csrf
+        <h5 class="section-title title">Registrar paciente</h5>
+        <p class="breadcrumbs">
+            <a href="{{ url('/home') }}">Inicio</a> >
+            <a href="{{ route('pacientes.index') }}">Pacientes</a> >
+            <a href="{{ route('pacientes.create') }}">Registrar paciente</a>
+        </p>
+        <hr style="opacity: 0.3">
+        @include('paciente.form')
 
-                @includeif('partials.errors')
-
-                <div class="card card-default">
-                    <div class="card-header">
-                        <div class="float-left">
-                            <span class="card-title"><strong>Registrar paciente</strong></span>
-                        </div>
-                        <div class="float-right">
-                            <a class="btn btn-primary btn-sm" href="{{ route('pacientes.index') }}"> Regresar</a>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <form method="POST" action="{{ route('pacientes.store') }}"  role="form" enctype="multipart/form-data">
-                            @csrf
-
-                            @include('paciente.form')
-
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    </form>
 @endsection

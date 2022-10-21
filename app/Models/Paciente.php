@@ -36,6 +36,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @property $programasmymg_id
  * @property $genero_id
  * @property $gruposanguineo_id
+ * @property $tenant_id
  *
  * @property Consulta[] $consultas
  * @property Entidadesfederativa $entidadesfederativanac
@@ -52,6 +53,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  * @property Programasmymg $programasmymg
  * @property Genero $genero
  * @property Gruposanguineo $gruposanguineo
+ * @property Tenant $tenant
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
@@ -71,7 +73,7 @@ class Paciente extends Model
      *
      * @var array
      */
-    protected $fillable = ['curp','nombre','primerApellido','segundoApellido','fechaNacimiento','calle','colonia','numero','responsable','createdUser_id','updateUser_id','entidadNac_id','municipioNac_id','entidadFederativa_id','municipio_id','sexo_id','email','phone', 'indigena_id', 'afromexicano_id','derechohabiencia_id','programasmymg_id','genero_id','gruposanguineo_id'];
+    protected $fillable = ['curp','nombre','primerApellido','segundoApellido','fechaNacimiento','calle','colonia','numero','responsable','createdUser_id','updateUser_id','entidadNac_id','municipioNac_id','entidadFederativa_id','municipio_id','sexo_id','email','phone', 'indigena_id', 'afromexicano_id','derechohabiencia_id','programasmymg_id','genero_id','gruposanguineo_id','tenant_id'];
 
 
     /**
@@ -184,6 +186,6 @@ class Paciente extends Model
      */
     public function gruposanguineo()
     {
-        return $this->hasOne('App\Models\Gruposanguine', 'id', 'gruposanguineo_id');
+        return $this->hasOne('App\Models\Gruposanguineo', 'id', 'gruposanguineo_id');
     }
 }

@@ -3,8 +3,8 @@ var url = $('meta[name="base_url"]').attr('content');
 //Store y update de datos de exploracion
 function storeexploracion(){
     let habitus = $("textarea[name=habitus]").val();
-    let peso = $("input[name=peso]").val();
-    let talla = $("input[name=talla]").val();
+    let peso = $("input[name=peso]").val(); 
+    let talla = $("input[name=talla]").val(); 
     let cabeza = $("textarea[name=cabeza]").val();
     let cuello = $("textarea[name=cuello]").val();
     let torax = $("textarea[name=torax]").val();
@@ -30,24 +30,24 @@ function storeexploracion(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response){
-            console.log(response);
             if(response){
                 $('#explomsg').text(response.msg);
-                $("#explomodal").modal('show');
+                $("#explomodal").modal('open');
             }
-            $('#exploracionsubmit').css("display", "none");
-            $('#exploracionupdate').css("display", "block");
+            $('#exploracionsubmit').addClass('hide');
+            $('#exploracionupdate').removeClass('hide');
+            document.getElementById('scrollwindow').scrollTo(0, 0); 
         },
         error: function(response){
-            console.log(response.responseJSON.errormsg);
             if(response.responseJSON.errormsg == null){
                 if(response){
                     //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
                 }
             }else{
                 $('#errormsg').text(response.msg);
-                $("#errormodal").modal('show');
+                $("#errormodal").modal('open');
             }
+            document.getElementById('scrollwindow').scrollTo(0, 0); 
         },
     });
 }
@@ -81,23 +81,22 @@ function updateexploracion(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response){
-            console.log(response);
             if(response){
                 $('#explomsg').text(response.msg);
-                $("#explomodal").modal('show');
+                $("#explomodal").modal('open');
             }
+            document.getElementById('scrollwindow').scrollTo(0, 0); 
         },
         error: function(response){
-            console.log(response.responseJSON.errormsg);
             if(response.responseJSON.errormsg == null){
                 if(response){
                     //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
                 }
             }else{
                 $('#errormsg').text(response.msg);
-                $("#errormodal").modal('show');
+                $("#errormodal").modal('open');
             }
-            
+            document.getElementById('scrollwindow').scrollTo(0, 0);             
         },
     });
 }
@@ -128,28 +127,28 @@ function storesignos(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response){
-            console.log(response);
             if(response){
                 $('#explomsg').text(response.msg);
-                $("#explomodal").modal('show');
+                $("#explomodal").modal('open');
             }
-            $('#signossubmit').css("display", "none");
-            $('#signosupdate').css("display", "block");
-            if($('#exploracionupdate').hasClass('hiddenli')){
-                $('#exploracionupdate').removeClass('hiddenli')
-                $('#exploracionsubmit').addClass('hiddenli');
+            $('#signossubmit').addClass('hide');
+            $('#signosupdate').removeClass('hide');
+            if($('#exploracionupdate').hasClass('hide')){
+                $('#exploracionupdate').removeClass('hide')
+                $('#exploracionsubmit').addClass('hide');
             }
+            document.getElementById('scrollwindow').scrollTo(0, 0); 
         },
         error: function(response){
-            console.log(response.responseJSON.errormsg);
             if(response.responseJSON.errormsg == null){
                 if(response){
                     //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
                 }
             }else{
                 $('#errormsg').text(response.msg);
-                $("#errormodal").modal('show');
+                $("#errormodal").modal('open');
             }
+            document.getElementById('scrollwindow').scrollTo(0, 0); 
         },
     });
 }
@@ -162,8 +161,6 @@ function updatesignos(){
     let frecuenciarespiratoria = $("input[name=frecuenciarespiratoria]").val();
     let saturacionoxigeno = $("input[name=saturacionoxigeno]").val();
     let glucosa = $("input[name=glucosa]").val();
-
-    console.log("saturacion: "+saturacionoxigeno);
     
     $.ajax({
         url: url + "/updatesignos",
@@ -181,16 +178,15 @@ function updatesignos(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response){
-            console.log(response);
             if(response){
                 $('#explomsg').text(response.msg);
-                $("#explomodal").modal('show');
+                $("#explomodal").modal('open');
             }
-            $('#signossubmit').css("display", "none");
-            $('#signosupdate').css("display", "block");
+            $('#signossubmit').addClass('hide');
+            $('#signosupdate').removeClass('hide');
+            document.getElementById('scrollwindow').scrollTo(0, 0); 
         },
         error: function(response){
-            console.log(response.responseJSON.errormsg);
             if(response.responseJSON.errormsg == null){
                 if(response){
                     //Mensajes idividuales para cada campo, por ahora solo es valido para motivo.
@@ -198,9 +194,9 @@ function updatesignos(){
                 }
             }else{
                 $('#errormsg').text(response.msg);
-                $("#errormodal").modal('show');
+                $("#errormodal").modal('open');
             }
-            
+            document.getElementById('scrollwindow').scrollTo(0, 0); 
         },
     });
 }

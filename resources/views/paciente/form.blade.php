@@ -1,196 +1,173 @@
-<div class="box box-info padding-1">
-    <div class="box-body">        
-        <div class="row">
-            <div class="col-sm">
-                <div class="form-group">
-                    {{ 'Nombre(s)' }}
-                    {{ Form::text('nombre', $paciente->nombre, ['class' => 'form-control' . ($errors->has('nombre') ? ' is-invalid' : ''), 'placeholder' => 'Nombre', 'onkeypress' => "return /[A-Z Ñ]/i.test(event.key)", 'oninput'=>"this.value = this.value.toUpperCase()", 'maxlength' => 50]) }}
-                    {!! $errors->first('nombre', '<div class="invalid-feedback">:message</div>') !!}
+<div class="scroll-section">
+
+<div class="form-group">
+    <h5>Datos Generales</h5>
+    <div class="row no-mar">
+        <div class="col s12">
+            <div class="row no-mar">
+                <div class="input-field col s12 m12 l4">
+                    <input id="nombre" name ="nombre" type="text" class="validate" value="{{old('nombre', $paciente->nombre)}}" onkeypress = "return /[A-Z Ñ]/i.test(event.key)" oninput = "this.value = this.value.toUpperCase()" maxlength = 40>
+                    <label for="nombre">Nombre(s)</label>
+                    @error('nombre')
+                        <span class="helper-text show">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="input-field col s12 m12 l4">
+                    <input id="primerApellido" name ="primerApellido" type="text" class="validate" value="{{old('primerApellido', $paciente->primerApellido)}}" onkeypress = "return /[A-Z Ñ]/i.test(event.key)" oninput = "this.value = this.value.toUpperCase()" maxlength = 40>
+                    <label for="primerApellido">Primer Apellido</label>
+                    @error('primerApellido')
+                        <span class="helper-text show">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="input-field col s12 m12 l4">
+                    <input id="segundoApellido" name = "segundoApellido" type="text" class="validate" value="{{old('segundoApellido', $paciente->segundoApellido)}}" onkeypress = "return /[A-Z Ñ]/i.test(event.key)" oninput = "this.value = this.value.toUpperCase()" maxlength = 40>
+                    <label for="segundoApellido">Segundo Apellido</label>
+                    @error('segundoApellido')
+                        <span class="helper-text show">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
-            <div class="col-sm">
-                <div class="form-group">
-                    {{ 'Primer apellido' }}
-                    {{ Form::text('primerApellido', $paciente->primerApellido, ['class' => 'form-control' . ($errors->has('primerApellido') ? ' is-invalid' : ''), 'placeholder' => 'Primer apellido', 'onkeypress' => "return /[A-Z Ñ]/i.test(event.key)", 'oninput'=>"this.value = this.value.toUpperCase()", 'maxlength' => 50]) }}
-                    {!! $errors->first('primerApellido', '<div class="invalid-feedback">:message</div>') !!}
+            <div class="row no-mar">
+                <div class="input-field col s12 m12 l4">
+                    <input id="curp" name = "curp" type="text" class="validate" value="{{old('curp', $paciente->curp)}}" onkeypress = "return /[A-Z0-9]/i.test(event.key)" oninput = "this.value = this.value.toUpperCase()" pattern = '[A-Z]{4}[0-9]{6}[A-Z]{6}[A-J0-9]{1}[0-9]{1}' title = "El formato de la CURP es: XXXX999999XXXXXXX9" maxlength = 18>                    
+                    <label for="curp">CURP <small><a href="https://www.gob.mx/curp/" target="_blank" >
+                        <span> Consulta tu CURP</span>
+                    </a></small></label>
+                    @error('curp')
+                        <span class="helper-text show">{{ $message }}</span>
+                    @enderror
                 </div>
-            </div>
-            <div class="col-sm">
-                <div class="form-group">
-                    {{ 'Segundo apellido' }}
-                    {{ Form::text('segundoApellido', $paciente->segundoApellido, ['class' => 'form-control' . ($errors->has('segundoApellido') ? ' is-invalid' : ''), 'placeholder' => 'Segundo apellido', 'onkeypress' => "return /[A-Z Ñ]/i.test(event.key)", 'oninput'=>"this.value = this.value.toUpperCase()", 'maxlength' => 50]) }}
-                    {!! $errors->first('segundoApellido', '<div class="invalid-feedback">:message</div>') !!}
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            {{ Form::text('createdUser_id', $paciente->createdUser_id, ['class' => 'form-control' . ($errors->has('createdUser_id') ? ' is-invalid' : ''), 'placeholder' => 'Createduser Id', 'readonly' => 'true', 'hidden'=>'true']) }}
-        </div>
-        <div class="form-group">
-            {{ Form::text('updateUser_id', $paciente->updateUser_id, ['class' => 'form-control' . ($errors->has('updateUser_id') ? ' is-invalid' : ''), 'placeholder' => 'updateUser Id', 'readonly' => 'true', 'hidden'=>'true']) }}
-        </div>
-        <div class="row">
-            <div class="col-sm">
-                <div class="form-group">
-                    {{ 'CURP' }} &nbsp;&nbsp;&nbsp; <small><a href="https://www.gob.mx/curp/" target="_blank" >
-                        <span class="title my-auto"> Consulta tu CURP</span>
-                    </a></small>
-                    {{ Form::text('curp', $paciente->curp, ['class' => 'form-control' . ($errors->has('curp') ? ' is-invalid' : ''), 'placeholder' => 'XXXX999999XXXXXX99', 'pattern' => '[A-Z]{4}[0-9]{6}[A-Z]{6}[0-9]{2}','maxlength' => 18, 'oninput'=>"this.value = this.value.toUpperCase()" ]) }}
-                    {!! $errors->first('curp', '<div class="invalid-feedback">:message</div>') !!}
-                </div>
-            </div>
-            <div class="col-sm">
-                <div class ="row">
-                    <div class="col-sm-7">
-                        <div class="form-group">
-                            {{ 'Fecha de nacimiento' }}
-                            {{ Form::date('fechaNacimiento', $paciente->fechaNacimiento != null? date('Y-m-d',strtotime($paciente->fechaNacimiento)): "", ['class' => 'form-control' . ($errors->has('fechaNacimiento') ? ' is-invalid' : ''), 'placeholder' => 'Fecha de nacimiento', 'max' => date('Y-m-d'), 'id' => 'fechaNacimiento', 'onkeypress' => "return false", 'value' => old('fechaNacimiento', date('Y-m-d'))]) }}
-                            {!! $errors->first('fechaNacimiento', '<div class="invalid-feedback">:message</div>') !!}
-                        </div>
+                <div class="col s12 m12 l8 date-container">
+                    <div class="input-field date-input">
+                        <input id="fechaNacimiento" name = "fechaNacimiento" type="text" class="validate datepicker" value="{{old('fechaNacimiento', $paciente->fechaNacimiento != null? date('d-m-Y',strtotime($paciente->fechaNacimiento)): "")}}"
+                         onkeypress = "return false" >
+                        <label for="fechaNacimiento">Fecha de nacimiento</label>
+                        <i class="material-icons prefix" for="fechaNacimiento" style="right: 0; opacity: 0.8; pointer-events: none; cursor: initial; user-select: none; background-color: white;">date_range</i>
+                        @error('fechaNacimiento')
+                            <span class="helper-text show">{{ $message }}</span>
+                        @enderror
                     </div>
-                    <div class="col-sm-1">
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            {{ 'Edad' }}
-                            <div class ="row">
-                                <div class ="col-sm">
-                                {{ Form::text('edad', $paciente->edad, ['class' => 'form-control form-control-sm'. ($errors->has('edad') ? ' is-invalid' : ''), 'placeholder' => 'Años', 'maxlength' => 2, 'id' =>'edad', 'disabled' => 'disabled']) }}
-                                </div>
-                                <div class ="col-sm">
-                                    <small>años</small>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="input-field date-display">
+                        <p id="edad" name = "edad">Edad: </p>
                     </div>
                 </div>
             </div>
-            <div class="col-sm">
-                <div class="form-group">
-                    {{ 'Tipo de sangre' }}
-                    <select class="browser-default custom-select  @error('gruposanguineo_id') is-invalid @enderror" id="gruposanguineo_id" class="form-control" name="gruposanguineo_id">
-                        <option value="">Seleccionar...</option>
+            <div class="row no-mar">
+                <div class="input-field col s12 m6 l4">
+                    <select id="gruposanguineo_id" name="gruposanguineo_id" >
+                        <option value="" disabled selected>Elije una opción</option>
                         @foreach ($gruposanguineos as $gruposanguineo)                       
                             <option value="{{ $gruposanguineo->id }}" {{ old('gruposanguineo_id') == $gruposanguineo->id ? 'selected' : ($gruposanguineo->id == $paciente->gruposanguineo_id ? 'selected' : '') }} >{{ $gruposanguineo->slug }}</option>                        
-                        @endforeach                
+                        @endforeach         
                     </select>
-                    {!! $errors->first('sexo_id', '<div class="invalid-feedback">:message</div>') !!}
+                    <label>Tipo de sangre</label>
+                    @error('gruposanguineo_id')
+                        <span class="helper-text show">{{ $message }}</span>
+                    @enderror
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm">
-                <div class="form-group">
-                    {{ 'Sexo' }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" 
-                    title="Sexo del paciente, es decir la condición biológica y fisiológica de nacimiento."></i>
-                    <select class="browser-default custom-select  @error('sexo_id') is-invalid @enderror" id="sexo_id" class="form-control" name="sexo_id">
-                        <option value="">Seleccionar...</option>
+                <div class="input-field col s12 m6 l4">
+                    <select id="sexo_id" name="sexo_id" >
+                        <option value="" disabled selected>Elije una opción</option>
                         @foreach ($sexos as $sexo)                       
                             <option value="{{ $sexo->id }}" {{ old('sexo_id') == $sexo->id ? 'selected' : ($sexo->id == $paciente->sexo_id ? 'selected' : '') }} >{{ $sexo->descripcion }}</option>                        
-                        @endforeach                
+                        @endforeach  
                     </select>
-                    {!! $errors->first('sexo_id', '<div class="invalid-feedback">:message</div>') !!}
+                    <label style="display: flex; align-items: center; grid-gap: 0.5rem;">Sexo <i class="material-icons tooltipped" data-position="top" data-tooltip="Sexo del paciente, corresponde la condición biológica y fisiológica de nacimiento.">info</i></label>
+                    @error('sexo_id')
+                        <span class="helper-text show">{{ $message }}</span>
+                    @enderror
                 </div>
-            </div>
-            <div class="col-sm">
-                <div class="form-group">
-                    {{ 'Género' }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" 
-                    title="Identidad de género del paciente o atributos sociales aprendidos o adoptados por la persona."></i>
-                    <select class="browser-default custom-select  @error('genero_id') is-invalid @enderror" id="genero_id" class="form-control" name="genero_id">
-                        <option value="">Seleccionar...</option>
+                <div class="input-field col s12 m6 l4">
+                    <select id="genero_id" name="genero_id" >
+                        <option value="" disabled selected>Elije una opción</option>
                         @foreach ($generos as $genero)                       
                             <option value="{{ $genero->id }}" {{ old('genero_id') == $genero->id ? 'selected' : ($genero->id == $paciente->genero_id ? 'selected' : '') }} >{{ $genero->descripcion }}</option>                        
-                        @endforeach                
+                        @endforeach     
                     </select>
-                    {!! $errors->first('genero_id', '<div class="invalid-feedback">:message</div>') !!}
+                    <label style="display: flex; align-items: center; grid-gap: 0.5rem;">Género <i class="material-icons tooltipped" data-position="top" data-tooltip="Identidad de género del paciente o atributos sociales aprendidos o adoptados por la persona.">info</i></label>
+                    @error('genero_id')
+                        <span class="helper-text show">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
-            <div class="col-sm">
-                <div class="form-group">
-                    {{ '¿Se considerá indigena?' }}
-                    <select class="browser-default custom-select  @error('indigena_id') is-invalid @enderror" id="indigena_id" class="form-control" name="indigena_id">
-                        <option value="">Seleccionar...</option>
+            <div class="row no-mar">
+                <div class="input-field col s12 m6 l4">
+                    <select id="indigena_id" name="indigena_id" >
+                        <option value="" disabled selected>Elije una opción</option>
                         @foreach ($indigenas as $indigena)                       
                             <option value="{{ $indigena->id }}" {{ old('indigena_id') == $indigena->id ? 'selected' : ($indigena->id == $paciente->indigena_id ? 'selected' : '') }} >{{ $indigena->opcion }}</option>                        
-                        @endforeach                
+                        @endforeach     
                     </select>
-                    {!! $errors->first('indigena_id', '<div class="invalid-feedback">:message</div>') !!}
+                    <label>¿Se considerá indigena?</label>
+                    @error('indigena_id')
+                        <span class="helper-text show">{{ $message }}</span>
+                    @enderror
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm">
-                <div class="form-group">
-                    {{ '¿Se autodenomina afromexicano?' }}
-                    <select class="browser-default custom-select  @error('afromexicano_id') is-invalid @enderror" id="afromexicano_id" class="form-control" name="afromexicano_id">
-                        <option value="">Seleccionar...</option>
+                <div class="input-field col s12 m6 l4">
+                    <select id="afromexicano_id" name="afromexicano_id" >
+                        <option value="" disabled selected>Elije una opción</option>
                         @foreach ($afromexicanos as $afromexicano)                       
-                            <option value="{{ $afromexicano->id }}" {{ old('afromexicano_id') == $afromexicano->id ? 'selected' : ($afromexicano->id == $paciente->afromexicano_id ? 'selected' : '') }} >{{ $afromexicano->opcionAfro }}</option>                        
-                        @endforeach                
+                                <option value="{{ $afromexicano->id }}" {{ old('afromexicano_id') == $afromexicano->id ? 'selected' : ($afromexicano->id == $paciente->afromexicano_id ? 'selected' : '') }} >{{ $afromexicano->opcionAfro }}</option>                        
+                            @endforeach     
                     </select>
-                    {!! $errors->first('afromexicano_id', '<div class="invalid-feedback">:message</div>') !!}
+                    <label>¿Se autodenomina afromexicano?</label>
+                    @error('afromexicano_id')
+                        <span class="helper-text show">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="input-field col s12 m6 l4">
+                    <input id="email" name = "email" type="email" class="validate" value="{{old('email', $paciente->email)}}" maxlength = 255 title = "El valor introducido no corresponde al formato del correo electrónico">                    
+                    <label for="email">Correo electrónico</label>
+                    @error('email')
+                        <span class="helper-text show">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
-            <div class="col-sm">
-                <div class="form-group">
-                    {{ 'Correo electrónico' }}
-                    {{ Form::text('email', $paciente->email, ['class' => 'form-control' . ($errors->has('email') ? ' is-invalid' : ''), 'placeholder' => 'Correo electrónico','maxlength' => 255, 'type' => 'email' ]) }}
-                    {!! $errors->first('email', '<div class="invalid-feedback">:message</div>') !!}
+            <div class="row no-mar">
+                <div class="input-field col s12 m6 l4">
+                    <input id="phone" name = "phone" type="text" class="validate" value="{{old('phone', $paciente->phone)}}" onkeypress = "return /[0-9]/i.test(event.key)" pattern = '[0-9]{10}' title = "El formato del teléfono: 9999999999" maxlength = 10>                    
+                    <label for="phone">Número de teléfono <small>  (10 dígitos)</small></label>
+                    @error('phone')
+                        <span class="helper-text show">{{ $message }}</span>
+                    @enderror
                 </div>
-            </div>
-            <div class="col-sm">
-                <div class="form-group">
-                    {{ 'Número de telefóno' }}<small>  (10 dígitos)</small>
-                    {{ Form::text('phone', $paciente->phone, ['class' => 'form-control' . ($errors->has('phone') ? ' is-invalid' : ''), 'placeholder' => 'Telefóno','maxlength' => 10, 'onkeypress' => "return /[0-9]/i.test(event.key)"]) }}
-                    {!! $errors->first('phone', '<div class="invalid-feedback">:message</div>') !!}
-                </div>
-            </div>
-        </div>
-        <div class="row">            
-            <div class="col-sm">
-                <div class="form-group">
-                    {{ 'Entidad de nacimiento' }}
-                    <select class="browser-default custom-select @error('entidadNac_id') is-invalid @enderror" id="entidadNac_id" class="form-control" name="entidadNac_id">
-                        <option value="">Seleccionar...</option>
+                <div class="input-field col s12 m6 l4">
+                    <select id="entidadNac_id" name="entidadNac_id">
+                        <option value="">Elije una opción</option>
                         @foreach ($entidades as $entidad)                
                             <option value="{{ $entidad->id }}" {{ old('entidadNac_id') == $entidad->id ? 'selected' : ($entidad->id == $paciente->entidadNac_id ? 'selected' : '') }}>{{ $entidad->entidad }}</option>
                         @endforeach
                     </select>
-                    {!! $errors->first('entidadNac_id', '<div class="invalid-feedback">:message</div>') !!}
+                    <label>Entidad de nacimiento</label>
+                    @error('entidadNac_id')
+                        <span class="helper-text show">{{ $message }}</span>
+                    @enderror
                 </div>
-            </div>
-            <div class="col-sm">
-                <div class="form-group">
-                    {{ 'Municipio de nacimiento' }}
-                    <select class="browser-default custom-select @error('municipioNac_id') is-invalid @enderror" id="municipioNac_id" class="form-control" name="municipioNac_id">
-                        <option value="">Seleccionar...</option>
+
+                <div class="input-field col s12 m6 l4">
+                    <select id="municipioNac_id" name="municipioNac_id">
+                        <option value="">Elije una opción</option>
                         @foreach ($municipiosnac as $municipionac)                       
                             <option value="{{ $municipionac->id }}" {{ old('municipioNac_id') ==  $municipionac->id ? 'selected' : ( $municipionac->id == $paciente->municipioNac_id ? 'selected' : '') }}>{{ $municipionac->municipio }}</option>                        
                         @endforeach  
-                    </select>   
-                    {!! $errors->first('municipioNac_id', '<div class="invalid-feedback">:message</div>') !!}
+                    </select>
+                    <label>Municipio de Nacimiento</label>
+                    @error('municipioNac_id')
+                        <span class="helper-text show">{{ $message }}</span>
+                    @enderror
                 </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header">
-                <span class="card-subtitle"><strong>Derechohabiencia</strong></span>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="form-group">
-                        <input class="form-control " type="text" name="dhcount" id="dhcount" hidden>
-                        @if ($errors->has('dh'))
-                            <small class="text-danger">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Seleccionar al menos una opción</small>
-                        @endif
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group form-inline">
+
+                <div class="col s12 m12 l12">
+                    <p style="font-weight: bold;">Derechohabiencia</p>
+                    <input name="dhcount" id="dhcount" hidden>
+                    @error('dh')
+                        <span class="helper-text show"><small>Selecciona al menos una opción</small></span>
+                    @enderror
+                    <div class="input-field responsive-check">
                         @foreach($derechohabiencias as $derechohabiencia)
-                            <div class="col-sm-2">
-                                <div class="form-check">
-                                    <input class="form-check-input @error('dh') is-invalid @enderror" type="checkbox" name="dh[{{$derechohabiencia->id}}]" id="dh{{$derechohabiencia->id}}" value= "{{$derechohabiencia->id}}" 
+                            <p>
+                                <label>
+                                    <input class="filled-in" type="checkbox" name="dh[{{$derechohabiencia->id}}]" id="dh{{$derechohabiencia->id}}" value= "{{$derechohabiencia->id}}" 
                                     @if(old('dh.'.$derechohabiencia->id) == $derechohabiencia->id)
                                         checked
                                     @else
@@ -201,104 +178,178 @@
                                                 @endif  
                                             @endforeach
                                         }
-                                    @endif>
-                                    <label class="form-check-label" for="dh{{$derechohabiencia->id}}">{{ $derechohabiencia->siglaDH }}</label>
-                                </div>
-                            </div>
+                                    @endif />
+                                    <span for="dh{{$derechohabiencia->id}}">{{ $derechohabiencia->siglaDH }}</span>
+                                </label>
+                            </p>                    
                         @endforeach
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="form-group form-inline">
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header">
-                <span class="card-subtitle"><strong>Domicilio actual</strong></span>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-sm">
-                        <div class="form-group">
-                            {{ 'Calle' }}
-                            {{ Form::text('calle', $paciente->calle, ['class' => 'form-control' . ($errors->has('calle') ? ' is-invalid' : ''), 'placeholder' => 'Calle', 'oninput'=>"this.value = this.value.toUpperCase()", 'maxlength' => 100]) }}
-                            {!! $errors->first('calle', '<div class="invalid-feedback">:message</div>') !!}
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="form-group">
-                            {{ 'Número' }}
-                            {{ Form::text('numero', $paciente->numero, ['class' => 'form-control' . ($errors->has('numero') ? ' is-invalid' : ''), 'placeholder' => 'Numero']) }}
-                            {!! $errors->first('numero', '<div class="invalid-feedback">:message</div>') !!}
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="form-group">
-                            {{ 'Colonia' }}
-                            {{ Form::text('colonia', $paciente->colonia, ['class' => 'form-control' . ($errors->has('colonia') ? ' is-invalid' : ''), 'placeholder' => 'Colonia', 'oninput'=>"this.value = this.value.toUpperCase()", 'maxlength' => 100]) }}
-                            {!! $errors->first('colonia', '<div class="invalid-feedback">:message</div>') !!}
-                        </div>
-                    </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <h5>Domicilio Actual</h5>
+    <div class="row no-mar">
+        <div class="col s12">
+            <div class="row no-mar">
+                <div class="input-field col s12 m6 l4">
+                    <input id="calle" name = "calle" type="text" class="validate" value="{{old('calle', $paciente->calle)}}" oninput="this.value = this.value.toUpperCase()" maxlength = 100>
+                    <label for="calle">Calle</label>
+                    @error('calle')
+                        <span class="helper-text show">{{ $message }}</span>
+                    @enderror
                 </div>
-                <div class="row">                    
-                    <div class="col-sm">
-                        <div class="form-group">
-                            {{ 'Entidad' }}                            
-                            <select class="browser-default custom-select @error('entidadFederativa_id') is-invalid @enderror" id="entidadFederativa_id" class="form-control" name="entidadFederativa_id">
-                                <option value="">Seleccionar...</option>
-                                @foreach ($entidades as $entidad)                       
-                                    <option value="{{ $entidad->id }}" {{ old('entidadFederativa_id') == $entidad->id ? 'selected' : ($entidad->id == $paciente->entidadFederativa_id ? 'selected' : '') }}>{{ $entidad->entidad }}</option>                        
-                                @endforeach                
-                            </select>  
-                            {!! $errors->first('entidadFederativa_id', '<div class="invalid-feedback">:message</div>') !!}
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="form-group">
-                            {{ 'Municipio' }}
-                            <select class="browser-default custom-select @error('municipio_id') is-invalid @enderror" id="municipio_id" class="form-control" name="municipio_id">
-                                <option value="">Seleccionar...</option>
-                                @foreach ($municipios as $municipio)                       
-                                    <option value="{{ $municipio->id }}" {{ old('municipio_id') ==  $municipio->id ? 'selected' : ( $municipio->id == $paciente->municipio_id ? 'selected' : '') }}>{{ $municipio->municipio }}</option>                        
-                                @endforeach  
-                            </select>  
-                            {!! $errors->first('municipio_id', '<div class="invalid-feedback">:message</div>') !!}
-                        </div>
-                    </div>
+                <div class="input-field col s12 m6 l4">
+                    <input id="numero" name = "numero" type="text" class="validate" value="{{old('numero', $paciente->numero)}}" maxlength = 50>
+                    <label for="numero">Número</label>
+                    @error('numero')
+                        <span class="helper-text show">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="input-field col s12 m6 l4">
+                    <input id="colonia" name = "colonia" type="text" class="validate" value="{{old('colonia', $paciente->colonia)}}" oninput="this.value = this.value.toUpperCase()" maxlength = 100>
+                    <label for="colonia">Colonia</label>
+                    @error('colonia')
+                        <span class="helper-text show">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
-        </div>
-    </div>    
-    <div class="box-footer mt20">
-        <div class="row">
-            <div class="form-group">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm">
-                <button type="submit" class="btn btn-primary">Guardar</button>
+
+            <div class="row no-mar">
+                <div class="input-field col s12 m6 l4">
+                    <select id="entidadFederativa_id" name="entidadFederativa_id">
+                        <option value="">Elije una opción</option>
+                        @foreach ($entidades as $entidad)                       
+                            <option value="{{ $entidad->id }}" {{ old('entidadFederativa_id') == $entidad->id ? 'selected' : ($entidad->id == $paciente->entidadFederativa_id ? 'selected' : '') }}>{{ $entidad->entidad }}</option>                        
+                        @endforeach
+                    </select>
+                    <label>Entidad</label>
+                    @error('entidadFederativa_id')
+                        <span class="helper-text show">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="input-field col s12 m6 l4">
+                    <select id="municipio_id" name="municipio_id">
+                        <option value="">Elije una opción</option>
+                        @foreach ($municipios as $municipio)                       
+                            <option value="{{ $municipio->id }}" {{ old('municipio_id') ==  $municipio->id ? 'selected' : ( $municipio->id == $paciente->municipio_id ? 'selected' : '') }}>{{ $municipio->municipio }}</option>                        
+                        @endforeach   
+                    </select>
+                    <label>Municipio</label>
+                    @error('municipio_id')
+                        <span class="helper-text show">{{ $message }}</span>
+                    @enderror
+                </div>
             </div>
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col s12">
+        <button class="waves-light btn" type="submit">
+            <i class="material-icons left">save</i>Guardar
+        </button>
+        <a href="{{ route('pacientes.index') }}" class="waves-light btn red darken-3">
+            <i class="material-icons left">close</i>Cancelar registro
+        </a>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js">
+    </script>
+
+<script> 
+    //LUIS
+    
+    document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.tooltipped');
+    var instances = M.Tooltip.init(elems);
+  });
+
+        let today = Date.now();
+        let maxDate = new Date(today); 
+        let currenYear = new Date(today).getFullYear();
+        let minYear= currenYear - 150;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.dropdown-trigger');
+            var instances = M.Dropdown.init(elems);
+        });
+        $(document).ready(function() {
+        $('.datepicker').datepicker({ 
+                    maxDate,
+                    yearRange: [minYear, currenYear],
+                    firstDay: true, 
+                    format: 'dd-mm-yyyy',
+                    i18n: {
+                        months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                        monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Dic"],
+                        weekdays: ["Domingo","Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+                        weekdaysShort: ["Dom","Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+                        weekdaysAbbrev: ["D","L", "M", "M", "J", "V", "S"],
+                        cancel: 'Cancelar',
+                        done: 'Aceptar',
+                    }
+        });
+        
+    });
+        document.addEventListener('DOMContentLoaded', function() {
+            var sele = document.querySelectorAll('select');
+            var instance = M.FormSelect.init(sele);
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.modal');
+        var instances = M.Modal.init(elems, {dismissible: false});
+        });
+        function toggleMenu() {
+            var element = document.getElementById("menusidebar");
+            element.classList.toggle("showmenu");
+            var elementtwo = document.getElementById("menubg");
+            elementtwo.classList.toggle("showbg");
+        }
+
+        var elems = null;
+        document.addEventListener('DOMContentLoaded', function() {
+            elems = document.querySelectorAll('.collapsible');
+            var options = {};
+            var instances = M.Collapsible.init(elems, options);
+
+        });
+
+    $(window).resize(function () {
+        if ($(window).width() <= 960) {
+            elems.forEach((elmnt, i) => {
+            });
+        }
+    });
+    </script>
 <script type="text/javascript"> 
+    
+    //CESAR -  YOC
     function myFunctionEdad()
     {
+        if($('#fechaNacimiento').val() == '')
+            $('#edad').text("Edad: 0 años");
+        else
+        { 
+        var realdate = $('#fechaNacimiento').val().split('-');
+        var fulldate = realdate[2]+'-'+realdate[1]+'-'+realdate[0];
         var hoy = new Date();
-        var cumpleanos = new Date($('#fechaNacimiento').val());
+        var cumpleanos = new Date(fulldate);
+        cumpleanos.setDate(cumpleanos.getDate()+1);
         var edad = hoy.getFullYear() - cumpleanos.getFullYear();
         var m = hoy.getMonth() - cumpleanos.getMonth();
-
-        if($('#fechaNacimiento').val() == '')
-            $('#edad').prop('value', 0);
-        else
-        {  
-            if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate()))
+         
+            if (m < 0 || (m === 0 && hoy.getDate() < (cumpleanos.getDate()+1)))
                 edad--;
-            $('#edad').prop('value', edad);
+                $('#edad').text("Edad: "+edad+" años");
         }
     };
 
@@ -479,101 +530,89 @@
         });
         var entidad_id = $("#entidadFederativa_id").val();
         var oldMunicipio = $("#municipio_id").val();
+        //console.log('municipio: '+oldMunicipio);
             if (entidad_id == '') {
-                $("#municipio_id").empty();
-                $("#municipio_id").append("<option value = ''> Seleccionar... </option>")
-                $('#municipio_id').prop('disabled', true);
+                $('select#municipio_id').formSelect().attr('disabled', true);
+                $('select#municipio_id').formSelect().append("<option value = ''> Elige una opción </option>");
             }
             else{
                 $('#municipio_id').prop('disabled', false);
                 $.get("{{ url('select_municipio')}}/"+entidad_id, function (data) 
                 {
-                    //console.log(data);
-                    // VACIAMOS EL DropDownList
-                    $("#municipio_id").empty();
-                    // AÑADIMOS UN NUEVO label CON EL NOMBRE DEL ELEMENTO SELECCIONADO
-                    $("#municipio_id").append("<option value = ''> Seleccionar... </option>")
-                    // CONSTRUIMOS EL DropDownList A PARTIR DEL RESULTADO Json (data)
+                    $('select#municipio_id').formSelect().empty();
+                    $('select#municipio_id').formSelect().attr('disabled', false);
+                    $('select#municipio_id').formSelect().append("<option value = ''> Elige una opción </option>");
                     data.forEach(element => {
-                        if(element.id == oldMunicipio)
-                            $("#municipio_id").append("<option value='" + element.id + "'selected > "+ element.municipio +" </option>")
+                        if(oldMunicipio == element.id)
+                            $('select#municipio_id').formSelect().append("<option value='" + element.id + "' selected>"+ element.municipio +" </option>");
                         else
-                            $("#municipio_id").append("<option value='" + element.id + "'>"+ element.municipio +" </option>")
+                            $('select#municipio_id').formSelect().append("<option value='" + element.id + "'>"+ element.municipio +" </option>");
                     });
                 });
             }
         var entidadnac_id = $("#entidadNac_id").val();
         var oldMunicipioNac = $("#municipioNac_id").val();
+        
             if (entidadnac_id == '') {
-                $("#municipioNac_id").empty();
-                $("#municipioNac_id").append("<option value = ''> Seleccionar... </option>")
-                $('#municipioNac_id').prop('disabled', true);
+                $('select#municipioNac_id').formSelect().attr('disabled', true);
+                $('select#municipioNac_id').formSelect().append("<option value = ''> Elige una opción </option>");
             }
             else {
                 $('#municipioNac_id').prop('disabled', false);
                 $.get("{{ url('select_municipio')}}/"+entidadnac_id, function (data) 
                 {
-                    //console.log(data);
-                    // VACIAMOS EL DropDownList
-                    $("#municipioNac_id").empty();
-                    // AÑADIMOS UN NUEVO label CON EL NOMBRE DEL ELEMENTO SELECCIONADO
-                    $("#municipioNac_id").append("<option value = ''> Seleccionar... </option>")
-                    // CONSTRUIMOS EL DropDownList A PARTIR DEL RESULTADO Json (data)
+                    $('select#municipioNac_id').formSelect().empty();
+                    $('select#municipioNac_id').formSelect().attr('disabled', false);
+                    $('select#municipioNac_id').formSelect().append("<option value = ''> Elige una opción </option>");
                     data.forEach(element => {
-                        if(element.id == oldMunicipioNac)
-                            $("#municipioNac_id").append("<option value='" + element.id + "'selected > "+ element.municipio +" </option>")
+                        if(oldMunicipioNac == element.id)
+                            $('select#municipioNac_id').formSelect().append("<option value='" + element.id + "' selected>"+ element.municipio +" </option>");
                         else
-                            $("#municipioNac_id").append("<option value='" + element.id + "'>"+ element.municipio +" </option>")
+                        $('select#municipioNac_id').formSelect().append("<option value='" + element.id + "' >"+ element.municipio +" </option>");
                     });
                 });
             }
         $('#entidadFederativa_id').on('change', function() {
             var entidad_id = $("#entidadFederativa_id").val();
             if (entidad_id != '') {
-                $('#municipio_id').prop('disabled', false);
                 $.get("{{ url('select_municipio')}}/"+entidad_id, function (data) 
                 {
-                    //console.log(data);
-                    // VACIAMOS EL DropDownList
-                    $("#municipio_id").empty();
-                    // AÑADIMOS UN NUEVO label CON EL NOMBRE DEL ELEMENTO SELECCIONADO
-                    $("#municipio_id").append("<option value = ''> Seleccionar... </option>")
-                    // CONSTRUIMOS EL DropDownList A PARTIR DEL RESULTADO Json (data)
+                    $('select#municipio_id').formSelect().empty();
+                    $('select#municipio_id').formSelect().attr('disabled', false);
+                    $('select#municipio_id').formSelect().append("<option value = ''> Elige una opción </option>");
                     data.forEach(element => {
-                        $("#municipio_id").append("<option value='" + element.id + "'>"+ element.municipio +" </option>")
+                        $('select#municipio_id').formSelect().append("<option value='" + element.id + "'>"+ element.municipio +" </option>");
                     });
                 });
             } else {
-                $("#municipio_id").empty();
-                $("#municipio_id").append("<option value = ''> Seleccionar... </option>")
-                $('#municipio_id').prop('disabled', true);
-            }            
-            
+                const select = document.querySelector('select#municipio_id');
+                select.querySelectorAll('option')[0].selected = true;
+                select.querySelectorAll('option')[0].value = 0;
+                $('select#municipio_id').formSelect().attr('disabled', true);
+                M.FormSelect.init(document.getElementById('municipio_id'));
+            }               
         }); 
-
-        $('#entidadNac_id').on('change', function() {
+        
+        $('#entidadNac_id').on('change',function(){
             var entidadNac_id = $("#entidadNac_id").val();
             if (entidadNac_id != '') {
-                $('#municipioNac_id').prop('disabled', false);
                 $.get("{{ url('select_municipio')}}/"+entidadNac_id, function (data) 
                 {
-                    //console.log(data);
-                    // VACIAMOS EL DropDownList
-                    $("#municipioNac_id").empty();
-                    // AÑADIMOS UN NUEVO label CON EL NOMBRE DEL ELEMENTO SELECCIONADO
-                    $("#municipioNac_id").append("<option value = ''> Seleccionar... </option>")
-                    // CONSTRUIMOS EL DropDownList A PARTIR DEL RESULTADO Json (data)
+                    $('select#municipioNac_id').formSelect().empty();
+                    $('select#municipioNac_id').formSelect().attr('disabled', false);
+                    $('select#municipioNac_id').formSelect().append("<option value = ''> Elige una opción </option>");
                     data.forEach(element => {
-                        $("#municipioNac_id").append("<option value='" + element.id + "'>"+ element.municipio +" </option>")
+                        $('select#municipioNac_id').formSelect().append("<option value='" + element.id + "'>"+ element.municipio +" </option>");
                     });
                 });
             } else {
-                $("#municipioNac_id").empty();
-                $("#municipioNac_id").append("<option value = ''> Seleccionar... </option>")
-                $('#municipioNac_id').prop('disabled', true);
-            }            
-            
-        }); 
+                const select = document.querySelector('select#municipioNac_id');
+                select.querySelectorAll('option')[0].selected = true;
+                select.querySelectorAll('option')[0].value = 0;
+                $('select#municipioNac_id').formSelect().attr('disabled', true);
+                M.FormSelect.init(document.getElementById('municipioNac_id')); 
+            } 
+        });
     });
 
 </script>

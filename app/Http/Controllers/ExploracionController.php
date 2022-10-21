@@ -12,6 +12,7 @@ class ExploracionController extends Controller
     function store(Request $request){
         //guardamos el interrogtorio
         $exploracion = new Exploracionfisica;
+        $exploracion->tenant_id = session('tenant')->id;
         $exploracion->habitusExterior = $request->habitus;
         $exploracion->peso = $request->peso;
         $exploracion->talla = $request->talla;
@@ -25,7 +26,7 @@ class ExploracionController extends Controller
 
         //guardamos la exploracion en la Consulta
         $consulta_id = session('consulta_id');
-        $consulta = Consulta::find($consulta_id);
+        $consulta = Consulta::where('tenant_id', session('tenant')->id)->find($consulta_id);
         $consulta->exploracion_id = $exploracion->id;
         $consulta->save();
 
@@ -39,7 +40,7 @@ class ExploracionController extends Controller
 
     function update(Request $request){
         $explo_id = session('explo_id');
-        $exploracion = Exploracionfisica::find($explo_id);
+        $exploracion = Exploracionfisica::where('tenant_id', session('tenant')->id)->find($explo_id);
         $exploracion->habitusExterior = $request->habitus;
         $exploracion->peso = $request->peso;
         $exploracion->talla = $request->talla;
@@ -63,6 +64,7 @@ class ExploracionController extends Controller
         if(isset($explo_id)){ //si existe explo_id continuar normalmente
             //guardamos los signos vitales
             $signos = new Signovital;
+            $signos->tenant_id = session('tenant')->id;
             $signos->temperatura = $request->temperatura;
             $signos->tensionSistolica = $request->sistolica;
             $signos->tensionDiastolica = $request->diastolica;
@@ -74,7 +76,7 @@ class ExploracionController extends Controller
             $result = $signos->save();
 
             //guardamos los antecedentes en el interrogatorio
-            $explo = Exploracionfisica::find($explo_id);
+            $explo = Exploracionfisica::where('tenant_id', session('tenant')->id)->find($explo_id);
             $explo->signos_id = $signos->id;
             $explo->save();
 
@@ -86,18 +88,20 @@ class ExploracionController extends Controller
             }
         }else{ //si no existe explo_id, primero crear exploracion fisica
             $exploracion = new Exploracionfisica;
+            $exploracion->tenant_id = session('tenant')->id;
             $exploracion->save();
             session(['explo_id' => $exploracion->id]);
             $explo_id = $exploracion->id;
 
             //guardamos la exploracion en la consulta
             $consulta_id = session('consulta_id');
-            $consulta = Consulta::find($consulta_id);
+            $consulta = Consulta::where('tenant_id', session('tenant')->id)->find($consulta_id);
             $consulta->exploracion_id = $exploracion->id;
             $consulta->save();
 
             //guardamos los signos
             $signos = new Signovital;
+            $signos->tenant_id = session('tenant')->id;
             $signos->temperatura = $request->temperatura;
             $signos->tensionSistolica = $request->sistolica;
             $signos->tensionDiastolica = $request->diastolica;
@@ -109,7 +113,7 @@ class ExploracionController extends Controller
             $result = $signos->save();
 
             //guardamos los signos en la exploracion 
-            $explo = Exploracionfisica::find($explo_id);
+            $explo = Exploracionfisica::where('tenant_id', session('tenant')->id)->find($explo_id);
             $explo->signos_id = $signos->id;
             $explo->save();
 
@@ -125,7 +129,7 @@ class ExploracionController extends Controller
     function updatesignos(Request $request){
         $signos_id = session('signos_id');
         //guardamos los signos vitales
-        $signos = Signovital::find($signos_id);
+        $signos = Signovital::where('tenant_id', session('tenant')->id)->find($signos_id);
         $signos->temperatura = $request->temperatura;
         $signos->tensionSistolica = $request->sistolica;
         $signos->tensionDiastolica = $request->diastolica;

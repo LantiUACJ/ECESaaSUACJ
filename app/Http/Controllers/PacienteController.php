@@ -36,7 +36,8 @@ class PacienteController extends Controller
      */
     public function index()
     {
-        $pacientes = Paciente::orderBy('nombre', 'ASC')->paginate(8);
+        session(['menunav' => "paciente"]);
+        $pacientes = Paciente::where('tenant_id', session('tenant')->id)->orderBy('nombre', 'ASC')->paginate(8);
 
         return view('paciente.index', compact('pacientes'))
             ->with('i', (request()->input('page', 1) - 1) * $pacientes->perPage());
@@ -49,9 +50,7 @@ class PacienteController extends Controller
      */
     public function create()
     {
-        $paciente = new Paciente();
-        $paciente->createdUser_id = auth()->user()->id;
-        $paciente->updateUser_id = null;
+        $paciente = new Paciente();       
         $sexos = Sexo::all()->sortBy(['descripcion', 'asc']);
         $entidades = Entidadesfederativa::all()->sortBy(['entidad', 'asc']);
         $municipios = Municipio::all()->sortBy(['municipio', 'asc']);
@@ -73,8 +72,7 @@ class PacienteController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {       
-        //dd($request->dh);
+    {    
         request()->validate(
             [
                 'curp' => 'required',
@@ -112,6 +110,10 @@ class PacienteController extends Controller
                 'dh.required_if' => 'La derechohabiencia es obligatoria.'
             ]
         );
+        $request->merge(['createdUser_id'=>auth()->user()->id]);
+        $request->merge(['updateUser_id'=>null]);
+        $request->merge (['fechaNacimiento'=> date('Y-m-d  H:i:s',strtotime($request->fechaNacimiento))]);
+        $request->merge (['tenant_id' => session('tenant')->id]);
 
         $paciente = Paciente::create($request->all());
 
@@ -151,9 +153,13 @@ class PacienteController extends Controller
      */
     public function show($id)
     {
-        $paciente = Paciente::find($id);
-
-        return view('paciente.show', compact('paciente'));
+        $paciente = Paciente::where('tenant_id', session('tenant')->id)->find($id);
+        if($paciente != null){
+            return view('paciente.show', compact('paciente'));
+        }
+        else{
+            return redirect()->route('pacientes.index');
+        }
     }
 
     /**
@@ -164,23 +170,25 @@ class PacienteController extends Controller
      */
     public function edit($id)
     {
-        $paciente = Paciente::find($id);
-        $paciente->updateUser_id = auth()->user()->id;
-        $sexos = Sexo::all()->sortBy(['descripcion', 'asc']);
-        $entidades = Entidadesfederativa::all()->sortBy(['entidad', 'asc']);
-        $municipios = Municipio::where('entidadFederativa_id', '=', $paciente->entidadFederativa_id)->get();
-        $municipiosnac = Municipio::where('entidadFederativa_id', '=', $paciente->entidadNac_id)->get();
-        $generos = Genero::all()->sortBy(['descripcion', 'asc']);
-        $gruposanguineos = Gruposanguineo::all();
-        $indigenas = Indigena::all()->sortBy(['opcion', 'asc']);
-        $afromexicanos = Afromexicano::all()->sortBy(['opcionAfro', 'asc']);
-        $programasmymgs = Programasmymg::all();
-        $derechohabiencias = Derechohabiencia::all()->sortBy(['siglaDH', 'asc']);
-        //$pacientedh = Pacientedh::where('paciente_id', '=', $paciente->id);
-
-        //$paciente->derechohabiencias;
-
-        return view('paciente.edit', compact('paciente','sexos','entidades','municipios','municipiosnac', 'generos', 'gruposanguineos', 'indigenas', 'afromexicanos', 'programasmymgs', 'derechohabiencias'));//, 'pacientedh'));
+        $paciente = Paciente::where('tenant_id', session('tenant')->id)->find($id);
+        if($paciente != null)
+        {
+            $sexos = Sexo::all()->sortBy(['descripcion', 'asc']);
+            $entidades = Entidadesfederativa::all()->sortBy(['entidad', 'asc']);
+            $municipios = Municipio::where('entidadFederativa_id', '=', $paciente->entidadFederativa_id)->get();
+            $municipiosnac = Municipio::where('entidadFederativa_id', '=', $paciente->entidadNac_id)->get();
+            $generos = Genero::all()->sortBy(['descripcion', 'asc']);
+            $gruposanguineos = Gruposanguineo::all();
+            $indigenas = Indigena::all()->sortBy(['opcion', 'asc']);
+            $afromexicanos = Afromexicano::all()->sortBy(['opcionAfro', 'asc']);
+            $programasmymgs = Programasmymg::all();
+            $derechohabiencias = Derechohabiencia::all()->sortBy(['siglaDH', 'asc']);
+            
+            return view('paciente.edit', compact('paciente','sexos','entidades','municipios','municipiosnac', 'generos', 'gruposanguineos', 'indigenas', 'afromexicanos', 'programasmymgs', 'derechohabiencias'));//, 'pacientedh'));
+        }
+        else{
+            return redirect()->route('pacientes.index');
+        }
     }
 
     /**
@@ -192,18 +200,11 @@ class PacienteController extends Controller
      */
     public function update(Request $request, Paciente $paciente)
     {
-        //request()->validate(Paciente::$rules);
-        //dd($request->dh);
-        //dd($paciente->dhp);
         $resultdel = false;
         foreach($paciente->dhp as $pdh){
             $pdh->delete();
             $resultdel = true;
         } 
-        /*if($resultdel == false){
-            return redirect()->route('pacientes.index')
-            ->with('error', 'Ocurrió un error al actualizar los datos del Paciente.');
-        }*/
         request()->validate(
             [
                 'curp' => 'required',
@@ -242,32 +243,32 @@ class PacienteController extends Controller
             ]
         );
         
+        $request->merge(['updateUser_id'=>auth()->user()->id]);
+        $request->merge (['fechaNacimiento'=> date('Y-m-d  H:i:s',strtotime($request->fechaNacimiento))]);
+        
         $paciente->update($request->all());
-
-        /*return redirect()->route('pacientes.index')
-            ->with('success', 'Paciente actualizado correctamente.');*/
        
-            $msg = "";
-            foreach($request->dh as $dhp)
-            {
-                $pacientedh = new Pacientedh();
-                $pacientedh->createdUser_id = auth()->user()->id;
-                $pacientedh->updateUser_id = auth()->user()->id;
-                $pacientedh->pacientes_id = $paciente->id;
-                $pacientedh->derechoHabiencias_id = $dhp;
-                if($pacientedh->save() == false)
-                    $msg = "Error";
-            }
-            if($msg == ""){
+        $msg = "";
+        foreach($request->dh as $dhp)
+        {
+            $pacientedh = new Pacientedh();
+            $pacientedh->createdUser_id = auth()->user()->id;
+            $pacientedh->updateUser_id = auth()->user()->id;
+            $pacientedh->pacientes_id = $paciente->id;
+            $pacientedh->derechoHabiencias_id = $dhp;
+            if($pacientedh->save() == false)
+                $msg = "Error";
+        }
+        if($msg == ""){
+            return redirect()->route('pacientes.index')
+                ->with('success', 'Paciente actualizado correctamente.');
+        }
+        else{
+            if($resultdel == false){
                 return redirect()->route('pacientes.index')
-                    ->with('success', 'Paciente actualizado correctamente.');
+                    ->with('success', 'Paciente registrado con errores en los datos de la derechohabiencia.');
             }
-            else{
-                if($resultdel == false){
-                    return redirect()->route('pacientes.index')
-                        ->with('success', 'Paciente registrado con errores en los datos de la derechohabiencia.');
-                }
-            }
+        }
         
     }
 
@@ -278,77 +279,98 @@ class PacienteController extends Controller
      */
     public function destroy($id)
     {
-        $consulta = Consulta::where('paciente_id', $id)->count();
-        $egi = Egi::where('paciente_id', $id)->count();
-        $tamizaje = Tamizaje::where('paciente_id', $id)->count();
-        $paciente = Paciente::find($id);
-        $derechohabiencias = $paciente->dhp->count();
-        if($consulta == 0 && $egi == 0 && $tamizaje == 0)
+        $paciente = Paciente::where('tenant_id', session('tenant')->id)->find($id);
+        if($paciente != null)
         {
-            $provisionalpdh = $paciente->dhp;
-            foreach($paciente->dhp as $pdh){
-                $pdh->delete();
-                $derechohabiencias--;
-            }
-            if($derechohabiencias == 0)
-            {  
-                try{
-                    $paciente->delete();
-                    return redirect()->route('pacientes.index')
-                        ->with('success', 'Se ha eliminado la información del paciente.');
-                }
-                catch(\Throwable $e){
-                    foreach($provisionalpdh as $dhp)
-                    {
-                        $pacientedh = new Pacientedh();
-                        $pacientedh->createdUser_id = $dhp->createdUser_id;
-                        $pacientedh->updateUser_id = $dhp->updateUser_id;
-                        $pacientedh->pacientes_id = $dhp->pacientes_id;
-                        $pacientedh->derechoHabiencias_id = $dhp->derechoHabiencias_id;
-                        $pacientedh->save();
-                    }
-                    return redirect()->route('pacientes.index')
-                    ->with('error', 'La información del paciente: '.$paciente->nombre.' '.$paciente->primerApellido.' '.$paciente->segundoApellido.', no se puede eliminar.');
-                }
-            }
-            else
+            $consulta = Consulta::where('paciente_id', $id)->count();
+            $egi = Egi::where('paciente_id', $id)->count();
+            $tamizaje = Tamizaje::where('paciente_id', $id)->count();
+            $derechohabiencias = $paciente->dhp->count();
+            if($consulta == 0 && $egi == 0 && $tamizaje == 0)
             {
+                $provisionalpdh = $paciente->dhp;
+                foreach($paciente->dhp as $pdh){
+                    $pdh->delete();
+                    $derechohabiencias--;
+                }
+                if($derechohabiencias == 0)
+                {  
+                    try{
+                        $paciente->delete();
+                        return redirect()->route('pacientes.index')
+                            ->with('success', 'Se ha eliminado la información del paciente.');
+                    }
+                    catch(\Throwable $e){
+                        foreach($provisionalpdh as $dhp)
+                        {
+                            $pacientedh = new Pacientedh();
+                            $pacientedh->createdUser_id = $dhp->createdUser_id;
+                            $pacientedh->updateUser_id = $dhp->updateUser_id;
+                            $pacientedh->pacientes_id = $dhp->pacientes_id;
+                            $pacientedh->derechoHabiencias_id = $dhp->derechoHabiencias_id;
+                            $pacientedh->save();
+                        }
+                        return redirect()->route('pacientes.index')
+                        ->with('error', 'La información del paciente: '.$paciente->nombre.' '.$paciente->primerApellido.' '.$paciente->segundoApellido.', no se puede eliminar.');
+                    }
+                }
+                else
+                {
+                    return redirect()->route('pacientes.index')
+                        ->with('error', 'La información del paciente: '.$paciente->nombre.' '.$paciente->primerApellido.' '.$paciente->segundoApellido.', no se puede eliminar.');
+                }
+            }
+            else{
+                $extra = "";
+                if($consulta > 0){
+                    $extra = "consulta registrada";
+                }
+                if($egi > 0)
+                {
+                    if(Str::length($extra) > 0 ){
+                        $extra .= ", evaluación geriátrica";
+                    }
+                    else{
+                        $extra = "evaluación geriátrica";
+                    }
+                }
+                if($tamizaje > 0)
+                {
+                    if(Str::length($extra) > 0 ){
+                        $extra . " y tamizaje";
+                    }
+                    else{
+                        $extra = "tamizaje";
+                    }
+                }
                 return redirect()->route('pacientes.index')
-                    ->with('error', 'La información del paciente: '.$paciente->nombre.' '.$paciente->primerApellido.' '.$paciente->segundoApellido.', no se puede eliminar.');
+                    ->with('error', 'El paciente: '.$paciente->nombre.' '.$paciente->primerApellido.' '.$paciente->segundoApellido.', ya cuenta con '.$extra.', por lo cual no se puede borrar su información');
             }
         }
         else{
-            $extra = "";
-            if($consulta > 0){
-                $extra = "consulta registrada";
-            }
-            if($egi > 0)
-            {
-                if(Str::length($extra) > 0 ){
-                    $extra .= ", evaluación geriátrica";
-                }
-                else{
-                    $extra = "evaluación geriátrica";
-                }
-            }
-            if($tamizaje > 0)
-            {
-                if(Str::length($extra) > 0 ){
-                    $extra . " y tamizaje";
-                }
-                else{
-                    $extra = "tamizaje";
-                }
-            }
-            return redirect()->route('pacientes.index')
-                ->with('error', 'El paciente: '.$paciente->nombre.' '.$paciente->primerApellido.' '.$paciente->segundoApellido.', ya cuenta con '.$extra.', por lo cual no se puede borrar su información');
+            return redirect()->route('pacientes.index');
         }
+
     }
 
-    public function buscaMunicipio($entidad_id)
+    /*public function buscaMunicipio($entidad_id)
     {   
         $municipios = Municipio::where('entidadFederativa_id', '=', $entidad_id)->get();
         return response()->json($municipios);
-    }
+    }*/
 
+    /**
+     * return cities list
+     *
+     * @return json
+     */
+    public function buscaMunicipio($entidad_id)
+    {   
+        //dd($request);
+        $municipios = Municipio::where('entidadFederativa_id', '=', $entidad_id)->get();
+        
+        if (count($municipios) > 0) {
+            return response()->json($municipios);
+        }
+    }
 }

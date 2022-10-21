@@ -18,7 +18,8 @@ class GruposanguineoController extends Controller
      */
     public function index()
     {
-        $gruposanguineos = Gruposanguineo::paginate();
+        session(['menunav' => "sangre"]);
+        $gruposanguineos = Gruposanguineo::paginate(10);
 
         return view('gruposanguineo.index', compact('gruposanguineos'))
             ->with('i', (request()->input('page', 1) - 1) * $gruposanguineos->perPage());

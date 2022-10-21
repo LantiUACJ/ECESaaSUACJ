@@ -31,11 +31,13 @@ Route::get('/welcome', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('tenant');
 Route::get('/about', [App\Http\Controllers\HomeController::class, 'about'])->name('about');
-Route::get('/configuracion', [App\Http\Controllers\HomeController::class, 'index'])->name('homeconfiguracion');
+//Route::get('/configuracion', [App\Http\Controllers\HomeController::class, 'index'])->name('homeconfiguracion');
 
-Route::get('/page404', [App\Http\Controllers\ConsultaController::class, 'page404'])->name('page404')->middleware('auth');
+Route::match(["POST", "GET"], "/setTenant", [App\Http\Controllers\HomeController::class, "setTenant"])->name("setTenant")->middleware('auth');
+
+Route::get('/page404', [App\Http\Controllers\ConsultaController::class, 'page404'])->name('page404')->middleware('tenant');
 
 Route::post('/getdiags', function(Request $request){
     //$diags = Diagnostico::where('active', 1)->where('term', 'LIKE', '%'.$request->term.'%')->get(['id', 'term']);
@@ -55,54 +57,54 @@ Route::post('/getdiags', function(Request $request){
 
     //Peticion del ECE al MISECE
     //Peticion de codigo para consulta (paciente msg?)
-    Route::post('/pacienteconsulta/{curp}', [App\Http\Controllers\MISECEController::class, 'consultaece'])->name('pacienteconsulta')->middleware('auth');
+    Route::post('/pacienteconsulta/{curp}', [App\Http\Controllers\MISECEController::class, 'consultaece'])->name('pacienteconsulta')->middleware('tenant');
     //Consulta de ece al misece sin codigo, pide codigo
-    Route::post('/expedienteece', [App\Http\Controllers\MISECEController::class, 'expece'])->name('expedienteece')->middleware('auth');
+    Route::post('/expedienteece', [App\Http\Controllers\MISECEController::class, 'expece'])->name('expedienteece')->middleware('tenant');
     //Consulta basico de ece al misece
-    Route::post('/expedienteecebasico', [App\Http\Controllers\MISECEController::class, 'expecebasico'])->name('expedienteecebasico')->middleware('auth');
+    Route::post('/expedienteecebasico', [App\Http\Controllers\MISECEController::class, 'expecebasico'])->name('expedienteecebasico')->middleware('tenant');
 
     //Pagina para Consulta (vista) MISECE ece-misece (con curp)
-    Route::get('/misece', [App\Http\Controllers\MISECEController::class, 'consultarmisece'])->name('misece')->middleware('auth');
+    Route::get('/misece', [App\Http\Controllers\MISECEController::class, 'consultarmisece'])->name('misece')->middleware('tenant');
 /**/
 
 
 //Consultas del paciente
-Route::get('/consultas/{id}', [App\Http\Controllers\ConsultaController::class, 'index'])->name('consultas')->middleware('auth');
+//Route::get('/consultas/{id}', [App\Http\Controllers\ConsultaController::class, 'index'])->name('consultas')->middleware('tenant');
 //Consultad del medico
-Route::get('/consultamedico', [App\Http\Controllers\ConsultaController::class, 'medico'])->name('consultamedico')->middleware('auth');
+Route::get('/consultamedico', [App\Http\Controllers\ConsultaController::class, 'medico'])->name('consultamedico')->middleware('tenant');
 //Seleccionar paciente al cual realizar la consulta
-Route::get('/seleccionarpaciente', [App\Http\Controllers\ConsultaController::class, 'pacientes'])->name('seleccionarpaciente')->middleware('auth');
+Route::get('/seleccionarpaciente', [App\Http\Controllers\ConsultaController::class, 'pacientes'])->name('seleccionarpaciente')->middleware('tenant');
 //Busqueda de consulta (medico)
-Route::get('/searchconsultamedico', [App\Http\Controllers\ConsultaController::class, 'searchconsulta'])->name('searchconsultamedico')->middleware('auth');
+Route::get('/searchconsultamedico', [App\Http\Controllers\ConsultaController::class, 'searchconsulta'])->name('searchconsultamedico')->middleware('tenant');
 //Busqueda de paciente
-Route::get('/searchpacienteseleccion', [App\Http\Controllers\ConsultaController::class, 'searchpaciente'])->name('searchpacienteseleccion')->middleware('auth');
+Route::get('/searchpacienteseleccion', [App\Http\Controllers\ConsultaController::class, 'searchpaciente'])->name('searchpacienteseleccion')->middleware('tenant');
 //Registro de paciente desde seleccion de paciente en creacion de nueva consulta
-Route::get('/createpacfromcons', [App\Http\Controllers\ConsultaController::class, 'createpacienteConsulta'])->name('createpacfromcons')->middleware('auth');
+Route::get('/registrarpaciente', [App\Http\Controllers\ConsultaController::class, 'createpacienteConsulta'])->name('createpacfromcons')->middleware('tenant');
 //Store de paciente -> continua consulta
-Route::post('/storepacienteconsulta', [App\Http\Controllers\ConsultaController::class, 'storepaciente'])->name('storepacienteconsulta')->middleware('auth');
+Route::post('/storepacienteconsulta', [App\Http\Controllers\ConsultaController::class, 'storepaciente'])->name('storepacienteconsulta')->middleware('tenant');
 
 //Registro de consultas (nuevas consultas)
-Route::get('/registrarconsulta/{id}', [App\Http\Controllers\ConsultaController::class, 'registrar'])->name('registrarconsulta')->middleware('auth');
+Route::get('/registrarconsulta/{id}', [App\Http\Controllers\ConsultaController::class, 'registrar'])->name('registrarconsulta')->middleware('tenant');
 //Se guarda la consulta
-Route::post('/storeconsulta/{id}', [App\Http\Controllers\ConsultaController::class, 'store'])->name('storeconsulta')->middleware('auth');
+Route::post('/storeconsulta/{id}', [App\Http\Controllers\ConsultaController::class, 'store'])->name('storeconsulta')->middleware('tenant');
 //Consulta por embarazo
-Route::post('/storepregnantconsulta/{id}', [App\Http\Controllers\ConsultaController::class, 'storepregnant'])->name('storepregnantconsulta')->middleware('auth');
+Route::post('/storepregnantconsulta/{id}', [App\Http\Controllers\ConsultaController::class, 'storepregnant'])->name('storepregnantconsulta')->middleware('tenant');
 //Se actualiza la consulta
-Route::post('/updateconsulta/{id}', [App\Http\Controllers\ConsultaController::class, 'update'])->name('updateconsulta')->middleware('auth');
+Route::post('/updateconsulta/{id}', [App\Http\Controllers\ConsultaController::class, 'update'])->name('updateconsulta')->middleware('tenant');
 //Actualizar consulta embarazo
-Route::post('/updatepregnantconsulta/{id}', [App\Http\Controllers\ConsultaController::class, 'updatepregnant'])->name('updatepregnantconsulta')->middleware('auth');
+Route::post('/updatepregnantconsulta/{id}', [App\Http\Controllers\ConsultaController::class, 'updatepregnant'])->name('updatepregnantconsulta')->middleware('tenant');
 //Vista de la consulta
-Route::get('/viewconsulta/{id}', [App\Http\Controllers\ConsultaController::class, 'view'])->name('viewconsulta')->middleware('auth');
+Route::get('/viewconsulta/{id}', [App\Http\Controllers\ConsultaController::class, 'view'])->name('viewconsulta')->middleware('tenant');
 //Continuar la consulta
-Route::get('/continuarconsulta/{id}', [App\Http\Controllers\ConsultaController::class, 'continuar'])->name('continuarconsulta')->middleware('auth');
+Route::get('/continuarconsulta/{id}', [App\Http\Controllers\ConsultaController::class, 'continuar'])->name('continuarconsulta')->middleware('tenant');
 //Terminar la consulta
-Route::get('/terminarConsulta', [App\Http\Controllers\ConsultaController::class, 'terminarConsulta'])->name('terminarConsulta')->middleware('auth');
+Route::get('/terminarConsulta', [App\Http\Controllers\ConsultaController::class, 'terminarConsulta'])->name('terminarConsulta')->middleware('tenant');
 //Revisar si el usuario tiene notificaciones 
-Route::post('/notificationsCheck', [App\Http\Controllers\ConsultaController::class, 'notifications'])->name('notificationsCheck')->middleware('auth');
+Route::post('/notificationsCheck', [App\Http\Controllers\ConsultaController::class, 'notifications'])->name('notificationsCheck')->middleware('tenant');
 //Se transcribe de voz a texto
-Route::post('/transcriptspeech', [App\Http\Controllers\ConsultaController::class, 'transcript'])->name('transcriptspeech')->middleware('auth');
+Route::post('/transcriptspeech', [App\Http\Controllers\ConsultaController::class, 'transcript'])->name('transcriptspeech')->middleware('tenant');
 //Get files from archivos
-Route::get('/resultfile/{filename}', [App\Http\Controllers\ConsultaController::class, 'downloadfiles'])->name('resultfile')->middleware('auth');
+Route::get('/resultfile/{filename}', [App\Http\Controllers\ConsultaController::class, 'downloadfiles'])->name('resultfile')->middleware('tenant');
 
 
 //For test purposes
@@ -113,80 +115,86 @@ Route::get('/sessionone', [App\Http\Controllers\ConsultaController::class, 'sess
 
 
 //Interrogatorio
-Route::post('/storeinterrogatorio', [App\Http\Controllers\InterrogatorioController::class, 'store'])->name('storeinterrogatorio')->middleware('auth');
-Route::post('/updateinterrogatorio', [App\Http\Controllers\InterrogatorioController::class, 'update'])->name('updateinterrogatorio')->middleware('auth');
+Route::post('/storeinterrogatorio', [App\Http\Controllers\InterrogatorioController::class, 'store'])->name('storeinterrogatorio')->middleware('tenant');
+Route::post('/updateinterrogatorio', [App\Http\Controllers\InterrogatorioController::class, 'update'])->name('updateinterrogatorio')->middleware('tenant');
 //AntecedentesHF
-Route::post('/storeantecedenteshf', [App\Http\Controllers\InterrogatorioController::class, 'storeantehf'])->name('storeantecedenteshf')->middleware('auth');
-Route::post('/updateantecedenteshf', [App\Http\Controllers\InterrogatorioController::class, 'updateantehf'])->name('updateantecedenteshf')->middleware('auth');
+Route::post('/storeantecedenteshf', [App\Http\Controllers\InterrogatorioController::class, 'storeantehf'])->name('storeantecedenteshf')->middleware('tenant');
+Route::post('/updateantecedenteshf', [App\Http\Controllers\InterrogatorioController::class, 'updateantehf'])->name('updateantecedenteshf')->middleware('tenant');
 //AntecedentesPP
-Route::post('/storeantecedentespp', [App\Http\Controllers\InterrogatorioController::class, 'storeantepp'])->name('storeantecedentespp')->middleware('auth');
-Route::post('/updateantecedentespp', [App\Http\Controllers\InterrogatorioController::class, 'updateantepp'])->name('updateantecedentespp')->middleware('auth');
+Route::post('/storeantecedentespp', [App\Http\Controllers\InterrogatorioController::class, 'storeantepp'])->name('storeantecedentespp')->middleware('tenant');
+Route::post('/updateantecedentespp', [App\Http\Controllers\InterrogatorioController::class, 'updateantepp'])->name('updateantecedentespp')->middleware('tenant');
 //AntecedentesPNP
-Route::post('/storeantecedentespnp', [App\Http\Controllers\InterrogatorioController::class, 'storeantepnp'])->name('storeantecedentespnp')->middleware('auth');
-Route::post('/updateantecedentespnp', [App\Http\Controllers\InterrogatorioController::class, 'updateantepnp'])->name('updateantecedentespnp')->middleware('auth');
+Route::post('/storeantecedentespnp', [App\Http\Controllers\InterrogatorioController::class, 'storeantepnp'])->name('storeantecedentespnp')->middleware('tenant');
+Route::post('/updateantecedentespnp', [App\Http\Controllers\InterrogatorioController::class, 'updateantepnp'])->name('updateantecedentespnp')->middleware('tenant');
 //AntecedentesPNP
-Route::post('/storeaparatos', [App\Http\Controllers\InterrogatorioController::class, 'storeaparatos'])->name('storeaparatos')->middleware('auth');
-Route::post('/updateaparatos', [App\Http\Controllers\InterrogatorioController::class, 'updateaparatos'])->name('updateaparatos')->middleware('auth');
+Route::post('/storeaparatos', [App\Http\Controllers\InterrogatorioController::class, 'storeaparatos'])->name('storeaparatos')->middleware('tenant');
+Route::post('/updateaparatos', [App\Http\Controllers\InterrogatorioController::class, 'updateaparatos'])->name('updateaparatos')->middleware('tenant');
 
 
 //Exploracion Fisica
-Route::post('/storeexploracion', [App\Http\Controllers\ExploracionController::class, 'store'])->name('storeexploracion')->middleware('auth');
-Route::post('/updateexploracion', [App\Http\Controllers\ExploracionController::class, 'update'])->name('updateexploracion')->middleware('auth');
+Route::post('/storeexploracion', [App\Http\Controllers\ExploracionController::class, 'store'])->name('storeexploracion')->middleware('tenant');
+Route::post('/updateexploracion', [App\Http\Controllers\ExploracionController::class, 'update'])->name('updateexploracion')->middleware('tenant');
 //Exploracion Fisica - signos vitales
-Route::post('/storesignos', [App\Http\Controllers\ExploracionController::class, 'storesignos'])->name('storesignos')->middleware('auth');
-Route::post('/updatesignos', [App\Http\Controllers\ExploracionController::class, 'updatesignos'])->name('updatesignos')->middleware('auth');
+Route::post('/storesignos', [App\Http\Controllers\ExploracionController::class, 'storesignos'])->name('storesignos')->middleware('tenant');
+Route::post('/updatesignos', [App\Http\Controllers\ExploracionController::class, 'updatesignos'])->name('updatesignos')->middleware('tenant');
 
 
 //Pacientes
-Route::resource('pacientes', App\Http\Controllers\PacienteController::class)->middleware('auth');
+Route::resource('pacientes', App\Http\Controllers\PacienteController::class)->middleware('tenant');
 //Select o droplist en pacientes
 Route::get('/select_municipio/{entidad_id}', [App\Http\Controllers\PacienteController::class,'buscaMunicipio'])->name('buscaMunicipio');
 
 //Tamizaje
-Route::resource('tamizajes', App\Http\Controllers\TamizajeController::class)->middleware('auth');
+Route::resource('tamizajes', App\Http\Controllers\TamizajeController::class)->middleware('tenant');
 
 //Modulo 1 EGI
-Route::get('/indexPaciente', [App\Http\Controllers\EgiController::class, 'indexPaciente'])->name('indexPaciente')->middleware('auth');
-Route::get('/create/{id}', [App\Http\Controllers\EgiController::class, 'create'])->name('create')->middleware('auth');
-Route::resource('egis', App\Http\Controllers\EgiController::class)->middleware('auth');
-Route::resource('datossociodemograficos', App\Http\Controllers\DatossociodemograficoController::class)->middleware('auth');
-Route::resource('antecedentesmedicos', App\Http\Controllers\AntecedentesmedicoController::class)->middleware('auth');
-Route::resource('percepcionsaluds', App\Http\Controllers\PercepcionsaludController::class)->middleware('auth');
-Route::resource('frailsarcfs', App\Http\Controllers\FrailsarcfController::class)->middleware('auth');
+Route::get('/indexPaciente', [App\Http\Controllers\EgiController::class, 'indexPaciente'])->name('indexPaciente')->middleware('tenant');
+Route::get('/create/{id}', [App\Http\Controllers\EgiController::class, 'create'])->name('create')->middleware('tenant');
+Route::resource('egis', App\Http\Controllers\EgiController::class)->middleware('tenant');
+Route::resource('datossociodemograficos', App\Http\Controllers\DatossociodemograficoController::class)->middleware('tenant');
+Route::resource('antecedentesmedicos', App\Http\Controllers\AntecedentesmedicoController::class)->middleware('tenant');
+Route::resource('percepcionsaluds', App\Http\Controllers\PercepcionsaludController::class)->middleware('tenant');
+Route::resource('frailsarcfs', App\Http\Controllers\FrailsarcfController::class)->middleware('tenant');
 
 //Vacunas
-Route::resource('vacunas', App\Http\Controllers\VacunaController::class)->middleware('auth');
-//Route::resource('pacientevacunas', App\Http\Controllers\PacientevacunaController::class)->middleware('auth');
+Route::resource('vacunas', App\Http\Controllers\VacunaController::class)->middleware('tenant');
+//Route::resource('pacientevacunas', App\Http\Controllers\PacientevacunaController::class)->middleware('tenant');
 
 //Medicamentos
-Route::resource('laboratoriofarmaceuticos', App\Http\Controllers\LaboratoriofarmaceuticoController::class)->middleware('auth');
-Route::resource('grupomedicamentos', App\Http\Controllers\GrupomedicamentoController::class)->middleware('auth');
-Route::resource('medicamentos', App\Http\Controllers\MedicamentoController::class)->middleware('auth');
-Route::resource('sustanciaactivas', App\Http\Controllers\SustanciaactivaController::class)->middleware('auth');
-Route::resource('sustanciaformas', App\Http\Controllers\SustanciaformaController::class)->middleware('auth');
-Route::resource('formafarmaceuticas', App\Http\Controllers\FormafarmaceuticaController::class)->middleware('auth');
-Route::resource('etapadesarrollos', App\Http\Controllers\EtapadesarrolloController::class)->middleware('auth');
-Route::resource('dosis', App\Http\Controllers\DosiController::class)->middleware('auth');
-Route::resource('viaadministracions', App\Http\Controllers\ViaadministracionController::class)->middleware('auth');
-Route::resource('pacientemedicamentos', App\Http\Controllers\PacientemedicamentoController::class)->middleware('auth');
+Route::resource('laboratoriofarmaceuticos', App\Http\Controllers\LaboratoriofarmaceuticoController::class)->middleware('tenant');
+Route::resource('grupomedicamentos', App\Http\Controllers\GrupomedicamentoController::class)->middleware('tenant');
+Route::resource('medicamentos', App\Http\Controllers\MedicamentoController::class)->middleware('tenant');
+Route::resource('sustanciaactivas', App\Http\Controllers\SustanciaactivaController::class)->middleware('tenant');
+Route::resource('sustanciaformas', App\Http\Controllers\SustanciaformaController::class)->middleware('tenant');
+Route::resource('formafarmaceuticas', App\Http\Controllers\FormafarmaceuticaController::class)->middleware('tenant');
+Route::resource('etapadesarrollos', App\Http\Controllers\EtapadesarrolloController::class)->middleware('tenant');
+Route::resource('dosis', App\Http\Controllers\DosiController::class)->middleware('tenant');
+Route::resource('viaadministracions', App\Http\Controllers\ViaadministracionController::class)->middleware('tenant');
+Route::resource('pacientemedicamentos', App\Http\Controllers\PacientemedicamentoController::class)->middleware('tenant');
 
 //Modulo 2 EGI
-Route::resource('testyesavages', App\Http\Controllers\TestyesavageController::class)->middleware('auth');
-Route::resource('indicebarthels', App\Http\Controllers\IndicebarthelController::class)->middleware('auth');
-Route::resource('indicelawtons', App\Http\Controllers\IndicelawtonController::class)->middleware('auth');
-Route::resource('agudezavisualauditivas', App\Http\Controllers\AgudezavisualauditivaController::class)->middleware('auth');
-//Route::resource('s', App\Http\Controllers\Controller::class)->middleware('auth');
+Route::resource('testyesavages', App\Http\Controllers\TestyesavageController::class)->middleware('tenant');
+Route::resource('indicebarthels', App\Http\Controllers\IndicebarthelController::class)->middleware('tenant');
+Route::resource('indicelawtons', App\Http\Controllers\IndicelawtonController::class)->middleware('tenant');
+Route::resource('agudezavisualauditivas', App\Http\Controllers\AgudezavisualauditivaController::class)->middleware('tenant');
+//Route::resource('s', App\Http\Controllers\Controller::class)->middleware('tenant');
 
 //Rutas para acceder a los catálogos
-Route::resource('sexos', App\Http\Controllers\SexoController::class)->middleware('auth');
-Route::resource('indigenas', App\Http\Controllers\IndigenaController::class)->middleware('auth');
-Route::resource('afromexicanos', App\Http\Controllers\AfromexicanoController::class)->middleware('auth');
-Route::resource('generos', App\Http\Controllers\GeneroController::class)->middleware('auth');
-Route::resource('gruposanguineos', App\Http\Controllers\GruposanguineoController::class)->middleware('auth');
-Route::resource('derechohabiencias', App\Http\Controllers\DerechohabienciaController::class)->middleware('auth');
-Route::resource('programasmymgs', App\Http\Controllers\ProgramasmymgController::class)->middleware('auth');
-Route::resource('geriatriaproyectos', App\Http\Controllers\GeriatriaproyectoController::class)->middleware('auth');
+Route::resource('sexos', App\Http\Controllers\SexoController::class)->middleware('tenant');
+Route::resource('indigenas', App\Http\Controllers\IndigenaController::class)->middleware('tenant');
+Route::resource('afromexicanos', App\Http\Controllers\AfromexicanoController::class)->middleware('tenant');
+Route::resource('generos', App\Http\Controllers\GeneroController::class)->middleware('tenant');
+Route::resource('gruposanguineos', App\Http\Controllers\GruposanguineoController::class)->middleware('tenant');
+Route::resource('derechohabiencias', App\Http\Controllers\DerechohabienciaController::class)->middleware('tenant');
+Route::resource('programasmymgs', App\Http\Controllers\ProgramasmymgController::class)->middleware('tenant');
+Route::resource('geriatriaproyectos', App\Http\Controllers\GeriatriaproyectoController::class)->middleware('tenant');
+Route::resource('entidadesfederativas', App\Http\Controllers\EntidadesfederativaController::class)->middleware('tenant');
+Route::resource('municipios', App\Http\Controllers\MunicipioController::class)->middleware('tenant');
 
 //Ruta para generar PDF
-Route::get('/egi/pdf/{id}', [App\Http\Controllers\EgiController::class, 'createPDF'])->name('createPDF')->middleware('auth');
-Route::get('/egi/xls', [App\Http\Controllers\EgiController::class, 'createXlsx'])->name('createXlsx')->middleware('auth');
+Route::get('/egi/pdf/{id}', [App\Http\Controllers\EgiController::class, 'createPDF'])->name('createPDF')->middleware('tenant');
+Route::get('/egi/xls', [App\Http\Controllers\EgiController::class, 'createXlsx'])->name('createXlsx')->middleware('tenant');
+
+Route::any('{url}', function(){
+    return redirect('/page404');
+})->where('url', '.*');

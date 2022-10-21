@@ -19,7 +19,7 @@ class Exploracionesfisicas extends Migration
             $table->foreign('signos_id')->references('id')->on('signosvitales');
             $table->string('habitusExterior')->nullable();
             $table->float('peso', 8, 2)->nullable();
-            $table->integer('talla')->nullable(); // centimetros
+            $table->float('talla', 8, 2)->nullable(); // centimetros
             $table->string('cabeza')->nullable();
             $table->string('cuello')->nullable();
             $table->string('torax')->nullable();

@@ -23,26 +23,18 @@ function findNotifications(){
         success: function(data){
             window.scrollTo(0, 0);
             /*Existen records*/
-            console.log(data);
             $("#notificationBadge").empty();
             $("usernotiBadge").empty();
             if(data > 0){
                 $("#notificationBadge").text(data);
-                $("#usernotiBadge").removeClass('hiddenli');
-                $("#info-consulta-notification").removeClass('hiddenli');
             }
             if(data == 0){
-                $("#notificationBadge").empty();
-                $("#usernotiBadge").addClass('hiddenli');
-                $("#info-consulta-notification").addClass('hiddenli');
+                $("#notificationBadge").text(data);
             }
-            console.log("Success at check");
         },
         error: function(response){
             window.scrollTo(0, 0);
             /*No Existen records*/
-            console.log(response.responseJSON.errormsg);
-            console.log("Ocurrio un error");
         },
     });
 }

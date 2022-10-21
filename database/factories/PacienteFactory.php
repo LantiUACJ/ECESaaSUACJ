@@ -44,6 +44,7 @@ class PacienteFactory extends Factory
         $curp = preg_replace('/[^A-Za-z0-9\-]/', '', $curp);
 
         return [
+            'tenant_id' => 1,
             'curp' => $curp,
             'nombre' => $nombre,
             'primerApellido' => $primerapellido,
