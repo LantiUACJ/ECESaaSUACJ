@@ -20,7 +20,19 @@ class UsersSeed extends Seeder
     {
         //Los primero 2 usuarios tendran acceso a 
 
+        $user = User::create([
+            "name" => "Usuario de Prueba 03",
+            "email" => "testuser3@prueba.com",
+            'password'  => bcrypt('test2022')
+        ]);
+
+        DB::table("usersTenants")->insert([
+            "user_id" => $user->id,
+            "tenant_id" => 1
+        ]);
+
         //USUARIOS CONACYT
+        /*
         $user = User::create([
             "name" => "Usuario de Prueba 01",
             "email" => "testuser@prueba.com",
@@ -52,6 +64,7 @@ class UsersSeed extends Seeder
             "user_id" => $user->id,
             "tenant_id" => 2
         ]);
+        */
 
         //Usuarios LANTI
         /*
