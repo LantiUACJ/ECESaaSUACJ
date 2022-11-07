@@ -16,7 +16,7 @@
         Registrar Consulta
     </p>
 
-    <hr style="opacity: 0.3">
+    <hr class="opactity3">
 
     <div class="scroll-section" id="scrollwindow">
         <form action="">
@@ -114,7 +114,7 @@
 
                                     </div>
 
-                                    <div class="input-field col s12 m12 l6 txtarin no-mar">
+                                    <div class="input-field col s12 m6 l6 txtarin no-mar">
                                         <textarea name="resultados" id="resultados" cols="30" rows="10" maxlength="255">{{ old('resultados') }}</textarea>
                                         <div class="float-voice startRecord" id="startresultados" data-id="resultados">
                                             <i class="material-icons">keyboard_voice</i>
@@ -126,44 +126,29 @@
                                             <p class="text-over">Resultados de Laboratorio y Gabinete</p>
                                         </label>
                                         <span class="helper-text">Error</span>
+                                    </div>
+                                    
+                                    <div class="input-field col s12 m6 l6 no-mar">
+                                        <div class="selectize-one">
+                                            <label>Diagnósticos o Problemas Clínicos</label>
+                                            <input class="form-control selectize" id="select-diag" name="select-diag">
 
-                                        <div class="float-file">
-                                            <input type="file" name="filename[]" id="filename" class="form-control" multiple accept=".doc,.docx,.pdf,.png,.jpg" style="display: none">
-                                            <input type="hidden" id="jsonfiles" value="">
-                                            <i class="material-icons" id="files">file_upload</i>
-                                        </div>
-
-                                        <div class="img-space" id="filescontainer">
-                                            <!--a href="#" class="img-grid-c">
-                                                <img src="{{ asset('img/person1.jpeg') }}" alt="">
-                                            </a>
-                                            <a href="#" class="img-grid-c">
-                                                <img src="{{ asset('img/person1.jpeg') }}" alt="">
-                                            </a-->
+                                            <span class="helper-text">Error</span>
                                         </div>
                                     </div>
 
-                                    <div class=" col s12 m12 l6 no-mar">
-                                        <div class="input-field selectize-one">
-                                            <input class="form-control selectize" id="select-diag" name="select-diag">
-
-                                            <label>Diagnósticos o Problemas Clínicos</label>
-                                            <span class="helper-text">Error</span>
+                                    <div class="input-field col s12 m6 l6 no-mar txtarin">
+                                        <textarea name="diagnostico" id="diagnostico" cols="30" rows="10" maxlength="255">{{ old('diagnostico') }}</textarea>
+                                        <div class="float-voice startRecord" id="startdiagnostico" data-id="diagnostico">
+                                            <i class="material-icons">keyboard_voice</i>
                                         </div>
-
-                                        <div class="input-field txtarin">
-                                            <textarea name="diagnostico" id="diagnostico" cols="30" rows="10" maxlength="255">{{ old('diagnostico') }}</textarea>
-                                            <div class="float-voice startRecord" id="startdiagnostico" data-id="diagnostico">
-                                                <i class="material-icons">keyboard_voice</i>
-                                            </div>
-                                            <div class="float-voice stopRecord" style="background-color: red; display: none" id="stopdiagnostico" data-id="diagnostico">
-                                                <i class="material-icons">keyboard_voice</i>
-                                            </div>
-                                            <label class="label-flex" for="diagnostico">
-                                                <p class="text-over">Diagnósticos o Problemas Clínicos</p>
-                                            </label>
-                                            <span class="helper-text">Error</span>
+                                        <div class="float-voice stopRecord" style="background-color: red; display: none" id="stopdiagnostico" data-id="diagnostico">
+                                            <i class="material-icons">keyboard_voice</i>
                                         </div>
+                                        <label class="label-flex" for="diagnostico">
+                                            <p class="text-over">Diagnósticos o Problemas Clínicos</p>
+                                        </label>
+                                        <span class="helper-text">Error</span>
                                     </div>
 
                                     <div class="input-field col s12 m6 l6 txtarin no-mar">
@@ -181,7 +166,7 @@
 
                                     </div>
 
-                                    <div class="input-field col s12 m6 l12 txtarin no-mar">
+                                    <div class="input-field col s12 m6 l6 txtarin no-mar">
                                         <textarea name="indicacion" id="indicacion" cols="30" rows="10" maxlength="255">{{ old('indicacion') }}</textarea>
                                         <div class="float-voice startRecord" id="startindicacion" data-id="indicacion">
                                             <i class="material-icons">keyboard_voice</i>
@@ -193,6 +178,17 @@
                                             <p class="text-over">Indicación Terapéutica</p>
                                         </label>
                                         <span class="helper-text">Error</span>
+                                    </div>
+
+                                    <div class="input-field col s12 m6">
+                                        <div class="float-file">
+                                            <input type="file" name="filename[]" id="filename" class="form-control" multiple accept=".doc,.docx,.pdf,.png,.jpg" style="display: none">
+                                            <input type="hidden" id="jsonfiles" value="">
+                                            <i class="material-icons" id="files">file_upload</i>
+                                        </div>
+                                        <p class="imginput-title">Archivos de los resultados de Laboratorio y Gabinete</p>
+                                        <div class="img-space" id="filescontainer">
+                                        </div>
                                     </div>
 
                                     @if ($paciente->sexo->numero == 2 && ($years >= 9 && $years <= 59))
@@ -426,14 +422,14 @@
                                                                         <div class="input-field">
                                                                             <select autocomplete="off" id="grupo" name="grupo">
                                                                                 @if ($grupos->count() == 0)
-                                                                                    <option selected>--- No se encontraron Grupos Étnicos ---</option>
+                                                                                    <option value="0" selected>--- No se encontraron Grupos Étnicos ---</option>
                                                                                 @elseif ($anteHF->grupo_id == null)
                                                                                     <option selected>--- Selecciona una Opción ---</option>
                                                                                     @foreach ($grupos as $grupo)
                                                                                         <option value="{{ $grupo->id }}">{{ $grupo->lenguaIndigena }}</option>
                                                                                     @endforeach
                                                                                 @else
-                                                                                    <option>--- Selecciona una Opción ---</option>
+                                                                                    <option value="0">--- Selecciona una Opción ---</option>
                                                                                     @foreach ($grupos as $grupo)
                                                                                         <option value="{{ $grupo->id }}" {{ $grupo->id == $anteHF->grupo_id? "selected": "" }}>{{ $grupo->lenguaIndigena }}</option>
                                                                                     @endforeach
@@ -976,7 +972,7 @@
                                                 </li>
                                                 <li>
                                                     <div class="collapsible-header specialhedader">
-                                                        4. Aparatos y Sistemas
+                                                        4. Interrogatorio Aparatos y Sistemas
                                                     </div>
                                                     <div class="collapsible-body">
                                                         <div class="row">
@@ -1241,85 +1237,85 @@
                                                             <div class="input-field col s12 m6 l6 txtarin no-mar">
                                                                 <textarea name="habitus" id="habitus" cols="30" rows="10" maxlength="255"
                                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)">{{ old('habitus') }}</textarea>
+                                                                <label class="label-flex" for="habitus">
+                                                                    <p class="text-over">
+                                                                        Habitus exterior:
+                                                                    </p>
+                                                                </label>
                                                                 <div class="float-voice startRecord" id="starthabitus" data-id="habitus">
                                                                     <i class="material-icons">keyboard_voice</i>
                                                                 </div>
                                                                 <div class="float-voice stopRecord" style="background-color: red; display: none" id="stophabitus" data-id="habitus">
                                                                     <i class="material-icons">keyboard_voice</i>
                                                                 </div>
-                                                                <label class="label-flex" for="habitus">
-                                                                    <p class="text-over">
-                                                                        Habitus exterior:
-                                                                    </p>
-                                                                </label>
                                                                 <span class="helper-text">Error</span>
                                                             </div>
 
                                                             <div class="input-field col s12 m6 l6 txtarin no-mar">
                                                                 <textarea name="cabeza" id="cabeza" cols="30" rows="10" maxlength="255"
                                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)">{{ old('cabeza') }}</textarea>
+                                                                <label class="label-flex" for="cabeza">
+                                                                    <p class="text-over">
+                                                                        Cabeza:
+                                                                    </p>
+                                                                </label>
                                                                 <div class="float-voice startRecord" id="startcabeza" data-id="cabeza">
                                                                     <i class="material-icons">keyboard_voice</i>
                                                                 </div>
                                                                 <div class="float-voice stopRecord" style="background-color: red; display: none" id="stopcabeza" data-id="cabeza">
                                                                     <i class="material-icons">keyboard_voice</i>
                                                                 </div>
-                                                                <label class="label-flex" for="cabeza">
-                                                                    <p class="text-over">
-                                                                        Cabeza:
-                                                                    </p>
-                                                                </label>
                                                                 <span class="helper-text">Error</span>
                                                             </div>
 
                                                             <div class="input-field col s12 m6 l6 txtarin no-mar">
                                                                 <textarea name="cuello" id="cuello" cols="30" rows="10" maxlength="255"
                                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)">{{ old('cuello') }}</textarea>
+                                                                <label class="label-flex" for="cuello">
+                                                                    <p class="text-over">
+                                                                        Cuello:
+                                                                    </p>
+                                                                </label>
                                                                 <div class="float-voice startRecord" id="startcuello" data-id="cuello">
                                                                     <i class="material-icons">keyboard_voice</i>
                                                                 </div>
                                                                 <div class="float-voice stopRecord" style="background-color: red; display: none" id="stopcuello" data-id="cuello">
                                                                     <i class="material-icons">keyboard_voice</i>
                                                                 </div>
-                                                                <label class="label-flex" for="cuello">
-                                                                    <p class="text-over">
-                                                                        Cuello:
-                                                                    </p>
-                                                                </label>
                                                                 <span class="helper-text">Error</span>
                                                             </div>
 
                                                             <div class="input-field col s12 m6 l6 txtarin no-mar">
                                                                 <textarea name="torax" id="torax" cols="30" rows="10" maxlength="255"
                                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" >{{ old('torax') }}</textarea>
+                                                                <label class="label-flex" for="torax">
+                                                                    <p class="text-over">
+                                                                        Tórax:
+                                                                    </p>
+                                                                </label>
                                                                 <div class="float-voice startRecord" id="starttorax" data-id="torax">
                                                                     <i class="material-icons">keyboard_voice</i>
                                                                 </div>
                                                                 <div class="float-voice stopRecord" style="background-color: red; display: none" id="stoptorax" data-id="torax">
                                                                     <i class="material-icons">keyboard_voice</i>
                                                                 </div>
-                                                                <label class="label-flex" for="torax">
-                                                                    <p class="text-over">
-                                                                        Tórax:
-                                                                    </p>
-                                                                </label>
                                                                 <span class="helper-text">Error</span>
                                                             </div>
 
                                                             <div class="input-field col s12 m6 l6 txtarin no-mar">
                                                                 <textarea name="abdomen" id="abdomen" cols="30" rows="10" maxlength="255"
                                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)">{{ old('abdomen') }}</textarea>
+                                                                <label class="label-flex" for="abdomen">
+                                                                    <p class="text-over">
+                                                                        Abdomen:
+                                                                    </p>
+                                                                </label>
                                                                 <div class="float-voice startRecord" id="startabdomen" data-id="abdomen">
                                                                     <i class="material-icons">keyboard_voice</i>
                                                                 </div>
                                                                 <div class="float-voice stopRecord" style="background-color: red; display: none" id="stopabdomen" data-id="abdomen">
                                                                     <i class="material-icons">keyboard_voice</i>
                                                                 </div>
-                                                                <label class="label-flex" for="abdomen">
-                                                                    <p class="text-over">
-                                                                        Abdomen:
-                                                                    </p>
-                                                                </label>
                                                                 <span class="helper-text">Error</span>
                                                             </div>
 
@@ -1327,34 +1323,34 @@
                                                             <div class="input-field col s12 m6 l6 txtarin no-mar">
                                                                 <textarea name="miembros" id="miembros" cols="30" rows="10" maxlength="255"
                                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)" >{{ old('miembros') }}</textarea>
+                                                                <label class="label-flex" for="miembros">
+                                                                    <p class="text-over">
+                                                                        Miembros:
+                                                                    </p>
+                                                                </label>
                                                                 <div class="float-voice startRecord" id="startmiembros" data-id="miembros">
                                                                     <i class="material-icons">keyboard_voice</i>
                                                                 </div>
                                                                 <div class="float-voice stopRecord" style="background-color: red; display: none" id="stopmiembros" data-id="miembros">
                                                                     <i class="material-icons">keyboard_voice</i>
                                                                 </div>
-                                                                <label class="label-flex" for="miembros">
-                                                                    <p class="text-over">
-                                                                        Miembros:
-                                                                    </p>
-                                                                </label>
                                                                 <span class="helper-text">Error</span>
                                                             </div>
 
                                                             <div class="input-field col s12 m6 l6 txtarin no-mar">
                                                                 <textarea name="genitales" id="genitales" cols="30" rows="10" maxlength="255"
                                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)">{{ old('genitales') }}</textarea>
+                                                                <label class="label-flex" for="genitales">
+                                                                    <p class="text-over">
+                                                                        Genitales:
+                                                                    </p>
+                                                                </label>
                                                                 <div class="float-voice startRecord" id="startgenitales" data-id="genitales">
                                                                     <i class="material-icons">keyboard_voice</i>
                                                                 </div>
                                                                 <div class="float-voice stopRecord" style="background-color: red; display: none" id="stopgenitales" data-id="genitales">
                                                                     <i class="material-icons">keyboard_voice</i>
                                                                 </div>
-                                                                <label class="label-flex" for="genitales">
-                                                                    <p class="text-over">
-                                                                        Genitales:
-                                                                    </p>
-                                                                </label>
                                                                 <span class="helper-text">Error</span>
                                                             </div>
 
@@ -1487,7 +1483,7 @@
                                                     </div>
                                                 </div>
                                                 <input type="hidden" value="{{ $paciente->curp }}">
-                                                <input type="hidden" name="patientcurp" id="patientcurp" value="{{ $paciente->curp }}">
+                                                <input type="hidden" name="patientcurp" id="patientcurp" value="VIEA670103HTLLTT67">
                                                 <a href="#" id="consultBtn" class="btn solid-btn">solicitar código</a>
                                             </form>
                                         </div>

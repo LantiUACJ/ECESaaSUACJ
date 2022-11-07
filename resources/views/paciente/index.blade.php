@@ -11,7 +11,7 @@
     <a href="{{ url('/home') }}">Inicio</a> >
     <a href="{{ route('pacientes.index') }}">Pacientes</a>
 </p>
-<hr style="opacity: 0.3">
+<hr class="opactity3">
 <div class="menu-dashboard">
     <a href="{{ route('pacientes.create') }}" class="waves-effect waves-light btn"><i
             class="material-icons left">add</i>Registrar paciente</a>
@@ -88,7 +88,7 @@
 
 @if ($message = Session::get('success'))
     <script> 
-        M.toast({html: 'Hola' , classes: 'rounded green', displayLength: 5000}); 
+        M.toast({html: '{{$message}}' , classes: 'rounded green', displayLength: 5000}); 
     </script>
 @endif
 @if ($message = Session::get('error'))

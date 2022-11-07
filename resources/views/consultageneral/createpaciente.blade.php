@@ -9,7 +9,7 @@
     Registrar paciente
 </p>
 
-<hr style="opacity: 0.3">
+<hr class="opactity3">
 
 <form method="POST" action="{{ route('storepacienteconsulta') }}"  role="form" enctype="multipart/form-data">
     @csrf

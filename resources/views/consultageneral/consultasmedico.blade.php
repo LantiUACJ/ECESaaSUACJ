@@ -8,7 +8,7 @@
     Consultas
 </p>
 
-<hr style="opacity: 0.3">
+<hr class="opactity3">
 
 @if ($consultas->count() > 0)
     <div class="menu-dashboard">

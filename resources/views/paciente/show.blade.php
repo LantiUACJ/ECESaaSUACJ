@@ -11,7 +11,7 @@
         <a href="{{ route('pacientes.index') }}">Pacientes</a> >
         <a href="#!">Consultar paciente</a>
     </p>
-    <hr style="opacity: 0.3">
+    <hr class="opactity3">
 
     <div class="scroll-section">
         <div class="form-group">

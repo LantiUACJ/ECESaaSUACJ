@@ -180,13 +180,13 @@ class MISECEController extends Controller
 
         //Primer link aws
         //Segunto link para hacer pruebas de loca a aws
-        //$response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/expediente/'.$request->curp, $data);
-        $response = Http::withBasicAuth('online', 'potato')->post('https://misece.link/api/v1/expediente/' . $request->curp, $data);
+        $response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/expediente/'.$request->curp, $data);
+        //$response = Http::withBasicAuth('online', 'potato')->post('https://misece.link/api/v1/expediente/' . $request->curp, $data);
 
-        if(str_contains($response->body(),"no se encontr\u00f3 el paciente") ){
+        if(str_contains($response->body(),"Paciente no encontrado") ){
             return response()->json(['errormsg' => 'No se encontraron expedientes del paciente.'], 401);
         }else if(str_contains($response->body(),"Error")){ //Cambiar por "codigo enviado" cuando se confirme 
-            return response()->json(['errormsg' => 'Un código de verificación ha sido enviado al paciente.'], 401);
+            return response()->json(['codesent' => 'Un código de verificación ha sido enviado al paciente.'], 401);
         }else{
             return base64_encode($response->body());//$response->body();
         }
@@ -198,11 +198,11 @@ class MISECEController extends Controller
         $data = array();
         $data['consultor'] = auth()->user()->name;
 
-        //$response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/expediente/basico/'.$request->curp, $data);
-        $response = Http::withBasicAuth('online', 'potato')->post('https://misece.link/api/v1/expediente/basico/' . $request->curp, $data);
+        $response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/expediente/basico/'.$request->curp, $data);
+        //$response = Http::withBasicAuth('online', 'potato')->post('https://misece.link/api/v1/expediente/basico/' . $request->curp, $data);
 
-        if(str_contains($response->body(),"Error") ){
-            return $response->body();//response()->json(['errormsg' => 'Código invalido.'], 401);
+        if(str_contains($response->body(),"Paciente no encontrado") ){
+            return response()->json(['errormsg' => 'No se encontraron expedientes del paciente.'], 401);
         }else{
             return base64_encode($response->body());//$response->body();
         }
@@ -211,6 +211,8 @@ class MISECEController extends Controller
     // get to view 
     function consultarmisece(){
         session(['menunav' => "misece"]);
+        session(['menunivel' => ""]);
+        session(['menusubnivel' => ""]);
         return view('misece.consultamisece');
     }
 

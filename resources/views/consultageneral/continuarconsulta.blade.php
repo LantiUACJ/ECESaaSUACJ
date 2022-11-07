@@ -15,7 +15,7 @@
         Continuar Consulta
     </p>
 
-    <hr style="opacity: 0.3">
+    <hr class="opactity3">
 
     <div class="scroll-section" id="scrollwindow">
         <form action="">
@@ -113,8 +113,8 @@
 
                                     </div>
 
-                                    <div class="input-field col s12 m12 l6 txtarin no-mar">
-                                        <textarea name="resultados" id="resultados" cols="30" rows="10" maxlength="255"">{{ $consulta->resultadosLaboratorioGabinete }}</textarea>
+                                    <div class="input-field col s12 m6 l6 txtarin no-mar">
+                                        <textarea name="resultados" id="resultados" cols="30" rows="10" maxlength="255">{{ $consulta->resultadosLaboratorioGabinete }}</textarea>
                                         <div class="float-voice startRecord" id="startresultados" data-id="resultados">
                                             <i class="material-icons">keyboard_voice</i>
                                         </div>
@@ -122,18 +122,70 @@
                                             <i class="material-icons">keyboard_voice</i>
                                         </div>
                                         <label class="label-flex" for="resultados">
-                                            <p class="text-over">Resultados de Laboratorio y
-                                                Gabinete
-                                            </p>
+                                            <p class="text-over">Resultados de Laboratorio y Gabinete</p>
+                                        </label>
+                                        <span class="helper-text">Error</span>
+                                    </div>
+
+                                    <div class="input-field col s12 m6 l6 no-mar">
+                                        <div class="selectize-one">
+                                            <label>Diagnósticos o Problemas Clínicos</label>
+                                            <input class="form-control selectize" id="select-diag" name="select-diag" value="{{ $consulta->diag_id != null? $consulta->diag_name : "" }}">
+
+                                            <span class="helper-text">Error</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="input-field col s12 m6 l6 no-mar txtarin">
+                                        <textarea name="diagnostico" id="diagnostico" cols="30" rows="10" maxlength="255">{{ $consulta->diagnosticoProblemasClinicos }}</textarea>
+                                        <div class="float-voice startRecord" id="startdiagnostico" data-id="diagnostico">
+                                            <i class="material-icons">keyboard_voice</i>
+                                        </div>
+                                        <div class="float-voice stopRecord" style="background-color: red; display: none" id="stopdiagnostico" data-id="diagnostico">
+                                            <i class="material-icons">keyboard_voice</i>
+                                        </div>
+                                        <label class="label-flex" for="diagnostico">
+                                            <p class="text-over">Diagnósticos o Problemas Clínicos</p>
+                                        </label>
+                                        <span class="helper-text">Error</span>
+                                    </div>
+
+                                    <div class="input-field col s12 m6 l6 txtarin no-mar">
+                                        <textarea name="pronostico" id="pronostico" cols="30" rows="10" maxlength="255"">{{ $consulta->pronostico }}</textarea>
+                                        <div class="float-voice startRecord" id="startpronostico" data-id="pronostico">
+                                            <i class="material-icons">keyboard_voice</i>
+                                        </div>
+                                        <div class="float-voice stopRecord" style="background-color: red; display: none" id="stoppronostico" data-id="pronostico">
+                                            <i class="material-icons">keyboard_voice</i>
+                                        </div>
+                                        <label class="label-flex" for="pronostico">
+                                            <p class="text-over">Pronóstico</p>
                                         </label>
                                         <span class="helper-text">Error</span>
 
+                                    </div>
+
+                                    <div class="input-field col s12 m6 l6 txtarin no-mar">
+                                        <textarea name="indicacion" id="indicacion" cols="30" rows="10" maxlength="255"">{{ $consulta->indicacionTerapeutica }}</textarea>
+                                        <div class="float-voice startRecord" id="startindicacion" data-id="indicacion">
+                                            <i class="material-icons">keyboard_voice</i>
+                                        </div>
+                                        <div class="float-voice stopRecord" style="background-color: red; display: none" id="stopindicacion" data-id="indicacion">
+                                            <i class="material-icons">keyboard_voice</i>
+                                        </div>
+                                        <label class="label-flex" for="indicacion">
+                                            <p class="text-over">Indicación Terapéutica</p>
+                                        </label>
+                                        <span class="helper-text">Error</span>
+                                    </div>
+
+                                    <div class="input-field col s12 m6">
                                         <div class="float-file">
                                             <input type="file" name="filename[]" id="filename" class="form-control" multiple accept=".doc,.docx,.pdf,.png,.jpg" style="display: none">
                                             <input type="hidden" id="jsonfiles" value="">
                                             <i class="material-icons" id="files">file_upload</i>
                                         </div>
-
+                                        <p class="imginput-title">Archivos de los resultados de Laboratorio y Gabinete</p>
                                         @if ($consulta->resultadosArchivos != null)
                                             <div class="img-space" id="filescontainer">
                                                 @php
@@ -172,57 +224,6 @@
                                         @else
                                             <div class="img-space" id="filescontainer"></div>
                                         @endif
-                                    </div>
-
-                                    <div class=" col s12 m12 l6 no-mar">
-                                        <div class="input-field selectize-one">
-                                            <input class="form-control selectize" id="select-diag" name="select-diag" value="{{ $consulta->diag_id != null? $consulta->diag_name : "" }}">
-
-                                            <label>Diagnósticos o Problemas Clínicos</label>
-                                        </div>
-
-                                        <div class="input-field txtarin">
-                                            <textarea name="diagnostico" id="diagnostico" cols="30" rows="10" maxlength="255"">{{ $consulta->diagnosticoProblemasClinicos }}</textarea>
-                                            <div class="float-voice startRecord" id="startdiagnostico" data-id="diagnostico">
-                                                <i class="material-icons">keyboard_voice</i>
-                                            </div>
-                                            <div class="float-voice stopRecord" style="background-color: red; display: none" id="stopdiagnostico" data-id="diagnostico">
-                                                <i class="material-icons">keyboard_voice</i>
-                                            </div>
-                                            <label class="label-flex" for="diagnostico">
-                                                <p class="text-over">Diagnósticos o Problemas Clínicos</p>
-                                            </label>
-                                            <span class="helper-text">Error</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="input-field col s12 m6 l6 txtarin no-mar">
-                                        <textarea name="pronostico" id="pronostico" cols="30" rows="10" maxlength="255"">{{ $consulta->pronostico }}</textarea>
-                                        <div class="float-voice startRecord" id="startpronostico" data-id="pronostico">
-                                            <i class="material-icons">keyboard_voice</i>
-                                        </div>
-                                        <div class="float-voice stopRecord" style="background-color: red; display: none" id="stoppronostico" data-id="pronostico">
-                                            <i class="material-icons">keyboard_voice</i>
-                                        </div>
-                                        <label class="label-flex" for="pronostico">
-                                            <p class="text-over">Pronóstico</p>
-                                        </label>
-                                        <span class="helper-text">Error</span>
-
-                                    </div>
-
-                                    <div class="input-field col s12 m6 l12 txtarin no-mar">
-                                        <textarea name="indicacion" id="indicacion" cols="30" rows="10" maxlength="255"">{{ $consulta->indicacionTerapeutica }}</textarea>
-                                        <div class="float-voice startRecord" id="startindicacion" data-id="indicacion">
-                                            <i class="material-icons">keyboard_voice</i>
-                                        </div>
-                                        <div class="float-voice stopRecord" style="background-color: red; display: none" id="stopindicacion" data-id="indicacion">
-                                            <i class="material-icons">keyboard_voice</i>
-                                        </div>
-                                        <label class="label-flex" for="indicacion">
-                                            <p class="text-over">Indicación Terapéutica - {{$years}}</p>
-                                        </label>
-                                        <span class="helper-text">Error</span>
                                     </div>
 
                                     @if ($paciente->sexo->numero == 2 && ($years >= 9 && $years <= 59))
@@ -407,7 +408,7 @@
                                             </div>
                                         </div>
                                     @else
-                                        <div class="col s12 hide" style="margin-bottom: 1rem;">
+                                        <div class="col s12 hide" style="margin-bottom: 1rem; display: none;">
                                             <div class="switch">
                                                 <label class="special-toggle">
                                                     <input type="checkbox" id="ispregnant" name="ispregnant" disabled>
@@ -458,14 +459,14 @@
                                                                         <div class="input-field">
                                                                             <select autocomplete="off" id="grupo" name="grupo">
                                                                                 @if ($grupos->count() == 0)
-                                                                                    <option selected>--- No se encontraron Grupos Étnicos ---</option>
+                                                                                    <option value="0" selected>--- No se encontraron Grupos Étnicos ---</option>
                                                                                 @elseif ($anteHF->grupo_id == null)
-                                                                                    <option selected>--- Selecciona una Opción ---</option>
+                                                                                    <option value="0" selected>--- Selecciona una Opción ---</option>
                                                                                     @foreach ($grupos as $grupo)
                                                                                         <option value="{{ $grupo->id }}">{{ $grupo->lenguaIndigena }}</option>
                                                                                     @endforeach
                                                                                 @else
-                                                                                    <option>--- Selecciona una Opción ---</option>
+                                                                                    <option value="0">--- Selecciona una Opción ---</option>
                                                                                     @foreach ($grupos as $grupo)
                                                                                         <option value="{{ $grupo->id }}" {{ $grupo->id == $anteHF->grupo_id? "selected": "" }}>{{ $grupo->lenguaIndigena }}</option>
                                                                                     @endforeach
@@ -1049,7 +1050,7 @@
                                                 </li>
                                                 <li>
                                                     <div class="collapsible-header specialhedader">
-                                                        4. Aparatos y Sistemas
+                                                        4. Interrogatorio Aparatos y Sistemas
                                                     </div>
                                                     <div class="collapsible-body">
                                                         <div class="row">
@@ -1124,7 +1125,6 @@
                                                             <div class="input-field col s12 m6 l6 txtarin no-mar">
                                                                 <textarea name="nefro" id="nefro" cols="30" rows="10" maxlength="255"
                                                                 onkeypress="return /[a-zA-Z0-9!#$%^&*áéíóúüñ/)(.,:;\s-]/i.test(event.key)">{{ $interAS->sistemaNefro }}</textarea>
-                                                                <label class="label-flex" for="nefro">
                                                                 <div class="float-voice startRecord" id="startnefro" data-id="nefro">
                                                                     <i class="material-icons">keyboard_voice</i>
                                                                 </div>
@@ -1556,7 +1556,7 @@
                                                     </div>
                                                 </div>
                                                 <input type="hidden" value="{{ $paciente->curp }}">
-                                                <input type="hidden" name="patientcurp" id="patientcurp" value="{{ $paciente->curp }}">
+                                                <input type="hidden" name="patientcurp" id="patientcurp" value="VIEA670103HTLLTT67">
                                                 <a href="#" id="consultBtn" class="btn solid-btn">solicitar código</a>
                                             </form>
                                         </div>
@@ -1815,7 +1815,6 @@
 
 <script type="text/javascript">
     var text = "";
-
     $(function() {
         $('.startRecord').on('click', function(){
             text = $(this).attr('data-id');

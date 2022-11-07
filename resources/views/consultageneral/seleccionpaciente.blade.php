@@ -8,11 +8,13 @@
     <a href="{{ route('consultamedico') }}">Consultas</a> >
     Seleccionar paciente
 </p>
-<hr style="opacity: 0.3">
-<div>
-    <p style="padding-top: 0.5rem">Selecciona el paciente que atenderás o agrega un nuevo paciente</p>
-    <br>
-</div>
+<hr class="opactity3">
+@if ($pacientes->count() > 0)
+    <div>
+        <p style="padding-top: 0.5rem">Selecciona el paciente que atenderás o agrega un nuevo paciente</p>
+        <br>
+    </div>
+@endif
 
 @if ($pacientes->count() > 0)
     <div class="menu-dashboard">
@@ -110,7 +112,7 @@
         
         <div style="margin-top: 15px">
             <a href="{{ route('createpacfromcons') }}" class="waves-effect waves-light btn">
-                <i class="material-icons left">add</i>Nuevo Paciente
+                <i class="material-icons left">add</i>Registrar Paciente
             </a>
         </div>
     @endif

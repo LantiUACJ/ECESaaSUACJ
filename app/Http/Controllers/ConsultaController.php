@@ -73,7 +73,9 @@ class ConsultaController extends Controller
         $pac = Paciente::find($pacid);
         $age = self::ageCalc($pac);
         $consultas = Consulta::where('paciente_id', $pacid)->orderBy('created_at', 'desc')->paginate(15);
-        session(['menunav' => "consulta"]);
+        session(['menunav' => "consulta"]);        
+        session(['menunivel' => ""]);
+        session(['menusubnivel' => ""]);
         return view('consultageneral.consultas', ['paciente' => $pac, 'age' => $age, 'consultas' => $consultas]);
     }
 
@@ -83,6 +85,8 @@ class ConsultaController extends Controller
         $medico_id = auth()->user()->id;
         $consultas = Consulta::where('tenant_id', session('tenant')->id)->where('medico_id', $medico_id)->orderBy('created_at', 'desc')->paginate(15);
         session(['menunav' => "consulta"]);
+        session(['menunivel' => ""]);
+        session(['menusubnivel' => ""]);
         return view('consultageneral.consultasmedico', ['consultas' => $consultas, 'search' => false]);
     }
 
@@ -611,7 +615,11 @@ class ConsultaController extends Controller
 
     public function notifications(){
         if(Auth::user()){
+            $tenant_id = session('tenant')->id;
             $notis = Auth::user()->unreadnotifications;
+            $notis = $notis->filter(function ($value, $key) use($tenant_id) {
+                return $value->data['tenant_id'] == $tenant_id;
+            });
             $count = 0;
             foreach($notis as $noti){
                 $threedays = $noti->created_at->addMinutes(1); //$noti->created_at->addDays(3);
@@ -646,12 +654,13 @@ class ConsultaController extends Controller
     public function view($consulta_id){
         $consulta = Consulta::where('tenant_id', session('tenant')->id)->find($consulta_id);
         session(['consulta_id' => $consulta_id]);
+        session(['pregnantconsulta_id' => $consulta->consultaembarazo_id != null? $consulta->consultaembarazo_id: null]);
         //dd($consulta);
         $pac = Paciente::where('tenant_id', session('tenant')->id)->find($consulta->paciente_id);
         session(['pac_id' => $pac->id]);
-        $age = self::ageCalc($pac);
+        $age = $this->ageCalc($pac);
+        $years = (int) substr($age, 0, strpos($age, "años"));
         $grupos = grupoetnico::all();
-        $sexos = Sexo::all();
 
         $inter = Interrogatorio::where('tenant_id', session('tenant')->id)->where('paciente_id', $pac->id)->first() != null? Interrogatorio::where('tenant_id', session('tenant')->id)->where('paciente_id', $pac->id)->first(): new Interrogatorio(); //interrogatorio
         $interid = Interrogatorio::where('tenant_id', session('tenant')->id)->where('paciente_id', $pac->id)->first() == null? null: $inter->id;
@@ -676,6 +685,10 @@ class ConsultaController extends Controller
             $interAS = new interrogatorioaparato();
         }
 
+        $tiposDif = Tipodificultad::all();
+        $gradosDif = Gradodificultad::all();
+        $OrigenesDif = Origendificultad::all();
+
         if($explo){
             $signos = Signovital::where('tenant_id', session('tenant')->id)->find($explo->signos_id) != null? Signovital::where('tenant_id', session('tenant')->id)->find($explo->signos_id): new Signovital(); //signos vitales
             session(['signos_id' => $explo->signos_id]);
@@ -683,9 +696,10 @@ class ConsultaController extends Controller
             $signos = null;
         }
 
-        return view('consultageneral.viewconsulta', ['paciente' => $pac, 'age' => $age, 'consulta' => $consulta, 
+        return view('consultageneral.viewconsulta', ['paciente' => $pac, 'age' => $age, 'years' => $years, 'consulta' => $consulta, 
         'grupos' => $grupos, 'inter' => $inter, 'exploracion' => $explo, 'anteHF' => $anteHF, 'antePP' => $antePP, 
-        'antePNP' => $antePNP, 'interAS' => $interAS, 'signos' => $signos, 'sexos' => $sexos]);
+        'antePNP' => $antePNP, 'interAS' => $interAS, 'signos' => $signos, 'tiposDif' => $tiposDif, 'gradosDif' => $gradosDif, 
+        'origenesDif' => $OrigenesDif]);
     }
 
     public function searchconsulta(Request $request){
