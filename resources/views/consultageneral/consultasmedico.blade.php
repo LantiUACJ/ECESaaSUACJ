@@ -87,7 +87,7 @@
                 </tbody>
             </table>
         </div>
-        @if ($consultas->count() > 15)
+        @if ($consultas->count())
             {{ $consultas->links('vendor.pagination.materializecss') }}
         @endif
     </div>

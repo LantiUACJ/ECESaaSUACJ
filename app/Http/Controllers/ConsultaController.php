@@ -332,10 +332,10 @@ class ConsultaController extends Controller
             //Something unexpected has happend
         }
         // Generacion de la notificacion. Se marca como leida si se termina la consutla.
-        if(Auth::user()){ //usuario autenticado
-            $user = User::find(Auth::user()->id);
-            Auth::user()->notify(new UserConsultation($user, $consulta, session('tenant')->id));
-        }
+        // if(Auth::user()){ //usuario autenticado
+        //     $user = User::find(Auth::user()->id);
+        //     Auth::user()->notify(new UserConsultation($user, $consulta, session('tenant')->id));
+        // }
         
         if($result != false){
             session(['consulta_id' => $consulta->id]); //se guarda el id de la consulta para ser usado cuando se guarden los Interrogatorio y exploracion. 
@@ -400,10 +400,10 @@ class ConsultaController extends Controller
             //Something unexpected has happend
         }
         // Generacion de la notificacion. Se marca como leida si se termina la consutla.
-        if(Auth::user()){ //usuario autenticado
-            $user = User::find(Auth::user()->id);
-            Auth::user()->notify(new UserConsultation($user, $consulta, session('tenant')->id));
-        }
+        // if(Auth::user()){ //usuario autenticado
+        //     $user = User::find(Auth::user()->id);
+        //     Auth::user()->notify(new UserConsultation($user, $consulta, session('tenant')->id));
+        // }
 
         //Fin proceso de guardado consulta
         //********* */
@@ -616,13 +616,14 @@ class ConsultaController extends Controller
     public function notifications(){
         if(Auth::user()){
             $tenant_id = session('tenant')->id;
-            $notis = Auth::user()->unreadnotifications;
-            $notis = $notis->filter(function ($value, $key) use($tenant_id) {
-                return $value->data['tenant_id'] == $tenant_id;
-            });
+            $consultas = Consulta::where('tenant_id', $tenant_id)->where('medico_id', Auth::user()->id)->where('terminada', 0)->get();
+            // $notis = Auth::user()->unreadnotifications;
+            // $notis = $notis->filter(function ($value, $key) use($tenant_id) {
+            //     return $value->data['tenant_id'] == $tenant_id;
+            // });
             $count = 0;
-            foreach($notis as $noti){
-                $threedays = $noti->created_at->addMinutes(1); //$noti->created_at->addDays(3);
+            foreach($consultas as $consulta){
+                $threedays = $consulta->created_at->addMinutes(1); //$noti->created_at->addDays(3);
                 if(Carbon::now() > $threedays){
                     $count++;
                 }
@@ -766,17 +767,17 @@ class ConsultaController extends Controller
                 $consultas = Consulta::where('tenant_id', session('tenant')->id)->where('medico_id', $medico_id)->orderBy('created_at', 'desc')->paginate(15);
 
                 //Marcar notificacion de la consulta como leida
-                $notis = Auth::user()->unreadnotifications;
-                $noti_id = 0;
-                foreach($notis as $noti){
-                    if(($noti->data['tenant_id'] == session('tenant')->id) && ($noti->data['consulta_id'] == $consulta_id)){
-                        $noti_id = $noti->id;
-                        break;
-                    }
-                }
-                if($noti_id != 0){
-                    Auth::user()->unreadnotifications->where('id', $noti_id)->markAsRead();
-                }
+                // $notis = Auth::user()->unreadnotifications;
+                // $noti_id = 0;
+                // foreach($notis as $noti){
+                //     if(($noti->data['tenant_id'] == session('tenant')->id) && ($noti->data['consulta_id'] == $consulta_id)){
+                //         $noti_id = $noti->id;
+                //         break;
+                //     }
+                // }
+                // if($noti_id != 0){
+                //     Auth::user()->unreadnotifications->where('id', $noti_id)->markAsRead();
+                // }
 
                 $this->deletesession();
             } catch (\Throwable $th) {
