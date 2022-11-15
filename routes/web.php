@@ -95,10 +95,12 @@ Route::post('/updateconsulta/{id}', [App\Http\Controllers\ConsultaController::cl
 Route::post('/updatepregnantconsulta/{id}', [App\Http\Controllers\ConsultaController::class, 'updatepregnant'])->name('updatepregnantconsulta')->middleware('tenant');
 //Vista de la consulta
 Route::get('/viewconsulta/{id}', [App\Http\Controllers\ConsultaController::class, 'view'])->name('viewconsulta')->middleware('tenant');
+//Firmar
+Route::post('/finishconsulta', [App\Http\Controllers\ConsultaController::class, 'terminarConsulta'])->name('finishconsulta')->middleware('tenant');
 //Continuar la consulta
 Route::get('/continuarconsulta/{id}', [App\Http\Controllers\ConsultaController::class, 'continuar'])->name('continuarconsulta')->middleware('tenant');
 //Terminar la consulta
-Route::get('/terminarConsulta', [App\Http\Controllers\ConsultaController::class, 'terminarConsulta'])->name('terminarConsulta')->middleware('tenant');
+Route::get('/terminarConsulta', [App\Http\Controllers\ConsultaController::class, 'finishsuccess'])->name('terminarConsulta')->middleware('tenant');
 //Revisar si el usuario tiene notificaciones 
 Route::post('/notificationsCheck', [App\Http\Controllers\ConsultaController::class, 'notifications'])->name('notificationsCheck')->middleware('tenant');
 //Se transcribe de voz a texto

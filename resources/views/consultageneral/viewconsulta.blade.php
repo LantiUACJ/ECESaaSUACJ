@@ -189,7 +189,7 @@
                                         <div class="col s12" style="margin-bottom: 1rem;">
                                             <div class="switch">
                                                 <label class="special-toggle">
-                                                    <input type="checkbox" id="ispregnant" name="ispregnant" onclick="collapsPreg()" {{ $consulta->consultaembarazo != null? "checked disabled": ""}}>
+                                                    <input type="checkbox" id="ispregnant" name="ispregnant" onclick="collapsPreg()" {{ $consulta->consultaembarazo != null? "checked disabled": "disabled"}}>
                                                     <span class="lever"></span>
                                                     ¿Consulta por embarazo?
                                                 </label>
