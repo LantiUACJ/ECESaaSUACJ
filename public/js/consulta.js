@@ -31,9 +31,9 @@ $('#files').on('click', function(){
 });
 
 $('#filename').on('change', function(){
-    if($('#jsonfiles').val() == ""){
-        $('#filescontainer').empty();
-    }
+    // if($('#jsonfiles').val() == ""){
+    //     $('#filescontainer').empty();
+    // }
 
     let files = $('#filename').get(0).files;
 
@@ -713,7 +713,7 @@ function clearErrorsConsulta(){
     }
 }
 
-function terminarConsulta(){
+function buscarParaTerminarConsulta(){
     var fd = new FormData();
     fd.append('test', "test");
 
@@ -729,6 +729,7 @@ function terminarConsulta(){
         success: function(response){
             if(response == 1){
                 $("#terminarmodal").modal('open');
+                document.getElementById('doctorsign').focus();
             }else{
                 $("#noIntermodal").modal('open');
             }
@@ -737,6 +738,39 @@ function terminarConsulta(){
             $("#noConsultamodal").modal('open');
         },
     });
+}
+
+function TerminarConsulta(){
+    var pass = document.getElementById('doctorsign').value;
+    if(pass !=  ""){
+        var fd = new FormData();
+        fd.append('doctorsign', pass);
+        $.ajax({
+            url: url + "/finishconsulta",
+            type: "POST",
+            processData: false,
+            contentType: false,
+            data: fd,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response){
+                if(response == 1){
+                    document.getElementById("finishsuccess").click();
+                }
+            },
+            error: function(response){
+                console.log(response.responseJSON.errormsg);
+                var nopass = document.getElementById('nopass');
+                nopass.innerText = response.responseJSON.errormsg;
+                nopass.classList.remove('hide');
+            },
+        });
+    }else{
+        var nopass = document.getElementById('nopass');
+        nopass.innerText = "La contraseña es obligatoria.";
+        nopass.classList.remove('hide');
+    }
 }
 
 function interdisabled(){
@@ -791,9 +825,7 @@ function patientece(curp){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response){
-            $('#consultBtn').text("Consultar ECE");
-            $('#infomsg').text("Peticion Completada con exito");
-            $('#infomissing').modal('open');
+            alert("Peticion completado con exito!");
             var iframe = document.getElementById('iframecontent');
             iframe.height="900px"
             iframe.width="100%"
@@ -831,7 +863,6 @@ $(function() {
                     if($('#codeArea').hasClass('hide')){
                         $('#codeArea').removeClass('hide');
                     }
-
                     $('#consultBtn').text("Consultar ECE");
                     $('#infomsg').text("Peticion Completada con exito");
                     $('#infomissing').modal('open');
@@ -843,6 +874,15 @@ $(function() {
                 error: function(response){
                     if(response.responseJSON.errormsg){
                         $('#infomsg').text(response.responseJSON.errormsg);
+                        $('#infomissing').modal('open');
+                    }else if(response.responseJSON.codesent){
+                        if($('#codeArea').hasClass('hide')){
+                            $('#codeArea').removeClass('hide');
+                        }
+    
+                        $('#consultBtn').text("Consultar ECE");
+
+                        $('#infomsg').text(response.responseJSON.codesent);
                         $('#infomissing').modal('open');
                     }else{
                         $('#infomsg').text("¡Ha Ocurrido un error! Inténtalo más tarde");
@@ -883,7 +923,7 @@ function patientconsult(){
                 }
 
                 $('#consultBtn').text("Consultar ECE");
-                $('#infomsg').text("Peticion Completada con exito");
+                $('#infomsg').text("Peticion Completada con exito.");
                 $('#infomissing').modal('open');
                 var iframe = document.getElementById('iframecontent');
                 iframe.height="900px"
@@ -895,13 +935,14 @@ function patientconsult(){
                     $('#infomsg').text(response.responseJSON.errormsg);
                     $('#infomissing').modal('open');
                 }else{
-                    $('#infomsg').text("A Ocurrio un error! Intentalo mas tarde");
+                    $('#infomsg').text("A Ocurrio un error! Intentalo mas tarde.");
                     $('#infomissing').modal('open');
                 }
             },
         });
     }else{
-        alert("La curp del paciente debe ser introducida!");
+        $('#infomsg').text("La Curp del paciente debe ser introducida.");
+        $('#infomissing').modal('open');
     }
 }
 
@@ -925,18 +966,22 @@ function patientconsultbasic(){
             success: function(response){
                 $('#infomsg').text("Peticion Completada con exito");
                 $('#infomissing').modal('open');
-                var iframe = document.getElementById('iframecontentbasico');
+                var iframe = document.getElementById('iframecontentbasic');
                 iframe.height="900px"
                 iframe.width="100%"
                 iframe.src = "data:text/html;base64," + response;
             },
             error: function(response){
-                $('#infomsg').text("Ocurrio un error. Intentalo mas tarde.");
-                $('#infomissing').modal('open');
+                if(response.responseJSON.errormsg){
+                    $('#infomsg').text(response.responseJSON.errormsg);
+                    $('#infomissing').modal('open');
+                }else{
+                    $('#infomsg').text("A Ocurrio un error! Intentalo mas tarde");
+                    $('#infomissing').modal('open');
+                }
             },
         });
     }else{
-        $('#infomsg').text("La curp del paciente debe ser introducida.");
-        $('#infomissing').modal('open');
+        alert("La curp del paciente debe ser introducida!");
     }
 }

@@ -33,6 +33,10 @@
     </div>
     <div class="legend">
         <div class="legend-cont">
+            <div class="legend-color-three"></div>
+            <p>Consulta expirada</p>
+        </div>
+        <div class="legend-cont">
             <div class="legend-color-one"></div>
             <p>Consulta pendiente</p>
         </div>
@@ -67,27 +71,41 @@
                                 </td>
                             </tr>
                         @else
-                            <tr class="unended">
-                                <td>{{$consulta->created_at->format('d/m/Y') }} : {{ $consulta->created_at->format('H:i') }}</td>
-                                <td>{{ $consulta->paciente->nombre." ".$consulta->paciente->primerApellido." ".$consulta->paciente->segundoApellido }}</td>
-                                <td>{{ $consulta->motivoConsulta }}</td>
-                                <td class="icons-row">
-                                    <a href="{{ route('continuarconsulta', $consulta->id) }}">
-                                        <i class="material-icons tooltipped" data-position="top"
-                                        data-tooltip="Continuar">edit</i>
-                                    </a>
-                                    <a href="{{ route('viewconsulta', $consulta->id) }}">
-                                        <i class="material-icons tooltipped" data-position="top"
-                                        data-tooltip="Ver">remove_red_eye</i>
-                                    </a>
-                                </td>
-                            </tr>                  
+                            @if (\Carbon\Carbon::now() > $consulta->created_at->addHours(2))
+                                <tr class="expired">
+                                    <td>{{$consulta->created_at->format('d/m/Y') }} : {{ $consulta->created_at->format('H:i') }}</td>
+                                    <td>{{ $consulta->paciente->nombre." ".$consulta->paciente->primerApellido." ".$consulta->paciente->segundoApellido }}</td>
+                                    <td>{{ $consulta->motivoConsulta }}</td>
+                                    <td class="icons-row">
+                                        <a href="{{ route('viewconsulta', $consulta->id) }}">
+                                            <i class="material-icons tooltipped" data-position="top"
+                                            data-tooltip="Solo Terminar">lock</i>
+                                        </a>
+                                    </td>
+                                </tr> 
+                            @else
+                                <tr class="unended">
+                                    <td>{{$consulta->created_at->format('d/m/Y') }} : {{ $consulta->created_at->format('H:i') }}</td>
+                                    <td>{{ $consulta->paciente->nombre." ".$consulta->paciente->primerApellido." ".$consulta->paciente->segundoApellido }}</td>
+                                    <td>{{ $consulta->motivoConsulta }}</td>
+                                    <td class="icons-row">
+                                        <a href="{{ route('continuarconsulta', $consulta->id) }}">
+                                            <i class="material-icons tooltipped" data-position="top"
+                                            data-tooltip="Continuar">edit</i>
+                                        </a>
+                                        <a href="{{ route('viewconsulta', $consulta->id) }}">
+                                            <i class="material-icons tooltipped" data-position="top"
+                                            data-tooltip="Ver">remove_red_eye</i>
+                                        </a>
+                                    </td>
+                                </tr> 
+                            @endif           
                         @endif
                     @endforeach
                 </tbody>
             </table>
         </div>
-        @if ($consultas->count())
+        @if ($consultas->count() > 14)
             {{ $consultas->links('vendor.pagination.materializecss') }}
         @endif
     </div>

@@ -26,8 +26,8 @@ use App\Models\Tipodificultad;
 use App\Models\Gradodificultad;
 use App\Models\Origendificultad;
 
-
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 use App\Models\Interrogatorio;
 use App\Models\Antecedenteshf;
@@ -213,6 +213,8 @@ class ConsultaController extends Controller
             session(['inter_id' => null]);
         }
 
+        $todaynow = Carbon::now();
+
         $age = $this->ageCalc($pac);
         $years = (int) substr($age, 0, strpos($age, "años"));
         $grupos = grupoetnico::all();
@@ -221,7 +223,7 @@ class ConsultaController extends Controller
         $OrigenesDif = Origendificultad::all();
         return view('consultageneral.registroconsulta', ['paciente' => $pac, 'age' => $age, 'years' => $years, 'grupos' => $grupos, 
         'inter' => $inter, 'anteHF' => $anteHF, 'antePP' => $antePP, 'antePNP' => $antePNP, 'interAS' => $interAS, 'tiposDif' => $tiposDif,
-        'gradosDif' => $gradosDif, 'origenesDif' => $OrigenesDif]);
+        'gradosDif' => $gradosDif, 'origenesDif' => $OrigenesDif, 'todaynow' => $todaynow]);
     }
 
     public function continuar($consulta_id){
@@ -258,6 +260,7 @@ class ConsultaController extends Controller
             $interAS = new interrogatorioaparato();
         }
 
+        $todaynow = Carbon::now();
         $tiposDif = Tipodificultad::all();
         $gradosDif = Gradodificultad::all();
         $OrigenesDif = Origendificultad::all();
@@ -274,7 +277,7 @@ class ConsultaController extends Controller
         return view('consultageneral.continuarconsulta', ['paciente' => $pac, 'age' => $age, 'years' => $years, 'consulta' => $consulta, 
         'grupos' => $grupos, 'inter' => $inter, 'exploracion' => $explo, 'anteHF' => $anteHF, 'antePP' => $antePP, 
         'antePNP' => $antePNP, 'interAS' => $interAS, 'signos' => $signos, 'tiposDif' => $tiposDif, 'gradosDif' => $gradosDif, 
-        'origenesDif' => $OrigenesDif /*, 'diagnostico' => $diagnostico*/]);
+        'origenesDif' => $OrigenesDif, 'todaynow' => $todaynow /*, 'diagnostico' => $diagnostico*/]);
     }
 
     //Almacena solo los datos de la consulta (no interrogatorios, ni exploración) llamada a traves de ajax.
@@ -703,6 +706,57 @@ class ConsultaController extends Controller
         'origenesDif' => $OrigenesDif]);
     }
 
+    public function finish($consulta_id){
+        $consulta = Consulta::where('tenant_id', session('tenant')->id)->find($consulta_id);
+        session(['consulta_id' => $consulta_id]);
+        session(['pregnantconsulta_id' => $consulta->consultaembarazo_id != null? $consulta->consultaembarazo_id: null]);
+        //dd($consulta);
+        $pac = Paciente::where('tenant_id', session('tenant')->id)->find($consulta->paciente_id);
+        session(['pac_id' => $pac->id]);
+        $age = $this->ageCalc($pac);
+        $years = (int) substr($age, 0, strpos($age, "años"));
+        $grupos = grupoetnico::all();
+
+        $inter = Interrogatorio::where('tenant_id', session('tenant')->id)->where('paciente_id', $pac->id)->first() != null? Interrogatorio::where('tenant_id', session('tenant')->id)->where('paciente_id', $pac->id)->first(): new Interrogatorio(); //interrogatorio
+        $interid = Interrogatorio::where('tenant_id', session('tenant')->id)->where('paciente_id', $pac->id)->first() == null? null: $inter->id;
+        session(['inter_id' => $interid]);
+        
+        $explo = Exploracionfisica::where('tenant_id', session('tenant')->id)->find($consulta->exploracion_id) != null? Exploracionfisica::where('tenant_id', session('tenant')->id)->find($consulta->exploracion_id): new Exploracionfisica(); //exploración física
+        session(['explo_id' => $consulta->exploracion_id]);
+
+        if($inter){
+            $anteHF = Antecedenteshf::where('tenant_id', session('tenant')->id)->find($inter->anteHF_id) != null? Antecedenteshf::where('tenant_id', session('tenant')->id)->find($inter->anteHF_id): new Antecedenteshf(); //Antecedentes Heredo Familiares
+            session(['anteHF_id' => $inter->anteHF_id]);
+            $antePP = Antecedentespp::where('tenant_id', session('tenant')->id)->find($inter->antePP_id) != null? Antecedentespp::where('tenant_id', session('tenant')->id)->find($inter->antePP_id): new Antecedentespp(); //Antecedentes personales patológicos
+            session(['antePP_id' => $inter->antePP_id]);
+            $antePNP = Antecedentespnp::where('tenant_id', session('tenant')->id)->find($inter->antePNP_id) != null? Antecedentespnp::where('tenant_id', session('tenant')->id)->find($inter->antePNP_id): new Antecedentespnp(); //Antecedentes personales no patológicos
+            session(['antePNP_id' => $inter->antePNP_id]);
+            $interAS = interrogatorioaparato::where('tenant_id', session('tenant')->id)->find($inter->interAS_id) != null? interrogatorioaparato::where('tenant_id', session('tenant')->id)->find($inter->interAS_id): new interrogatorioaparato(); //interrogatorio aparatos y sistemas 
+            session(['interAS_id' => $inter->interAS_id]);
+        }else{ //enviar nulo en caso de no existir el interrogarotio
+            $anteHF = new Antecedenteshf();
+            $antePP = new Antecedentespp();
+            $antePNP = new Antecedentespnp();
+            $interAS = new interrogatorioaparato();
+        }
+
+        $tiposDif = Tipodificultad::all();
+        $gradosDif = Gradodificultad::all();
+        $OrigenesDif = Origendificultad::all();
+
+        if($explo){
+            $signos = Signovital::where('tenant_id', session('tenant')->id)->find($explo->signos_id) != null? Signovital::where('tenant_id', session('tenant')->id)->find($explo->signos_id): new Signovital(); //signos vitales
+            session(['signos_id' => $explo->signos_id]);
+        }else{//nulo si no existe la exploracion
+            $signos = null;
+        }
+
+        return view('consultageneral.viewconsulta', ['paciente' => $pac, 'age' => $age, 'years' => $years, 'consulta' => $consulta, 
+        'grupos' => $grupos, 'inter' => $inter, 'exploracion' => $explo, 'anteHF' => $anteHF, 'antePP' => $antePP, 
+        'antePNP' => $antePNP, 'interAS' => $interAS, 'signos' => $signos, 'tiposDif' => $tiposDif, 'gradosDif' => $gradosDif, 
+        'origenesDif' => $OrigenesDif]);
+    }
+
     public function searchconsulta(Request $request){
         $search = $request->get('search');
         $medico_id = auth()->user()->id;
@@ -756,48 +810,85 @@ class ConsultaController extends Controller
         return redirect()->back();
     }
 
-    public function terminarConsulta(){
-        if(session('consulta_id') !== null){
-            try {
-                $medico_id = auth()->user()->id;    
-                $consulta_id = session('consulta_id');
-                $consulta = Consulta::where('tenant_id', session('tenant')->id)->find($consulta_id);
-                $consulta->terminada = true;
-                $result = $consulta->save();
-                $consultas = Consulta::where('tenant_id', session('tenant')->id)->where('medico_id', $medico_id)->orderBy('created_at', 'desc')->paginate(15);
-
-                //Marcar notificacion de la consulta como leida
-                // $notis = Auth::user()->unreadnotifications;
-                // $noti_id = 0;
-                // foreach($notis as $noti){
-                //     if(($noti->data['tenant_id'] == session('tenant')->id) && ($noti->data['consulta_id'] == $consulta_id)){
-                //         $noti_id = $noti->id;
-                //         break;
-                //     }
-                // }
-                // if($noti_id != 0){
-                //     Auth::user()->unreadnotifications->where('id', $noti_id)->markAsRead();
-                // }
-
-                $this->deletesession();
-            } catch (\Throwable $th) {
-                return view('errors.404');
-            }
-
-            if($result){
-                session()->flash('successMsg', '¡Consulta Terminada Correctamente!');
-                return view('consultageneral.consultasmedico', ['consultas' => $consultas, 'search' => false]);
-            }
-            else{
-                session()->flash('errorMsg', '¡Ocurrio un error al Terminar la consulta!');
-                return view('consultageneral.consultasmedico', ['consultas' => $consultas, 'search' => false]);
-            }
+    public function terminarConsulta(Request $request){
+        if (!Hash::check($request->doctorsign, auth()->user()->password)){
+            return response()->json(['errormsg' => 'Contraseña Incorrecta.'], 401);
         }else{
-            $medico_id = auth()->user()->id;    
-            $consultas = Consulta::where('tenant_id', session('tenant')->id)->where('medico_id', $medico_id)->orderBy('created_at', 'desc')->paginate(15);
-            return view('consultageneral.consultasmedico', ['consultas' => $consultas, 'search' => false]);
+            if(session('consulta_id') !== null){
+                try { 
+                    $consulta_id = session('consulta_id');
+                    $consulta = Consulta::where('tenant_id', session('tenant')->id)->find($consulta_id);
+                    $consulta->terminada = true;
+                    $result = $consulta->save();
+                } catch (\Throwable $th) {
+                    return view('errors.404');
+                }
+                if($result){
+                    $this->deletesession();
+                    return 1;
+                }
+                else{
+                    return response()->json(['errormsg' => 'A Ocurrido un error inesperado.'], 401);
+                }
+            }else{
+                return response()->json(['errormsg' => 'A Ocurrido un error inesperado.'], 401);
+            }
         }
     }
+
+    public function finishsuccess(){
+        $consultas = Consulta::where('tenant_id', session('tenant')->id)
+        ->where('medico_id', auth()->user()->id)
+        ->orderBy('created_at', 'desc')->paginate(15);
+        session()->flash('successMsg', '¡Consulta Terminada Correctamente!');
+        return view('consultageneral.consultasmedico', ['consultas' => $consultas, 'search' => false]);
+    }
+
+    // public function terminarConsulta(Request $request){
+    //     $userpass = auth()->user()->password;
+    //     $request->validate([
+    //         'doctorsign' => [
+    //             'required',
+    //             function ($attribute, $value, $fail) use($userpass){
+    //                 if (!Hash::check($value, $userpass)){
+    //                     return $fail('La Contraseña es Incorrecta.');
+    //                 }
+    //             },
+    //         ],
+    //     ],
+    //     [
+    //         'doctorsign.required' => "El campo Contraseña es obligatorio."
+    //     ]);
+        
+    //     if(session('consulta_id') !== null){
+    //         try {
+    //             $medico_id = auth()->user()->id;    
+    //             $consulta_id = session('consulta_id');
+    //             $consulta = Consulta::where('tenant_id', session('tenant')->id)->find($consulta_id);
+    //             $consulta->terminada = true;
+    //             $result = $consulta->save();
+    //             $consultas = Consulta::where('tenant_id', session('tenant')->id)->where('medico_id', $medico_id)->orderBy('created_at', 'desc')->paginate(15);
+
+    //             $this->deletesession();
+    //         } catch (\Throwable $th) {
+    //             return view('errors.404');
+    //         }
+
+    //         if($result){
+    //             session()->flash('successMsg', '¡Consulta Terminada Correctamente!');
+    //             return view('consultageneral.consultasmedico', ['consultas' => $consultas, 'search' => false]);
+    //         }
+    //         else{
+    //             session()->flash('errorMsg', '¡Ocurrio un error al Terminar la consulta!');
+    //             return view('consultageneral.consultasmedico', ['consultas' => $consultas, 'search' => false]);
+    //         }
+    //     }else{
+    //         $medico_id = auth()->user()->id;    
+    //         $consultas = Consulta::where('tenant_id', session('tenant')->id)->where('medico_id', $medico_id)->orderBy('created_at', 'desc')->paginate(15);
+    //         session()->flash('errorMsg', '¡Ocurrio un error al Terminar la consulta!');
+    //         return view('consultageneral.consultasmedico', ['consultas' => $consultas, 'search' => false]);
+    //     }
+    // }
 
     public function transcript(Request $request){
         //Credentiasl path

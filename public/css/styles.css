@@ -714,6 +714,11 @@ th {
     box-shadow: 0 0 1px black;
 }
 
+.expired {
+    background-color: rgb(233, 135, 135) !important;
+    box-shadow: 0 0 1px black;
+}
+
 .empty {
     opacity: 0;
     cursor: inherit !important;
@@ -817,6 +822,15 @@ table {
     width: 2rem;
     height: 2rem;
     background-color: rgb(242, 242, 242);
+    border: 1px solid rgb(150, 150, 150);
+
+    border-radius: 50%;
+}
+
+.legend-color-three {
+    width: 2rem;
+    height: 2rem;
+    background-color: rgb(233, 135, 135);
     border: 1px solid rgb(150, 150, 150);
 
     border-radius: 50%;

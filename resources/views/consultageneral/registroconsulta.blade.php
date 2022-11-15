@@ -51,6 +51,11 @@
                                 <p>Edad: <b>{{ $age }}</b></p>
                             </div>
                         </div>
+                        <div class="row nomargbot">
+                            <div class="col s12 m6 l4">
+                                <p>Fecha de Consulta: <b>{{ $todaynow->format('d/m/Y') }}</b></p>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
@@ -82,7 +87,7 @@
                             <div class="col s12">
                                 <div class="row no-mar bg-tab">
                                     <div class="input-field col s12 m6 l6 txtarin no-mar">
-                                        <textarea name="motivo" id="motivo" cols="30" rows="10" maxlength="255">{{ old('motivo') }}</textarea>
+                                        <textarea name="motivo" id="motivo" cols="30" rows="10" maxlength="255" autocomplete="motivo">{{ old('motivo') }}</textarea>
                                         <div class="float-voice startRecord" id="startmotivo" data-id="motivo">
                                             <i class="material-icons">keyboard_voice</i>
                                         </div>
@@ -424,7 +429,7 @@
                                                                                 @if ($grupos->count() == 0)
                                                                                     <option value="0" selected>--- No se encontraron Grupos Étnicos ---</option>
                                                                                 @elseif ($anteHF->grupo_id == null)
-                                                                                    <option selected>--- Selecciona una Opción ---</option>
+                                                                                    <option value="0" selected>--- Selecciona una Opción ---</option>
                                                                                     @foreach ($grupos as $grupo)
                                                                                         <option value="{{ $grupo->id }}">{{ $grupo->lenguaIndigena }}</option>
                                                                                     @endforeach
@@ -1504,7 +1509,7 @@
                                 class="material-icons left">save</i>Guardar</a>
                     </div> -->
                         <div class="col" style="padding-top: 1rem">
-                            <a class="waves-light btn orange darken-1 btn" onclick="terminarConsulta()"><i
+                            <a class="waves-light btn orange darken-1 btn" onclick="buscarParaTerminarConsulta()"><i
                                     class="material-icons left">check</i>Terminar consulta</a>
                         </div>
                         
@@ -1593,16 +1598,26 @@
     <!-- Modal Structure SAVE -->
     <div id="terminarmodal" class="modal">
         <div class="modal-content" style="padding: 1rem 2rem;">
-            <p style="font-size: 1.5rem">Asegúrate que todos los cambios estén guardados correctamente. ¿Estás seguro que
+            <p style="font-size: 1.35rem">Asegúrate que todos los cambios estén guardados correctamente. ¿Estás seguro que
                 quieres terminar la consulta?</p>
+            <br>
+            <div class="input">
+                <label for="doctorsign" style="font-size: 1rem" class="col s12 row">
+                    Contraseña:
+                    <input type="password" id="doctorsign" name="doctorsign" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');">
+                </label>
+            </div>
+            <p class="hide" style="color: red" id="nopass">La contraseña es obligatoria.</p>
         </div>
         <div class="modal-footer" style="padding: 1rem 1rem;">
             <a href="#!" class="modal-close waves-effect teal waves-green btn-flat"
                 style="color: white;">Cerrar</a>
-            <a href="{{ route('terminarConsulta') }}" class="modal-close waves-effect red waves-green btn-flat" style="color: white;">Terminar
+            <a onclick="TerminarConsulta()" class="red waves-green btn-flat" id="endconsult" style="color: white;">Firmar y Terminar
                 consulta</a>
         </div>
     </div>
+
+    <a href="{{ route('terminarConsulta') }}" class="hide" id="finishsuccess">Finish</a>
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
