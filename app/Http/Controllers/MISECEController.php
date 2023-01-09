@@ -199,7 +199,7 @@ class MISECEController extends Controller
         $data['consultor'] = auth()->user()->name;
 
         $response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/expediente/basico/'.$request->curp, $data);
-        //$response = Http::withBasicAuth('online', 'potato')->post('https://misece.link/api/v1/expediente/basico/' . $request->curp, $data);
+        //$response = Http::withBasicAuth('online', 'potato')->post('https://misece.link/api/v1/expediente/basico/'.$request->curp, $data);
 
         if(str_contains($response->body(),"Paciente no encontrado") ){
             return response()->json(['errormsg' => 'No se encontraron expedientes del paciente.'], 401);
