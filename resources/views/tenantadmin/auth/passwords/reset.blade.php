@@ -31,7 +31,7 @@
                                     {{ session('status') }}
                                 </div>
                             @endif
-                            <form method="POST" action="{{ route('password.update') }}">
+                            <form method="POST" action="{{ route('tenantadmin.password.update') }}">
                                 @csrf
 
                                 <input type="hidden" name="token" value="{{ $token }}">

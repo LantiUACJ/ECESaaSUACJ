@@ -51,35 +51,5 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal Structure -->
-    <div id="modal1" class="modal small-modal">
-        <div class="modal-content">
-            <div class="row no-mar">
-                <h5>Recuperar contraseña</h5>
-                <p>Ingresa el correo electrónico para recuperar tu contraseña.</p>
-                <div class="input">
-                    <input class="no-pad" type="email" placeholder="Ingresa tu correo electrónico">
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer center">
-        <a href="#!" class="modal-close waves-effect waves-green btn">Enviar</a>
-        <a style="margin-left: 1rem" href="#!" class="modal-close waves-effect btn red darken-1">Cancelar</a>
-        </div>
-    </div>
-    
-
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js">
-    </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        var elems = document.querySelectorAll('.modal');
-        var instances = M.Modal.init(elems);
-        });
-    </script>
-
 </body>
 </html>

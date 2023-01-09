@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 //use Illuminate\Foundation\Auth\AuthenticatesUsers as Auth;
@@ -9,6 +9,7 @@ use App\Models\Egi;
 
 use App\Models\Diagnostico;
 use App\Models\Snomeddescripcion;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,89 @@ Route::post('/getdiags', function(Request $request){
     $diags = Snomeddescripcion::where('active', 1)->where('category_id', 4)->where('term', 'LIKE', '%'.$request->term.'%')->take(100)->get(['id', 'term']);
     return $diags;
 });
+
+
+
+
+/* ECE ADMIN ROUTES */
+    //https://medium.com/@sagarmaheshwary31/laravel-multiple-guards-authentication-setup-and-login-2761564da986
+    //https://medium.com/@sagarmaheshwary31/laravel-multiple-guards-authentication-middleware-login-throttle-and-password-reset-a822e26f15ac
+    //https://magecomp.com/blog/make-admin-auth-in-laravel-8/
+
+    Route::prefix('/eceadmin')->name('eceadmin.')->namespace('App\Http\Controllers\Eceadmin')->group(function(){
+        Route::namespace('Auth')->group(function(){
+            Route::get('/', function () {
+                return redirect()->route('eceadmin.login');
+            })->name('eceadmin');
+
+            //login routes
+            Route::get('/login', 'LoginController@showLoginForm')->name('login');
+            Route::post('/login', 'LoginController@login');
+            Route::post('/logout', 'LoginController@logout')->name('logout');
+            //Forgot Password Routes
+            Route::get('/password/request', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
+            Route::post('/password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+
+            //Reset Password Routes
+            Route::get('/password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
+            Route::get('/password/reset', 'ResetPasswordController@reset')->name('password.update');
+        });
+
+        Route::get('/inicio', 'HomeController@index')->name('home')->middleware('eceadmin');
+        Route::get('/tenants', 'TenantController@index')->name('tenants')->middleware('eceadmin');
+        Route::post('/tenantsCheck', 'TenantController@check')->name('tenantsCheck')->middleware('eceadmin');
+
+        Route::get('/tenant/registro', 'TenantController@register')->name('registertenant')->middleware('eceadmin');
+        Route::post('/tenant/guardar', 'TenantController@store')->name('storetenant')->middleware('eceadmin');
+
+        Route::post('/medicoCheck', 'TenantController@checkmedico')->name('medicoCheck')->middleware('eceadmin');
+
+        Route::get('/tenant/editar/{id}', 'TenantController@edit')->name('edittenant')->middleware('eceadmin');
+        Route::post('/tenant/actualizar/{id}', 'TenantController@update')->name('updatetenant')->middleware('eceadmin');
+
+        Route::get('/tenant/busqueda', 'TenantController@search')->name('searchtenant')->middleware('eceadmin');
+        Route::get('/tenant/disable/{id}', 'TenantController@disable')->name('disabletenant')->middleware('eceadmin');
+        Route::get('/tenant/enable/{id}', 'TenantController@enable')->name('enabletenant')->middleware('eceadmin');
+    });
+/* ECE ADMIN ROUTES */
+
+/* TENANT ADMIN ROUTES */
+    Route::prefix('/tenantadmin')->name('tenantadmin.')->namespace('App\Http\Controllers\Tenantadmin')->group(function(){
+        Route::namespace('Auth')->group(function(){
+            Route::get('/', function () {
+                return redirect()->route('tenantadmin.login');
+            })->name('tenantadmin');
+
+            //login routes
+            Route::get('/login', 'LoginController@showLoginForm')->name('login');
+            Route::post('/login', 'LoginController@login');
+            Route::post('/logout', 'LoginController@logout')->name('logout');
+            //Forgot Password Routes
+            Route::get('/password/request', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
+            Route::post('/password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+
+            //Reset Password Routes
+            Route::get('/password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
+            Route::get('/password/reset', 'ResetPasswordController@reset')->name('password.update');
+        });
+
+        Route::get('/inicio', 'HomeController@index')->name('home')->middleware('tenantadmin');
+        Route::get('/medicos', 'MedicoController@index')->name('medicos')->middleware('tenantadmin');
+
+        Route::post('/medicoCheck', 'MedicoController@checkmedico')->name('medicoCheck')->middleware('tenantadmin');
+        Route::post('/medicosCheck', 'MedicoController@checkmedicos')->name('medicosCheck')->middleware('tenantadmin');
+
+        Route::get('/medico/registro', 'MedicoController@register')->name('registermedico')->middleware('tenantadmin');
+        Route::post('/medico/guardar', 'MedicoController@store')->name('storemedico')->middleware('tenantadmin');
+
+        Route::get('/medico/editar/{id}', 'MedicoController@edit')->name('editmedico')->middleware('tenantadmin');
+        Route::post('/medico/actualizar/{id}', 'MedicoController@update')->name('updatemedico')->middleware('tenantadmin');
+
+        Route::get('/medico/busqueda', 'MedicoController@search')->name('searchmedico')->middleware('tenantadmin');
+        Route::get('/medico/disable/{id}', 'MedicoController@disable')->name('disablemedico')->middleware('tenantadmin');
+        Route::get('/medico/enable/{id}', 'MedicoController@enable')->name('enablemedico')->middleware('tenantadmin');
+    });
+/* TENANT ADMIN ROUTES */
 
 /* Rutas para el MISECE*/
     //Peticion del MISECE al ECE

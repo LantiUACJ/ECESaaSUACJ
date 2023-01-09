@@ -23,24 +23,17 @@
                     <div class="white-card fh center modal-middle">
                         <div class="login-content">
                             <div class="row">
-                                <h5 class="bold title">Reestablecer contraseña</h5>
+                                <h5 class="bold title">Recuperar contraseña</h5>
+                                <p>Ingresa el correo electrónico para recuperar tu contraseña.</p>
                             </div>
-
-                            @if (session('status'))
-                                <div class="alert alert-success" role="alert">
-                                    {{ session('status') }}
-                                </div>
-                            @endif
-                            <form method="POST" action="{{ route('password.update') }}">
+                            
+                            <form method="POST" action="{{ route('eceadmin.password.email') }}">
                                 @csrf
-
-                                <input type="hidden" name="token" value="{{ $token }}">
-
                                 <div class="row">
                                     <div class="col s12">
                                         <div class="form">
                                             <div class="input">
-                                                <input id="email" type="email" name="email" value="{{ $email ?? old('email') }}"  placeholder="Correo Electrónico" required autocomplete="email" autofocus >
+                                                <input id="email" type="email" name="email" value="{{ old('email') }}"  placeholder="Correo Electrónico" autofocus >
                                                 @error('email')
                                                     <span class="helper-text show">{{ $message }}</span>
                                                 @enderror
@@ -48,41 +41,13 @@
                                         </div>
                                     </div>
                                 </div>
-                               
                                 <div class="row">
-                                    <div class="col s12">
-                                        <div class="form">
-                                            <div class="input">
-                                                <input id="password" type="password" name="password" required autocomplete="new-password" placeholder="Contraseña" >
-                                                @error('password')
-                                                    <span class="helper-text show">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
+                                    <div class="submit center">
+                                        <button type="submit" class="waves-effect waves-light btn">Enviar</button>
                                     </div>
                                 </div>
-
-                                <div class="row">
-                                    <div class="col s12">
-                                        <div class="form">
-                                            <div class="input">
-                                                <input id="password-confirm" type="password" name="password_confirmation" required autocomplete="new-password" placeholder="Contraseña">
-                                                @error('password')
-                                                    <span class="helper-text show">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row mb-0">
-                                    <div class="col-md-6 offset-md-4">
-                                        <button type="submit" class="btn btn-primary">
-                                            {{ __('Reestablecer contraseña') }}
-                                        </button>
-                                    </div>
-                                </div>
-                            </form><div class="row">
+                            </form>
+                            <div class="row">
                                 <div class="submit center">
                                     <a href="{{ route('welcome') }}" class="">Volver a sitio web</a>
                                 </div>

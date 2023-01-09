@@ -23,28 +23,28 @@
                 <div class="white-card fh center modal-middle">
                     <div class="login-content">
                         <div class="row">
-                            <h5 class="bold title">¡Bienvenido!</h5>
+                            <h5 class="bold title">¡Bienvenido Administrador!</h5>
                         </div>
-                        <form method="POST" action="{{ route('login') }}">
+                        <form method="POST" action="{{ route('eceadmin.login') }}">
                             @csrf
                             <div class="row">
                                 <div class="col s12">
                                     <div class="form">
-                                        @if ($errors->has('email') || $errors->has('password'))
-                                            @foreach ($errors->get('email') as $error)
-                                                <span class="helper-text show">{{ $error }}</span>
-                                            @endforeach
-                                        @endif
-                                        <br><br>
                                         <div class="input">
-                                            <input id="email" type="email" name="email" value="{{ old('email') }}" placeholder="Correo Electrónico" autofocus required>
+                                            <input id="email" type="email" name="email" value="{{ old('email') }}" placeholder="Correo Electrónico" autofocus >
+                                            @error('email')
+                                                <span class="helper-text show">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                         <div class="input">
-                                            <input id="password" type="password"  name="password" placeholder="Contraseña" required>
+                                            <input id="password" type="password"  name="password" placeholder="Contraseña" >
+                                            @error('password')
+                                                <span class="helper-text show">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="bottom-form">
-                                        <a href="{{ route('password.request') }}" class="forgot-text right modal-trigger">Olvidé mi contraseña</a>
+                                        <a href="{{ route('eceadmin.password.request') }}" class="forgot-text right modal-trigger">Olvidé mi contraseña</a>
                                     </div>
                                 </div>
                             </div>
@@ -90,17 +90,8 @@
     
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
-    @php
-        $error = Session::pull('errorMsg');
-    @endphp
-    @if($error)
-        <script> 
-            M.toast({html: '<b>{{ $error }}</b>' , classes: 'rounded red', displayLength: 5000}); 
-        </script>
-    @endif
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js">
+    </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
