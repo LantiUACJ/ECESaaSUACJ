@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\Eceadmin;
+use App\Models\Tenantadmin;
 use App\Models\User;
 use App\Models\tenant;
 use DB;
@@ -18,6 +20,19 @@ class UsersSeed extends Seeder
      */
     public function run()
     {
+        $eceadmin = Eceadmin::create([
+            "name" => "Cesar Maldonado",
+            "email" => "cesar@prueba.com",
+            'password'  => bcrypt('test2023')
+        ]);
+
+        $eceadmin = Eceadmin::create([
+            "name" => "Yadira Kiquey",
+            "email" => "yadira@prueba.com",
+            'password'  => bcrypt('potato2021')
+        ]);
+
+        /*
         //Los primero 2 usuarios tendran acceso a 
 
         $user = User::create([
@@ -30,6 +45,7 @@ class UsersSeed extends Seeder
             "user_id" => $user->id,
             "tenant_id" => 1
         ]);
+        */
 
         //USUARIOS CONACYT
         /*

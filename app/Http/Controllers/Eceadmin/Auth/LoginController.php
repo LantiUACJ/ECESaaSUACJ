@@ -78,7 +78,7 @@ class LoginController extends Controller
 
         //custom validation error messages.
         $messages = [
-            'email.exists' => 'Las credenciales no coinciden nuestros registros.',
+            'email.exists' => 'Las credenciales no coinciden con nuestros registros.',
         ];
 
         //validate the request.
