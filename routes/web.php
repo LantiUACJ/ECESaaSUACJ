@@ -46,13 +46,7 @@ Route::post('/getdiags', function(Request $request){
     return $diags;
 });
 
-
-
-
 /* ECE ADMIN ROUTES */
-    //https://medium.com/@sagarmaheshwary31/laravel-multiple-guards-authentication-setup-and-login-2761564da986
-    //https://medium.com/@sagarmaheshwary31/laravel-multiple-guards-authentication-middleware-login-throttle-and-password-reset-a822e26f15ac
-    //https://magecomp.com/blog/make-admin-auth-in-laravel-8/
 
     Route::prefix('/eceadmin')->name('eceadmin.')->namespace('App\Http\Controllers\Eceadmin')->group(function(){
         Route::namespace('Auth')->group(function(){
@@ -149,6 +143,7 @@ Route::post('/getdiags', function(Request $request){
 
     //Pagina para Consulta (vista) MISECE ece-misece (con curp)
     Route::get('/misece', [App\Http\Controllers\MISECEController::class, 'consultarmisece'])->name('misece')->middleware('tenant');
+    Route::post('/misecetest', [App\Http\Controllers\MISECEController::class, 'sendexpediente'])->name('misecetest')->middleware('tenant');
 /**/
 
 

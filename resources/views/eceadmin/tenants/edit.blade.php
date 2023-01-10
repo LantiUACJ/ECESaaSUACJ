@@ -84,13 +84,15 @@
             $i = 0;
             $firstadmin = null;
             $secondadmin = null;
-            foreach ($tenant->tenantadmins as $admin) {
-                if($i == 0){
-                    $firstadmin = $admin;
-                }else{
-                    $secondadmin = $admin;
+            if ($countadmin > 0) {
+                foreach ($tenant->tenantadmins as $admin) {
+                    if($i == 0){
+                        $firstadmin = $admin;
+                    }else{
+                        $secondadmin = $admin;
+                    }
+                    $i++;
                 }
-                $i++;
             }
         @endphp
         <div class="form-group {{ old('tenanttype') == 1? '': ($tenant->type == 1? '': 'hide') }}" id="instituto">
@@ -227,11 +229,6 @@
             </div>
         </div>
 
-        @if ($tenant->usertenant !== null)
-            
-        @else
-            
-        @endif
         <div class="form-group {{ old('tenanttype') == 2? '': ($tenant->type == 2? '': 'hide') }}" id="particular">
 
             <div class="{{ old('meds1') == 1 || old('meds2') == 1? 'hide': ($tenant->usertenant !== null? 'hide': '' ) }}" id="medicobutton">
