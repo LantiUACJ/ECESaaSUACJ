@@ -9,7 +9,7 @@ class userstenant extends Model
 {
     use HasFactory;
     
-    protected $table = 'userstenants';
+    protected $table = 'usersTenants';
     
     public function tenant(){
         return $this->hasOne('App\Models\tenant', 'id', 'tenant_id');
