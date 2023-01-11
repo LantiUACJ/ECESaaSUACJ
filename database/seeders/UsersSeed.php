@@ -32,6 +32,14 @@ class UsersSeed extends Seeder
             'password'  => bcrypt('potato2021')
         ]);
 
+        
+
+        $eceadmin = Eceadmin::create([
+            "name" => "ECEAdmin User",
+            "email" => "eceadmin@prueba.com",
+            'password'  => bcrypt('test2023')
+        ]);
+
         /*
         //Los primero 2 usuarios tendran acceso a 
 
