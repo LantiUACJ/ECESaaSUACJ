@@ -962,22 +962,4 @@ class ConsultaController extends Controller
         session()->save();
         return session('consulta_id') == null? true: false;
     }
-
-    public function testcred(){
-        
-        $credentials = public_path().'/test/gold-hold-352719-2ca00cbe3ec2.json';
-
-        dd(['credentials'=>[
-            "type" => env("Gtype", null),
-            "project_id" => env("Gproject_id", null),
-            "private_key_id" => env("Gprivate_key_id", null),
-            "private_key" => env("Gprivate_key", null),
-            "client_email" => env("Gclient_email", null),
-            "client_id" => env("Gclient_id", null),
-            "auth_uri" => env("Gauth_uri", null),
-            "token_uri" => env("Gtoken_uri", null),
-            "auth_provider_x509_cert_url" => env("Gauth_provider_x509_cert_url", null),
-            "client_x509_cert_url" => env("Gclient_x509_cert_url", null),
-        ]]);
-    }
 }
