@@ -37,6 +37,13 @@
             </ul>
         </div>
     </form>
+    <br><br>
+    <hr>
+    <form action="{{ route('misecetest') }}" method="post">
+        @csrf
+        <button type="submit">TEST</button>
+        <input type="hidden" name="test" value="0">
+    </form>
 </div>
 
 <div id="infomissing" class="modal">

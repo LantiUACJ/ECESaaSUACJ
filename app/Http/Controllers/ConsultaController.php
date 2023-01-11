@@ -891,9 +891,6 @@ class ConsultaController extends Controller
     // }
 
     public function transcript(Request $request){
-        //Credentiasl path
-        $credentials = public_path().'/googlecloudcredentials/gold-hold-352719-6bc6f1989dad.json';
-
         // change these variables if necessary
         $encoding = AudioEncoding::WEBM_OPUS;
         $sampleRateHertz = 48000;
@@ -914,7 +911,19 @@ class ConsultaController extends Controller
             ->setAudioChannelCount(2);
 
         // create the speech client
-        $client = new SpeechClient(['credentials'=>json_decode(file_get_contents($credentials), true)]);
+        $client = new SpeechClient(['credentials'=>[
+            "type" => env("Gtype", null),
+            "project_id" => env("Gproject_id", null),
+            "private_key_id" => env("Gprivate_key_id", null),
+            "private_key" => env("Gprivate_key", null),
+            "client_email" => env("Gclient_email", null),
+            "client_id" => env("Gclient_id", null),
+            "auth_uri" => env("Gauth_uri", null),
+            "token_uri" => env("Gtoken_uri", null),
+            "auth_provider_x509_cert_url" => env("Gauth_provider_x509_cert_url", null),
+            "client_x509_cert_url" => env("Gclient_x509_cert_url", null),
+        ]]);
+
         $fulltext = "";
         try {
             $response = $client->recognize($config, $audio);
@@ -952,5 +961,23 @@ class ConsultaController extends Controller
         session()->forget('pac_id');
         session()->save();
         return session('consulta_id') == null? true: false;
+    }
+
+    public function testcred(){
+        
+        $credentials = public_path().'/test/gold-hold-352719-2ca00cbe3ec2.json';
+
+        dd(['credentials'=>[
+            "type" => env("Gtype", null),
+            "project_id" => env("Gproject_id", null),
+            "private_key_id" => env("Gprivate_key_id", null),
+            "private_key" => env("Gprivate_key", null),
+            "client_email" => env("Gclient_email", null),
+            "client_id" => env("Gclient_id", null),
+            "auth_uri" => env("Gauth_uri", null),
+            "token_uri" => env("Gtoken_uri", null),
+            "auth_provider_x509_cert_url" => env("Gauth_provider_x509_cert_url", null),
+            "client_x509_cert_url" => env("Gclient_x509_cert_url", null),
+        ]]);
     }
 }
