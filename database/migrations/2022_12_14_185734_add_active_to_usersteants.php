@@ -13,7 +13,7 @@ class AddActiveToUsersteants extends Migration
      */
     public function up()
     {
-        Schema::table('userstenants', function (Blueprint $table) {
+        Schema::table('usersTenants', function (Blueprint $table) {
             $table->boolean('active')->default(true)->after('tenant_id');
         });
     }
