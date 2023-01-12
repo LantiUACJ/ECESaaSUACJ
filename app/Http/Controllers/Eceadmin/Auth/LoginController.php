@@ -90,7 +90,7 @@ class LoginController extends Controller
         return redirect()
             ->back()
             ->withInput()
-            ->with('error','La autentificación fallo, porfavor intentalo otra vez.');
+            ->with('error','Estas credenciales no coinciden con nuestros registros.');
     }
 
     public function logout(){

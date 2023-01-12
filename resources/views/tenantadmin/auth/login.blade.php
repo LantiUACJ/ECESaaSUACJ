@@ -30,6 +30,10 @@
                             <div class="row">
                                 <div class="col s12">
                                     <div class="form">
+                                        @if(session()->has('error'))
+                                            <span class="helper-text show">{{ session()->get('error') }}</span>
+                                        @endif
+                                        <br><br>
                                         <div class="input">
                                             <input id="email" type="email" name="email" value="{{ old('email') }}" placeholder="Correo Electrónico" autofocus >
                                             @error('email')
