@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Eceadmin\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
+use Route;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
+use Illuminate\Routing\Route as RoutingRoute;
 
 class LoginController extends Controller
 {
@@ -58,8 +60,7 @@ class LoginController extends Controller
         if(Auth::guard('eceadmin')->attempt($request->only('email','password'))){
             //Authentication passed...
             return redirect()
-                ->intended(route('eceadmin.home'))
-                ->with('status','¡Te has autenticado como Administrador!');
+                ->intended(route('eceadmin.home'));
         }
 
         //keep track of login attempts from the user.
@@ -78,7 +79,7 @@ class LoginController extends Controller
 
         //custom validation error messages.
         $messages = [
-            'email.exists' => 'Las credenciales no coinciden con nuestros registros.',
+            'email.exists' => 'Las credenciales no coinciden nuestros registros.',
         ];
 
         //validate the request.

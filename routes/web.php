@@ -46,7 +46,13 @@ Route::post('/getdiags', function(Request $request){
     return $diags;
 });
 
+
+
+
 /* ECE ADMIN ROUTES */
+    //https://medium.com/@sagarmaheshwary31/laravel-multiple-guards-authentication-setup-and-login-2761564da986
+    //https://medium.com/@sagarmaheshwary31/laravel-multiple-guards-authentication-middleware-login-throttle-and-password-reset-a822e26f15ac
+    //https://magecomp.com/blog/make-admin-auth-in-laravel-8/
 
     Route::prefix('/eceadmin')->name('eceadmin.')->namespace('App\Http\Controllers\Eceadmin')->group(function(){
         Route::namespace('Auth')->group(function(){
@@ -64,7 +70,7 @@ Route::post('/getdiags', function(Request $request){
 
             //Reset Password Routes
             Route::get('/password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
-            Route::get('/password/reset', 'ResetPasswordController@reset')->name('password.update');
+            Route::post('/password/reset', 'ResetPasswordController@reset')->name('password.update');
         });
 
         Route::get('/inicio', 'HomeController@index')->name('home')->middleware('eceadmin');
@@ -101,8 +107,8 @@ Route::post('/getdiags', function(Request $request){
             Route::post('/password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
 
             //Reset Password Routes
-            Route::get('/password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
-            Route::get('/password/reset', 'ResetPasswordController@reset')->name('password.update');
+            Route::get('/password/reset/[{token},{email}}', 'ResetPasswordController@showResetForm')->name('password.reset');
+            Route::post('/password/reset', 'ResetPasswordController@reset')->name('password.update');
         });
 
         Route::get('/inicio', 'HomeController@index')->name('home')->middleware('tenantadmin');
@@ -143,7 +149,6 @@ Route::post('/getdiags', function(Request $request){
 
     //Pagina para Consulta (vista) MISECE ece-misece (con curp)
     Route::get('/misece', [App\Http\Controllers\MISECEController::class, 'consultarmisece'])->name('misece')->middleware('tenant');
-    Route::post('/misecetest', [App\Http\Controllers\ConsultaController::class, 'testcred'])->name('misecetest')->middleware('tenant');
 /**/
 
 

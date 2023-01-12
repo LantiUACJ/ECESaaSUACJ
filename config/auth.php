@@ -118,12 +118,14 @@ return [
             'provider' => 'eceadmins',
             'table' => 'password_resets',
             'expire' => 60,
+            'throttle' => 60,
         ],
 
         'tenantadmins' => [
             'provider' => 'tenantadmins',
             'table' => 'password_resets',
             'expire' => 60,
+            'throttle' => 60,
         ],
     ],
 

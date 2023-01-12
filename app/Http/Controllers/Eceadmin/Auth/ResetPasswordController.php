@@ -21,7 +21,7 @@ class ResetPasswordController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/eceadmin/home';
+    public $redirectTo = '/eceadmin/inicio';
 
     /**
      * Only guests for "admin" guard are allowed except
@@ -44,6 +44,7 @@ class ResetPasswordController extends Controller
     public function showResetForm(Request $request, $token = null){
         return view('eceadmin.auth.passwords.reset',[
             'token' => $token,
+            'email' => $request->email,
         ]);
     }
 
