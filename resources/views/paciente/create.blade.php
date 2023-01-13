@@ -13,7 +13,7 @@
             <a href="{{ route('pacientes.index') }}">Pacientes</a> >
             <a href="{{ route('pacientes.create') }}">Registrar paciente</a>
         </p>
-        <hr style="opacity: 0.3">
+        <hr class="opactity3">
         @include('paciente.form')
 
     </form>

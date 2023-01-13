@@ -10,7 +10,7 @@
         Registrar Consulta
     </p>
 
-    <hr style="opacity: 0.3">
+    <hr class="opactity3">
 
     <div class="scroll-section">
         <form action="">

@@ -25,10 +25,7 @@ function findNotifications(){
             /*Existen records*/
             $("#notificationBadge").empty();
             $("usernotiBadge").empty();
-            if(data > 0){
-                $("#notificationBadge").text(data);
-            }
-            if(data == 0){
+            if(data >= 0){
                 $("#notificationBadge").text(data);
             }
         },

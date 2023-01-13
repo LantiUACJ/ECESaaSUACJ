@@ -40,6 +40,16 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        
+        'eceadmin' => [
+            'driver' => 'session',
+            'provider' => 'eceadmins',
+        ],
+
+        'tenantadmin' => [
+            'driver' => 'session',
+            'provider' => 'tenantadmins',
+        ],
     ],
 
     /*
@@ -63,6 +73,16 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+
+        'eceadmins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Eceadmin::class,
+        ],
+
+        'tenantadmins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Tenantadmin::class,
         ],
 
         // 'users' => [
@@ -89,6 +109,20 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'eceadmins' => [
+            'provider' => 'eceadmins',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'tenantadmins' => [
+            'provider' => 'tenantadmins',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,

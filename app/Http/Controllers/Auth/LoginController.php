@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 use App\Models\tenant;
+use App\Models\User;
 use DB;
 
 class LoginController extends Controller
@@ -87,8 +88,10 @@ class LoginController extends Controller
     public static function setMultiTenant(Request &$request)
     {
         $tenants = DB::table("usersTenants")
+        ->where("usersTenants.active", true)
         ->where("user_id", auth()->guard()->user()->id)
         ->join("tenants", "usersTenants.tenant_id", "=", "tenants.id")
+        ->where("tenants.active", true)
         ->select([
             DB::raw("tenants.tenant_nombre as name"),
             DB::raw("tenants.id as id")
@@ -99,6 +102,28 @@ class LoginController extends Controller
             $request->session()->put("tenant", tenant::find($tenants->first()->id));
         } else if ($tenants->count() > 1) {
             $request->session()->put("tenants", $tenants);
+        }else{
+            Auth::logout();
+            $request->session()->put("errorMsg", "¡El Usuario no esta registrado en Tenants activos!");
+            return redirect(route('login'));
+        }
+    }
+
+    public static function setMultiTenantReset(User $user)
+    {
+        $tenants = DB::table("usersTenants")
+        ->where("user_id", auth()->guard()->user()->id)
+        ->join("tenants", "usersTenants.tenant_id", "=", "tenants.id")
+        ->select([
+            DB::raw("tenants.tenant_nombre as name"),
+            DB::raw("tenants.id as id")
+        ])
+        ->get();
+        
+        if ($tenants->count() == 1) {
+            session()->put("tenant", tenant::find($tenants->first()->id));
+        } else if ($tenants->count() > 1) {
+            session()->put("tenants", $tenants);
         }
     }
 
@@ -112,7 +137,7 @@ class LoginController extends Controller
         if ($response = $this->authenticated($request, $this->guard()->user())) {
             return $response;
         }
-
+        
         if($request->session()->has("tenants")){
             return redirect("/setTenant");
         }
@@ -138,8 +163,8 @@ class LoginController extends Controller
                 'password' => 'required|string',
             ],
             [
-                $this->username().'.required' => 'El campo Correo Electrónico es obligatiorio.',
-                'password.required' => 'El campo Contraseña es obligatorio.',
+                $this->username().'.required' => 'El Correo Electrónico es obligatiorio.',
+                'password.required' => 'La Contraseña es obligatoria.',
             ]
         );
     }
@@ -170,5 +195,11 @@ class LoginController extends Controller
         throw ValidationException::withMessages([
             $this->username() => [trans('auth.failed')],
         ]);
+    }
+
+    public function logout(){
+        Auth::logout();
+        session()->forget('tenant');
+        return redirect('/')->with('status','User has been logged out!');
     }
 }

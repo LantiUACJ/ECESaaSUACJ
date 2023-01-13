@@ -199,6 +199,8 @@ p {
     justify-content: space-between;
     flex-direction: column;
     min-width: 17rem;
+    overflow: auto;
+    height: calc(100vh - 97.5px);
 }
 
 .section {
@@ -221,7 +223,7 @@ p {
 
 .scroll-section-two {
     overflow-x: auto;
-    height: calc(100vh - 37rem);
+    height: calc(100vh - 42rem);
 }
 
 .relative {
@@ -712,6 +714,11 @@ th {
     box-shadow: 0 0 1px black;
 }
 
+.expired {
+    background-color: rgb(233, 135, 135) !important;
+    box-shadow: 0 0 1px black;
+}
+
 .empty {
     opacity: 0;
     cursor: inherit !important;
@@ -765,6 +772,8 @@ th {
 }
 
 .footer {
+    display: flex;
+    justify-content: space-between;
     width: 100%;
     background-color: #eef4fc;
     padding: 1rem;
@@ -813,6 +822,15 @@ table {
     width: 2rem;
     height: 2rem;
     background-color: rgb(242, 242, 242);
+    border: 1px solid rgb(150, 150, 150);
+
+    border-radius: 50%;
+}
+
+.legend-color-three {
+    width: 2rem;
+    height: 2rem;
+    background-color: rgb(233, 135, 135);
     border: 1px solid rgb(150, 150, 150);
 
     border-radius: 50%;
@@ -979,7 +997,7 @@ li.active > .collapsible-header {
     border: 1px solid #c8c8e0;
     border-radius: 0.5rem;
     padding: 0.5rem;
-    min-height: 4rem;
+    min-height: 4.5rem;
 }
 
 .img-grid-c {
@@ -1223,6 +1241,7 @@ h5 {
     grid-template-columns: 6fr 1fr 6fr 1fr 6fr 1fr 6fr 1fr 6fr 1fr 6fr;
     padding: 1rem 2rem;
     margin-bottom: 1rem;
+    overflow: auto;
 }
 
 .indicator-step {
@@ -1267,7 +1286,7 @@ h5 {
 }
 
 .show-module {
-    display: inline;
+    display: block;
 }
 
 .line-bwtn {
@@ -1275,6 +1294,7 @@ h5 {
     background-color: rgb(94, 94, 94);
     margin-top: 30px;
     width: 100%;
+    min-width: 1rem;
 }
 
 .circle-indicator {
@@ -1306,6 +1326,12 @@ h5 {
     background-color: #318cb6;
     border-radius: 0.5rem;
     color: white;
+    user-select: none;
+    font-size: 1rem;
+    cursor: pointer;
+}
+.title-tab:hover {
+    background-color: #297aa0;
 }
 
 .preganancy-section {
@@ -1504,9 +1530,8 @@ h5 {
     min-height: 300px;
     max-height: 800px;
 }
-
 .selectize-one {
-    padding-top: 2rem;
+    padding-top: 0.5rem;
 }
 
 .selectize-dropdown-content {
@@ -1517,8 +1542,264 @@ h5 {
     width: 90% !important;
 }
 
+.select-wrapper input.select-dropdown {
+    min-width: 1rem !important;
+}
+
+.main-link {
+    color: black;
+    text-decoration: none;
+}
+
+.simple-collapse > a {
+    margin-top: 1rem;
+}
+
+.simple-collapse > a:first-child {
+    margin-top: 0rem;
+}
+
+.scroll-content {
+    overflow: auto;
+    height: calc(100vh - 190px);
+    margin-bottom: 2rem;
+}
+
+.custom-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(23rem, 100%), 1fr));
+    grid-gap: 0rem 2rem;
+    box-sizing: border-box;
+}
+
+.grid-element {
+
+}
+
+.opactity3 {
+    opacity: 0.3
+}
+
+.margin1 {
+    margin-top: 1rem;
+}
+
+.marign-sp1{
+    margin-top: 2rem; font-size: 0.9rem;
+}
+.flex-center-c{
+    display: flex; align-items: center; 
+ }
+
+ .padding-grid{
+    padding: 0rem; display: grid;
+ }
+
+ .padding-top-1 {
+    padding-top: 1rem
+ }
+
+ .modal-content {
+    padding: 1rem 2rem;
+ }
+
+ .font-bold-1 {
+    font-size: 1.5rem
+ }
+
+ .modal-footer {
+    padding: 1rem 1rem;
+ }
+
+ .textwhite {
+    color: white;
+ }
+
+ .marggen1 {
+    margin: 1rem
+ }
+
+.margin-bottom-1 {
+    margin-bottom: 1rem;
+ }
+
+
+ .bottom-spacer {
+    margin-bottom: 1rem; margin-top: 1rem;
+ }
+
+ .warning-color{
+    color: rgb(235, 0, 0); font-size: 2.5rem;
+ }
+
+ .error-title-modal{
+    font-size: 1.2rem; padding-bottom: 1rem; display: flex; grid-gap: 1rem; align-items: center; font-weight: bold;
+ }
+
+ .date-style {
+    right: 0; opacity: 0.8; pointer-events: none; cursor: initial; user-select: none; background-color: white;
+ }
+
+ .label-style{
+    display: flex; align-items: center; grid-gap: 0.5rem;
+ }
+
+ .font-bold {
+    font-weight: bold;
+ }
 .invalid-label{
     color: #dc3545 !important;
+}
+
+.inner-section {
+    margin-top: 1rem;
+    display: none;
+}
+.show-section {
+    display: block;
+}
+
+.title-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.micro-section {
+    background-color: whitesmoke;
+    border-radius: 1rem;
+    padding: 1rem;
+}
+
+body {
+    overflow: hidden;
+}
+
+.grid-special {
+    margin: 0 auto;
+    max-width: 640px;
+}
+
+.grid-special > .row { 
+    /* margin-top: -1px !important;
+    margin-bottom: 0px !important;
+    padding-top: 3px;
+    padding-bottom: 0px;
+    border: 1px solid black; */
+    margin: 0px !important;
+}
+
+.grid-special > .row  > .col { 
+    margin-top: -1px !important;
+    margin-bottom: 0px !important;
+    padding-top: 3px;
+    padding-bottom: 0px;
+    border: 1px solid rgb(214, 214, 214);
+    height: 2rem;
+    margin-left: -1px;
+}
+.grid-special > .row  > .s2 {
+    display: flex;
+    justify-content: center;
+    padding: 0rem !important;
+}
+
+.imginput-title {
+    color: #9e9e9e;
+}
+
+.selectize-dropdown {
+    height: 7rem;
+    overflow: auto;
+}
+
+.min-input {
+    max-width: 15rem;
+    margin-top: 2rem;
+}
+
+.large-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-gap: 1rem 0rem;
+    justify-content: center;
+}
+
+.grid-line {
+    border-bottom: 1px solid black;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem !important;
+}
+
+.small-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 1rem 0rem;
+}
+
+.no-top {
+    margin-top: 0rem !important;
+}
+
+.line-letters {
+    letter-spacing: 0.5rem;
+}
+
+.inline {
+    display: flex;
+    grid-gap: 1rem;
+}
+
+.centered {
+    display: flex;
+    justify-content: center;
+}
+
+.middle-center {
+    display: flex;
+    align-items: center;
+}
+
+.fit-content {
+    height: fit-content;
+}
+
+.middle-center-two {
+    display: flex;
+    align-items: center;
+    grid-gap: 2rem;
+}
+
+.titlebar {
+    background-color: #cef1ff;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.grid-small-two {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 1rem;
+}
+
+.small-grid-three {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 1rem;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.end-down {
+    display: flex;
+    align-items: center;
+}
+
+.text-right {
+    text-align: right;
 }
 
 @media (max-width: 1336px) {
