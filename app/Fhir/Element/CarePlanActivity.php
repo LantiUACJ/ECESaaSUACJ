@@ -101,75 +101,102 @@ class CarePlanActivity extends Element{
         }
     }
 
+    /* opcional (fhir) */
     public function addOutcomeCodeableConcept(CodeableConcept $outcomeCodeableConcept){
         $this->outcomeCodeableConcept[] = $outcomeCodeableConcept;
     }
+    /* opcional (fhir) */
     public function addOutcomeReference(Resource $outcomeReference){
         $this->outcomeReference[] = $outcomeReference->toReference();
     }
+    /* opcional (fhir) */
     public function addProgress(Annotation $progress){
         $this->progress[] = $progress;
     }
+    /* 
+        opcional (fhir)
+        obligatorio (estandar)  1..*
+    */
     public function addReference(Resource $reference){
         $this->reference[] = $reference->toReference();
     }
+    /* opcional (fhir) */
     public function setKind($kind){
         $detail["kind"] = $kind;
     }
+    /* opcional (fhir) */
     public function addInstantiatesCanonical(Resource $instantiatesCanonical){
         $detail["instantiatesCanonical"][] = $instantiatesCanonical->toReference();
     }
+    /* opcional (fhir) */
     public function addInstantiatesUri($instantiatesUri){
         $detail["instantiatesUri"][] = $instantiatesUri;
     }
+    /* opcional (fhir) */
     public function setCode(CodeableConcept $code){
         $detail["code"] = $code;
     }
+    /* opcional (fhir) */
     public function addReasonCode(CodeableConcept $reasonCode){
         $detail["reasonCode"][] = $reasonCode;
     }
+    /* opcional (fhir) */
     public function addReasonReference(Resource $reasonReference){
         $detail["reasonReference"][] = $reasonReference->toReference();
     }
+    /* opcional (fhir) */
     public function addGoal(Resource $goal){
         $detail["goal"][] = $goal->toReference();
     }
+    /* opcional (fhir) */
     public function setStatus($status){
         $detail["status"] = $status;
     }
+    /* opcional (fhir) */
     public function setStatusReason(CodeableConcept $statusReason){
         $detail["statusReason"] = $statusReason;
     }
+    /* opcional (fhir) */
     public function setDoNotPerform($doNotPerform) {
         $detail["doNotPerform"] = $doNotPerform;
     }
+    /* opcional (fhir) */
     public function setScheduledTiming(Timing $scheduledTiming){
         $detail["scheduledTiming"] = $scheduledTiming;
     }
+    /* opcional (fhir) */
     public function setScheduledPeriod(Period $scheduledPeriod){
         $detail["scheduledPeriod"] = $scheduledPeriod;
     }
+    /* opcional (fhir) */
     public function setScheduledString($scheduledString){
         $detail["scheduledString"] = $scheduledString;
     }
+    /* opcional (fhir) */
     public function setLocation(Resource $location){
         $detail["location"] = $location->toReference();
     }
+    /* opcional (fhir) */
     public function addPerformer(Resource $performer){
         $detail["performer"][] = $performer->toReference();
     }
+    /* opcional (fhir) */
     public function setProductCodeableConcept($productCodeableConcept){
         $detail["productCodeableConcept"] = $productCodeableConcept;
     }
+    /* opcional (fhir) */
     public function setProductReference(Resource $productReference){
         $detail["productReference"] = $productReference->toReference();
     }
+    /* opcional (fhir) */
     public function setDailyAmount($dailyAmount){
         $detail["dailyAmount"] = $dailyAmount;
     }
+    /* opcional (fhir) */
     public function setQuantity(Quantity $quantity){
         $detail["quantity"] = $quantity;
     }
+    /* opcional (fhir) */
     public function setDescription($description){
         $detail["description"] = $description;
     }

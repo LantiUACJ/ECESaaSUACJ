@@ -37,6 +37,12 @@ class ResourceBuilder{
             case "MedicationAdministration":
                 return new MedicationAdministration($resource);
             break;
+            case "MedicationRequest":
+                return new MedicationRequest($resource);
+            break;
+            case "FamilyMemberHistory":
+                return new FamilyMemberHistory($resource);
+            break;
             case "Observation":
                 return new Observation($resource);
             break;

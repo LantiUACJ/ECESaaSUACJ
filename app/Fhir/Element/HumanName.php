@@ -72,7 +72,7 @@ class HumanName extends Element{
         if(isset($this->family) && !$this->text){
             $name .= $this->family . " ";
         }
-        return $name;
+        return trim($name);
     }
 
     public function toArray(){

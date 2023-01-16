@@ -33,7 +33,7 @@ class Observation extends DomainResource{
     private function loadData($json){
         if(isset($json->identifier))
             foreach($json->identifier as $identifier)
-                $this->identifier[] = $identifier->toArray();
+                $this->identifier[] = Identifier::Load($identifier);
         if(isset($json->status))
             $this->status = $json->status;
         if(isset($json->issued))
@@ -44,9 +44,9 @@ class Observation extends DomainResource{
         if(isset($json->partOf))
             foreach($json->partOf as $partOf)
                 $this->partOf[] = $partOf->toArray();
-        if(isset($json->partOf))
+        if(isset($json->category))
             foreach($json->category as $category)
-                $this->category[] = $category->toArray();
+                $this->category[] = CodeableConcept::Load($category);
         if(isset($json->code))
             $this->code = CodeableConcept::Load($json->code);
         if(isset($json->subject))
@@ -59,9 +59,9 @@ class Observation extends DomainResource{
         if(isset($json->effectiveDateTime))
             $this->effectiveDateTime = $json->effectiveDateTime;
         if(isset($json->effectivePeriod))
-            $this->effectivePeriod = $json->effectivePeriod->toArray();
+            $this->effectivePeriod = Period::Load($json->effectivePeriod);
         if(isset($json->effectiveTiming))
-            $this->effectiveTiming = $json->effectiveTiming->toArray();
+            $this->effectiveTiming = Timing::Load($json->effectiveTiming);
         if(isset($json->effectiveInstant))
             $this->effectiveInstant = $json->effectiveInstant;
         if(isset($json->performer))
@@ -173,9 +173,12 @@ class Observation extends DomainResource{
             }
         }
     }
+    
+    
     public function addIdentifier(Identifier $identifier){
         $this->identifier[] = $identifier;
     }
+    /* obligatorio solo: "registered", "preliminary", "final", "amended" */
     public function setStatus($status){
         $only = ["registered", "preliminary", "final", "amended"];
         $this->status = $status;
@@ -189,21 +192,44 @@ class Observation extends DomainResource{
     public function addPartOf(Resource $partOf){
         $this->partOf[] = $partOf->toReference();
     }
+    /* obligatorio 
+        \Fhir\Element\CodeableConcept
+            "coding": \Fhir\Element\Coding (array 1..*)
+                "code": 
+                "display":
+                "system": 
+            "text":
+    */
     public function addCategory(CodeableConcept $category){
         $this->category[] = $category;
     }
+    /* obligatorio 
+        \Fhir\Element\CodeableConcept
+            "coding": \Fhir\Element\Coding (array 1..*)
+                "code": 
+                "display":
+                "system": 
+            "text":
+    */
     public function setCode(CodeableConcept $code){
         $this->code = $code;
     }
+    /* obligatorio */
     public function setSubject(Resource $subject){
         $this->subject = $subject->toReference();
     }
     public function addFocus(Resource $focus){
         $this->focus[] = $focus->toReference();
     }
+    /* obligatorio */
     public function setEncounter(Resource $encounter){
         $this->encounter = $encounter->toReference();
     }
+    /* 
+                                      v es una letra T (constante)
+        obligatorio formato YYYY-MM-DDTHH:II:SS.000Z
+        ejemplo: 2022-05-25T09:40:00.000Z
+    */
     public function setEffectiveDateTime($effectiveDateTime){
         $this->effectiveDateTime = $effectiveDateTime;
     }
@@ -219,9 +245,24 @@ class Observation extends DomainResource{
     public function addPerformer(Resource $performer){
         $this->performer[] = $performer->toReference();
     }
+    /* Obligatorio (almenos un value, puede ser valueQuantity, valuestring, etc) 
+        \Fhir\Element\Quantity:
+        "value": 
+        "unit": 
+        "code": 
+        "system":
+    */
     public function setValueQuantity(Quantity $valueQuantity){
         $this->valueQuantity = $valueQuantity;
     }
+    /* Obligatorio (almenos un value, puede ser valueQuantity, valuestring, etc) 
+        \Fhir\Element\CodeableConcept
+            "coding": \Fhir\Element\Coding (array 1..*)
+                "code": 
+                "display":
+                "system": 
+            "text":
+    */
     public function setValueCodeableConcept(CodeableConcept $valueCodeableConcept){
         $this->valueCodeableConcept = $valueCodeableConcept;
     }
@@ -419,39 +460,52 @@ class Observation extends DomainResource{
         foreach($this->performer as $performer){
             $arrayData["performer"][] = $performer->toArray();
         }
-        if(isset($this->valueQuantity)){
+        $value = 0;
+        if(isset($this->valueQuantity) && $this->valueQuantity){
             $arrayData["valueQuantity"] = $this->valueQuantity->toArray();
+            $value +=1;
         }
-        if(isset($this->valueCodeableConcept)){
+        if(isset($this->valueCodeableConcept) && $this->valueCodeableConcept){
             $arrayData["valueCodeableConcept"] = $this->valueCodeableConcept->toArray();
+            $value +=1;
         }
-        if(isset($this->valueString)){
+        if(isset($this->valueString) && $this->valueString){
             $arrayData["valueString"] = $this->valueString;
+            $value +=1;
         }
-        if(isset($this->valueBoolean)){
+        if(isset($this->valueBoolean) && $this->valueBoolean){
             $arrayData["valueBoolean"] = $this->valueBoolean;
+            $value +=1;
         }
-        if(isset($this->valueInteger)){
+        if(isset($this->valueInteger) && $this->valueInteger){
             $arrayData["valueInteger"] = $this->valueInteger;
+            $value +=1;
         }
-        if(isset($this->valueRange)){
+        if(isset($this->valueRange) && $this->valueRange){
             $arrayData["valueRange"] = $this->valueRange->toArray();
+            $value +=1;
         }
-        if(isset($this->valueRatio)){
+        if(isset($this->valueRatio) && $this->valueRatio){
             $arrayData["valueRatio"] = $this->valueRatio->toArray();
+            $value +=1;
         }
-        if(isset($this->valueSampledData)){
+        if(isset($this->valueSampledData) && $this->valueSampledData){
             $arrayData["valueSampledData"] = $this->valueSampledData->toArray();
+            $value +=1;
         }
-        if(isset($this->valueTime)){
+        if(isset($this->valueTime) && $this->valueTime){
             $arrayData["valueTime"] = $this->valueTime;
+            $value +=1;
         }
-        if(isset($this->valueDateTime)){
+        if(isset($this->valueDateTime) && $this->valueDateTime){
             $arrayData["valueDateTime"] = $this->valueDateTime;
+            $value +=1;
         }
-        if(isset($this->valuePeriod)){
+        if(isset($this->valuePeriod) && $this->valuePeriod){
             $arrayData["valuePeriod"] = $this->valuePeriod->toArray();
+            $value +=1;
         }
+
         if(isset($this->dataAbsentReason)){
             $arrayData["dataAbsentReason"] = $this->dataAbsentReason->toArray();
         }

@@ -3,7 +3,9 @@
 namespace App\Fhir\Resource;
 
 use App\Fhir\Element\Extension;
-
+/* 
+    Clase padre de Todos los recursos
+*/
 class DomainResource extends Resource{
     public function __construct($json = null){
         parent::__construct($json);

@@ -5,66 +5,72 @@ namespace App\Fhir\Element;
 class Timing extends Element{
 
     public function  __construct(){
+        parent::__construct();
         $this->repeat = [];
         $this->event = [];
     }
 
     private function loadData($json){
-        foreach($json->event as $event){
-            $this->event = $event;
+        if(isset($json->event))
+            foreach($json->event as $event)
+                $this->event = $event;
+        if(isset($json->repeat)){
+            if(isset($json->repeat->boundsDuration)){
+                $this->repeat["boundsDuration"] = $json->repeat->boundsDuration;
+            }
+            if(isset($json->repeat->boundsRange)){
+                $this->repeat["boundsRange"] = $json->repeat->boundsRange;
+            }
+            if(isset($json->repeat->boundsPeriod)){
+                $this->repeat["boundsPeriod"] = $json->repeat->boundsPeriod;
+            }
+            if(isset($json->repeat->count)){
+                $this->repeat["count"] = $json->repeat->count;
+            }
+            if(isset($json->repeat->countMax)){
+                $this->repeat["countMax"] = $json->repeat->countMax;
+            }
+            if(isset($json->repeat->duration)){
+                $this->repeat["duration"] = $json->repeat->duration;
+            }
+            if(isset($json->repeat->durationMax)){
+                $this->repeat["durationMax"] = $json->repeat->durationMax;
+            }
+            if(isset($json->repeat->durationUnit)){
+                $this->repeat["durationUnit"] = $json->repeat->durationUnit;
+            }
+            if(isset($json->repeat->frequency)){
+                $this->repeat["frequency"] = $json->repeat->frequency;
+            }
+            if(isset($json->repeat->frequencyMax)){
+                $this->repeat["frequencyMax"] = $json->repeat->frequencyMax;
+            }
+            if(isset($json->repeat->period)){
+                $this->repeat["period"] = $json->repeat->period;
+            }
+            if(isset($json->repeat->periodMax)){
+                $this->repeat["periodMax"] = $json->repeat->periodMax;
+            }
+            if(isset($json->repeat->periodUnit)){
+                $this->repeat["periodUnit"] = $json->repeat->periodUnit;
+            }
+            if(isset($json->repeat->dayOfWeek))
+                foreach($json->dayOfWeek as $dayOfWeek){
+                    $this->repeat["dayOfWeek"][] = $dayOfWeek;
+                }
+            if(isset($json->repeat->timeOfDay))
+                foreach($json->timeOfDay as $timeOfDay){
+                    $this->repeat["timeOfDay"][] = $timeOfDay;
+                }
+            if(isset($json->repeat->when))
+                foreach($json->when as $when){
+                    $this->repeat["when"][] = $when;
+                }
+            if(isset($json->repeat->offset)){
+                $this->repeat["offset"] = $json->repeat->offset;
+            }
         }
-        if($json->boundsDuration){
-            $this->repeat["boundsDuration"] =  $json->boundsDuration;
-        }
-        if($json->boundsRange){
-            $this->repeat["boundsRange"] = $json->boundsRange;
-        }
-        if($json->boundsPeriod){
-            $this->repeat["boundsPeriod"] = $json->boundsPeriod;
-        }
-        if($json->count){
-            $this->repeat["count"] = $json->count;
-        }
-        if($json->countMax){
-            $this->repeat["countMax"] = $json->countMax;
-        }
-        if($json->duration){
-            $this->repeat["duration"] = $json->duration;
-        }
-        if($json->durationMax){
-            $this->repeat["durationMax"] = $json->durationMax;
-        }
-        if($json->durationUnit){
-            $this->repeat["durationUnit"] = $json->durationUnit;
-        }
-        if($json->frequency){
-            $this->repeat["frequency"] = $json->frequency;
-        }
-        if($json->frequencyMax){
-            $this->repeat["frequencyMax"] = $json->frequencyMax;
-        }
-        if($json->period){
-            $this->repeat["period"] = $json->period;
-        }
-        if($json->periodMax){
-            $this->repeat["periodMax"] = $json->periodMax;
-        }
-        if($json->periodUnit){
-            $this->repeat["periodUnit"] = $json->periodUnit;
-        }
-        foreach($json->dayOfWeek as $dayOfWeek){
-            $this->repeat["dayOfWeek"][] = $dayOfWeek;
-        }
-        foreach($json->timeOfDay as $timeOfDay){
-            $this->repeat["timeOfDay"][] = $timeOfDay;
-        }
-        foreach($json->when as $when){
-            $this->repeat["when"][] = $when;
-        }
-        if($json->offset){
-            $this->repeat["offset"] = $json->offset;
-        }
-        if($json->code){
+        if(isset($json->code)){
             $this->code = $json->code;
         }
     }
@@ -138,62 +144,65 @@ class Timing extends Element{
 
     public function toArray(){
         $arrayData = parent::toArray();
-
-        foreach($this->event as $event){
-            $arrayData["event"] = $event;
+        if(isset($this->event) && $this->event){
+            foreach($this->event as $event)
+                $arrayData["event"] = $event;
         }
-        if($this->boundsDuration){
-            $arrayData["repeat"]["boundsDuration"] =  $this->boundsDuration;
+        if(isset($this->repeat["boundsDuration"]) && $this->repeat["boundsDuration"]){
+            $arrayData["repeat"]["boundsDuration"] =  $this->repeat["boundsDuration"];
         }
-        if($this->boundsRange){
-            $arrayData["repeat"]["boundsRange"] = $this->boundsRange;
+        if(isset($this->repeat["boundsRange"]) && $this->repeat["boundsRange"]){
+            $arrayData["repeat"]["boundsRange"] = $this->repeat["boundsRange"];
         }
-        if($this->boundsPeriod){
-            $arrayData["repeat"]["boundsPeriod"] = $this->boundsPeriod;
+        if(isset($this->repeat["boundsPeriod"]) && $this->repeat["boundsPeriod"]){
+            $arrayData["repeat"]["boundsPeriod"] = $this->repeat["boundsPeriod"];
         }
-        if($this->count){
-            $arrayData["repeat"]["count"] = $this->count;
+        if(isset($this->repeat["count"]) && $this->repeat["count"]){
+            $arrayData["repeat"]["count"] = $this->repeat["count"];
         }
-        if($this->countMax){
-            $arrayData["repeat"]["countMax"] = $this->countMax;
+        if(isset($this->repeat["countMax"]) && $this->repeat["countMax"]){
+            $arrayData["repeat"]["countMax"] = $this->repeat["countMax"];
         }
-        if($this->duration){
-            $arrayData["repeat"]["duration"] = $this->duration;
+        if(isset($this->repeat["duration"]) && $this->repeat["duration"]){
+            $arrayData["repeat"]["duration"] = $this->repeat["duration"];
         }
-        if($this->durationMax){
-            $arrayData["repeat"]["durationMax"] = $this->durationMax;
+        if(isset($this->repeat["durationMax"]) && $this->repeat["durationMax"]){
+            $arrayData["repeat"]["durationMax"] = $this->repeat["durationMax"];
         }
-        if($this->durationUnit){
-            $arrayData["repeat"]["durationUnit"] = $this->durationUnit;
+        if(isset($this->repeat["durationUnit"]) && $this->repeat["durationUnit"]){
+            $arrayData["repeat"]["durationUnit"] = $this->repeat["durationUnit"];
         }
-        if($this->frequency){
-            $arrayData["repeat"]["frequency"] = $this->frequency;
+        if(isset($this->repeat["frequency"]) && $this->repeat["frequency"]){
+            $arrayData["repeat"]["frequency"] = $this->repeat["frequency"];
         }
-        if($this->frequencyMax){
-            $arrayData["repeat"]["frequencyMax"] = $this->frequencyMax;
+        if(isset($this->repeat["frequencyMax"]) && $this->repeat["frequencyMax"]){
+            $arrayData["repeat"]["frequencyMax"] = $this->repeat["frequencyMax"];
         }
-        if($this->period){
-            $arrayData["repeat"]["period"] = $this->period;
+        if(isset($this->repeat["period"]) && $this->repeat["period"]){
+            $arrayData["repeat"]["period"] = $this->repeat["period"];
         }
-        if($this->periodMax){
-            $arrayData["repeat"]["periodMax"] = $this->periodMax;
+        if(isset($this->repeat["periodMax"]) && $this->repeat["periodMax"]){
+            $arrayData["repeat"]["periodMax"] = $this->repeat["periodMax"];
         }
-        if($this->periodUnit){
-            $arrayData["repeat"]["periodUnit"] = $this->periodUnit;
+        if(isset($this->repeat["periodUnit"]) && $this->repeat["periodUnit"]){
+            $arrayData["repeat"]["periodUnit"] = $this->repeat["periodUnit"];
         }
-        foreach($this->dayOfWeek as $dayOfWeek){
-            $arrayData["repeat"]["dayOfWeek"][] = $dayOfWeek;
+        if(isset($this->repeat["dayOfWeek"]) && $this->repeat["dayOfWeek"]){
+            foreach($this->repeat["dayOfWeek"] as $dayOfWeek)
+                $arrayData["repeat"]["dayOfWeek"][] = $dayOfWeek;
         }
-        foreach($this->timeOfDay as $timeOfDay){
-            $arrayData["repeat"]["timeOfDay"][] = $timeOfDay;
+        if(isset($this->repeat["timeOfDay"]) && $this->repeat["timeOfDay"]){
+            foreach($this->repeat["timeOfDay"] as $timeOfDay)
+                $arrayData["repeat"]["timeOfDay"][] = $timeOfDay;
         }
-        foreach($this->when as $when){
-            $arrayData["repeat"]["when"][] = $when;
+        if(isset($this->repeat["when"]) && $this->repeat["when"]){
+            foreach($this->repeat["when"] as $when)
+                $arrayData["repeat"]["when"][] = $when;
         }
-        if($this->offset){
-            $arrayData["repeat"]["offset"] = $this->offset;
+        if(isset($this->repeat["offset"]) && $this->repeat["offset"]){
+            $arrayData["repeat"]["offset"] = $this->repeat["offset"];
         }
-        if($this->code){
+        if(isset($this->code) && $this->code){
             $arrayData["code"] = $this->code;
         }
 

@@ -42,7 +42,7 @@
     <form action="{{ route('misecetest') }}" method="post">
         @csrf
         <button type="submit">TEST</button>
-        <input type="hidden" name="test" value="0">
+        <input type="hidden" name="curp" value="LKLK123654JKJKJK45">
     </form>
 </div>
 

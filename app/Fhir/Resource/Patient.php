@@ -54,9 +54,9 @@ class Patient extends DomainResource{
             foreach($json->address as $address)
                 $this->address[] = Address::Load($address);
         if(isset($json->maritalStatus))
-            $this->maritalStatus = $json->maritalStatus->toArray();
+            $this->maritalStatus = CodeableConcept::Load($json->maritalStatus);
         if(isset($json->photo))
-            $this->photo = $json->photo->toArray();
+            $this->photo = Attachment::Load($json->photo);
         if(isset($json->contact)){
             $this->contact = [];
             foreach($json->contact as $contact){
@@ -82,7 +82,7 @@ class Patient extends DomainResource{
             foreach($json->communication as $communication){
                 $data = [];
                 if($communication->language)
-                    $data["language"] = $communication->language;
+                    $data["language"] = CodeableConcept::Load($communication->language);
                 if($communication->preferred)
                     $data["preferred"] = $communication->preferred;
                 $this->communication[] = $data;
@@ -96,19 +96,86 @@ class Patient extends DomainResource{
             foreach($json->link as $link)
                 $this->link[] = $link->toArray();
     }
+
+    /* 
+        obligatorio
+        el paciente tiene varias extensiones:
+        "extension": \App\Element\Extension (array 7..*)
+            {
+                "url": "urn:edoNacimiento",
+                "valueCode": 
+            },
+            {
+                "url": "urn:tipoBenificiario",
+                "valueCode": 
+            },
+            {
+                "url": "urn:cveDep",
+                "valueCode": 
+            },
+            {
+                "url": "urn:cveProg",
+                "valueCode": 
+            },
+            {
+                "url": "urn:nacOrigen",
+                "valueCode": 
+            },
+            {
+                "url": "urn:SEXO_2021",
+                "valueCode": 
+            },
+            {
+                "url": "urn:Etina",
+                "valueCode": 
+            }
+    */
+
+    /* obligatorio
+        "name": \Fhir\Element\HumanName (array 1..*)
+            "use": 
+            "_family": // esto esta raro pero son cosas de jarero
+                "extension": \Fhir\Element\Extension (array 2..*)
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/humanname-fathers-family",
+                        "valueString": 
+                    },
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/humanname-mothers-family",
+                        "valueString":
+                    }
+            "family": 
+            "given": array(1..*) strings
+            "text": 
+    */
     public function addName(HumanName $name){
         $this->name[] = $name;
     }
+    /*  obligatorio
+        "identifier": \Fhir\Element\Identifier (array 2..*)
+        { //curp
+            "use": "official",
+            "system": "urn:oid:2.16.840.1.113883.4.629",
+            "value": 
+        },
+        { // folio
+            "use": "secondary",
+            "system": "urn:folio",
+            "value":
+        }
+    */
     public function addIdentifier(Identifier $identifier){
         $this->identifier[] = $identifier;
     }
     public function setActive($active){
         $this->active = $active;
     }
+    /* obligatorio solo ("male", "female", "unknown", "other") Nota: los catalagos de salud tienen más */
     public function setGender($gender){
         $only = ["male", "female", "unknown", "other"];
         $this->gender = $gender;
     }
+    /* obligatorio formato: YYYY-MM-DD */
     public function setBirthDate($birthDate){
         $this->birthDate = $birthDate;
     }
@@ -127,6 +194,19 @@ class Patient extends DomainResource{
     public function addTelecom(ContactPoint $telecom){
         $this->telecom[] = $telecom;
     }
+    /* obligatorio
+        address: \Fhir\Element\Address: (array 1..*)
+            "extension": \Fhir\Element\Extension (array 1..*)
+                "url": "http://terminology.hl7mx.org/address/colonia",
+                "valueString":
+            "type": 
+            "state": 
+            "district": 
+            "city": 
+            "postalCode": 
+            "line": 
+            "text": 
+    */
     public function addAddress(Address $address){
         $this->address[] = $address;
     }
@@ -176,6 +256,9 @@ class Patient extends DomainResource{
     public function addLink(Resource $link){
         $this->link[] = $link->toReference();
     }
+
+
+
     public function toString(){
         return "Datos del paciente: " . $this->name[0]->toString();
     }
@@ -239,10 +322,12 @@ class Patient extends DomainResource{
                 $arrayData["contact"]["gender"] = $contact->gender;
         }
         foreach($this->communication as $communication){
-            $arrayData["communication"][] = [
-                "language"=>$communication["language"],
-                "preferred"=>$communication["preferred"],
-            ];
+            $data = [];
+            if(isset($communication["language"]) && $communication["language"])
+                $data["language"] = $communication["language"]->toArray();
+            if(isset($communication["preferred"]) && $communication["preferred"])
+                $data["preferred"] = $communication["preferred"];
+            $arrayData["communication"][] = $data;
         }
         foreach($this->generalPractitioner as $generalPractitioner){
             $arrayData["generalPractitioner"][] = $generalPractitioner->toArray();

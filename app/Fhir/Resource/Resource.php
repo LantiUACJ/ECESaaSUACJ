@@ -10,6 +10,8 @@ class Resource{
     public function __construct($json = null){
         $this->mark = 0;
         $this->setId(hash("MD5", microtime(true) . " " . rand(0, 10000000)));
+        $this->ConceptosSNOMED = [];
+
         if($json) $this->loadData($json);
     }
     private function loadData($json){
@@ -19,6 +21,11 @@ class Resource{
         if(isset($json->language)) $this->setLanguage($json->language);
         if(isset($json->display)) $this->setDisplay($json->display);
         if(isset($json->resourceType)) $this->resourceType = $json->resourceType;
+        if(isset($json->ConceptosSNOMED)){
+            foreach($json->ConceptosSNOMED as $conceptos){
+                $this->ConceptosSNOMED[] = $conceptos;
+            }
+        }
     }
     public function setId($id){
         $this->id = $id;
@@ -54,7 +61,7 @@ class Resource{
         return json_encode($this->toArray());
     }
     public function toString(){
-        return "";
+        return $this->resourceType;
     }
     
     /* Funciones para clases heredadas */

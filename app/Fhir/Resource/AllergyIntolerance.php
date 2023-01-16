@@ -12,16 +12,17 @@ use App\Fhir\Element\Reference;
 
 class AllergyIntolerance extends DomainResource{
 
+    /* Ignorar constructor */
     public function __construct($json = null){
-        parent::__construct($json);
         $this->resourceType  = "AllergyIntolerance";
+        parent::__construct($json);
         $this->identifier = [];
         $this->category = [];
         $this->note = [];
         $this->reaction = [];
         if($json) $this->loadData($json);
     }
-
+    /* Ignorar loadData */
     private function loadData($json){
         if (isset($json->clinicalStatus)){
             $this->clinicalStatus = CodeableConcept::Load($json->clinicalStatus);
@@ -129,61 +130,94 @@ class AllergyIntolerance extends DomainResource{
         }
     }
 
+    /* Campo obligatorio (estandar):
+        \Fhir\Element\CodeableConcepto:
+            \Fhir\Element\Coding (Array de codings 1..*)
+                system: http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical
+                code: active
+                display: active
+            text: Activa
+    */
     public function setClinicalStatus(CodeableConcept $clinicalStatus){
         $this->clinicalStatus = $clinicalStatus;
     }
+    /* Campo opcional */
     public function setVerificationStatus(CodeableConcept $verificationStatus){
         $this->verificationStatus = $verificationStatus;
     }
+    /* Campo obligatorio (estandar) */
     public function setType($type){
         $this->type = $type;
     }
-    /* category */
+    /* Campo opcional */
     public function addCategory($category){
         $this->category[] = $category;
     }
+    /* 
+        Campo obligatorio (estandar) 
+        \Fhir\Element\CodeableConcepto:
+            "code": \Fhir\Element\Code (array 1..*)
+                system: http://snomed.info/sct
+                code: codigo snomed
+                display: texto
+            text: texto
+    */
     public function setCode(CodeableConcept $code){
         $this->code = $code;
     }
+    /* Campo obligatorio (estandar) */
+    public function setCriticality($criticality){
+        $this->criticality = $criticality;
+    }
+    /* Campo opcional */
     public function setPatient(Resource $patient){
         $this->patient = $patient->toReference();
     }
+    /* Campo opcional */
     public function setEncounter(Resource $encounter){
         $this->encounter = $encounter->toReference();
     }
+    /* Campo opcional */
     public function setOnsetDateTime($onsetDateTime){
         $this->onsetDateTime = $onsetDateTime;
     }
+    /* Campo opcional */
     public function setOnsetAge(Quantity $onsetAge){
         $this->onsetAge = $onsetAge;
     }
+    /* Campo opcional */
     public function setOnsetPeriod(Period $onsetPeriod){
         $this->onsetPeriod = $onsetPeriod;
     }
+    /* Campo opcional */
     public function setOnsetRange(Range $onsetRange){
         $this->onsetRange = $onsetRange;
     }
+    /* Campo opcional */
     public function setOnsetString($onsetString){
         $this->onsetString = $onsetString;
     }
+    /* Campo obligatorio (estandar) */
     public function setRecoredDate($recoredDate){
         $this->recoredDate = $recoredDate;
     }
+    /* Campo opcional */
     public function setRecoreder(Resource $recoreder){
         $this->recoreder = $recoreder->toReference();
     }
+    /* Campo opcional */
     public function setAsserter(Resource $asserter){
         $this->asserter = $asserter->toReference();
     }
+    /* Campo opcional */
     public function setLastOcurrence($lastOcurrence){
         $this->lastOcurrence = $lastOcurrence;
     }
-
-    /* array */
+    /* Campo opcional */
     public function addNote(Annotation $note){
         $this->note[] = $note;
     }
-    /* array */
+    /* Campo opcional */
     public function addReaction(CodeableConcept $substance, $manifestation, $description, $onset, $severity, CodeableConcept $exposureRoute, $notes){
         $data = [];
         if (isset($substance))
@@ -216,7 +250,7 @@ class AllergyIntolerance extends DomainResource{
         }
         $this->reaction[] = $data;
     }
-    /* array */
+    /* Campo opcional */
     public function addIdentifier($identifier){
         $this->identifier[] = $identifier;
     }
@@ -323,12 +357,12 @@ class AllergyIntolerance extends DomainResource{
         }
         return $arrayData;
     }
-
     public function toString(){
         $display = "";
         if(isset($this->type) && $this->type == "allergy") $display .= "Alergia";
         elseif(isset($this->type) && $this->type == "intolerance") $display .= "Intolerancia";
-        if(isset($this->code) && isset($this->code->display)) $display .= $this->code->display;
+        else $display .= "Alergia/Intolerancia";
+        if(isset($this->code) && isset($this->code->display)) $display .= $this->code->display; 
         return $display;
     }
 }
