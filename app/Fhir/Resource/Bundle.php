@@ -6,9 +6,10 @@ use App\Fhir\Element\Identifier;
 class Bundle extends DomainResource{
 
     public function __construct($json = null){
-        parent::__construct($json);
         $this->resourceType = "Bundle";
+        parent::__construct($json);
         $this->entry = [];
+        $this->type = "history";
         if($json){
             $this->loadData($json);
         }
@@ -78,35 +79,69 @@ class Bundle extends DomainResource{
             }
         }
     }
-    public function findCompositions($skip = -1, $mark = 0){
+    public function findHistoriaClinica($skip = -1){
         $data = [];
         foreach($this->entry as $key => $entry){
-            if($skip != $entry->mark && $entry->resourceType == "Composition"){
-                $entry->mark = $mark;
+            if($skip != $entry->mark && $entry->resourceType == "Composition" && $entry->esHistoriaClinica()){
+                $entry->mark = $skip;
                 $data[] = $entry;
+            }
+            if($skip != $entry->mark && $entry->resourceType == "Bundle"){
+                $bundle = $entry->findHistoriaClinica($skip);
+                array_merge($data, $bundle);
             }
         }
         return $data;
     }
-    public function findPatient($skip = -1, $mark = 0){
+    public function findNotaEvolucion($skip = -1){
+        $data = [];
+        foreach($this->entry as $key => $entry){
+            if($skip != $entry->mark && $entry->resourceType == "Composition" && $entry->esNotaEvolucion()){
+                $entry->mark = $skip;
+                $data[] = $entry;
+            }
+            if($skip != $entry->mark && $entry->resourceType == "Bundle"){
+                $bundle = $entry->findNotaEvolucion($skip);
+                array_merge($data, $bundle);
+            }
+        }
+        return $data;
+    }
+    public function findCompositions(){
+        $data = [];
+        foreach($this->entry as $key => $entry){
+            if($entry->resourceType == "Composition"){
+                $data[] = $entry;
+            }
+            if($entry->resourceType == "Bundle"){
+                array_merge($data, $entry->findCompositions());
+            }
+        }
+        return $data;
+    }
+    public function findPatient($skip = -1){
         foreach($this->entry as $key => $entry){
             if($skip != $entry->mark && $entry->resourceType == "Patient"){
-                $entry->mark = $mark;
+                $entry->mark = $skip;
                 return $entry;
             }
         }
     }
-    public function findAllergy($skip = -1, $mark = 0){
+    public function findAllergy($skip = -1){
         $data = [];
         foreach($this->entry as $key => $entry){
             if($skip != $entry->mark && $entry->resourceType == "AllergyIntolerance"){
-                $entry->mark = $mark;
+                $entry->mark = $skip;
                 $data [] = $entry;
             }
         }
         return $data;
     }
-
+    public function toString(){
+        $compositions = $this->findCompositions(-10,-10);
+        if($compositions)
+            return $compositions[0]->toString();
+    }
     public function toArray(){
         $arrayData = parent::toArray();
 
@@ -127,7 +162,18 @@ class Bundle extends DomainResource{
         foreach ($this->entry as $entry) {
             $current = [];
             $current["resource"]=$entry->toArray();
-            $current["fullUrl"]=$entry->id;
+            $current["fullUrl"]= $entry->resourceType . '/' . $entry->id;
+            if($this->type == "history"){
+                $current["request"] = [
+                    "method"=>"POST",
+                    "url"=>$entry->resourceType
+                ];
+    
+                $current["response"] = [
+                    "status"=>"200 ok"
+                ];
+            }
+            
             $entryArray[] = $current;
         }
         $arrayData["entry"] = $entryArray;

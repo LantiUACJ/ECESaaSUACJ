@@ -96,42 +96,72 @@ class Location extends DomainResource{
             foreach ($json->endpoint as $endpoint)
                 $this->endpoint[] = Reference::Load($endpoint);
     }
-
+    /* campo obligatorio (estandar) */
     public function addIdentifier(Identifier $identifier){
         $this->identifier[] = $identifier;
     }
+    /* campo opcional */
     public function setStatus($status){
         $array = ["active", "suspended","inactive"];
         $this->status = $status;
     }
+    /* campo opcional */
     public function setOperationalStatus(Coding $operationalStatus){
         $this->operationStatus = $operationalStatus;
     }
+    /* campo obligatorio (estandar) */
     public function setName($name){
         $this->name = $name;
     }
+    /* campo opcional */
     public function addAlias($alias){
         $this->alias[] = $alias;
     }
+    /* campo opcional */
     public function setDescription($description){
         $this->description = $description;
     }
+    /* campo opcional */
     public function setMode($mode){
         $array = ["instance", "kind"];
         $this->mode = $mode;
     }
+    /* campo obligatorio (estandar) (array 1..*):
+        \Fhir\Element\CodeableConcept:    
+            "coding": \Fhir\Element\Coding (array 1..*):
+                "system": "http://terminology.hl7mx.org/ssa/CodeSystem/tipos-establecimientos",
+                "code": "1",
+                "display": "DE HOSPITALIZACIÓN"
+            "text"
+    */
     public function addType(CodeableConcept $type){
         $this->type[] = $type;
     }
+    /* campo opcional */
     public function addTelecom(ContactPoint $telecom){
         $this->telecom[] = $telecom;
     }
+    /* campo obligatorio (estandar): 
+        \Fhir\Element\Address: 
+            "type": "both",
+            "text": 
+            "city": 
+            "district":
+            "state": 
+            "postalCode": 
+            "line": (array 1..*)
+            "extension": (array 1..*)
+                "url": "http://terminology.hl7mx.org/address/colonia",
+                "valueString":
+    */
     public function setAddress(Address $address){
         $this->address = $address;
     }
+    /* campo opcional */
     public function setPhysicalType(CodeableConcept $physicalType){
         $this->physicalType = $physicalType;
     }
+    /* campo opcional */
     public function setPosition($longitude, $latitude, $altitude){
         $this->position = [];
         if (isset($longitude))
@@ -141,12 +171,19 @@ class Location extends DomainResource{
         if (isset($altitude))
             $this->position["altitude"] = $altitude;
     }
+    /* campo obligatorio (estandar)
+        \Fhir\Element\Reference
+            reference: "Organization"
+            display:
+    */
     public function setManagingOrganization(Resource $managingOrganization){
         $this->managingOrganization = $managingOrganization->toReference();
     }
+    /* campo opcional */
     public function setPartOf(Resource $partOf){
         $this->partOf = $partOf->toReference();
     }
+    /* campo opcional */
     public function addHoursOfOperation($daysOfWeek, $allDay, $openingTime, $closingTime){
         $hours = [];
         $hours = [];
@@ -165,12 +202,18 @@ class Location extends DomainResource{
         if (isset($closingTime))
             $hours["closingTime"] = $closingTime;
     }
+    /* campo opcional */
     public function setAvailabilityExceptions($availabilityExceptions){
         $this->availabilityExceptions = $availabilityExceptions;
     }
+    /* campo opcional */
     public function addEndpoint(Resource $endpoint){
         $this->endpoint[] = $endpoint->toReference();
     }
+
+
+
+
     public function toArray(){
         $arrayData = parent::toArray();
         if (isset($this->identifier))

@@ -65,7 +65,7 @@ class Identifier extends Element{
 		if(isset($this->period)) $arrayData["period"] = $this->period->toArray();
 		if(isset($this->assigner)) $arrayData["assigner"] = $this->assigner->toArray();
 		if(isset($this->type)) $arrayData["type"] = $this->type->toArray();
-		if(isset($this->value)) $arrayData["value"] = $this->value;
+		if(isset($this->value)) $arrayData["value"] = (string) $this->value;
 
 		return $arrayData;
 	}

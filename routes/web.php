@@ -149,6 +149,7 @@ Route::post('/getdiags', function(Request $request){
 
     //Pagina para Consulta (vista) MISECE ece-misece (con curp)
     Route::get('/misece', [App\Http\Controllers\MISECEController::class, 'consultarmisece'])->name('misece')->middleware('tenant');
+    Route::post('/misecetest', [App\Http\Controllers\MISECEController::class, 'sendexpediente'])->name('misecetest')->middleware('tenant');
 /**/
 
 

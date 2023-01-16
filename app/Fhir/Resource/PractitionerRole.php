@@ -10,8 +10,8 @@ use App\Fhir\Element\Reference;
 
 class PractitionerRole extends DomainResource{
     public function __construct($json = null){
-        parent::__construct($json);
         $this->resourceType = "PractitionerRole";
+        parent::__construct($json);
 
         $this->identifier = [];
         $this->code = [];
@@ -90,6 +90,13 @@ class PractitionerRole extends DomainResource{
             foreach ($json->endpoint as $endpoint)
                 $this->endpoint[] = Reference::Load($endpoint);
     }
+
+
+    /* 
+        obligatorio: \Fhir\Element\Identifier (array 1..*)
+            "system": "http://www.sanjavier.mx/systems/identifiers/codigoEmpleado",
+            "value":
+    */
     public function addIdentifier(Identifier $identifier){
         $this->identifier[] = Identifier::Load($identifier);
     }
@@ -99,21 +106,41 @@ class PractitionerRole extends DomainResource{
     public function setPeriod(Period $period){
         $this->period = $period;
     }
+    /* obligatorio */
     public function setPractitioner(Resource $practitioner){
         $this->practitioner = $practitioner;
     }
+    /* obligatorio */
     public function setOrganization(Resource $organization){
         $this->organization = $organization;
     }
+    /* obligatorio
+        \Fhir\Element\CodeableConcept
+            "coding": \Fhir\Element\Coding (array 1..*)
+                "system": "http://terminology.hl7.org/CodeSystem/practitioner-role",
+                "code": "doctor",
+                "display": "Doctor"
+            "text": "Médico"
+    */
     public function addCode(CodeableConcept $code){
         $this->code[] = $code;
     }
+    /* Obligatorio:
+        \Fhir\Element\CodeableConcept
+            "coding": \Fhir\Element\Coding (array 1..*)
+                "system": "http://snomed.info/sct",
+                "code": "419192003",
+                "display": "Internal medicine"
+            "text": "Médico internista"
+    */
     public function addSpecialty(CodeableConcept $specialty){
         $this->specialty[] = $specialty;
     }
+    /* obligatorio array (1..*) */
     public function addLocation(Resource $location){
         $this->location[] = $location->toReference();
     }
+    /* obligatorio (jarero utiliza identifier pero debe ser un reference) */
     public function addHealthcareService(Resource $healthcareService){
         $this->$healthcareService[] = $healthcareService->toReference();
     }
@@ -156,6 +183,9 @@ class PractitionerRole extends DomainResource{
     public function addEndPoint(Resource $endpoint){
         $this->endpoint[] = $endpoint->toReference();
     }
+
+
+
 
     public function toArray(){
         $arrayData = parent::toArray();

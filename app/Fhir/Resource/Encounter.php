@@ -193,9 +193,14 @@ class Encounter extends DomainResource{
             $this->partOf = Reference::Load($json->partOf);
         }
     }
+    /* campo opcional */
     public function addIdentifier(Identifier $identifier){
         $this->identifier[] = $identifier;
     }
+    /* campo obligatorio (estandar) 
+        solo acepta:
+            planned, arrived, triaged, in-progress, onleave, finished, cancelled
+    */
     public function setStatus($status){
         $this->status = null;
         $only = ["planned", "arrived", "triaged", "in-progress", "onleave", "finished", "cancelled"];
@@ -208,6 +213,7 @@ class Encounter extends DomainResource{
 			throw new TextNotDefinedException("Status", implode(", ",$only));
         }
     }
+    /* campo opcional */
     public function addStatusHistory($status, Period $period){
         $status_acepted = $this->only(["planned", "arrived", "triaged", "in-progress", "onleave", "finished", "cancelled"], $status);
         $statusHistory = [
@@ -216,6 +222,7 @@ class Encounter extends DomainResource{
         ];
         $this->statusHistory[] = $statusHistory;
     }
+    /* campo opcional */
     public function addClassHistory(Coding $coding, Period $period){
         $classHistory = [
             "class"=>$coding,
@@ -223,27 +230,44 @@ class Encounter extends DomainResource{
         ];
         $this->classHistory[] = $classHistory;
     }
+    /* campo obligatorio (estandar) 
+        \Fhir\Element\Coding (Array de codings)
+            "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+            "code": "AMB",
+            "display": "ambulatory"
+    */
     public function setClass(Coding $class){
         $this->class = $class;
     }
+    /* campo opcional */
+    public function claseConsulta(){
+        $this->class = new Coding("ambulatory","AMB","http://terminology.hl7.org/CodeSystem/v3-ActCode");
+    }
+    /* campo opcional */
     public function addType(CodeableConcept $type){
         $this->type[] = $type;
     }
+    /* campo opcional */
     public function setServiceType(CodeableConcept $serviceType){
         $this->serviceType = $serviceType;
     }
+    /* campo opcional */
     public function setPriority(CodeableConcept $priority){
         $this->priority = $priority;
     }
+    /* campo obligatorio (estandar) */
     public function setSubject(Resource $subject){
         $this->subject = $subject->toReference();
     }
+    /* campo opcional */
     public function addEpisodeOfCare(Resource $episodeOfCare){
         $this->episodeOfCare[] = $episodeOfCare->toReference();
     }
+    /* campo opcional */
     public function addBasedOn(Resource $basedOn){
         $this->basedOn[] = $basedOn->toReference();
     }
+    /* campo opcional */
     public function addParticipant($types, $period, $individual){
         $participant = [];
         $participant["type"] = [];
@@ -256,21 +280,31 @@ class Encounter extends DomainResource{
         $participant["individual"] = $individual;
         $this->participant[] = $participant;
     }
+    /* campo opcional */
     public function addAppointment(Resource $appointment){
         $this->appointment[] = $appointment->toReference();
     }
+    /* campo obligatorio (estandar):
+        \Fhir\Element\Period:
+            start: fecha_inicio
+            end: fecha_final
+    */
     public function setPeriod(Period $period){
         $this->period = $period;
     }
+    /* campo opcional */
     public function setLength(Quantity $length){
         $this->length = $length;
     }
+    /* campo opcional */
     public function addReasonCode(CodeableConcept $reasonCode){
         $this->reasonCode[] = $reasonCode;
     }
+    /* campo opcional */
     public function addReasonReference(Resource $reasonReference){
         $this->reasonReference[] = $reasonReference->toReference();
     }
+    /* campo opcional */
     public function addDiagnosis(Resource $condition, CodeableConcept $use, $rank){
         $data = [
             "condition"=>$condition->toReference(),
@@ -279,9 +313,11 @@ class Encounter extends DomainResource{
         ];
         $this->diagnosis[] = $data;
     }
+    /* campo opcional */
     public function addAccount(Resource $account){
         $this->account[] = $account->toReference();
     }
+    /* campo opcional */
     public function setHospitalization(Identifier $preAdmissionIdentifier = null, Resource $origin = null, CodeableConcept $admitSource = null, CodeableConcept $reAdmission = null, 
                                         CodeableConcept $dietPreference = null, CodeableConcept $specialCourtesy = null, CodeableConcept $specialArrangement = null,
                                         Resource $destination = null, CodeableConcept $dischargeDisposition = null
@@ -314,6 +350,7 @@ class Encounter extends DomainResource{
             $this->hospitalization["dischargeDisposition"] = $dischargeDisposition;
         }
     }
+    /* campo opcional */
     public function addLocation(Resource $location, $status, CodeableConcept $physicalType, Period $period){
         $data = [];
         $data["location"] = $location->toReference();
@@ -322,12 +359,15 @@ class Encounter extends DomainResource{
         $data["period"] = $period;
         $this->location[] = $data;
     }
+    /* campo opcional */
     public function setServiceProvider(Resource $serviceProvider){
         $this->serviceProvider = $serviceProvider->toReference();
     }
+    /* campo opcional */
     public function setPartOf(Resource $partOf){
         $this->partOf = $partOf->toReference();
     }
+    /* campo opcional */
 
     public function toString(){
         $texto = "Visita";

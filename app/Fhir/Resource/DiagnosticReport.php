@@ -7,7 +7,9 @@ use App\Fhir\Element\Identifier;
 use App\Fhir\Element\Period;
 use App\Fhir\Element\Attachment;
 use App\Fhir\Element\Reference;
-
+/* 
+    Actualmente en desuso por la nueva versión del estandar 
+*/
 class DiagnosticReport extends DomainResource{
     public function __construct($json = null){
         $this->resourceType = "DiagnosticReport";

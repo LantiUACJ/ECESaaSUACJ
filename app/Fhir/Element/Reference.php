@@ -8,7 +8,7 @@ class Reference extends Element{
         parent::__construct();
         $this->setType($resourceType);
         $this->setDisplay($display);
-        $this->setReference($resourceType . "/" . $id);
+        $this->setReference($resourceType .'/'. $id);
     }
     /* Load json */
     private function loadData($json){

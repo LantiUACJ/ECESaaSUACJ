@@ -140,69 +140,98 @@ class Condition extends DomainResource{
         }
     }
 
+    /* campo opcional */
     public function setClinicalStatus(CodeableConcept $clinicalStatus){
         $this->clinicalStatus = $clinicalStatus;
     }
+    /* campo opcional */
     public function setVerificationStatus(CodeableConcept $verificationStatus){
         $this->verificationStatus = $verificationStatus;
     }
+    /* campo opcional */
     public function addCategory(CodeableConcept $category){
         $this->category[] = $category;
     }
+    /* campo opcional */
     public function setSeverity(CodeableConcept $severity){
         $this->severity = $severity;
     }
+    /* Campo obligatorio (estandar) 
+        \Fhir\Element\CodeableConcepto:
+            "code": \Fhir\Element\Code (array 1..*)
+                system: http://snomed.info/sct
+                code: codigo snomed
+                display: texto
+            text: texto
+    */
     public function setCode(CodeableConcept $code){
         $this->code = $code;
     }
+    /* campo opcional */
     public function addBodySite(CodeableConcept $bodySite){
         $this->bodySite[] = $bodySite;
     }
+    /* Campo obligatorio (estandar) */
     public function setSubject(Resource $subject){
         $this->subject = $subject->toReference();
     }
+    /* campo opcional */
     public function setEncounter(Resource $encounter){
         $this->encounter = $encounter->toReference();
     }
+    /* campo opcional */
     public function setOnsetDateTime($onsetDateTime){
         $this->onsetDateTime = $onsetDateTime;
     }
+    /* campo opcional */
     public function setOnsetAge(Quantity $onsetAge){
         $this->onsetAge = $onsetAge;
     }
+    /* campo opcional */
     public function setOnsetPeriod(Period $onsetPeriod){
         $this->onsetPeriod = $onsetPeriod;
     }
+    /* campo opcional */
     public function setOnsetRange(Range $onsetRange){
         $this->onsetRange = $onsetRange;
     }
+    /* campo opcional */
     public function setOnsetStrin($onsetString){
         $this->onsetStrin = $onsetString;
     }
+    /* campo opcional */
     public function setAbatementDateTim($abatementDateTime){
         $this->abatementDateTim = $abatementDateTime;
     }
+    /* campo opcional */
     public function setAbatementAge(Quantity $abatementAge){
         $this->abatementAge = $abatementAge;
     }
+    /* campo opcional */
     public function setAbatementPeriod(Period $abatementPeriod){
         $this->abatementPeriod = $abatementPeriod;
     }
+    /* campo opcional */
     public function setAbatementRange(Range $abatementRange){
         $this->abatementRange = $abatementRange;
     }
+    /* campo opcional */
     public function setAbatementString($abatementString){
         $this->abatementString = $abatementString;
     }
+    /* Campo obligatorio (estandar) */
     public function setRecordedDate($recordedDate){
         $this->recordedDate = $recordedDate;
     }
+    /* campo opcional */
     public function setRecorder(Resource $recorder){
         $this->recorder = $recorder->toReference();
     }
+    /* campo opcional */
     public function setAsserter(Resource $asserter){
         $this->asserter = $asserter->toReference();
     }
+    /* campo opcional */
     public function addStage(CodeableConcept $summary, $assessments, CodeableConcept $type){
         $stages = [];
         if (isset($summary)){
@@ -219,6 +248,7 @@ class Condition extends DomainResource{
         }
         $this->stage[] = $stages;
     }
+    /* campo opcional */
     public function addEvidence($codes, $details){
         $evidences = [];
         if (isset($codes)){
@@ -237,12 +267,15 @@ class Condition extends DomainResource{
         }
         $this->evidence[] = $evidences;
     }
+    /* campo opcional */
     public function addNote(Annotation $note){
         $this->note[] = $note;
     }
+    /* campo opcional */
     public function addIdentifier(Identifier $identifier){
         $this->identifier[] = $identifier;
     }
+    /* campo opcional */
 
     public function toArray(){
         $arrayData = parent::toArray();

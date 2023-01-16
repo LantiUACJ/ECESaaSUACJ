@@ -8,6 +8,7 @@ use App\Fhir\Resource\Composition;
 use App\Fhir\Resource\Patient;
 use App\Fhir\Resource\Observation;
 use App\Fhir\Resource\Encounter;
+use App\Fhir\Resource\AllergyIntolerance;
 //Elements
 use App\Fhir\Element\HumanName;
 use App\Fhir\Element\Address;
@@ -45,6 +46,10 @@ class MISECEController extends Controller
     //////
     //Metodos del MISECE al ECE
     //////
+
+    public $bundle;
+    public $patient;
+    public $composition;
 
     //Si mas de 1 tenan tienen el paciente solicitado, se envian todos?
     function sendexpediente(Request $request){
@@ -115,6 +120,7 @@ class MISECEController extends Controller
                 //     $this->ConsultaRss($consult);
                 // }
 
+                return $this->bundle->toArray();
                 return json_encode($this->bundle->toArray());
             }else{
                 return response()->json(['Error' => 'Paciente Desconocido.'], 500);
@@ -465,9 +471,15 @@ class MISECEController extends Controller
             $bundle->addEntry($obs);
         }
         if($pp->alergicos != null){
-            $obs = $this->GetObservation($this->composition, "final", "Alergicos", [$pp->alergicos], false);
-            $compSection->addEntry($obs);
-            $bundle->addEntry($obs);
+            $allergy = new AllergyIntolerance;
+            $allergy->setPatient($this->patient);
+            $allergy->setCriticality("unable-to-assess");
+            $allergy->setClinicalStatus(new CodeableConcept("Activa", new Coding("Activa", "active")));
+            $allergy->setType("allergy");
+            $allergy->setCode(new CodeableConcept($pp->alergicos, new Coding("Positive", $pp->alergicos)));
+            $allergy->setRecoredDate($pp->created_at);
+            $compSection->addEntry($allergy);
+            $bundle->addEntry($allergy);
         }
         if($pp->quirurgicos != null){
             $obs = $this->GetObservation($this->composition, "final", "Quirurgicos", [$pp->quirurgicos], false);
