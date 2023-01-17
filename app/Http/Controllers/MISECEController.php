@@ -120,7 +120,7 @@ class MISECEController extends Controller
                 //     $this->ConsultaRss($consult);
                 // }
 
-                return $this->bundle->toArray();
+                //return $this->bundle->toArray();
                 return json_encode($this->bundle->toArray());
             }else{
                 return response()->json(['Error' => 'Paciente Desconocido.'], 500);
@@ -135,29 +135,59 @@ class MISECEController extends Controller
         $curp = $request->curp;
         if(isset($curp)){
             $paciente = Paciente::where('curp', $curp)->first();
-            if($paciente != null){
+            $pacientes = Paciente::where('curp', $curp)->get();
+            if($pacientes != null){
+                
                 $this->bundle = new Bundle;
                 $this->bundle->setType("document");
                 $this->bundle->setTimestamp(Carbon::now()->format('Y-m-d H:i:s'));
-
-                $this->patient = $this->PatientRss($paciente);
                 
-                $this->composition = new Composition;
-                $this->composition->setStatus("final");
-                $this->composition->historiaClinica();
-                $this->composition->setSubject($this->patient);
-                $this->composition->setDate(Carbon::now()->format('Y-m-d H:i:s'));
-                $this->composition->setTitle("Historia Clínica");
-                $this->composition->setConfidentiality("N");
-
-                $this->bundle->addEntry($this->composition);
-                $this->bundle->addEntry($this->patient);
+                foreach ($pacientes as $paciente) {
                 
-                //Primero Historia clinica, ya que solo es una (interrogatorios)
-                $inter = Interrogatorio::where('paciente_id', $paciente->id)->first();
-                if(isset($inter)){
-                    $this->HistoriaRss($inter);
+                    $patbundle = new Bundle;
+                    $patbundle->setType("document");
+                    $patbundle->setTimestamp(Carbon::now()->format('Y-m-d H:i:s'));
+
+                    $this->patient = $this->PatientRss($paciente);
+                
+                    $this->composition = new Composition;
+                    $this->composition->setStatus("final");
+                    $this->composition->historiaClinica();
+                    $this->composition->setSubject($this->patient);
+                    $this->composition->setDate(Carbon::now()->format('Y-m-d H:i:s'));
+                    $this->composition->setTitle("Historia Clínica");
+                    $this->composition->setConfidentiality("N");
+
+                    //Primero Historia clinica, ya que solo es una (interrogatorios)
+                    $inter = Interrogatorio::where('paciente_id', $paciente->id)->first();
+                    if(isset($inter)){
+                        $this->HistoriaRss($inter, $patbundle);
+                    }
+                    
+                    $patbundle->addEntry($this->composition);
+                    $patbundle->addEntry($this->patient);
+                    $this->bundle->addEntry($patbundle);
                 }
+
+
+                // $this->patient = $this->PatientRss($paciente);
+                
+                // $this->composition = new Composition;
+                // $this->composition->setStatus("final");
+                // $this->composition->historiaClinica();
+                // $this->composition->setSubject($this->patient);
+                // $this->composition->setDate(Carbon::now()->format('Y-m-d H:i:s'));
+                // $this->composition->setTitle("Historia Clínica");
+                // $this->composition->setConfidentiality("N");
+
+                // $this->bundle->addEntry($this->composition);
+                // $this->bundle->addEntry($this->patient);
+                
+                // //Primero Historia clinica, ya que solo es una (interrogatorios)
+                // $inter = Interrogatorio::where('paciente_id', $paciente->id)->first();
+                // if(isset($inter)){
+                //     $this->HistoriaRss($inter);
+                // }
                 /*
                 $data = array();
                 $data["json"] = json_encode($this->bundle->toArray());
