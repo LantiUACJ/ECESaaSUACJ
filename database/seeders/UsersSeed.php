@@ -20,19 +20,18 @@ class UsersSeed extends Seeder
      */
     public function run()
     {
+        //Administradores del ECE
         $eceadmin = Eceadmin::create([
-            "name" => "Cesar Maldonado",
-            "email" => "cesar@prueba.com",
+            "name" => "Ece Admin 1",
+            "email" => "eceadmin1@prueba.com",
             'password'  => bcrypt('test2023')
         ]);
 
         $eceadmin = Eceadmin::create([
-            "name" => "Yadira Kiquey",
-            "email" => "yadira@prueba.com",
-            'password'  => bcrypt('potato2021')
+            "name" => "Ece Admin 2",
+            "email" => "eceadmin2@prueba.com",
+            'password'  => bcrypt('test2023')
         ]);
-
-        
 
         $eceadmin = Eceadmin::create([
             "name" => "ECEAdmin User",
@@ -40,9 +39,8 @@ class UsersSeed extends Seeder
             'password'  => bcrypt('test2023')
         ]);
 
-        /*
-        //Los primero 2 usuarios tendran acceso a 
-
+        
+        //Usuarios Medicos del ECE
         $user = User::create([
             "name" => "Usuario de Prueba 03",
             "email" => "testuser3@prueba.com",
@@ -53,10 +51,7 @@ class UsersSeed extends Seeder
             "user_id" => $user->id,
             "tenant_id" => 1
         ]);
-        */
-
-        //USUARIOS CONACYT
-        /*
+        
         $user = User::create([
             "name" => "Usuario de Prueba 01",
             "email" => "testuser@prueba.com",
@@ -88,45 +83,5 @@ class UsersSeed extends Seeder
             "user_id" => $user->id,
             "tenant_id" => 2
         ]);
-        */
-
-        //Usuarios LANTI
-        /*
-        $user = User::create([
-            "name" => "Cesar Javier",
-            "primerApellido" => "Maldonado",
-            "segundoApellido" => "Flores",
-            "email" => "certero.art@hotmail.es",
-            'password'  => bcrypt('potato2022')
-        ]);
-
-        DB::table("usersTenants")->insert([
-            "user_id" => $user->id,
-            "tenant_id" => 1
-        ]);
-
-        DB::table("usersTenants")->insert([
-            "user_id" => $user->id,
-            "tenant_id" => 2
-        ]);
-
-        $user = User::create([
-            "name" => "Yadira Kiquey",
-            "primerApellido" => "Ortiz",
-            "segundoApellido" => "Chou",
-            "email" => "yadira@prueba.com",
-            'password'  => bcrypt('potato2021')
-        ]);
-
-        DB::table("usersTenants")->insert([
-            "user_id" => $user->id,
-            "tenant_id" => 1
-        ]);
-
-        DB::table("usersTenants")->insert([
-            "user_id" => $user->id,
-            "tenant_id" => 2
-        ]);
-        */
     }
 }
