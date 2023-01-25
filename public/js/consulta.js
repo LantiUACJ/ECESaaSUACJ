@@ -845,11 +845,14 @@ $(function() {
         let code = $("input[name=patientcode]").val();
         let curp = $("input[name=patientcurp]").val();
 
+        var iframe = document.getElementById('iframecontent');
+        iframe.src = "";
+
         if(curp != ""){
             var fd = new FormData();
             fd.append('curp', curp);
             fd.append('code', code);
-
+            document.getElementById('loadingArea').classList.remove('hide');
             $.ajax({
                 url: url + "/expedienteece",
                 method: "POST",
@@ -866,10 +869,14 @@ $(function() {
                     $('#consultBtn').text("Consultar ECE");
                     $('#infomsg').text("Peticion Completada con exito");
                     $('#infomissing').modal('open');
-                    var iframe = document.getElementById('iframecontent');
-                    iframe.height="900px"
-                    iframe.width="100%"
-                    iframe.src = "data:text/html;base64," + response;
+                    iframe.height="900px";
+                    iframe.width="100%";
+    
+                    var doc = iframe.contentWindow.document;
+                    doc.open();
+                    doc.write(response);
+                    doc.close();
+                    document.getElementById('loadingArea').classList.add('hide');
                 },
                 error: function(response){
                     if(response.responseJSON.errormsg){
@@ -888,6 +895,7 @@ $(function() {
                         $('#infomsg').text("¡Ha Ocurrido un error! Inténtalo más tarde");
                         $('#infomissing').modal('open');
                     }
+                    document.getElementById('loadingArea').classList.add('hide');
                 },
             });
         }else{

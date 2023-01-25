@@ -148,6 +148,14 @@ class Paciente extends Model
         return $this->hasOne('App\Models\User', 'id', 'createdUser_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function tenant()
+    {
+        return $this->hasOne('App\Models\tenant', 'id', 'tenant_id');
+    }
+
     public function interrogatorio()
     {
         return $this->hasOne('App\Models\Interrogatorio', 'paciente_id', 'id');
