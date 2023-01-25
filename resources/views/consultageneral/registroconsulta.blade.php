@@ -1488,7 +1488,7 @@
                                                     </div>
                                                 </div>
                                                 <input type="hidden" value="{{ $paciente->curp }}">
-                                                <input type="hidden" name="patientcurp" id="patientcurp" value="PACI20050119HYNLJ05Q">
+                                                <input type="hidden" name="patientcurp" id="patientcurp" value="{{ $paciente->curp }}">
                                                 <a href="#" id="consultBtn" class="btn solid-btn">solicitar código</a>
                                             </form>
                                         </div>
