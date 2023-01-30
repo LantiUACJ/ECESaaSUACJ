@@ -9,7 +9,9 @@ use App\Fhir\Element\Period;
 use App\Fhir\Element\Quantity;
 use App\Fhir\Element\Ratio;
 use App\Fhir\Element\Reference;
-
+/* 
+    Este recurso ya no se utiliza
+*/
 class MedicationAdministration extends DomainResource{
     public function __construct($json = null){
         $this->resourceType = "MedicationAdministration";
@@ -44,9 +46,9 @@ class MedicationAdministration extends DomainResource{
         if(isset($json->category))
             $this->category = CodeableConcept::Load($json->category);
         if(isset($json->medicationCodeableConcept))
-            $this->medicationCodeableConcept = $json->medicationCodeableConcept;
+            $this->medicationCodeableConcept = CodeableConcept::Load($json->medicationCodeableConcept);
         if(isset($json->medicationReference))
-            $this->medicationReference = CodeableConcept::Load($json->medicationReference);
+            $this->medicationReference = Reference::Load($json->medicationReference);
         if(isset($json->subject))
             $this->subject = Reference::Load($json->subject);
         if(isset($json->context))
@@ -193,7 +195,7 @@ class MedicationAdministration extends DomainResource{
         if(isset($this->category))
             $arrayData["category"] = $this->category->toArray();
         if(isset($this->medicationCodeableConcept))
-            $arrayData["medicationCodeableConcept"] = $this->medicationCodeableConcept;
+            $arrayData["medicationCodeableConcept"] = $this->medicationCodeableConcept->toArray();
         if(isset($this->medicationReference))
             $arrayData["medicationReference"] = $this->medicationReference->toArray();
         if(isset($this->subject))
@@ -206,7 +208,7 @@ class MedicationAdministration extends DomainResource{
             $arrayData["effectiveDateTime"] = $this->effectiveDateTime;
         if(isset($this->effectivePeriod))
             $arrayData["effectivePeriod"] = $this->effectivePeriod->toArray();
-        if(isset($this->performer)){
+        if(isset($this->performer) && $this->performer){
             $arrayData["performer"] = [];
             foreach($this->performer as $performer){
                 $data = [];

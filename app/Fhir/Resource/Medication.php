@@ -9,8 +9,8 @@ use App\Fhir\Element\Ratio;
 
 class Medication extends DomainResource{
     public function __construct($json = null){
-        parent::__construct($json);
         $this->resourceType = "Medication";
+        parent::__construct($json);
         $this->identifier = [];
         $this->ingredient = [];
         if($json) $this->loadData($json);
@@ -59,25 +59,39 @@ class Medication extends DomainResource{
             $this->batch = $data;
         }
     }
+    /* Campo obligatorio (estandar) */
     public function addIdentifier(Identifier $identifier){
         $this->identifier[] = $identifier;
     }
+    /* campo obligatorio (estandar) (array 1..*):
+        \Fhir\Element\CodeableConcept:    
+            "coding": \Fhir\Element\Coding (array 1..*):
+                "code"
+                "system": "urn:MEDICAMENTOS_ENERO_2022",
+                "display"
+            "text"
+    */
     public function setCode(CodeableConcept $code){
         $this->code = $code;
     }
+    /* Campo opcional */
     public function setStatus($status){
         $only = ["registered", "inactive", "entered-in-error"];
         $this->status = $status;
     }
+    /* Campo opcional */
     public function setManufacturer(Resource $manufacturer){
         $this->manufacturer = $manufacturer->toReference();
     }
+    /* Campo opcional */
     public function setForm(CodeableConcept $form){
         $this->form = $form;
     }
+    /* Campo opcional */
     public function setAmount(Ratio $amount){
         $this->amount = $amount;
     }
+    /* Campo opcional */
     public function addIngredient(CodeableConcept $itemCodeableConcept, Resource $itemReference, $isActive, Ratio $strength){
         $ingredient = [
             "itemCodeableConcept"=>$itemCodeableConcept,
@@ -87,6 +101,7 @@ class Medication extends DomainResource{
         ];
         $this->ingredient[] = $ingredient;
     }
+    /* Campo opcional */
     public function setBatch($lotNumber, $expirationDate){
         $this->batch = [
             "lotNumber"=>$lotNumber,

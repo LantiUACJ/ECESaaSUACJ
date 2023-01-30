@@ -60,7 +60,7 @@
                     @foreach ($consultas as $consulta)
                         @if ($consulta->terminada)
                             <tr>
-                                <td>{{$consulta->created_at->format('d/m/Y') }} : {{ $consulta->created_at->format('H:i') }}</td>
+                                <td>{{$consulta->created_at->format('d/m/Y') }} :: {{ $consulta->created_at->format('g:i A') }}</td>
                                 <td>{{ $consulta->paciente->nombre." ".$consulta->paciente->primerApellido." ".$consulta->paciente->segundoApellido }}</td>
                                 <td>{{ $consulta->motivoConsulta }}</td>
                                 <td class="icons-row">
@@ -73,7 +73,7 @@
                         @else
                             @if (\Carbon\Carbon::now() > $consulta->created_at->addHours(2))
                                 <tr class="expired">
-                                    <td>{{$consulta->created_at->format('d/m/Y') }} : {{ $consulta->created_at->format('H:i') }}</td>
+                                    <td>{{$consulta->created_at->format('d/m/Y') }} :: {{ $consulta->created_at->format('g:i A') }}</td>
                                     <td>{{ $consulta->paciente->nombre." ".$consulta->paciente->primerApellido." ".$consulta->paciente->segundoApellido }}</td>
                                     <td>{{ $consulta->motivoConsulta }}</td>
                                     <td class="icons-row">
@@ -85,7 +85,7 @@
                                 </tr> 
                             @else
                                 <tr class="unended">
-                                    <td>{{$consulta->created_at->format('d/m/Y') }} : {{ $consulta->created_at->format('H:i') }}</td>
+                                    <td>{{$consulta->created_at->format('d/m/Y') }} :: {{ $consulta->created_at->format('g:i A') }}</td>
                                     <td>{{ $consulta->paciente->nombre." ".$consulta->paciente->primerApellido." ".$consulta->paciente->segundoApellido }}</td>
                                     <td>{{ $consulta->motivoConsulta }}</td>
                                     <td class="icons-row">
@@ -150,7 +150,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr style="opacity: 0.6;"><td colspan="4"><h6 class="opacy6">No se hay registros de la búsqueda realizada</h6></td></tr>
+                        <tr style="opacity: 0.6;"><td colspan="4"><h6 class="opacy6">No hay registros de la búsqueda realizada</h6></td></tr>
                     </tbody>
                 </table>
             </div>

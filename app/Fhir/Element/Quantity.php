@@ -59,7 +59,7 @@ class Quantity extends Element{
     public function toArray(){
         $arrayData = parent::toArray();
         if(isset($this->value)){
-            $arrayData["value"] = $this->value;
+            $arrayData["value"] = (float) number_format($this->value,2);
         }
         if(isset($this->comparator)){
             $arrayData["comparator"] = $this->comparator;

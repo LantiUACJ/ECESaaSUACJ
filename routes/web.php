@@ -130,14 +130,6 @@ Route::post('/getdiags', function(Request $request){
 /* TENANT ADMIN ROUTES */
 
 /* Rutas para el MISECE*/
-    //Peticion del MISECE al ECE
-    //Consulta de expediente por parte del misece
-    ///api/expediente/{curp}
-    Route::get('/api/patient', [App\Http\Controllers\MISECEController::class, 'sendexpediente'])->name('api/patient');
-    //Consulta de expediente (resumido) por parte del misece
-    Route::get('/api/patient/basic', [App\Http\Controllers\MISECEController::class, 'sendexpedientebasico'])->name('api/patient/basico');
-    //Consulta de expediente (resumido) por parte del misece
-    Route::get('/api/update', [App\Http\Controllers\MISECEController::class, 'sendindice'])->name('api/update');
 
     //Peticion del ECE al MISECE
     //Peticion de codigo para consulta (paciente msg?)
@@ -149,6 +141,7 @@ Route::post('/getdiags', function(Request $request){
 
     //Pagina para Consulta (vista) MISECE ece-misece (con curp)
     Route::get('/misece', [App\Http\Controllers\MISECEController::class, 'consultarmisece'])->name('misece')->middleware('tenant');
+    Route::post('/misecetest', [App\Http\Controllers\MISECEController::class, 'sendexpediente'])->name('misecetest')->middleware('tenant');
 /**/
 
 

@@ -29,21 +29,33 @@
                         </div>
                     </div>
                 </li>
+                <li class="hide" id="loadingArea">
+                    <div class="inner-spacer">
+                        <div class="center-div">
+                            <form action="">
+                                <div class="toggle-div row">
+                                    <div class="input-field col s12 center-align"">
+                                        <img id="wait" src="{{ asset('img/Loading_2.gif') }}" alt="">
+                                        <p><strong>Cargando datos... Por favor espera...</strong></p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </li>
                 <li>
                     <div class="" id="ece-content" style="width: 100%">
-                        <iframe id="iframecontentbasic" src="" type="text/html" frameborder="0"></iframe>
+                        <iframe id="iframecontentbasic" src="" type="text/html" frameborder="0" style="margin-left: 5px; margin-right: 5px;"></iframe>
                     </div>
                 </li>
             </ul>
         </div>
     </form>
-    <br><br>
-    <hr>
-    <form action="{{ route('misecetest') }}" method="post">
+    <!--form action="{{ route('misecetest') }}" method="post">
         @csrf
         <button type="submit">TEST</button>
-        <input type="hidden" name="test" value="0">
-    </form>
+        <input type="hidden" name="curp" value="LAHA981021HJCNRB99">
+    </form-->
 </div>
 
 <div id="infomissing" class="modal">
@@ -75,9 +87,14 @@
 function patientconsultbasic(){
     let curp = $("input[name=patientcurpbasico]").val();
 
+    var iframe = document.getElementById('iframecontentbasic');
+    iframe.src = "";
+
     if(curp != ""){
         var fd = new FormData();
         fd.append('curp', curp);
+
+        document.getElementById('loadingArea').classList.remove('hide');
 
         $.ajax({
             url: url + "/expedienteecebasico",
@@ -91,10 +108,14 @@ function patientconsultbasic(){
             success: function(response){
                 $('#infomsg').text("Peticion Completada con exito");
                 $('#infomissing').modal('open');
-                var iframe = document.getElementById('iframecontentbasic');
-                iframe.height="900px"
-                iframe.width="100%"
-                iframe.src = "data:text/html;base64," + response;
+                iframe.height="900px";
+                iframe.width="100%";
+
+                var doc = iframe.contentWindow.document;
+                doc.open();
+                doc.write(response);
+                doc.close();
+                document.getElementById('loadingArea').classList.add('hide');
             },
             error: function(response){
                 if(response.responseJSON.errormsg){
@@ -104,6 +125,8 @@ function patientconsultbasic(){
                     $('#infomsg').text("A Ocurrio un error! Intentalo mas tarde");
                     $('#infomissing').modal('open');
                 }
+                
+                document.getElementById('loadingArea').classList.add('hide');
             },
         });
     }else{

@@ -10,6 +10,8 @@ use App\Fhir\Element\Quantity;
 use App\Fhir\Element\Range;
 use App\Fhir\Element\Reference;
 
+/* se menciono pero no se utiliza */
+
 class Procedure extends DomainResource{
     public function __construct($json = null){
         $this->resourceType = "Procedure";

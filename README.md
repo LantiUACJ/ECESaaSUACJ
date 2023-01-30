@@ -1,61 +1,86 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+[1:34 PM] César Javier Maldonado Flores
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Requisitos
 
-## About Laravel
+* APACHE
+* MYSQK
+* PHP 7.3 o superior
+* [Composer] (https://getcomposer.org/)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Precondiciones
+Este proyecto esta desarrollado utilizando Laravel versión 8.54.0. Esta versión de laravel utiliza la versión de PHP 7.3 o superior. Adicionalmente requiere los siguientes extensiones para funcionar adecuadamente:
+* An OpenSSL extension for PHP
+* A PDO extension for PHP
+* Mbstring extension for PHP
+* Tokenizer extension for PHP
+* XML extension for PHP
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Para instalar este proyecto primero se debe clonar el repositorio en la raíz web de APACHE. Para clonar este repositorio puedes usar el comando:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+~~~
+git clone https://github.com/kroces/ece-saas.git
+~~~
 
-## Learning Laravel
+## librerías
+Para las librerías es se recomienda utilizar el gestor de dependencias para PHP llamado composer. https://getcomposer.org/
+Este gestor de dependencias permite la instalación de las librerías de forma automática.
+Para descargar las dependencias se requiere utilizar el siguiente comando:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+~~~
+composer install
+~~~
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Herramientas, configuración
+Para que la aplicación funcione correctamente es necesario copiar el archivo .env.example y seguir las instrucciones ahí descritas.
+Una vez copiado y configurado según las instrucciones del archivo ejecutar el siguiente comando:
 
-## Laravel Sponsors
+~~~
+php artisan key:generate
+~~~
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## BD generados del proyecto
+Para generar la estructura de la base de datos se debe utilizar el siguiente comando:
 
-### Premium Partners
+~~~
+php artisan migrate
+~~~
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
+El comando anteriormente descrito generará la estructura de la base de datos.
+Adicionalmente para generar usuarios y llenar los catálogos utilizados por el sistema se debe ejecutar el siguiente comando:
 
-## Contributing
+~~~
+php artisan db:seed
+~~~
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Ejemplo de ejecución
+Página de inicio.
 
-## Code of Conduct
+![Página de inicio.](/readmeimg/home.png)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Autentícate en la página de inicio de sesión.
 
-## Security Vulnerabilities
+![Página de inicio.](/readmeimg/login.png)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Página de inicio del médico.
 
-## License
+![Página de inicio.](/readmeimg/inicio.png)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Selección de Tenant (Solo en caso de 2 o más tenants para el médico).
+
+![Página de inicio.](/readmeimg/selecttenant.png)
+
+Puedes registrar pacientes.
+
+![Página de inicio.](/readmeimg/patientreg.png)
+
+Puedes registrar consultas de los pacientes.
+
+![Página de inicio.](/readmeimg/consultreg.png)
+
+Puedes consultar expedientes clínicos del paciente al MISECE (https://misece.link/).
+
+![Página de inicio.](/readmeimg/consultamisece.png)
+
+Composer
+A Dependency Manager for PHP
+https://getcomposer.org/

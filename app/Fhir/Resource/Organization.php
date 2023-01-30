@@ -55,24 +55,62 @@ class Organization extends DomainResource{
             foreach($json->endpoint as $endpoint)
                 $arrayData["endpoint"][] = Reference::Load($endpoint);
     }
+
+    /* obligatorio array (2..*) 
+        RFC y Otra cosa que no entendi:
+        {
+            "use": "official",
+            "system": "urn:oid:2.16.840.1.113883.4.630",
+            "value": "IMS421231I45"
+        },
+        { esto fue lo que no entendi
+            "use": "official",
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:oid:2.16.840.1.113883.3.14"
+        }
+    */
     public function addIdentifier(Identifier $identifier){
         $this->identifier[] = $identifier;
     }
     public function setActive($active){
         $this->active = $active;
     }
+    /*
+        obligatorio \Fhir\Element\CodeableConcept array (1..*)
+            "coding":
+                "system": "http://terminology.hl7mx.org/inegi/CodeSystem/clasificacion-de-instituciones-de-salud",
+                "code": "1",
+                "display": "INSTITUCIONES DE SALUD DEL SECTOR PÚBLICO"
+            "text": "INSTITUCIONES DE SALUD DEL SECTOR PÚBLICO"
+    */
     public function addType(CodeableConcept $type){
         $this->type[] = $type;
     }
+    /* obligatorio */
     public function setName($name){
         $this->name = $name;
     }
+    /* Obligatorio */
     public function addAlias($alias){
         $this->alias[] = $alias;
     }
     public function addTelecom(ContactPoint $telecom){
         $this->telecom[] = $telecom;
     }
+    /*
+        \Fhir\Element\Address:
+            "type": 
+            "text": 
+            "city": 
+            "district": 
+            "state": 
+            "postalCode": 
+            "line": 
+            "extension": \Fhir\Element\Extension array(1..*)
+                "url": "http://terminology.hl7mx.org/address/colonia",
+                "valueString"
+        }
+    */
     public function addAddress(Address $address){
         $this->address[] = $address;
     }

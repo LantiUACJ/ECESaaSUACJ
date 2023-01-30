@@ -2,14 +2,7 @@
 
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
-define('LARAVEL_START', microtime(true));
-echo "SERVER <br>";
-print_r($_SERVER);
-echo "post <br>";
-print_r($_POST);
-echo "get <br>";
-print_r($_GET);
-die();
+
 define('LARAVEL_START', microtime(true));
 
 /*

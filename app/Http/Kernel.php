@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'tenant' => \App\Http\Middleware\middleware_subdomain::class,
         'eceadmin' => \App\Http\Middleware\EceadminMiddleware::class,
         'tenantadmin' => \App\Http\Middleware\TenantadminMiddleware::class,
+        'jwtverify' => \App\Http\Middleware\JwtMiddleware::class,
     ];
 }

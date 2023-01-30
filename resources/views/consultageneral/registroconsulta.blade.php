@@ -1488,15 +1488,29 @@
                                                     </div>
                                                 </div>
                                                 <input type="hidden" value="{{ $paciente->curp }}">
-                                                <input type="hidden" name="patientcurp" id="patientcurp" value="VIEA670103HTLLTT67">
+                                                <input type="hidden" name="patientcurp" id="patientcurp" value="{{ $paciente->curp }}">
                                                 <a href="#" id="consultBtn" class="btn solid-btn">solicitar código</a>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="hide" id="loadingArea">
+                                    <div class="inner-spacer">
+                                        <div class="center-div">
+                                            <form action="">
+                                                <div class="toggle-div row">
+                                                    <div class="input-field col s12 center-align"">
+                                                        <img id="wait" src="{{ asset('img/Loading_2.gif') }}" alt="">
+                                                        <p><strong>Cargando datos... Por favor espera...</strong></p>
+                                                    </div>
+                                                </div>
                                             </form>
                                         </div>
                                     </div>
                                 </li>
                                 <li>
                                     <div class="" id="ece-content" style="width: 100%">
-                                        <iframe id="iframecontent" src="" type="text/html" frameborder="0"></iframe>
+                                        <iframe id="iframecontent" src="" type="text/html" frameborder="0" style="margin-left: 5px; margin-right: 5px;"></iframe>
                                     </div>
                                 </li>
                             </ul>

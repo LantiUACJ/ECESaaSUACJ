@@ -15,49 +15,54 @@ class Dosage extends Element{
             $this->sequence = $json->sequence;
         if(isset($json->text))
             $this->text = $json->text;
-        foreach($json->additionalInstruction as $additionalInstruction)
-            $this->additionalInstruction[] = $additionalInstruction->toArray();
+        if(isset($json->additionalInstruction))
+            foreach($json->additionalInstruction as $additionalInstruction)
+                $this->additionalInstruction[] = CodeableConcept::Load($additionalInstruction);
         if(isset($json->patientInstruction))
             $this->patientInstruction = $json->patientInstruction;
         if(isset($json->timing))
-            $this->timing = $json->timing->toArray();
+            $this->timing = Timing::Load($json->timing);
         if(isset($json->asNeededBoolean))
             $this->asNeededBoolean = $json->asNeededBoolean;
         if(isset($json->asNeededCodeableConcept))
-            $this->asNeededCodeableConcept = $json->asNeededCodeableConcept->toArray();
+            $this->asNeededCodeableConcept = CodeableConcept::Load($json->asNeededCodeableConcept);
         if(isset($json->site))
-            $this->site = $json->site->toArray();
+            $this->site = CodeableConcept::Load($json->site);
         if(isset($json->route))
-            $this->route = $json->route->toArray();
+            $this->route = CodeableConcept::Load($json->route);
         if(isset($json->method))
-            $this->method = $json->method->toArray();
-        foreach($json->doseAndRate as $doseAndRate){
-            $element = [];
-            $element["type"] = $doseAndRate["type"]->toArray();
-            if(isset($doseAndRate["doseRange"])){
-                $element["doseRange"] = $doseAndRate["doseRange"]->toArray();
+            $this->method = CodeableConcept::Load($json->method);
+        if(isset($json->doseAndRate))
+            foreach($json->doseAndRate as $doseAndRate){
+                $element = [];
+                if(isset($doseAndRate->type)){
+                    $element["type"] = CodeableConcept::Load($doseAndRate->type);
+                }
+                if(isset($doseAndRate->doseRange)){
+                    $element["doseRange"] = Range::Load($doseAndRate->doseRange);
+                }
+                if(isset($doseAndRate->doseQuantity)){
+                    $element["doseQuantity"] = Quantity::Load($doseAndRate->doseQuantity);
+                }
+                if(isset($doseAndRate->rateRatio)){
+                    $element["rateRatio"] = Ratio::Load($doseAndRate->rateRatio);
+                }
+                if(isset($doseAndRate->rateRange)){
+                    $element["rateRange"] = Range::Load($doseAndRate->rateRange);
+                }
+                if(isset($doseAndRate->rateQuantity)){
+                    $element["rateQuantity"] = Quantity::Load($doseAndRate->rateQuantity);
+                }
+                $this->doseAndRate[] = $element;
             }
-            if(isset($doseAndRate["doseQuantity"])){
-                $element["doseQuantity"] = $doseAndRate["doseQuantity"]->toArray();
-            }
-            if(isset($doseAndRate["rateRatio"])){
-                $element["rateRatio"] = $doseAndRate["rateRatio"]->toArray();
-            }
-            if(isset($doseAndRate["rateRange"])){
-                $element["rateRange"] = $doseAndRate["rateRange"]->toArray();
-            }
-            if(isset($doseAndRate["rateQuantity"])){
-                $element["rateQuantity"] = $doseAndRate["rateQuantity"]->toArray();
-            }
-            $this->doseAndRate[] = $element;
-        }
         if(isset($json->maxDosePerPeriod))
-            $this->maxDosePerPeriod = $json->maxDosePerPeriod->toArray();
+            $this->maxDosePerPeriod = Ratio::Load($json->maxDosePerPeriod);
         if(isset($json->maxDosePerAdministration))
-            $this->maxDosePerAdministration = $json->maxDosePerAdministration->toArray();
+            $this->maxDosePerAdministration = Quantity::Load($json->maxDosePerAdministration);
         if(isset($json->maxDosePerLifetime))
-            $this->maxDosePerLifetime = $json->maxDosePerLifetime->toArray();
+            $this->maxDosePerLifetime = Quantity::Load($json->maxDosePerLifetime);
     }
+
     public static function Load($json){
         $contactdetail = new Dosage("");
         $contactdetail->loadData($json);

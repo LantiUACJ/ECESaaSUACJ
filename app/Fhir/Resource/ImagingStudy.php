@@ -77,9 +77,13 @@ class ImagingStudy extends DomainResource{
             foreach($json->procedureCode as $procedureCode)
                 $this->procedureCode[] = CodeableConcept::Load($procedureCode);
     }
+
+
+    /* campo obligatorio (estandar) */
     public function addIdentifier(Identifier $identifier){
         $this->identifier[] = $identifier;
     }
+    /* campo obligatorio (estandar) */
     public function setStatus($status){
         $this->status = null;
         $only = ["registered", "available","cancelled","entered-in-error","unknown"];
@@ -92,57 +96,90 @@ class ImagingStudy extends DomainResource{
 			throw new TextNotDefinedException("Status", implode(", ",$only));
         }
     }
+    /* campo opcional */
     public function addModality(Coding $modality){
         $this->modality[] = $modality;
     }
+    /* campo obligatorio (estandar) */
     public function setSubject(Resource $subject){
         $this->subject = $subject->toReference();
     }
+    /* campo opcional */
     public function setEncounter(Resource $encounter){
         $this->encounter = $encounter->toReference();
     }
+    /* campo opcional */
     public function setStarted($started){
         $this->started = $started;
     }
+    /* campo opcional */
     public function addBasedOn(Resource $basedOn){
         $this->basedOn[] = $basedOn->toReference();
     }
+    /* campo opcional */
     public function setReferrer(Resource $referrer){
         $this->referrer = $referrer->toReference();
     }
+    /* campo opcional */
     public function addInterpreter(Resource $interpreter){
         $this->interpreter[] = $interpreter->toReference();;
     }
+    /* campo opcional */
     public function addEndpoint(Resource $endpoint){
         $this->endpoint[] = $endpoint->toReference();
     }
+    /* campo opcional */
     public function setNumberOfSeries($numberOfSeries){
         $this->numberOfSeries = $numberOfSeries;
     }
+    /* campo opcional */
     public function setNumberOfInstances($numberOfInstances){
         $this->numberOfInstances = $numberOfInstances;
     }
+    /* campo opcional */
     public function setProcedureReference(Resource $procedureReference){
         $this->procedureReference = $procedureReference->toReference();
     }
+    /* campo opcional */
     public function setLocation(Resource $location){
         $this->location = $location;
     }
+    /* campo opcional */
     public function addReasonCode(CodeableConcept $reasonCode){
         $this->reasonCode[] = $reasonCode;
     }
+    /* campo opcional */
     public function addReasonReference(Resource $reasonReference){
         $this->reasonReference[] = $reasonReference->toReference();
     }
+    /* campo opcional */
     public function addNote(Annotation $note){
         $this->note[] = $note;
     }
+    /* campo opcional */
     public function setDescription($description){
         $this->description = $description;
     }
+    /* campo obligatorio (estandar)
+        \Fhir\Element\ImageStudySeries: (No oficial)
+            uid
+            modality: \Fhir\Element\Code
+                "code"
+                "display"
+                "system"
+            instance (array 1..*):
+                "uid"
+                "sopClass": \Fhir\Element\Code
+                    "code"
+                    "system"
+                    "display"
+    */
     public function addSeries(ImageStudySeries $series){
         $this->series[] = $series;
     }
+
+
+
     public function toArray(){
         $arrayData = parent::toArray();
 

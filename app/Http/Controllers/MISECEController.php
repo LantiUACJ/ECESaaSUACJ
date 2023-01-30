@@ -6,8 +6,11 @@ namespace App\Http\Controllers;
 use App\Fhir\Resource\Bundle;
 use App\Fhir\Resource\Composition;
 use App\Fhir\Resource\Patient;
+use App\Fhir\Resource\Practitioner;
+use App\Fhir\Resource\Organization;
 use App\Fhir\Resource\Observation;
 use App\Fhir\Resource\Encounter;
+use App\Fhir\Resource\AllergyIntolerance;
 //Elements
 use App\Fhir\Element\HumanName;
 use App\Fhir\Element\Address;
@@ -21,7 +24,6 @@ use App\Fhir\Element\Identifier;
 
 use App\Models\Paciente;
 use App\Models\Consulta;
-
 use App\Models\Sexo;
 use App\Models\Entidadesfederativa;
 use App\Models\Municipio;
@@ -40,19 +42,27 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 
+use Firebase\JWT\JWT;
+use GPBMetadata\Google\Api\Auth;
+use Illuminate\Support\Facades\Storage;
+
 class MISECEController extends Controller
 {
     //////
     //Metodos del MISECE al ECE
     //////
 
+    public $bundle;
+    public $patient;
+    public $composition;
+
     //Si mas de 1 tenan tienen el paciente solicitado, se envian todos?
     function sendexpediente(Request $request){
         $curp = $request->curp;
         if(isset($curp)){
-            $paciente = Paciente::where('curp', $curp)->first();
+            //$paciente = Paciente::where('curp', $curp)->first();
             $pacientes = Paciente::where('curp', $curp)->get();
-            if($pacientes != null){
+            if($pacientes->count() > 0){
                 $this->bundle = new Bundle;
                 $this->bundle->setType("document");
                 $this->bundle->setTimestamp(Carbon::now()->format('Y-m-d H:i:s'));
@@ -60,18 +70,32 @@ class MISECEController extends Controller
                 foreach ($pacientes as $paciente) {
                         
                     $patbundle = new Bundle;
-                    $patbundle->setType("document");
+                    $patbundle->setType("history");
                     $patbundle->setTimestamp(Carbon::now()->format('Y-m-d H:i:s'));
-
+                    
+                    $this->bundle->addEntry($patbundle);
                     $this->patient = $this->PatientRss($paciente);
-                
-                    $this->composition = new Composition;
-                    $this->composition->setStatus("final");
-                    $this->composition->historiaClinica();
-                    $this->composition->setSubject($this->patient);
-                    $this->composition->setDate(Carbon::now()->format('Y-m-d H:i:s'));
-                    $this->composition->setTitle("Historia Clínica");
-                    $this->composition->setConfidentiality("N");
+
+                    //Organizacion
+                    $org = new Organization;
+                    $org->addIdentifier(new Identifier('official', $paciente->tenant->tenant_nombre));
+                    $org->setName($paciente->tenant->tenant_nombre);
+                    $org->addType(new CodeableConcept($paciente->tenant->type == 1? "Institución": "Particular"));
+
+                    $orgaddress = new Address;
+                    $orgaddress->setUse("work");
+                    $orgaddress->setType("both");
+                    $orgaddress->setText($paciente->tenant->address != null? $paciente->tenant->address: "Test Address");
+
+                    $org->addAddress($orgaddress);
+
+                    //Medico
+                    $medico = new Practitioner;
+                    $medico->addIdentifier(new Identifier('official', $paciente->user->curp));
+                    $medico->addName(new HumanName($paciente->user->name." ".$paciente->user->primerApellido." ".$paciente->user->segundoApellido));
+
+                    $patbundle->addEntry($this->patient);
+                    $patbundle->addEntry($medico);
 
                     //Primero Historia clinica, ya que solo es una (interrogatorios)
                     $inter = Interrogatorio::where('paciente_id', $paciente->id)->first();
@@ -84,37 +108,24 @@ class MISECEController extends Controller
                     foreach($consults as $consult){
                         $this->ConsultaRss($consult, $patbundle);
                     }
-                    
-                    $patbundle->addEntry($this->composition);
-                    $patbundle->addEntry($this->patient);
-                    $this->bundle->addEntry($patbundle);
+
+                    //Por ultimo agregamos al organizacion
+                    $patbundle->addEntry($org);
                 }
 
-                //Old version
-                // $this->patient = $this->PatientRss($paciente);
-                
-                // $this->composition = new Composition;
-                // $this->composition->setStatus("final");
-                // $this->composition->historiaClinica();
-                // $this->composition->setSubject($this->patient);
-                // $this->composition->setDate(Carbon::now()->format('Y-m-d H:i:s'));
-                // $this->composition->setTitle("Historia Clínica");
-                // $this->composition->setConfidentiality("N");
+                //Organizacion ECE SAAS
+                $org = new Organization;
+                $org->addIdentifier(new Identifier('official', "ECE-SAAS"));
+                $org->setName("Expediente Clínico Electrónico - SAAS");
+                $org->addType(new CodeableConcept("SaaS (Software como Servicio)"));
 
-                // $this->bundle->addEntry($this->composition);
-                // $this->bundle->addEntry($this->patient);
-                
-                // //Primero Historia clinica, ya que solo es una (interrogatorios)
-                // $inter = Interrogatorio::where('paciente_id', $paciente->id)->first();
-                // if(isset($inter)){
-                //     $this->HistoriaRss($inter);
-                // }
-                // //Segundo consultas, nota de consultas, exploracion fisica y signos vitales (por cada consulta (enconter))
-                // $consults = Consulta::where("paciente_id", $paciente->id)->orderBy('created_at', 'desc')->get();
-                // foreach($consults as $consult){
-                //     $this->ConsultaRss($consult);
-                // }
-
+                // $orgaddress = new Address;
+                // $orgaddress->setUse("work");
+                // $orgaddress->setType("both");
+                // $orgaddress->setText($paciente->tenant->address != null? $paciente->tenant->address: "Test Address");
+                //$org->addAddress($orgaddress);
+                $this->bundle->addEntry($org);
+                //return $this->bundle->toArray();
                 return json_encode($this->bundle->toArray());
             }else{
                 return response()->json(['Error' => 'Paciente Desconocido.'], 500);
@@ -128,36 +139,60 @@ class MISECEController extends Controller
     function sendexpedientebasico(Request $request){
         $curp = $request->curp;
         if(isset($curp)){
-            $paciente = Paciente::where('curp', $curp)->first();
-            if($paciente != null){
+            //$paciente = Paciente::where('curp', $curp)->first();
+            $pacientes = Paciente::where('curp', $curp)->get();
+            if($pacientes->count() > 0){
+                
                 $this->bundle = new Bundle;
                 $this->bundle->setType("document");
                 $this->bundle->setTimestamp(Carbon::now()->format('Y-m-d H:i:s'));
-
-                $this->patient = $this->PatientRss($paciente);
                 
-                $this->composition = new Composition;
-                $this->composition->setStatus("final");
-                $this->composition->historiaClinica();
-                $this->composition->setSubject($this->patient);
-                $this->composition->setDate(Carbon::now()->format('Y-m-d H:i:s'));
-                $this->composition->setTitle("Historia Clínica");
-                $this->composition->setConfidentiality("N");
+                foreach ($pacientes as $paciente) {
 
-                $this->bundle->addEntry($this->composition);
-                $this->bundle->addEntry($this->patient);
+                    $patbundle = new Bundle;
+                    $patbundle->setType("history");
+                    $patbundle->setTimestamp(Carbon::now()->format('Y-m-d H:i:s'));
+                    
+                    $this->bundle->addEntry($patbundle);
+                    $this->patient = $this->PatientRss($paciente);
+
+                    //Organizacion
+                    $org = new Organization;
+                    $org->addIdentifier(new Identifier('official', $paciente->tenant->tenant_nombre));
+                    $org->setName($paciente->tenant->tenant_nombre);
+                    $org->addType(new CodeableConcept($paciente->tenant->type == 1? "Institución": "Particular"));
+
+                    $orgaddress = new Address;
+                    $orgaddress->setUse("work");
+                    $orgaddress->setType("both");
+                    $orgaddress->setText($paciente->tenant->address != null? $paciente->tenant->address: "Test Address");
+
+                    $org->addAddress($orgaddress);
+
+                    //Medico
+                    $medico = new Practitioner;
+                    $medico->addIdentifier(new Identifier('official', $paciente->user->curp));
+                    $medico->addName(new HumanName($paciente->user->name." ".$paciente->user->primerApellido." ".$paciente->user->segundoApellido));
+
+                    $patbundle->addEntry($this->patient);
+                    $patbundle->addEntry($medico);
                 
-                //Primero Historia clinica, ya que solo es una (interrogatorios)
-                $inter = Interrogatorio::where('paciente_id', $paciente->id)->first();
-                if(isset($inter)){
-                    $this->HistoriaRss($inter);
+                    //Primero Historia clinica, ya que solo es una (interrogatorios)
+                    $inter = Interrogatorio::where('paciente_id', $paciente->id)->first();
+                    if(isset($inter)){
+                        $this->HistoriaRss($inter, $patbundle);
+                    }
+                    
+                    //Por ultimo agregamos la organizacion
+                    $patbundle->addEntry($org);
                 }
-                /*
-                $data = array();
-                $data["json"] = json_encode($this->bundle->toArray());
-                $response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/test/json', $data);
-                return $response->body();
-                */
+
+                //Organizacion ECE SAAS
+                $org = new Organization;
+                $org->addIdentifier(new Identifier('official', "ECE-SAAS"));
+                $org->setName("Expediente Clínico Electrónico - SAAS");
+                $org->addType(new CodeableConcept("SaaS (Software como Servicio)"));
+                $this->bundle->addEntry($org);
 
                 return json_encode($this->bundle->toArray());
             }else{
@@ -186,6 +221,25 @@ class MISECEController extends Controller
         return json_encode($data);
     }
 
+    public function makeJWT(){
+        //dd(Storage::disk('local'));
+        $publicKey = Storage::disk('local')->get('certs\certificados.crt');
+        $privateKey = Storage::disk('local')->get('certs\certificados.key');
+        //dd(["public" => $publicKey, "private" => $privateKey]);
+        /* ===== Making Header ===== */
+        $header = [
+            "cert"=>$publicKey
+        ];
+        /* ===== Making payload ===== */
+        $payload = [
+            'data' => "test",//$request->input("data"),
+            'iat' => time(),
+            'exp' => time()+3600,
+        ];
+        /* ===== Making JWT ===== */
+        return JWT::encode($payload, $privateKey, 'RS512', null, $header);
+    }
+
     //////
     //Metodos del ECE al MISECE
     //////
@@ -203,36 +257,39 @@ class MISECEController extends Controller
         $data['consultor'] = auth()->user()->name;
         $data['codigo'] = $request->code != null? $request->code: null;
         
-        //$jsondata = json_encode($data);
-
-        //Primer link aws
-        //Segunto link para hacer pruebas de loca a aws
-        $response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/expediente/'.$request->curp, $data);
+        $curl = new \App\Tools\CurlHelper("https://misece.link/api/v2/expediente/".$request->curp, $data);
+        $response = $curl->postJWT();
+        //$response = Http::withToken($token)->retry(5)->post('https://misece.link/api/v2/expediente/'.$request->curp, $data);
+        //$response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/expediente/'.$request->curp, $data);
         //$response = Http::withBasicAuth('online', 'potato')->post('https://misece.link/api/v1/expediente/' . $request->curp, $data);
-
-        if(str_contains($response->body(),"Paciente no encontrado") ){
+        
+        if(str_contains($response, "Paciente no encontrado") ){
             return response()->json(['errormsg' => 'No se encontraron expedientes del paciente.'], 401);
-        }else if(str_contains($response->body(),"Error")){ //Cambiar por "codigo enviado" cuando se confirme 
+        }else if(str_contains($response,"c\u00f3digo")){ //Cambiar por "codigo enviado" cuando se confirme 
             return response()->json(['codesent' => 'Un código de verificación ha sido enviado al paciente.'], 401);
         }else{
-            return base64_encode($response->body());//$response->body();
+            return $response;//$response->body();
         }
 
-        return response()->json(['errormsg' => 'Ocurrio .'], 401);
+        return response()->json(['errormsg' => 'Ocurrio un error.'], 401);
     }
 
     function expecebasico(Request $request){
         $data = array();
         $data['consultor'] = auth()->user()->name;
+       
+        $curl = new \App\Tools\CurlHelper("https://misece.link/api/v2/expediente/basico/".$request->curp, $data);
+        $response = $curl->postJWT();
 
-        $response = Http::withBasicAuth('cesar', 'potato')->post('https://misece.link/api/v1/expediente/basico/'.$request->curp, $data);
+        //$response = Http::withToken($token)->retry(10, 1000)->post('https://misece.link/api/v2/expediente/basico/'.$request->curp, $data);
         //$response = Http::withBasicAuth('online', 'potato')->post('https://misece.link/api/v1/expediente/basico/'.$request->curp, $data);
-
-        if(str_contains($response->body(),"Paciente no encontrado") ){
+        if(str_contains($response,"Paciente no encontrado") ){
             return response()->json(['errormsg' => 'No se encontraron expedientes del paciente.'], 401);
         }else{
-            return base64_encode($response->body());//$response->body();
+            return $response;//$response->body();
         }
+
+        return response()->json(['errormsg' => 'Ocurrio un error.'], 401);
     }
 
     // get to view 
@@ -285,7 +342,8 @@ class MISECEController extends Controller
         $patient->addName($humanname);
 
         $sexo = Sexo::where('id', $paciente->sexo_id)->first()->descripcion;
-        $patient->setGender($sexo == "Masculino" || $sexo == "Femenino"? $sexo: "other");
+        $sexoname = $sexo == "Hombre"? "Masculino": ($sexo == "Mujer"? "Femenino": "other");
+        $patient->setGender($sexoname);
 
         $patient->setBirthDate(Carbon::createFromFormat('Y-m-d H:i:s', $paciente->fechaNacimiento)->format('d-m-Y'));
 
@@ -301,31 +359,43 @@ class MISECEController extends Controller
     }
 
     private function HistoriaRss(Interrogatorio $inter, Bundle &$bundle){
+        $Hcomposition = new Composition;
+        $Hcomposition->setStatus("final");
+        $Hcomposition->historiaClinica();
+        $Hcomposition->setSubject($this->patient);
+        $Hcomposition->setDate(Carbon::now()->format('Y-m-d H:i:s'));
+        $Hcomposition->setTitle("Historia Clínica");
+        $Hcomposition->setConfidentiality("N");
+
+        $bundle->addEntry($Hcomposition);
+
         //create observation foreach antecedente
         //heredo familiar
         if($inter->anteHF_id != null){
-            $this->AddAnteHF($inter->anteHF_id, $bundle);
+            $this->AddAnteHF($inter->anteHF_id, $Hcomposition, $bundle);
         }
         //personales patologicos
         if($inter->antePP_id != null){
-            $this->AddAntePP($inter->antePP_id, $bundle);
+            $this->AddAntePP($inter->antePP_id, $Hcomposition, $bundle);
         }
         //personales no patologicos
         if($inter->antePNP_id != null){
-            $this->AddAntePNP($inter->antePNP_id, $bundle);
+            $this->AddAntePNP($inter->antePNP_id, $Hcomposition, $bundle);
         }
         //aparatos y sistemas
         if($inter->interAS_id != null){
-            $this->AddInterAS($inter->interAS_id, $bundle);
+            $this->AddInterAS($inter->interAS_id, $Hcomposition, $bundle);
         }
     }
 
-    private function AddAnteHF($id, Bundle &$bundle){
+    private function AddAnteHF($id, Composition &$comp, Bundle &$bundle){
         $hf = Antecedenteshf::where("id", $id)->first();
         $ante = "Antecedentes Heredo-Familiares";
         $compSection = new CompositionSection;
         $compSection->setTitle("Antecedentes Heredo-Familiares");
         $compSection->setCode(new CodeableConcept($ante, new Coding($ante, "D2.2")));
+
+        $comp->addSection($compSection);
 
         if($hf->grupo_id != null){
             $grupo = grupoetnico::where("id", $hf->grupo_id)->first()->lenguaIndigena;
@@ -438,16 +508,16 @@ class MISECEController extends Controller
             $compSection->addEntry($obs);
             $bundle->addEntry($obs);
         }
-
-        $this->composition->addSection($compSection);
     }
 
-    private function AddAntePP($id, Bundle &$bundle){
+    private function AddAntePP($id, Composition &$comp, Bundle &$bundle){
         $pp = Antecedentespp::where("id", $id)->first();
         $ante = "Antecedentes Personales Patológicos";
         $compSection = new CompositionSection;
         $compSection->setTitle("Antecedentes Personales Patológico");
         $compSection->setCode(new CodeableConcept($ante, new Coding($ante, "D2.4")));
+
+        $comp->addSection($compSection);
 
         if($pp->enfermedadInfectaContagiosa != null){
             $obs = $this->GetObservation($this->composition, "final", "Enfermedad Infecta-Contagiosa", [$pp->enfermedadInfectaContagiosa], false);
@@ -465,9 +535,15 @@ class MISECEController extends Controller
             $bundle->addEntry($obs);
         }
         if($pp->alergicos != null){
-            $obs = $this->GetObservation($this->composition, "final", "Alergicos", [$pp->alergicos], false);
-            $compSection->addEntry($obs);
-            $bundle->addEntry($obs);
+            $allergy = new AllergyIntolerance;
+            $allergy->setPatient($this->patient);
+            $allergy->setCriticality("unable-to-assess");
+            $allergy->setClinicalStatus(new CodeableConcept("Activa"));
+            $allergy->setType("allergy");
+            $allergy->setCode(new CodeableConcept($pp->alergicos));
+            $allergy->setRecoredDate($pp->created_at);
+            $compSection->addEntry($allergy);
+            $bundle->addEntry($allergy);
         }
         if($pp->quirurgicos != null){
             $obs = $this->GetObservation($this->composition, "final", "Quirurgicos", [$pp->quirurgicos], false);
@@ -499,17 +575,16 @@ class MISECEController extends Controller
             $compSection->addEntry($obs);
             $bundle->addEntry($obs);
         }
-
-        $this->composition->addSection($compSection);
-
     }
 
-    private function AddAntePNP($id, Bundle &$bundle){
+    private function AddAntePNP($id, Composition &$comp, Bundle &$bundle){
         $pnp = Antecedentespnp::where("id", $id)->first();
         $ante = "Antecedentes Personales No Patológicos";
         $compSection = new CompositionSection;
         $compSection->setTitle("Antecedentes Personales No Patológico");
         $compSection->setCode(new CodeableConcept($ante, new Coding($ante, "D2.3")));
+
+        $comp->addSection($compSection);
 
         if($pnp->vivienda != null){
             $obs = $this->GetObservation($this->composition, "final", "Vivienda", [$pnp->vivienda], false);
@@ -536,16 +611,16 @@ class MISECEController extends Controller
             $compSection->addEntry($obs);
             $bundle->addEntry($obs);
         }
-
-        $this->composition->addSection($compSection);
     }
 
-    private function AddInterAS($id, Bundle &$bundle){
+    private function AddInterAS($id, Composition &$comp, Bundle &$bundle){
         $as = Interrogatorioaparato::where("id", $id)->first();
         $ante = "Interrogarotio por Aparatos y Sistemas";
         $compSection = new CompositionSection;
         $compSection->setTitle("Interrogarotio por Aparatos y Sistemas");
         $compSection->setCode(new CodeableConcept($ante, new Coding($ante, "D2.6")));
+
+        $comp->addSection($compSection);
 
         if($as->signosYsintomas != null){
             $obs = $this->GetObservation($this->composition, "final", "Signos Y Sintomas", [$as->signosYsintomas], false);
@@ -602,8 +677,6 @@ class MISECEController extends Controller
             $compSection->addEntry($obs);
             $bundle->addEntry($obs);
         }
-
-        $this->composition->addSection($compSection);
     }
 
     private function GetObservation($reference, $status, $category, $values, $isbool){//$category = Antecedentes || $code = dato de antecedentes (eg. Grupo Etnico) || $values[0] = valor, $values[1] = unidad
@@ -645,7 +718,13 @@ class MISECEController extends Controller
         Revisar encounters (consultas) para agregar mas parametros 
         como class, diagnosis, etc.
     */
-    private function ConsultaRss(Consulta $consult, Bundle &$bundle){
+    private function ConsultaRss(Consulta $consult, Bundle &$patbundle){
+        $consultbundle = new Bundle;
+        $consultbundle->setType("document");
+        $consultbundle->setTimestamp(Carbon::now()->format('Y-m-d H:i:s'));
+
+        $patbundle->addEntry($consultbundle);
+
         $compositionnote = new Composition;
         $compositionnote->setStatus("final");
         $compositionnote->notaEvolucion();
@@ -654,7 +733,7 @@ class MISECEController extends Controller
         $compositionnote->setTitle("Consulta General");
         $compositionnote->setConfidentiality("N");
 
-        $bundle->addEntry($compositionnote);
+        $consultbundle->addEntry($compositionnote);
 
         $note = "Consulta General";
         $display = "Datos de Consulta";
@@ -664,49 +743,49 @@ class MISECEController extends Controller
         $consult->terminada == 1? $consulta->setStatus("finished"): $consulta->setStatus("in-progress");
         $consulta->setPeriod(new Period($consult->created_at->format('Y-m-d H:i:s'), $consult->updated_at->format('Y-m-d H:i:s')));
         $compositionnote->setEncounter($consulta);
-        $bundle->addEntry($consulta);
+        $consultbundle->addEntry($consulta);
 
         $compSection = new CompositionSection;
         $compSection->setTitle("Datos de Consulta");
         $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
 
+        $compositionnote->addSection($compSection);
+
         if($consult->motivoConsulta != null){
             $obs = $this->GetObservation($this->composition, "final", "Motivo de Consulta", [$consult->motivoConsulta], false);
             $compSection->addEntry($obs);
-            $bundle->addEntry($obs);
+            $consultbundle->addEntry($obs);
         }
         if($consult->cuadroClinico != null){
             $obs = $this->GetObservation($this->composition, "final", "Cuadro Clínico", [$consult->cuadroClinico], false);
             $compSection->addEntry($obs);
-            $bundle->addEntry($obs);
+            $consultbundle->addEntry($obs);
         }
         if($consult->resultadosLaboratorioGabinete != null){
             $obs = $this->GetObservation($this->composition, "final", "Resultados de Laboratorio y Gabinete", [$consult->resultadosLaboratorioGabinete], false);
             $compSection->addEntry($obs);
-            $bundle->addEntry($obs);
+            $consultbundle->addEntry($obs);
         }
         if($consult->diag_id != null && $consult->diag_name != null){
             $obs = $this->GetObservation($this->composition, "final", "Diagnostico Snomed", ["id: ".$consult->diag_id."-"."Diagnostico: ".$consult->diag_name], false);
             $compSection->addEntry($obs);
-            $bundle->addEntry($obs);
+            $consultbundle->addEntry($obs);
         }
         if($consult->diagnosticoProblemasClinicos != null){
             $obs = $this->GetObservation($this->composition, "final", "Diagnosticos o Problemas Clínicos", [$consult->diagnosticoProblemasClinicos], false);
             $compSection->addEntry($obs);
-            $bundle->addEntry($obs);
+            $consultbundle->addEntry($obs);
         }
         if($consult->pronostico != null){
             $obs = $this->GetObservation($this->composition, "final", "Pronóstico", [$consult->pronostico], false);
             $compSection->addEntry($obs);
-            $bundle->addEntry($obs);
+            $consultbundle->addEntry($obs);
         }
         if($consult->indicacionTerapeutica != null){
             $obs = $this->GetObservation($this->composition, "final", "Indicación Terapéutica", [$consult->indicacionTerapeutica], false);
             $compSection->addEntry($obs);
-            $bundle->addEntry($obs);
+            $consultbundle->addEntry($obs);
         }
-
-        $compositionnote->addSection($compSection);
 
         //Exploracion Fisica - 
         if($consult->exploracion_id != null){
@@ -720,53 +799,53 @@ class MISECEController extends Controller
             $compSection->setTitle("Exploración Física");
             $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
 
+            $compositionnote->addSection($compSection);
+
             if($exploracion->habitusExterior != null){
                 $obs = $this->GetObservation($this->composition, "final", "Habitus Exterior", [$exploracion->habitusExterior], false);
                 $compSection->addEntry($obs);
-                $bundle->addEntry($obs);
+                $consultbundle->addEntry($obs);
             }
             if($exploracion->peso != null){
                 $obs = $this->GetObservation($this->composition, "final", "Peso", [$exploracion->peso, "kg"], false);
                 $compSection->addEntry($obs);
-                $bundle->addEntry($obs);
+                $consultbundle->addEntry($obs);
             }
             if($exploracion->talla != null){
                 $obs = $this->GetObservation($this->composition, "final", "Talla", [$exploracion->talla, "cm"], false);
                 $compSection->addEntry($obs);
-                $bundle->addEntry($obs);
+                $consultbundle->addEntry($obs);
             }
             if($exploracion->cabeza != null){
                 $obs = $this->GetObservation($this->composition, "final", "Cabeza", [$exploracion->cabeza], false);
                 $compSection->addEntry($obs);
-                $bundle->addEntry($obs);
+                $consultbundle->addEntry($obs);
             }
             if($exploracion->cuello != null){
                 $obs = $this->GetObservation($this->composition, "final", "Cuello", [$exploracion->cuello], false);
                 $compSection->addEntry($obs);
-                $bundle->addEntry($obs);
+                $consultbundle->addEntry($obs);
             }
             if($exploracion->torax != null){
                 $obs = $this->GetObservation($this->composition, "final", "Torax", [$exploracion->torax], false);
                 $compSection->addEntry($obs);
-                $bundle->addEntry($obs);
+                $consultbundle->addEntry($obs);
             }
             if($exploracion->abdomen != null){
                 $obs = $this->GetObservation($this->composition, "final", "Abdomen", [$exploracion->abdomen], false);
                 $compSection->addEntry($obs);
-                $bundle->addEntry($obs);
+                $consultbundle->addEntry($obs);
             }
             if($exploracion->miembros != null){
                 $obs = $this->GetObservation($this->composition, "final", "Miembros", [$exploracion->miembros], false);
                 $compSection->addEntry($obs);
-                $bundle->addEntry($obs);
+                $consultbundle->addEntry($obs);
             }
             if($exploracion->genitales != null){
                 $obs = $this->GetObservation($this->composition, "final", "Genitales", [$exploracion->genitales], false);
                 $compSection->addEntry($obs);
-                $bundle->addEntry($obs);
+                $consultbundle->addEntry($obs);
             }
-
-            $compositionnote->addSection($compSection);
 
             //Signos vitales
             if($exploracion->signos_id != null){
@@ -778,43 +857,43 @@ class MISECEController extends Controller
                 $compSection->setTitle("Signos Vitales");
                 $compSection->setCode(new CodeableConcept($note, new Coding($display, "")));
 
+                $compositionnote->addSection($compSection);
+
                 if($signos->temperatura != null){
                     $obs = $this->GetObservation($this->composition, "final", "Temperatura", [$signos->temperatura, "°C"], false);
                     $compSection->addEntry($obs);
-                    $bundle->addEntry($obs);
+                    $consultbundle->addEntry($obs);
                 }
                 if($signos->tensionSistolica != null){
                     $obs = $this->GetObservation($this->composition, "final", "Tensión Sistolica", [$signos->tensionSistolica, "mmHg"], false);
                     $compSection->addEntry($obs);
-                    $bundle->addEntry($obs);
+                    $consultbundle->addEntry($obs);
                 }
                 if($signos->tensionDiastolica != null){
                     $obs = $this->GetObservation($this->composition, "final", "Tensión Diastolica", [$signos->tensionDiastolica, "mmHg"], false);
                     $compSection->addEntry($obs);
-                    $bundle->addEntry($obs);
+                    $consultbundle->addEntry($obs);
                 }
                 if($signos->frecuenciaCardiaca != null){
                     $obs = $this->GetObservation($this->composition, "final", "Frecuencia Cardiaca", [$signos->frecuenciaCardiaca, "lmp"], false);
                     $compSection->addEntry($obs);
-                    $bundle->addEntry($obs);
+                    $consultbundle->addEntry($obs);
                 }
                 if($signos->frecuenciaRespiratoria != null){
                     $obs = $this->GetObservation($this->composition, "final", "Frecuencia Respiratoria", [$signos->frecuenciaRespiratoria, "rmp"], false);
                     $compSection->addEntry($obs);
-                    $bundle->addEntry($obs);
+                    $consultbundle->addEntry($obs);
                 }
                 if($signos->saturacionOxigeno != null){
                     $obs = $this->GetObservation($this->composition, "final", "Saturación de Oxígeno", [$signos->saturacionOxigeno, "%"], false);
                     $compSection->addEntry($obs);
-                    $bundle->addEntry($obs);
+                    $consultbundle->addEntry($obs);
                 }
                 if($signos->glucosa != null){
                     $obs = $this->GetObservation($this->composition, "final", "Glucosa", [$signos->glucosa, "mg/dL"], false);
                     $compSection->addEntry($obs);
-                    $bundle->addEntry($obs);
+                    $consultbundle->addEntry($obs);
                 }
-
-                $compositionnote->addSection($compSection);
             }
         }
     }
