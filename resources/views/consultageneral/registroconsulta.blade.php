@@ -71,7 +71,7 @@
                                     <a class="black-text tab-title text-darken-2 active" href="#section1">Nota de consulta</a>
                                 </li>
                                 <li class="tab col s3" id="interrogatorio-tab">
-                                    <a class="black-text tab-title text-darken-2" href="#section2">InterrogatorioTEST</a>
+                                    <a class="black-text tab-title text-darken-2" href="#section2">Interrogatorio</a>
                                 </li>
                                 <li class="tab col s3 {{ session('consulta_id') !== null ? '' : 'disabled' }}" id="exploracion-tab">
                                     <a class="black-text tab-title text-darken-2" href="#section3">Exploración física</a>
