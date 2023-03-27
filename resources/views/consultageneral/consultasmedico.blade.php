@@ -156,7 +156,7 @@
             </div>
         </div>
     @else
-        <h6 style="opacity: 0.6; margin-top: 15px">El Doctor {{ auth()->user()->name }}, no cuanta con consultas registradas</h6>
+        <h6 style="opacity: 0.6; margin-top: 15px">El Doctor {{ auth()->user()->name }}, no cuenta con consultas registradas</h6>
         
         <div style="margin-top: 15px">
             <a href="{{ route('seleccionarpaciente') }}" class="waves-effect waves-light btn">

@@ -22,10 +22,12 @@ class InterrogatorioController extends Controller
         $result = $interrogatorio->save();
 
         //guardamos el interrogatorio en la consulta
-        $consulta_id = session('consulta_id');
-        $consulta = Consulta::where('tenant_id', session('tenant')->id)->find($consulta_id);
-        $consulta->interrogatorio_id = $interrogatorio->id;
-        $consulta->save();
+        if(session('consulta_id') != null){
+            $consulta_id = session('consulta_id');
+            $consulta = Consulta::where('tenant_id', session('tenant')->id)->find($consulta_id);
+            $consulta->interrogatorio_id = $interrogatorio->id;
+            $consulta->save();
+        }
 
         if($result !== false){
             session(['inter_id' => $interrogatorio->id]); //se guarda el id del interrogatorio para ser usado cuando se guarden los interrogatorios 
@@ -43,6 +45,13 @@ class InterrogatorioController extends Controller
         $interrogatorio->grupo_id = $request->grupo == 0? null: $request->grupo;
         $interrogatorio->padecimientoActual = $request->padecimiento;
         $result = $interrogatorio->save();
+
+        if(session('consulta_id') != null){
+            $consulta_id = session('consulta_id');
+            $consulta = Consulta::where('tenant_id', session('tenant')->id)->find($consulta_id);
+            $consulta->interrogatorio_id = $interrogatorio->id;
+            $consulta->save();
+        }
 
         if($result !== false){
             return response()->json(['msg' => 'Datos de Interrogatorio actualizados exitosamente!'], 200);

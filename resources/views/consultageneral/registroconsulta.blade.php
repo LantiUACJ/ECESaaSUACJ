@@ -70,7 +70,7 @@
                                 <li class="tab col s3">
                                     <a class="black-text tab-title text-darken-2 active" href="#section1">Nota de consulta</a>
                                 </li>
-                                <li class="tab col s3 {{ session('consulta_id') !== null ? '' : 'disabled' }}" id="interrogatorio-tab">
+                                <li class="tab col s3" id="interrogatorio-tab">
                                     <a class="black-text tab-title text-darken-2 disable" href="#section2">Interrogatorio</a>
                                 </li>
                                 <li class="tab col s3 {{ session('consulta_id') !== null ? '' : 'disabled' }}" id="exploracion-tab">
@@ -135,7 +135,7 @@
                                     
                                     <div class="input-field col s12 m6 l6 no-mar">
                                         <div class="selectize-one">
-                                            <label>Diagnósticos o Problemas Clínicos</label>
+                                            <label>Diagnósticos o Problemas Clínicos (Snomed)</label>
                                             <input class="form-control selectize" id="select-diag" name="select-diag">
 
                                             <span class="helper-text">Error</span>
@@ -1191,12 +1191,12 @@
                                                                 <div class="row padbot no-mar">
                                                                     <div class="col {{ session('interAS_id') !== null ? 'hide' : '' }}" id="aparatossubmit">
                                                                         <a class="waves-light btn" onclick="storeaparatos()">
-                                                                            <i class="material-icons left">save</i> Guardar Aparator y Sistemas
+                                                                            <i class="material-icons left">save</i> Guardar Aparatos y Sistemas
                                                                         </a>
                                                                     </div>
                                                                     <div class="col {{ session('interAS_id') !== null ? '' : 'hide' }}" id="aparatosupdate">
                                                                         <a class="waves-light btn" onclick="updateaparatos()">
-                                                                            <i class="material-icons left">save</i> Actualizar Aparator y Sistemas
+                                                                            <i class="material-icons left">save</i> Actualizar Aparatos y Sistemas
                                                                         </a>
                                                                     </div>
                                                                 </div>
