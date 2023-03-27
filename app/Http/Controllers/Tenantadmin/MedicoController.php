@@ -73,7 +73,7 @@ class MedicoController extends Controller
             if($dbuser !== null){
                 $usertenant = userstenant::where('user_id', $dbuser->id)->where('tenant_id', Auth::guard('tenantadmin')->user()->tenant_id)->first();
                 if($usertenant == null){
-                    $result = DB::table("userstenants")->insert([
+                    $result = DB::table("usersTenants")->insert([
                         "user_id" => $dbuser->id,
                         "tenant_id" => Auth::guard('tenantadmin')->user()->tenant_id
                     ]);
@@ -98,7 +98,7 @@ class MedicoController extends Controller
                 $user->password = Hash::make($request->userpassword);
                 $user->save();
     
-                $result = DB::table("userstenants")->insert([
+                $result = DB::table("usersTenants")->insert([
                     "user_id" => $user->id,
                     "tenant_id" => Auth::guard('tenantadmin')->user()->tenant_id
                 ]);
@@ -177,7 +177,7 @@ class MedicoController extends Controller
     }
 
     public function disable($id){
-        $result = DB::table("userstenants")->where('user_id', $id)
+        $result = DB::table("usersTenants")->where('user_id', $id)
         ->where('tenant_id', Auth::guard('tenantadmin')->user()->tenant_id)
         ->update(["active" => false]);
         if($result){
@@ -188,7 +188,7 @@ class MedicoController extends Controller
     }
 
     public function enable($id){
-        $result = DB::table("userstenants")->where('user_id', $id)
+        $result = DB::table("usersTenants")->where('user_id', $id)
         ->where('tenant_id', Auth::guard('tenantadmin')->user()->tenant_id)
         ->update(["active" => true]);
         if($result){

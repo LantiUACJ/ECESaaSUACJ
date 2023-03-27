@@ -132,7 +132,7 @@ class TenantController extends Controller
             if($request->meds1){
                 $dbuser = User::where('curp', $request->usercurp1)->first();
                 if($dbuser != null){
-                    DB::table("userstenants")->insert([
+                    DB::table("usersTenants")->insert([
                         "user_id" => $dbuser->id,
                         "tenant_id" => $tenant->id
                     ]);
@@ -152,14 +152,14 @@ class TenantController extends Controller
                     $user->password = Hash::make($request->userpassword);
                     $user->save();
 
-                    DB::table("userstenants")->insert([
+                    DB::table("usersTenants")->insert([
                         "user_id" => $user->id,
                         "tenant_id" => $tenant->id
                     ]);
 
                 }else{//Por algunaa razon no fue detectado con curp?
                     
-                    DB::table("userstenants")->insert([
+                    DB::table("usersTenants")->insert([
                         "user_id" => $dbuser->id,
                         "tenant_id" => $tenant->id
                     ]);
@@ -365,7 +365,7 @@ class TenantController extends Controller
                 if($tenant->usertenant == null){ //no existe el vinculo 
                     $dbuser = User::where('curp', $request->usercurp1)->first();
                     if($dbuser != null){
-                        DB::table("userstenants")->insert([
+                        DB::table("usersTenants")->insert([
                             "user_id" => $dbuser->id,
                             "tenant_id" => $tenant->id
                         ]);
@@ -386,14 +386,14 @@ class TenantController extends Controller
                     $user->password = Hash::make($request->userpassword);
                     $user->save();
 
-                    DB::table("userstenants")->insert([
+                    DB::table("usersTenants")->insert([
                         "user_id" => $user->id,
                         "tenant_id" => $tenant->id
                     ]);
 
                 }else{//Por algunaa razon no fue detectado con curp?
                     
-                    DB::table("userstenants")->insert([
+                    DB::table("usersTenants")->insert([
                         "user_id" => $dbuser->id,
                         "tenant_id" => $tenant->id
                     ]);
