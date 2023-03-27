@@ -71,7 +71,7 @@
                                     <a class="black-text tab-title text-darken-2 active" href="#section1">Nota de consulta</a>
                                 </li>
                                 <li class="tab col s3" id="interrogatorio-tab">
-                                    <a class="black-text tab-title text-darken-2 disable" href="#section2">Interrogatorio</a>
+                                    <a class="black-text tab-title text-darken-2" href="#section2">Interrogatorio</a>
                                 </li>
                                 <li class="tab col s3 {{ session('consulta_id') !== null ? '' : 'disabled' }}" id="exploracion-tab">
                                     <a class="black-text tab-title text-darken-2" href="#section3">Exploración física</a>
@@ -1538,7 +1538,7 @@
     <div id="consultamodal" class="modal">
         <div class="modal-content" style="padding: 1rem 2rem;">
             <p style="font-size: 1.5rem" id="modalmsg">Mensaje</p>
-            <p>Las pestañas de interrogatorio y Exploración Física han sido desbloqueadas!!</p>
+            <p>Las pestaña de Exploración Física ha sido desbloqueada!!</p>
         </div>
         <div class="modal-footer" style="padding: 1rem 1rem;">
             <a href="#!" class="modal-close waves-effect teal waves-green btn-flat" style="color: white;">Cerrar</a>
