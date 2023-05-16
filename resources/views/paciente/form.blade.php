@@ -29,7 +29,7 @@
             </div>
             <div class="row no-mar">
                 <div class="input-field col s12 m12 l4">
-                    <input id="curp" name = "curp" type="text" class="validate" value="{{old('curp', $paciente->curp)}}" onkeypress = "return /[A-Z0-9]/i.test(event.key)" oninput = "this.value = this.value.toUpperCase()" pattern = '[A-Z]{4}[0-9]{6}[A-Z]{6}[A-J0-9]{1}[0-9]{1}' title = "El formato de la CURP es: XXXX999999XXXXXXX9" maxlength = 18>                    
+                    <input id="curp" name = "curp" type="text" class="validate" value="{{old('curp', $paciente->curp)}}" onkeypress = "return /[A-Z0-9]/i.test(event.key)" oninput = "this.value = this.value.toUpperCase()" pattern = '[A-Z]{4}[0-9]{8}[A-Z]{6}[A-J0-9]{1}[0-9]{1}' title = "El formato de la CURP es: XXXX999999XXXXXXX9" maxlength = 18>                    
                     <label for="curp">CURP <small><a href="https://www.gob.mx/curp/" target="_blank" >
                         <span> Consulta tu CURP</span>
                     </a></small></label>
