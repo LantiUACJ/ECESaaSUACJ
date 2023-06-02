@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/styles.css')}}">
 </head>
-<body>
+<body style="overflow: auto">
     <div class="about-wrapper">
         <div class="row">
             <div class="topbar">
@@ -94,7 +94,7 @@
             <div class="col s12">
                <div class="row">
                 <div class="col s6 m3 nopad img-logo-cont">
-                    <img class="logo-img" src="{{ asset('img/concayt.png') }}">
+                    <img class="logo-img" src="{{ asset('img/concayt.png')."?v=2" }}">
                 </div>
                 <div class="col s6 m3 nopad img-logo-cont">
                     <img class="logo-img" src="{{ asset('img/cenicis.png') }}">
@@ -122,7 +122,7 @@
         document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.parallax');
     var instances = M.Parallax.init(elems);
-  });
+    });
     </script>
 </body>
 </html>
