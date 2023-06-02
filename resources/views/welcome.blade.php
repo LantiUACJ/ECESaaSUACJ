@@ -53,7 +53,7 @@
                     <div class="box fullbox">
                         <div class="row nomarginall">
                             <div class="col s6 m3 nopad img-logo-cont">
-                                <img class="logo-img" src="{{ asset('img/concayt.png') }}">
+                                <img class="logo-img" src="{{ asset('img/concayt.png')."?v=2"  }}">
                             </div>
                             <div class="col s6 m3 nopad img-logo-cont">
                                 <img class="logo-img" src="{{ asset('img/cenicis.png') }}">
