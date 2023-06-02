@@ -283,10 +283,10 @@ class PacienteController extends Controller
         if($paciente != null)
         {
             $consulta = Consulta::where('paciente_id', $id)->count();
-            $egi = Egi::where('paciente_id', $id)->count();
-            $tamizaje = Tamizaje::where('paciente_id', $id)->count();
+            //$egi = Egi::where('paciente_id', $id)->count();
+            //$tamizaje = Tamizaje::where('paciente_id', $id)->count();
             $derechohabiencias = $paciente->dhp->count();
-            if($consulta == 0 && $egi == 0 && $tamizaje == 0)
+            if($consulta == 0 /*&& $egi == 0 && $tamizaje == 0*/)
             {
                 $provisionalpdh = $paciente->dhp;
                 foreach($paciente->dhp as $pdh){
@@ -325,7 +325,7 @@ class PacienteController extends Controller
                 if($consulta > 0){
                     $extra = "consulta registrada";
                 }
-                if($egi > 0)
+                /*if($egi > 0)
                 {
                     if(Str::length($extra) > 0 ){
                         $extra .= ", evaluación geriátrica";
@@ -342,7 +342,7 @@ class PacienteController extends Controller
                     else{
                         $extra = "tamizaje";
                     }
-                }
+                }*/
                 return redirect()->route('pacientes.index')
                     ->with('error', 'El paciente: '.$paciente->nombre.' '.$paciente->primerApellido.' '.$paciente->segundoApellido.', ya cuenta con '.$extra.', por lo cual no se puede borrar su información');
             }
