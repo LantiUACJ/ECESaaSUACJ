@@ -21,17 +21,17 @@ class UsersSeed extends Seeder
     public function run()
     {
         //Administradores del ECE
-        $eceadmin = Eceadmin::create([
-            "name" => "Ece Admin 1",
-            "email" => "eceadmin1@prueba.com",
-            'password'  => bcrypt('test2023')
-        ]);
+        // $eceadmin = Eceadmin::create([
+        //     "name" => "Ece Admin 1",
+        //     "email" => "eceadmin1@prueba.com",
+        //     'password'  => bcrypt('test2023')
+        // ]);
 
-        $eceadmin = Eceadmin::create([
-            "name" => "Ece Admin 2",
-            "email" => "eceadmin2@prueba.com",
-            'password'  => bcrypt('test2023')
-        ]);
+        // $eceadmin = Eceadmin::create([
+        //     "name" => "Ece Admin 2",
+        //     "email" => "eceadmin2@prueba.com",
+        //     'password'  => bcrypt('test2023')
+        // ]);
 
         $eceadmin = Eceadmin::create([
             "name" => "ECEAdmin User",
@@ -85,3 +85,9 @@ class UsersSeed extends Seeder
         ]);
     }
 }
+
+/*
+admintenant lanti
+cesar@admintenant
+potato1234
+*/
